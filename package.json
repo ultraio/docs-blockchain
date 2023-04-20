@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "@types/node": "^18.15.12",
+    "vitepress": "^1.0.0-alpha.73",
+    "vue": "^3.2.47"
+  },
+  "scripts": {
+    "dev": "vitepress dev docs -- --dev",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": true
+  }
+}

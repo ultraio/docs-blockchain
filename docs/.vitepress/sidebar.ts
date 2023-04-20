@@ -19,7 +19,8 @@ export const sidebar: { [path: string]: DefaultTheme.SidebarItem[] } = {
             text: 'Guides',
             items: [
                 {
-                    text: 'test',
+                    text: 'About this Section',
+                    link: '/guides/index',
                 },
             ],
         },
@@ -30,7 +31,8 @@ export const sidebar: { [path: string]: DefaultTheme.SidebarItem[] } = {
             text: 'Contracts',
             items: [
                 {
-                    text: 'test',
+                    text: 'About this Section',
+                    link: '/contracts/index',
                 },
             ],
         },
@@ -38,10 +40,11 @@ export const sidebar: { [path: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/api': [
         {
-            text: 'Learn',
+            text: 'API',
             items: [
                 {
-                    text: 'test',
+                    text: 'About this Section',
+                    link: '/api/index',
                 },
             ],
         },
@@ -49,10 +52,11 @@ export const sidebar: { [path: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tools': [
         {
-            text: 'Learn',
+            text: 'Tools',
             items: [
                 {
-                    text: 'test',
+                    text: 'About this Section',
+                    link: '/tools/index',
                 },
             ],
         },

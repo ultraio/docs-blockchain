@@ -8,10 +8,11 @@ export const nav: DefaultTheme.NavItem[] = [
     { text: 'API', link: '/api/index' },
     { text: 'Tools', link: '/tools/index' },
     {
-        text: 'Resources',
+        text: 'Version',
         items: [
-            //
-            { text: 'Ultra.io', link: 'https://ultra.io' },
+            { text: 'Mainnet', link: 'https://ultra.io' },
+            { text: 'Testnet', link: 'https://ultra.io' },
+            { text: 'Experimental', link: 'https://ultra.io' },
         ],
     },
 ];

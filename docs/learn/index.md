@@ -1,6 +1,6 @@
 ---
 title: 'Learn'
-order: 0
+deploy: ['staging', 'mainnet']
 ---
 
 # Learn

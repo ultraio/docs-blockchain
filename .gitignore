@@ -1,2 +1,27 @@
+# Global Ignores
 node_modules
+packages/*/docs/.vitepress/cache
+dist
+
+# =======================================
+# Global Ignores
+#
+# 0. Experimental is our main environment for docs.
+# 1. Always ignore docs for extra environments.
+# 2. If you wish to create a single environment only page, 
+#       you must explicitly state it below.
+# 3. Use the '!' character to un-ignore a document.
+#
+# ========================================
+
+# Experimental Environment
 docs/.vitepress/cache
+
+# Staging Environment
+packages/staging/docs/*
+!packages/staging/docs/.vitepress
+
+# Mainnet Environment
+packages/mainnet/docs/*
+!packages/mainnet/docs/.vitepress
+

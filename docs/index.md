@@ -1,4 +1,5 @@
 ---
+deploy: ['experimental', 'staging', 'mainnet']
 layout: home
 
 hero:

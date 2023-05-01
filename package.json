@@ -1,27 +1,41 @@
 {
-  "devDependencies": {
-    "@types/node": "^18.15.12",
-    "vitepress": "^1.0.0-alpha.73",
-    "vue": "^3.2.47"
-  },
-  "scripts": {
-    "dev": "vitepress dev docs -- --dev",
-    "build": "vitepress build docs",
-    "preview": "vitepress preview docs"
-  },
-  "engines": {
-    "node": ">=16"
-  },
-  "prettier": {
-    "tabWidth": 4,
-    "printWidth": 120,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "semi": true
-  },
-  "dependencies": {
-    "@stuyk/vitepress-sidebar-builder": "^1.0.2",
-    "giscus": "^1.2.8",
-    "vitepress-plugin-comment-with-giscus": "^1.1.7"
-  }
+    "name": "docs-blockchain",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "update:files": "npx ts-node ./scripts/cascadeFiles.ts",
+        "dev": "vitepress dev docs",
+        "dev:staging": "npm run update:files && vitepress dev ./packages/staging/docs",
+        "dev:mainnet": "npm run update:files && vitepress dev ./packages/mainnet/docs",
+        "build": "npm run update:files && vitepress build docs",
+        "build:staging": "npm run update:files && vitepress build ./packages/staging/docs",
+        "build:mainnet": "npm run update:files && vitepress build ./packages/mainnet/docs",
+        "build:all": "npm run build & npm run build:staging & npm run build:mainnet"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.1",
+        "@types/node": "^18.15.12",
+        "vitepress": "^1.0.0-alpha.73",
+        "vue": "^3.2.47"
+    },
+    "dependencies": {
+        "@stuyk/vitepress-sidebar-builder": "^1.0.2",
+        "fs-extra": "^11.1.1",
+        "giscus": "^1.2.8",
+        "glob": "^10.2.2",
+        "gray-matter": "^4.0.3",
+        "ts-node": "^10.9.1",
+        "vitepress-plugin-comment-with-giscus": "^1.1.7"
+    },
+    "engines": {
+        "node": ">=16"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "semi": true
+    }
 }

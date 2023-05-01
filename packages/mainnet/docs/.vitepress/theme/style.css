@@ -8,14 +8,14 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-    --vp-c-brand: #6cc5d5;
-    --vp-c-brand-light: #baefff;
-    --vp-c-brand-lighter: #baefff;
-    --vp-c-brand-lightest: #baefff;
-    --vp-c-brand-dark: #baefff;
-    --vp-c-brand-darker: #baefff;
+    --vp-c-brand: #896ae2;
+    --vp-c-brand-light: #c5abff;
+    --vp-c-brand-lighter: #c5abff;
+    --vp-c-brand-lightest: #c5abff;
+    --vp-c-brand-dark: #c5abff;
+    --vp-c-brand-darker: #c5abff;
     --vp-c-brand-dimm: rgba(162, 100, 255, 0.08);
-    --vp-local-search-highlight-bg: rgba(128, 201, 228, 0.6);
+    --vp-local-search-highlight-bg: rgba(168, 128, 228, 0.6);
 
     --vp-custom-block-danger-border: #fb9393;
     --vp-custom-block-danger-text: #fb9393;
@@ -48,14 +48,10 @@
 
 :root {
     --vp-home-hero-name-color: transparent;
-    --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #98f5fa 30%, #5dbcff);
+    --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #896ae2 30%, #c5abff);
 
-    --vp-home-hero-image-background-image: linear-gradient(-45deg, #6abee246 50%, #abe6ff45 50%);
+    --vp-home-hero-image-background-image: linear-gradient(-45deg, #886ae246 50%, #c6abff45 50%);
     --vp-home-hero-image-filter: blur(100px) opacity(20%);
-}
-
-.VPHero .VPImage {
-    filter: hue-rotate(-40deg);
 }
 
 @media (min-width: 640px) {

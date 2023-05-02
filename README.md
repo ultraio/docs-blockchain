@@ -16,6 +16,15 @@ After running the command below the documentation usually opens in the browser u
 
 Always use `experimental` for general document writing. The files update instantly in the browser.
 
+**Tips**
+
+-   It is **highly recommended** to turn on `disable cache` in your Browser while working on documentation.
+
+![](https://i.imgur.com/hWf6Xod.png)
+
+-   If you create any new pages you will need to stop vitepress, and restart the preview.
+-   You can actively preview changes to a single document in the browser while a dev command is running, meaning the page auto-refreshes.
+
 ### Experimental
 
 ```

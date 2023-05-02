@@ -34,9 +34,9 @@ function getTitleFromFile(data: string) {
  * @export
  * @param {string} folderPath
  * @param {Options} options
- * @return { DefaultTheme.SidebarItem[] }
+ * @return { SidebarItemOrdered[] }
  */
-export function getFolderFiles(basePath: string, folderPath: string): DefaultTheme.SidebarItem[] {
+export function getFolderFiles(basePath: string, folderPath: string): SidebarItemOrdered[] {
     const files = glob.sync(`${normalizePath(folderPath)}/*.md`);
     const items: SidebarItemOrdered[] = [];
     for (let filePath of files) {
@@ -57,16 +57,12 @@ export function getFolderFiles(basePath: string, folderPath: string): DefaultThe
     return items.sort((a, b) => a.order - b.order);
 }
 
-export function getFolderAsSidebar(
-    basePath: string,
-    folderPath: string,
-    appendBasePath = true
-): DefaultTheme.SidebarItem[] {
+export function getFolderAsSidebar(basePath: string, folderPath: string, appendBasePath = true): SidebarItemOrdered[] {
     if (appendBasePath) {
         folderPath = normalizePath(basePath + '/' + folderPath);
     }
 
-    const items: DefaultTheme.SidebarItem[] = getFolderFiles(basePath, folderPath);
+    const items: SidebarItemOrdered[] = getFolderFiles(basePath, folderPath);
     const files = glob.sync(folderPath + '/*');
 
     for (let filePath of files) {
@@ -86,7 +82,18 @@ export function getFolderAsSidebar(
         items.push({
             text: directoryName,
             collapsed: true,
-            items: getFolderAsSidebar(basePath, startPath, false),
+            items: getFolderAsSidebar(basePath, startPath, false).sort((a, b) => {
+                if (a.order && b.order) {
+                    return a.order - b.order;
+                }
+
+                if (a.text && b.text) {
+                    return a.text.localeCompare(b.text);
+                }
+
+                return 0;
+            }),
+            order: 0,
         });
     }
 

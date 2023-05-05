@@ -1,8 +1,7 @@
 ---
-title: 'Guides'
+title: 'Guides Overview'
 deploy: ['staging', 'mainnet']
 ---
 
-# Guides
+# Guides Overview
 
-Placeholder

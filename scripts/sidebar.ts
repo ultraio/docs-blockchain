@@ -81,7 +81,7 @@ export function getFolderAsSidebar(basePath: string, folderPath: string, appendB
         const directoryName = directorySplit[directorySplit.length - 1];
         items.push({
             text: directoryName,
-            collapsed: true,
+            collapsed: false,
             items: getFolderAsSidebar(basePath, startPath, false).sort((a, b) => {
                 if (a.order && b.order) {
                     return a.order - b.order;
@@ -97,5 +97,26 @@ export function getFolderAsSidebar(basePath: string, folderPath: string, appendB
         });
     }
 
-    return items;
+    const firstElement = items.shift();
+    const sortedItems = items.sort((a, b) => {
+        if (!a.text || !b.text) {
+            return 0;
+        }
+
+        if (a.text < b.text) {
+            return -1;
+        }
+
+        if (a.text > b.text) {
+            return 1;
+        }
+
+        return 0;
+    });
+
+    if (firstElement) {
+        sortedItems.unshift(firstElement);
+    }
+
+    return sortedItems;
 }

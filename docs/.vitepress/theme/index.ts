@@ -12,9 +12,7 @@ export default {
             // https://vitepress.dev/guide/extending-default-theme#layout-slots
         });
     },
-    enhanceApp({ app, router, siteData }) {
-        // Unused at this time
-    },
+    enhanceApp({ app, router, siteData }) {},
     setup() {
         const { frontmatter } = useData();
         const route = useRoute();

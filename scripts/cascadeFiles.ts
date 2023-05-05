@@ -29,7 +29,7 @@ function copyEnvironmentFiles() {
             }
 
             const endPath = `packages/${env}/docs/${slicedPath[slicedPath.length - 1]}`;
-            fs.cpSync(startPath, endPath, { recursive: true });
+            fs.cpSync(startPath, endPath, { recursive: true, preserveTimestamps: true, force: true });
         }
     }
 }
@@ -62,7 +62,7 @@ function copyDocsPerEnvironment() {
             }
 
             const endPath = startPath.replace('docs', `packages/${env}/docs`);
-            fs.cpSync(startPath, endPath, { recursive: true });
+            fs.cpSync(startPath, endPath, { recursive: true, preserveTimestamps: true, force: true });
         }
     }
 }

@@ -89,7 +89,13 @@ Placeholder
 
 `order` is an optional property in the front matter at the top.
 
-Specifying the order as a greater number ensures it is higher up in the sidebar.
+Specifying the order as a lesser number ensures it is higher up in the sidebar.
+
+ie.
+
+- 0 first
+- 1 second
+- 2 third
 
 However, if you want to go lower you can specify a negative number.
 

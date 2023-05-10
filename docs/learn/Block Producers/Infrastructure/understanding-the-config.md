@@ -21,7 +21,7 @@ producer-name = BP_EOS_ACCOUNT
 
 ## Set Block Producer's signature provider
 
-You will need to set the signature keys for your Block Producer. By now you should have created a key pair specifically for this using cleos. For further details, please refer to the [Account Administration](./Maintenance/account-administration.md) section.
+You will need to set the signature keys for your Block Producer. By now you should have created a key pair specifically for this using cleos. For further details, please refer to the [Account Administration](../Maintenance/account-administration.md) section.
 
 ```typescript
 signature-provider = PUBLIC_SIGNING_KEY=KEY:PRIVATE_SIGNING_KEY

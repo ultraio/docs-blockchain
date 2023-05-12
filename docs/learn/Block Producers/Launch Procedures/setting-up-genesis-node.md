@@ -187,29 +187,10 @@ We’ll start off by setting the contract for the account **eosio**.
 cleos set contract eosio ./eosio.system
 ```
 
-After setting this contract we need to initialize the system contract with our currency. Remember that we’re using 4 for the precision of our system currency.
+After setting this contract we need to initialize the system contract with our currency. Remember that we’re using `8` for the precision of our system currency.
 
 ```typescript
-cleos push action eosio init '[0,"4,UOS"]' -f -p eosio
-```
-
-There is a README inside for additional information and the daemon can be called by running.
-
-```typescript
-node index.js <end_point> <private_key>
-```
-
-Here are the relevant actions as examples for conversion rates, and taxes.
-
-```typescript
-cleos push action eosio setconvper '[900]' -p ultra
-cleos push action eosio setconvrate '[["1.0000 USD", "2.0000 EURO", "0.2000 CNY"], 1550174700]' -p ultra
-cleos push action eosio setconvrate '[["1.1000 USD", "2.1000 EURO", "0.3000 CNY"], 1550174200]' -p ultra
-cleos push action eosio setconvrate '[["1.2000 USD", "2.1000 EURO", "0.4000 CNY"], 1550175700]' -p ultra
-cleos push action eosio setconvrate '[["1.1000 USD", "1.1300 EURO", "0.1500 CNY"], 1550174700]' -p ultra
-cleos push action eosio settax '["USA", 15]' -p ultra
-cleos push action eosio settax '["EUR", 10]' -p ultra
-cleos push action eosio settax '["CHN", 5]' -p ultra
+cleos push action eosio init '[0,"8,UOS"]' -f -p eosio
 ```
 
 We also cannot forget to reserve some RAM for ultra.

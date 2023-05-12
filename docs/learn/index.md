@@ -12,4 +12,4 @@ This category is meant to cover more in-depth concepts about the Ultra's Blockch
 
 If you are a block producer or want to learn about block producer procedures check out these sections.
 
-- [Infrastructure]
+- [Block Producer Infrastructure](./Block%20Producers/Infrastructure/block-producing-infrastructure.md)

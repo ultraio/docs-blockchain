@@ -39,9 +39,99 @@ export default defineConfig({
 
 To detect if a user has already installed the Ultra Wallet browser extension, the web application should check for the existence of an ultra object in the window variable.
 
-```JavaScript
-const isUltraWalletInstalled = window.ultra && typeof window.ultra === "object";
+For JavaScript you can detect if `ultra` exists in the `global` scope.
+
+```js
+const isWalletAvailable = ultra ? true: false;
 ```
+
+For TypeScript you will need to create `shims` or `Typings` for `ultra` in the global scope.
+
+```ts
+declare global {
+  const ultra: UltraApi; // This typing needs to be defined. See below for intefaces
+}
+```
+
+::: details TypeScript Interfaces
+```ts
+export interface Response<T = Object> {
+    status: 'success' | 'fail' | 'error';
+    data: T;
+    message?: string;
+}
+
+export interface Account {
+    blockchainid: string;
+    permission: string;
+    publicKey: string;
+}
+
+export interface Transaction<T = any> {
+    /**
+     * The contract to use.
+     *
+     * @type {string}
+     * @memberof Transaction
+     */
+    contract: string;
+
+    /**
+     * The action available inside of the contract.
+     *
+     * @type {string}
+     * @memberof Transaction
+     */
+    action: string;
+
+    /**
+     * The data to send with the contract.
+     *
+     * @type {T}
+     * @memberof Transaction
+     */
+    data: T;
+}
+
+export type ConnectFunction = () => Promise<Response<{ blockchainid: string; publicKey: string }>>;
+
+export interface UltraApi {
+    /**
+     * Connect to the ultra wallet extension
+     *
+     * @memberof UltraApi
+     */
+    connect: ConnectFunction;
+
+    /**
+     * Disconnect the wallet extension
+     *
+     * @memberof UltraApi
+     */
+    disconnect(): Promise<void>;
+
+    /**
+     * Sign a message and return the result.
+     *
+     * Message must start with 0x or UOSx
+     *
+     * @param {string} message
+     * @return {Promise<string>}
+     * @memberof UltraApi
+     */
+    signMessage(message: string): Promise<Response<{ signature: string }>>;
+
+    /**
+     *  Sign a transaction and broadcast it to the chain.
+     *
+     * @param {Transaction} transaction
+     * @return {Promise<Response<{ transactionHash: string }>>}
+     * @memberof UltraApi
+     */
+    signTransaction(transaction: Transaction): Promise<Response<{ transactionHash: string }>>;
+}
+```
+:::
 
 ## Wallet Response Format
 

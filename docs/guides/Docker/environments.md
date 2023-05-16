@@ -40,7 +40,7 @@ This should be the first place you will want to deploy your smart contract for o
 * Begin writing frontend for your decentralized application.
 * Need a way for others to easily interact and test your smart contract.
 
-Go to the [faucet documentation page](../Ultra%20Utilities/faucet.md) to start working with testnet.
+Go to the [faucet documentation page](../Ultra%20Specific/faucet.md) to start working with testnet.
 
 ## Main Network
 

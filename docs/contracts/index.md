@@ -4,5 +4,3 @@ deploy: ['staging', 'mainnet']
 ---
 
 # Smart Contracts
-
-Placeholder

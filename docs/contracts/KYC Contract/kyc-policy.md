@@ -27,3 +27,7 @@ When storing data or deploying a contract on Ultra blockchain, it will consume t
 Although Ultra platform already provides all users a free tier of RAM, however, as a developer, you might need to store more data than normal users do. You can refer to RAM calculation in our dedicated page for more info.
 
 By registering KYC, you will be able purchase as much RAM as you need.
+
+## KYC request for smart contract deployment
+
+If you want to deploy a contract or register KYC for your account, please contact us at [developers@ultra.io](developers@ultra.io).

@@ -1,6 +1,6 @@
 ---
 title: 'Migration Behavior'
-order: 0
+order: -99
 deploy: ['staging', 'mainnet']
 ---
 

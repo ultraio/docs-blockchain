@@ -4,14 +4,12 @@ import { useData, useRoute } from 'vitepress';
 import giscusTalk from 'vitepress-plugin-comment-with-giscus';
 import './style.css';
 
+// @ts-ignore
+import CustomLayout from '../../layout/CustomLayout.vue';
+
 export default {
     ...Theme,
-    Layout: () => {
-        return h(Theme.Layout, null, {
-            // Unused at this time.
-            // https://vitepress.dev/guide/extending-default-theme#layout-slots
-        });
-    },
+    Layout: CustomLayout,
     enhanceApp({ app, router, siteData }) {
         // Unused at this time
     },

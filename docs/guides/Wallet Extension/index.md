@@ -1,11 +1,11 @@
 ---
-title: 'Wallet Extension'
+title: 'Introduction'
 deploy: ['staging', 'mainnet']
-order: -99999
+order: 1
 oultine: [0, 4]
 ---
 
-# Wallet Extension Overview
+# Ultra Wallet Browser Extension
 
 Ultra Wallet browser extension is a crypto wallet that helps you access decentralized applications on Ultra blockchain and securely manage digital assets.
 
@@ -15,7 +15,7 @@ To interact with the wallet, the wallet injects an object named ultra into the j
 
 ## Links
 
-- [Installing the Extension](./installing-extension.md)
-- [Extension API Usage](./extension-api-usage.md)
+- [How to install the extension](./installing-extension.md)
+- [Demo application](https://stackblitz.com/edit/ultra-wallet-test)
+- [Developer resources](./developer-resources.md)
 - [App Template](https://github.com/Stuyk/ultra-wallet-app-template)
-- [Example StackBlitz App](https://stackblitz.com/edit/ultra-wallet-test)

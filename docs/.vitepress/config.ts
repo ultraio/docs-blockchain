@@ -1,6 +1,5 @@
 import { defineConfig } from 'vitepress';
 import { generate } from '../../scripts/configGenerator';
-import { normalizePath } from '../../scripts/shared';
 
 // do not modify
 export default () => {

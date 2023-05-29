@@ -9,6 +9,7 @@ const environmentFolders: Array<{ from: string; to: Array<Envs> }> = [
     // These are folders that we should directly copy to all other environments outright.
     // They are considered 'static'
     { from: 'docs/public', to: ['staging', 'mainnet'] },
+    { from: 'docs/layout', to: ['staging', 'mainnet'] },
 ];
 
 /**

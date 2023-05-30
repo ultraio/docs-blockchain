@@ -1,7 +1,7 @@
 ---
 title: 'Introduction'
 deploy: ['staging', 'mainnet']
-order: 1
+order: -1
 oultine: [0, 4]
 ---
 

@@ -9,7 +9,7 @@ outline: [0,4]
 
 To standardize the communication between the decentralized applications and the extension, each method will respond with a Promise and this response format.
 
-```
+```JavaScript
 /**
  * Based on JSend a specification for a simple, no-frills,
  * JSON based format for application-level communication.

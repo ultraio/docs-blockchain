@@ -61,7 +61,7 @@ Open and unlock your wallet.
 To transfer tokens you run the command:
 
 ```sh
-cleos push action eosio.token transfer '["myaccount", "recipientacc", "10.0000 UOS", "Memo message"]' -p myaccount@active
+cleos push action eosio.token transfer '["myaccount", "recipientacc", "10.00000000 UOS", "Memo message"]' -p myaccount@active
 ```
 
 ## Publishing a Contract
@@ -96,7 +96,7 @@ Storing data in tables consumes RAM resources on the EOSIO network. Contracts ty
 
 To read table row data in EOSIO, you can use the EOSIO database API functions available within your smart contract.
 
-#### 2. Read the table row data
+#### Read the table row data
 
 To read table row data using `cleos` on Ultra, you can use the get table command.
 
@@ -151,7 +151,3 @@ This command retrieves the table data for the `accounts` table in the `eosio.tok
 The output will display the table row data in JSON format, including all the rows and their associated fields that match the specified scope.
 
 By providing the desired scope parameter in the `get table` command, you can retrieve table data associated with a specific scope using `cleos`. This allows you to access and view subsets of data within the table based on your defined scopes.
-
-```
-
-```

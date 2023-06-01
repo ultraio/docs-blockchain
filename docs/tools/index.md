@@ -21,6 +21,11 @@ These include anything from best security practices, tools, and even other commu
 
 * [Antelope Developer Community](https://t.me/antelopedevs)
 
+### IDEs
+
+* [VSCode](https://code.visualstudio.com/download)
+* [CLion](https://www.jetbrains.com/clion/)
+
 ### Examples
 
 * [Smart Contract Examples](https://github.com/blockmatic/antelope-contracts-list)

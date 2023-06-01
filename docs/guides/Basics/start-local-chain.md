@@ -7,13 +7,17 @@ oultine: [0, 4]
 
 # Start a Local Chain
 
-When you have instanced inside of the docker container you can start a local chain by running the following command.
+Now that you have the [Docker image up and running](./introduction.md), we can move on to spinning up a local chain which you can use for development.
+
+Inside your Docker image instance, you can start a local chain by running the following command that runs our test suite, Ultratest.
 
 ```sh
 ultratest -D -n -s
 ```
 
-Ultratest automatically sets up a wallet, keys, and all smart contracts just by running the above command.
+Ultratest automatically sets up a wallet, keys, and all smart contracts. These are necessary to grant you access to the functionality necessary to develop on our stack.
+
+A quick note on the flags above.
 
 `-D` stops the `ultratest` framework from closing after tests have ran.
 

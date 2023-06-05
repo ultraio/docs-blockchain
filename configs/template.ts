@@ -1,5 +1,6 @@
 import { DefaultTheme, UserConfig } from 'vitepress';
 import { nav } from './nav';
+import { fileURLToPath } from 'node:url';
 
 const BASE_URL = '/';
 
@@ -31,4 +32,23 @@ export const templateConfig: UserConfig<DefaultTheme.Config> = {
         ['link', { rel: 'mask-icon', href: BASE_URL + 'safari-pinned-tab.svg', color: '#5bbad5' }],
         ['meta', { name: 'msapplication-TileColor', content: '#da532c' }],
     ],
+    vue: {
+        template: {
+            compilerOptions: {
+                isCustomElement: (tag) => {
+                    return tag.toLowerCase().search(/.*-.*/g) !== -1;
+                },
+            },
+        },
+    },
+    vite: {
+        resolve: {
+            alias: [
+                {
+                    find: /^.*\/VPHome\.vue$/,
+                    replacement: fileURLToPath(new URL('/layout/UltraHome.vue', import.meta.url)),
+                },
+            ],
+        },
+    },
 };

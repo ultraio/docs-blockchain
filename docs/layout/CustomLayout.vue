@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme';
-import { useData } from 'vitepress';
 import VPFlyout from 'vitepress/dist/client/theme-default/components/VPFlyout.vue';
 
-const { page, frontmatter } = useData();
 const { Layout } = DefaultTheme;
 
 const defaultURLs = {
@@ -32,3 +30,19 @@ function getLinks() {
         </template>
     </Layout>
 </template>
+
+<style>
+.Layout:has(.main-container-wrapper) .VPNav {
+    display: none !important;
+    height: 0px !important;
+}
+
+.Layout:has(.main-container-wrapper) .VPLocalNav {
+    display: none !important;
+    height: 0px !important;
+}
+
+.Layout:has(.main-container-wrapper) .VPContent {
+    padding-top: 0px !important;
+}
+</style>

@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import UltraSection from './UltraSections.vue';
 import { useData } from 'vitepress';
+import UltraStat from './UltraStat.vue';
 
 const { frontmatter } = useData();
 
 const links = ref([
-    { href: '#', text: 'Getting Started' },
-    { href: '#', text: 'Documentation' },
-    { href: '#', text: 'Technology' },
+    { href: '#getting-started', text: 'Getting Started' },
+    { href: '#documentation', text: 'Documentation' },
+    { href: '#technology', text: 'Technology' },
     { href: '#', text: 'Quickstarts' },
     { href: '#', text: 'Tooling' },
     { href: '#', text: 'Support' },
@@ -53,6 +54,26 @@ interface UltraHomeMatter {
 
 let data = ref<UltraHomeMatter>(frontmatter.value as UltraHomeMatter);
 let mobileOpen = ref(false);
+let blockCount = ref<number>(5000000);
+
+async function getBlockCount() {
+    const result = await fetch('https://api.mainnet.ultra.io/v1/chain/get_info');
+    if (!result || !result.ok) {
+        return;
+    }
+
+    const dataSet = await result.json();
+    if (!dataSet) {
+        return;
+    }
+
+    blockCount.value = dataSet.head_block_num;
+}
+
+onMounted(() => {
+    setInterval(getBlockCount, 2500);
+    getBlockCount();
+});
 </script>
 
 <template>
@@ -144,6 +165,21 @@ let mobileOpen = ref(false);
                         </a>
                         <UltraSection title="Learn Blockchain Concepts" :section="data.documentation.concepts" />
                         <UltraSection title="Guides" :section="data.documentation.guides" />
+                    </section>
+                    <!-- Technology Section -->
+                    <section id="technology">
+                        <section-title>Technology</section-title>
+                        <div class="spacer-sm" />
+                        <section-stats>
+                            <UltraStat icon="/blocks.svg">
+                                <template #data>{{ blockCount.toLocaleString() }} </template>
+                                <template #description> Blocks Produced </template>
+                            </UltraStat>
+                            <UltraStat icon="/blocktime.svg">
+                                <template #data>0.5s</template>
+                                <template #description>Block Time</template>
+                            </UltraStat>
+                        </section-stats>
                     </section>
                 </div>
             </div>
@@ -352,6 +388,12 @@ let mobileOpen = ref(false);
     justify-content: space-between;
     flex-wrap: wrap;
     width: 100%;
+}
+
+.main-container section-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 48px;
 }
 
 .main-container .table-wrapper .big-arrow {

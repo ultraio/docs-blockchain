@@ -32,7 +32,9 @@ After this data is verified the token is erased from the **from** user and is gi
 
 This process is **repeated for each token**.
 
-Accounts **from**, **to** and managers of corresponding token factories will get a notification.
+**Notifications**
+
+`require_recipient` is done for `from` account, `to` account and for asset managers of corresponding token factories
 
 ## Action Parameters
 

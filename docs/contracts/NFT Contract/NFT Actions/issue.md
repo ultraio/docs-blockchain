@@ -8,6 +8,10 @@ deploy: ['staging', 'mainnet']
 
 This action can be used to issue tokens by factory managers or authorized minters
 
+::: warning
+Deprecated. Use `issue.b` instead
+:::
+
 ## Technical Behavior
 
 Upon the usage of the issue action, the action will verify that the parameters supplied in the action have values, such as to, token_configs, and memo. The memo specifically has a 256-byte limitation. The required authorization is the token_factory_manager user for each token specified in token_configs. The token_configs vector is verified to not be empty and each token_config is verified to have an amount specified and a valid token_factory_id in order to begin the minting process of a token.

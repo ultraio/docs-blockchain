@@ -6,6 +6,46 @@ deploy: ['staging', 'mainnet']
 
 # NFT Tables
 
+## factory.b
+
+-   Table: `factory.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains token factories settings and the operational info.
+
+| Fields                  | Type                              | Description                                                                                                                              |
+| ----------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| id                      | uint64_t                          | (primary key) The token factory ID                                                                                                       |
+| asset_manager           | eosio::name                       | Account that manages the token lifecycle - issuing, burning, reselling etc.                                                              |
+| asset_creator           | eosio::name                       | Account that ceates the token factory.                                                                                                   |
+| minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                             |
+| resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the token resale.                                      |
+| mintable_window_start   | std::optional<uint32_t>           | The beginning of the time window when tokens can be minted.                                                                              |
+| mintable_window_end     | std::optional<uint32_t>           | The end of the time window when tokens can be minted.                                                                                    |
+| trading_window_start    | std::optional<uint32_t>           | The beginning of the time window when tokens can be traded.                                                                              |
+| trading_window_end      | std::optional<uint32_t>           | The end of the time window when tokens can be traded.                                                                                    |
+| recall_window_start     | std::optional<uint32_t>           | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
+| recall_window_end       | std::optional<uint32_t>           | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
+| lockup_time             | std::optional<uint32_t>           | *Disabled*. The time window since token minting in which the token cannot be transferred                                                 |
+| conditionless_receivers | std::vector\<eosio::name>         | A set of token receiver account tokens can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                    | uint8_t                           | The token factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                 |
+| factory_uri             | std::string                       | The token factory metadata URI vector.                                                                                                   |
+| factory_hash            | eosio::checksum256                | The token factory metadata hash.                                                                                                         |
+| max_mintable_tokens     | std::optional<uint32_t>           | The maximal number of tokens that can be minted with the factory.                                                                        |
+| minted_tokens_no        | uint32_t                          | The number of minted of tokens.                                                                                                          |
+| existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt tokens.                                                                                       |
+| authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of tokens that authorized minters can issue                                                                         |
+| account_minting_limit   | std::optional\<uint32_t>          | The limit of tokens that can be minted to each individual account                                                                        |
+| transfer_window_start   | std::optional\<uint32_t>          | The beginning fo the time window when tokens can be transferred                                                                          |
+| transfer_window_end     | std::optional\<uint32_t>          | The end of the time window when tokens can be transferred                                                                                |
+| default_token_uri       | std::string                       | The default token metadata URI for tokens without dedicated URI                                                                          |
+| default_token_hash      | std::optional\<checksum256>       | The default token metadata hash                                                                                                          |
+| lock_hash               | bool                              | Controls whether metadata of the factory, tokens or default tokens could be changed |
+
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstat**
+
 ## factory.a
 
 -   Table: `factory.a`
@@ -15,13 +55,17 @@ deploy: ['staging', 'mainnet']
 
 The table contains token factories settings and the operational info.
 
+::: warning
+Deprecated. Refer to `factory.b` instead
+:::
+
 | Fields                          | Type                              | Description                                                                                                                              |
 | ------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | id                              | uint64_t                          | (primary key) The token factory ID                                                                                                       |
-| asset_manager                   | eosio::name                       | Manages the token lifecycle - issuing, burning, reselling etc.                                                                           |
-| asset_creator                   | eosio::name                       | Creates the token factory.                                                                                                               |
-| conversion_rate_oracle_contract | eosio::name                       | Deprecated. Please do not use.                                                                                                           |
-| chosen_rate                     | std::vector\<eosio::asset>        | Deprecated. Please do not use.                                                                                                           |
+| asset_manager                   | eosio::name                       | Account that manages the token lifecycle - issuing, burning, reselling etc.                                                                           |
+| asset_creator                   | eosio::name                       | Account that creates the token factory.                                                                                                               |
+| conversion_rate_oracle_contract | eosio::name                       | *Deprecated*. Please do not use.                                                                                                           |
+| chosen_rate                     | std::vector\<eosio::asset>        | *Deprecated*. Please do not use.                                                                                                           |
 | minimum_resell_price            | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                             |
 | resale_shares                   | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the token resale.                                      |
 | mintable_window_start           | std::optional<uint32_t>           | The beginning of the time window when tokens can be minted.                                                                              |
@@ -51,38 +95,6 @@ cleos get table eosio.nft.ft eosio.nft.ft factory.a
 
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factory.a", "json": true}'
-```
-
----
-
-## token.a
-
--   Table: `token.a`
--   Code: `eosio.nft.ft`
--   Scope: `account`
--   Key: `id`
-
-The table stores the tokens owned by a user.
-
-| Fields           | Type                  | Description                                              |
-| ---------------- | --------------------- | -------------------------------------------------------- |
-| id               | uint64_t              | (primary key) Global token ID                            |
-| token_factory_id | uint64_t              | The token factory ID the token was issued with.          |
-| mint_date        | eosio::time_point_sec | The token mint date.                                     |
-| serial_number    | uint32_t              | The ordinal number of the token assigned during issuance |
-
-Most relevant actions: **buy, burn**, **issue, resell**.
-
--   `cleos` Query Example
-
-```sh
-cleos get table eosio.nft.ft <ACCOUNT> token.a
-```
-
--   `curl` query example
-
-```sh
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.a", "json": true}'
 ```
 
 ---
@@ -117,6 +129,42 @@ cleos get table eosio.nft.ft <ACCOUNT> token.b
 
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.b", "json": true}'
+```
+
+---
+
+## token.a
+
+-   Table: `token.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the tokens owned by a user.
+
+::: warning
+Deprecated. Refer to `token.b` instead
+:::
+
+| Fields           | Type                  | Description                                              |
+| ---------------- | --------------------- | -------------------------------------------------------- |
+| id               | uint64_t              | (primary key) Global token ID                            |
+| token_factory_id | uint64_t              | The token factory ID the token was issued with.          |
+| mint_date        | eosio::time_point_sec | The token mint date.                                     |
+| serial_number    | uint32_t              | The ordinal number of the token assigned during issuance |
+
+Most relevant actions: **buy, burn**, **issue, resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.a", "json": true}'
 ```
 
 ---
@@ -180,3 +228,13 @@ cleos get table eosio.nft.ft <TOKEN FACTORY ID> authmintrs.a
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<TOKEN FACTORY ID>", "code":"eosio.nft.ft", "table":"authmintrs.a", "json": true}'
 ```
+
+global.share
+migration
+next.factory
+next.token
+tfcreateflag
+mintstat.a
+ramvault.a
+factorygrp.a
+next.fct.grp

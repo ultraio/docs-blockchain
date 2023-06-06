@@ -30,7 +30,9 @@ The resale table will try to find the token and ensure it doesn’t already exis
 
 If it doesn’t exist it gets placed and the transaction is completed.
 
-**seller** and **token_factory.asset_manager** will get a notification.
+**Notifications**
+
+`require_recipient` is done for `seller` and asset manager of the token factory
 
 ## Action Parameters
 

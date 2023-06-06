@@ -53,10 +53,6 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
     -   **authorizer**'s minting quota stored in authorized minter info table is reduced by the number of minted tokens, and if it reaches zero, their authorized minter info record is removed from the table.
 
-**Notifications**
-
-**asset_manager**, **authorizer** (if specified) and **to** will get a notifaction.
-
 **RAM usage**
 
 -   Creating new token
@@ -88,6 +84,10 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
     -   The factory’s manager will get the refund proportional to the amount of RAM released from the RAM vault, i.e.
         refund = (accumulated RAM payment) \* (released amount of RAM)/(accumulated amount of RAM usage).
+
+**Notifications**
+
+`require_recipient` is done for `asset_manager` of the token factory, `to` account that recieves the token and `authorizer` (if specified in the action)
 
 ## Action Parameters
 

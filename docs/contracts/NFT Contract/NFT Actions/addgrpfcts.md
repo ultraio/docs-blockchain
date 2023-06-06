@@ -16,10 +16,10 @@ Factories argument should not contain any existing ids. Factory group pack size 
 
 ## Action Parameters
 
-| field name | c++ type           | js type         |
-| ---------- | ------------------ | --------------- |
-| id         | uint64_t           | number          |
-| factories  | `vector<uint64_t>` | `Array<number>` |
+| field name | c++ type          | js type        |
+| ---------- | ----------------- | -------------- |
+| id         | uint64_t          | number         |
+| factories  | vector\<uint64_t> | Array\<number> |
 
 ## CLI
 

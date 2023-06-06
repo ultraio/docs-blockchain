@@ -18,8 +18,6 @@ Used to burn a non-fungible token from one user. This requires the **token_id** 
 
 Upon the usage of the burn action the action verifies that the parameters supplied in the action have values. This includes owner, token_ids, and memo. The memo specifically has a 256 byte limitation. The required authorization is the owner user. The token_ids vector is verified to not be empty.
 
-**owner** and managers of corresponding token factories will get a notification.
-
 **On-the-fly migration**
 
 After v1 is activated by activers action, token exists either in v0 token table, token.a, or v1 token table, token.b.
@@ -36,6 +34,10 @@ After this data is verified the token quantity in the token factory is subtracte
 ## Action Parameters
 
 Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+**Notifications**
+
+`require_recipient` is done for `owner` account and for asset managers of corresponding token factories
 
 ### V0
 

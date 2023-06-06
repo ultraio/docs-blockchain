@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import UltraSection from './UltraSections.vue';
 import { useData } from 'vitepress';
+import UltraSection from './UltraSections.vue';
+import UltraFooter from './UltraFooter.vue';
 import UltraStat from './UltraStat.vue';
 import UltraLink from './UltraLink.vue';
 import UltraSupport from './UltraSupport.vue';
@@ -9,11 +10,13 @@ import UltraSupport from './UltraSupport.vue';
 const { frontmatter } = useData();
 
 const links = ref([
+    { href: '/guides/Basics/introduction', text: 'Go to Docs' },
     { href: '#getting-started', text: 'Getting Started' },
     { href: '#documentation', text: 'Documentation' },
     { href: '#technology', text: 'Technology' },
     { href: '#tooling', text: 'Tooling' },
     { href: '#support', text: 'Support' },
+    { href: '/search', text: 'Search' },
 ]);
 
 const socials = ref([
@@ -60,6 +63,13 @@ interface UltraHomeMatter {
     support: {
         content: string;
         links: { title: string; link: string; text: string }[];
+    };
+
+    footer: {
+        sections: {
+            title: string;
+            links: { text: string; link: string }[];
+        }[];
     };
 }
 
@@ -232,7 +242,7 @@ onMounted(() => {
                     </section>
                 </div>
             </div>
-            <div class="footer">Hello Footer</div>
+            <UltraFooter :sections="data.footer.sections" />
         </div>
     </div>
 </template>

@@ -16,7 +16,7 @@ For this smart contract to properly interact with `eosio.nft.ft` we will need in
 - `token.b` - described using `token_v1` structure. This table stores information about all tokens of NFT standard v1
 - `next.token` - described using `next_token_number` structure. This singleton stores the id of the next token that will be minted, by subtracting 1 you get the id of the token that was previously minted.
 
-To know the layout of those tables refer to the following documents [uniq metadata fields](/docs/invalid.md)
+To know the layout of those tables refer to the following documents [uniq metadata fields](../../../contracts/NFT%20Contract/nft-tables.md)
 
 In addition to the above we also need to define an action within our smart contract with interface that matches `issue.b` action. This will cause `eosio.nft.ft` contract to notify us when `issue.b` action is executed and the account that will host this contract (here it will be `onissue`) is involved in the minting process (e.g. `onissue` is the issuer of the token). For that the following interface is re-created with an indication to listen for `issue.b` action:
 
@@ -57,7 +57,7 @@ This contract assumes no one will be issuing tokens to `onissue` contract so if 
 
 ### How to build and test
 
-First step after writing the `onissue.hpp` and `onissue.cpp` will be to build the contract. Follow [uniq metadata fields](/docs/invalid.md) for instructions for simplest build process.
+First step after writing the `onissue.hpp` and `onissue.cpp` will be to build the contract. Follow [this](../../Docker/building-smart-contracts.md) for instructions of the build process.
 
 As an alternative the build command using `eosio-cpp`:
 

@@ -229,12 +229,255 @@ cleos get table eosio.nft.ft <TOKEN FACTORY ID> authmintrs.a
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<TOKEN FACTORY ID>", "code":"eosio.nft.ft", "table":"authmintrs.a", "json": true}'
 ```
 
-global.share
-migration
-next.factory
-next.token
-tfcreateflag
-mintstat.a
-ramvault.a
-factorygrp.a
-next.fct.grp
+## global.share
+
+-   Table: `global.share`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about global share of each second hand token resell: which account and how many basis points it receives (each basis point = 0.01%)
+
+| Fields      | Type        | Description                                       |
+| ----------- | ----------- | ------------------------------------------------- |
+| receiver    | eosio::name | Receiver of the global resale share               |
+| basis_point | uint16_t    | Share of the resale specified in the basis points |
+
+Most relevant actions: `buy`, `resell`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft global.share
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"global.share", "json": true}'
+```
+
+## migration
+
+-   Table: `migration`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about current active NFT standard version and flags used to indicate the status of the migration
+
+| Fields                | Type     | Description                                                                                                                                                         |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| active_nft_version    | uint64_t | Version of the current active NFT standard                                                                                                                          |
+| table_migration_stats | uint16_t | Bitmask storing information about the status of the migration. `factory_a_migration_done = 0x0000'0000'0000'0001`, `token_a_migration_done = 0x0000'0000'0000'0002` |
+
+Most relevant actions: `migration`, `mgrfactories`, `mgrnfts`, `setnftmgrflg`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft migration
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"migration", "json": true}'
+```
+
+## next.factory
+
+-   Table: `next.factory`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created token factory
+
+| Fields | Type     | Description                                         |
+| ------ | -------- | --------------------------------------------------- |
+| value  | uint64_t | ID that the next created token factory will receive |
+
+Most relevant actions: `create`, `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.factory
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.factory", "json": true}'
+```
+
+## next.token
+
+-   Table: `next.token`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next issued token
+
+| Fields | Type     | Description                                |
+| ------ | -------- | ------------------------------------------ |
+| value  | uint64_t | ID that the next issued token will receive |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.token
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.token", "json": true}'
+```
+
+## next.fct.grp
+
+-   Table: `next.fct.grp`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created factory group
+
+| Fields | Type     | Description                                         |
+| ------ | -------- | --------------------------------------------------- |
+| value  | uint64_t | ID that the next created token factory will receive |
+
+Most relevant actions: `creategrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.fct.grp
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.fct.grp", "json": true}'
+```
+
+## tfcreateflag
+
+-   Table: `tfcreateflag`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about whether the creation of token factories by accounts other than Ultra is allowed
+
+| Fields        | Type | Description                                                                       |
+| ------------- | ---- | --------------------------------------------------------------------------------- |
+| require_ultra | bool | Whether Ultra permission is required to create a token factory. Default is `true` |
+
+Most relevant actions: `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft tfcreateflag
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"tfcreateflag", "json": true}'
+```
+
+## mintstat.a
+
+-   Table: `mintstat.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `factory_id`
+-   Key: `user`
+
+The table stores information about how many tokens were minted to the specific user account. Utilized to check against minting limit within the token factory
+
+| Fields | Type     | Description                                                            |
+| ------ | -------- | ---------------------------------------------------------------------- |
+| user   | name     | Account name of the user                                               |
+| minted | uint32_t | Number of tokens that were minted to this user from this token factory |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft ...........1j mintstat.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"...........1j", "code":"eosio.nft.ft", "table":"mintstat.a", "json": true}'
+```
+
+## ramvault.a
+
+-   Table: `ramvault.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `owner`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields  | Type    | Description                         |
+| ------- | ------- | ----------------------------------- |
+| owner   | name    | Owner of this RAM vault entry       |
+| usage   | int64_t | Current RAM usage of the vault RAM  |
+| payment | int64_t | Total payment done to the RAM vault |
+
+Most relevant actions: `create.b`, `issue.b`, `clrmintst`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft ramvault.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"ramvault.a", "json": true}'
+```
+
+## factorygrp.a
+
+-   Table: `factorygrp.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields      | Type                   | Description                                                  |
+| ----------- | ---------------------- | ------------------------------------------------------------ |
+| id          | uint64_t               | ID of this token factory group                               |
+| manager     | eosio::name            | Manager of the factory group                                 |
+| uri         | std::string            | URI of the factory group metadata                            |
+| hash        | eosio::checksum256     | Hash of the factory group metadata                           |
+| factories   | std::vector\<uint64_t> | Array of factories in the token factory group                |
+| uos_payment | int64_t                | UOS payment charged during the creation of the factory group |
+
+Most relevant actions: `creategrp`, `deletegrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factorygrp.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factorygrp.a", "json": true}'
+```

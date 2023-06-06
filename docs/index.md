@@ -96,5 +96,34 @@ documentation:
           link: "/guides/Ultra Specific/request-fungible-token"
         - title: "Testnet Faucet Guide"
           link: "/guides/Ultra Specific/faucet"
+
+tooling:
+  content: "Many excellent developer tools already exist within the Ultra ecosystem."
+  links:
+    - title: "Ultra Mainnet Explorer"
+      link: "https://explorer.mainnet.ultra.io/"
+      icon: "/svgs/link.svg"
+    - title: "Ultra Testnet Explorer"
+      link: "https://explorer.testnet.ultra.io/"
+      icon: "/svgs/link.svg"
+    - title: "pNetwork Bridge"
+      link: "https://dapp.ptokens.io/#/swap?asset=uos&from=eth&to=ultra"
+      icon: "/svgs/link.svg"
+    - title: "Account & Faucet for Testnet"
+      link: "https://faucet.testnet.app.ultra.io/"
+      icon: "/svgs/link.svg"
+    - title: "EOS Authority Keypair Generator"
+      link: "https://eosauthority.com/generate_eos_private_key"
+      icon: "/svgs/link.svg"
+
+support:
+  content: "We know that not everything always goes smoothly. Here's how we can help."
+  links:
+    - title: "Developer Support Email"
+      link: "mailto:developers@ultra.io"
+      text: "developers@ultra.io"
+    - title: "Discord"
+      link: "https://discord.gg/invite/U7raPf6qZu"
+      text: "Join Discord"
 ---
 

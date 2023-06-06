@@ -3,6 +3,8 @@ import { onMounted, ref } from 'vue';
 import UltraSection from './UltraSections.vue';
 import { useData } from 'vitepress';
 import UltraStat from './UltraStat.vue';
+import UltraLink from './UltraLink.vue';
+import UltraSupport from './UltraSupport.vue';
 
 const { frontmatter } = useData();
 
@@ -10,9 +12,8 @@ const links = ref([
     { href: '#getting-started', text: 'Getting Started' },
     { href: '#documentation', text: 'Documentation' },
     { href: '#technology', text: 'Technology' },
-    { href: '#', text: 'Quickstarts' },
-    { href: '#', text: 'Tooling' },
-    { href: '#', text: 'Support' },
+    { href: '#tooling', text: 'Tooling' },
+    { href: '#support', text: 'Support' },
 ]);
 
 const socials = ref([
@@ -49,6 +50,16 @@ interface UltraHomeMatter {
         };
         concepts: SectionGroup[];
         guides: SectionGroup[];
+    };
+
+    tooling: {
+        content: string;
+        links: { title: string; link: string; icon: string }[];
+    };
+
+    support: {
+        content: string;
+        links: { title: string; link: string; text: string }[];
     };
 }
 
@@ -170,7 +181,7 @@ onMounted(() => {
                     <section id="technology">
                         <section-title>Technology</section-title>
                         <div class="spacer-sm" />
-                        <section-stats>
+                        <section-group>
                             <UltraStat icon="/svgs/blocks.svg">
                                 <template #data>{{ blockCount.toLocaleString() }} </template>
                                 <template #description>Blocks Produced</template>
@@ -183,7 +194,41 @@ onMounted(() => {
                                 <template #data>$0.00</template>
                                 <template #description>Average Transaction Cost</template>
                             </UltraStat>
-                        </section-stats>
+                        </section-group>
+                    </section>
+                    <!-- Tooling Section -->
+                    <section id="tooling">
+                        <section-title>Tooling</section-title>
+                        <div class="spacer-sm" />
+                        <section-content>
+                            {{ data.tooling.content }}
+                        </section-content>
+                        <section-group>
+                            <UltraLink
+                                v-for="(linkData, index) in data.tooling.links"
+                                :key="index"
+                                :link="linkData.link"
+                                :icon="linkData.icon"
+                            >
+                                <template #title>{{ linkData.title }}</template>
+                            </UltraLink>
+                        </section-group>
+                    </section>
+                    <!-- Support Section -->
+                    <section id="support">
+                        <section-title>Support</section-title>
+                        <div class="spacer-sm" />
+                        <section-content>
+                            {{ data.support.content }}
+                        </section-content>
+                        <UltraSupport
+                            v-for="(linkData, index) in data.support.links"
+                            :key="index"
+                            :link="linkData.link"
+                        >
+                            <template #title>{{ linkData.title }}</template>
+                            <template #text>{{ linkData.text }}</template>
+                        </UltraSupport>
                     </section>
                 </div>
             </div>
@@ -287,7 +332,7 @@ onMounted(() => {
 }
 
 .main-container .sidebar-links li a {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     font-size: 16px;
     font-weight: 700;
@@ -394,11 +439,15 @@ onMounted(() => {
     width: 100%;
 }
 
-.main-container section-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 48px;
-    row-gap: 48px;
+.main-container section-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.main-container section-group > * {
+    margin-bottom: 48px;
 }
 
 .main-container .table-wrapper .big-arrow {
@@ -448,10 +497,6 @@ onMounted(() => {
     }
 
     .main-container .sections {
-        grid-template-columns: 1fr;
-    }
-
-    .main-container section-stats {
         grid-template-columns: 1fr;
     }
 

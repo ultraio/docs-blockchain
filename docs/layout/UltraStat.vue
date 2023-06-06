@@ -29,11 +29,11 @@ const props = defineProps<{ icon: string }>();
 
 .small-split {
     display: flex;
-    width: 25%;
 }
 
 .stat {
     width: auto;
+    flex-grow: 1;
 }
 
 .data {

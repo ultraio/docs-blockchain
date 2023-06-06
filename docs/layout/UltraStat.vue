@@ -4,7 +4,7 @@ const props = defineProps<{ icon: string }>();
 
 <template>
     <div class="stat">
-        <div class="split">
+        <div class="small-split">
             <div class="icon">
                 <img :src="props.icon" width="75" height="75" />
             </div>
@@ -27,10 +27,13 @@ const props = defineProps<{ icon: string }>();
     justify-content: center;
 }
 
+.small-split {
+    display: flex;
+    width: 25%;
+}
+
 .stat {
-    border: 1px solid #896ae2;
-    border-radius: 6px;
-    padding: 48px;
+    width: auto;
 }
 
 .data {
@@ -48,7 +51,7 @@ const props = defineProps<{ icon: string }>();
 .icon {
     display: flex;
     justify-content: center;
-    background: #26125d;
+    background: #240c58;
     margin-right: 24px;
     min-height: 100px;
     max-height: 100px;

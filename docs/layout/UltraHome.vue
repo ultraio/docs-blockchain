@@ -16,9 +16,9 @@ const links = ref([
 ]);
 
 const socials = ref([
-    { href: '#', icon: 'discord.svg', title: 'Discord' },
-    { href: '#', icon: 'twitter.svg', title: 'Twitter' },
-    { href: '#', icon: 'youtube.svg', title: 'YouTube' },
+    { href: '#', icon: '/svgs/discord.svg', title: 'Discord' },
+    { href: '#', icon: '/svgs/twitter.svg', title: 'Twitter' },
+    { href: '#', icon: '/svgs/youtube.svg', title: 'YouTube' },
 ]);
 
 interface SectionGroup {
@@ -123,7 +123,7 @@ onMounted(() => {
             <div class="main-content">
                 <div class="hero">
                     <img
-                        src="ultra-horizontal.svg"
+                        src="/svgs/ultra-horizontal.svg"
                         height="25"
                         width="100"
                         style="margin-bottom: 25px; margin-top: 10px"
@@ -171,13 +171,17 @@ onMounted(() => {
                         <section-title>Technology</section-title>
                         <div class="spacer-sm" />
                         <section-stats>
-                            <UltraStat icon="/blocks.svg">
+                            <UltraStat icon="/svgs/blocks.svg">
                                 <template #data>{{ blockCount.toLocaleString() }} </template>
-                                <template #description> Blocks Produced </template>
+                                <template #description>Blocks Produced</template>
                             </UltraStat>
-                            <UltraStat icon="/blocktime.svg">
+                            <UltraStat icon="/svgs/blocktime.svg">
                                 <template #data>0.5s</template>
                                 <template #description>Block Time</template>
+                            </UltraStat>
+                            <UltraStat icon="/svgs/transactioncost.svg">
+                                <template #data>$0.00</template>
+                                <template #description>Average Transaction Cost</template>
                             </UltraStat>
                         </section-stats>
                     </section>
@@ -307,7 +311,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    background-image: url('/bg.png');
+    background-image: url('/images/home/bg.png');
     background-size: 800px;
     background-repeat: no-repeat;
     background-position: right 0px top 0px;
@@ -394,6 +398,7 @@ onMounted(() => {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 48px;
+    row-gap: 48px;
 }
 
 .main-container .table-wrapper .big-arrow {
@@ -431,7 +436,7 @@ onMounted(() => {
     display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .mobile-open {
         display: flex;
         width: 100%;
@@ -443,6 +448,10 @@ onMounted(() => {
     }
 
     .main-container .sections {
+        grid-template-columns: 1fr;
+    }
+
+    .main-container section-stats {
         grid-template-columns: 1fr;
     }
 
@@ -459,10 +468,10 @@ onMounted(() => {
         border-bottom: 2px solid #36157b;
         top: 0;
         width: 100%;
+        z-index: 99;
     }
 
     .main-container .sidebar-links {
-        text-align: right;
         width: 100%;
         margin-bottom: 12px;
         padding-right: 50px;
@@ -473,16 +482,17 @@ onMounted(() => {
         flex-direction: column;
         text-align: right;
         width: 100%;
-        align-items: flex-end;
+        align-items: center;
         padding-right: 50px;
     }
 
     .main-container .social-links a {
-        margin-bottom: 12px;
+        margin-bottom: 36px;
     }
 
     .main-container .sidebar-links li {
-        margin-bottom: 0px !important;
+        margin-bottom: 36px;
+        text-align: center;
     }
 
     .main-container {

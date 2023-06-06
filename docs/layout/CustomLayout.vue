@@ -32,7 +32,7 @@ function getLinks() {
 </template>
 
 <style>
-.Layout:has(.main-container-wrapper) .VPNav {
+/* .Layout:has(.main-container-wrapper) .VPNav {
     display: none !important;
     height: 0px !important;
 }
@@ -44,5 +44,9 @@ function getLinks() {
 
 .Layout:has(.main-container-wrapper) .VPContent {
     padding-top: 0px !important;
+} */
+
+.appearance {
+    display: none !important;
 }
 </style>

@@ -24,6 +24,8 @@
     --vp-custom-block-warning-border: #fad198;
     --vp-custom-block-warning-text: #fad198;
     --vp-custom-block-warning-bg: #fad19814;
+
+    --vp-image-filter: sepia(10%) saturate(350%) hue-rotate(120deg) contrast(150%);
 }
 
 /**
@@ -56,7 +58,7 @@
 
 .VPHero .VPImage {
     filter: hue-rotate(135deg);
-} 
+}
 
 @media (min-width: 640px) {
     :root {

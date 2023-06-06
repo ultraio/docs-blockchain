@@ -44,4 +44,8 @@ const props = defineProps<{ section: SectionGroup[]; title: string }>();
     margin-bottom: 32px;
     user-select: none;
 }
+
+.table-wrapper {
+    background: linear-gradient(45deg, rgb(35, 32, 39) 0%, rgb(46, 45, 51) 100%) !important;
+}
 </style>

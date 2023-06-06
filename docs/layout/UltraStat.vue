@@ -34,6 +34,7 @@ const props = defineProps<{ icon: string }>();
 .stat {
     width: auto;
     flex-grow: 1;
+    user-select: none;
 }
 
 .data {
@@ -51,7 +52,7 @@ const props = defineProps<{ icon: string }>();
 .icon {
     display: flex;
     justify-content: center;
-    background: #240c58;
+    background: rgb(62, 61, 69);
     margin-right: 24px;
     min-height: 100px;
     max-height: 100px;

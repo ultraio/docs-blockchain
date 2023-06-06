@@ -25,8 +25,6 @@ const props = defineProps<{
 
 <style scoped>
 ultra-footer-wrapper {
-    padding-left: 5vw;
-    padding-right: 5vw;
     font-size: 14px;
     margin-top: 128px;
     margin-bottom: 128px;
@@ -53,6 +51,7 @@ ultra-footer-wrapper {
     opacity: 0.5;
     margin-bottom: 24px;
     font-size: 16px;
+    user-select: none;
 }
 
 .growth {
@@ -60,6 +59,7 @@ ultra-footer-wrapper {
 }
 
 .copyright {
+    user-select: none;
     opacity: 0.3;
 }
 </style>

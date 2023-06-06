@@ -13,6 +13,7 @@
 <style>
 .section-group {
     display: block;
+    user-select: none;
 }
 
 .link-wrap {
@@ -29,7 +30,7 @@
     align-items: center;
     width: 100%;
     text-decoration: none;
-    opacity: 0.5;
+    opacity: 0.75;
 }
 
 .header:hover {
@@ -58,10 +59,11 @@
     color: white;
     text-decoration: none;
     margin-top: 12px !important;
-    opacity: 0.5;
+    opacity: 0.75;
 }
 
 .section-links a:hover {
     opacity: 1;
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3);
 }
 </style>

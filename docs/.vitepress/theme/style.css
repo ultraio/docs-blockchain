@@ -24,6 +24,8 @@
     --vp-custom-block-warning-border: #fad198;
     --vp-custom-block-warning-text: #fad198;
     --vp-custom-block-warning-bg: #fad19814;
+
+    --vp-image-filter: sepia(10%) saturate(500%) hue-rotate(275deg) contrast(125%);
 }
 
 /**

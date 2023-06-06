@@ -99,155 +99,147 @@ onMounted(() => {
 
 <template>
     <div class="main-container-wrapper">
+        <div class="bg">
+            <img src="/images/home/bg.png" />
+        </div>
         <div class="main-container">
-            <div class="navbar">
-                <div class="mobile-open" @click="mobileOpen = !mobileOpen">
-                    <svg viewBox="0 0 100 80" width="25" height="75" class="make-hoverable">
-                        <rect width="100" height="10"></rect>
-                        <rect y="30" width="100" height="10"></rect>
-                        <rect y="60" width="100" height="10"></rect>
-                    </svg>
+            <div class="hero">
+                <img
+                    src="/svgs/ultra-horizontal.svg"
+                    height="25"
+                    width="100"
+                    style="margin-bottom: 25px; margin-top: 10px"
+                />
+                <!-- Top Text -->
+                <div class="headline">
+                    <span v-for="text in data.headline.split(' ')">
+                        {{ text }}
+                    </span>
                 </div>
-                <template v-if="mobileOpen">
-                    <ul class="sidebar-links">
-                        <li v-for="(link, index) in links" :key="index">
-                            <a :href="link.href">{{ link.text }}</a>
-                        </li>
-                    </ul>
-                    <div class="social-links">
-                        <a
-                            v-for="(social, index) in socials"
-                            class="make-hoverable"
-                            :href="social.href"
-                            :title="social.title"
-                        >
-                            <div class="split">
-                                <img :key="index" width="25" :src="social.icon" />
-                                <span>{{ social.title }}</span>
-                            </div>
-                        </a>
-                    </div>
+            </div>
+            <!-- Getting Started Section -->
+            <section id="getting-started">
+                <section-title>Getting Started</section-title>
+                <div class="spacer-sm" />
+                <template v-for="section in data.gettingstarted">
+                    <section-title-sm>{{ section.title }}</section-title-sm>
+                    <section-content>
+                        {{ section.content }}
+                    </section-content>
                 </template>
-            </div>
-            <div class="sidebar">
-                <ul class="sidebar-links">
-                    <li v-for="(link, index) in links" :key="index">
-                        <a :href="link.href">{{ link.text }}</a>
-                    </li>
-                </ul>
-                <div class="social-links">
-                    <a v-for="(social, index) in socials" :href="social.href" :title="social.title">
-                        <img :key="index" width="25" :src="social.icon" />
-                    </a>
-                </div>
-            </div>
-            <div class="main-content">
-                <div class="hero">
-                    <img
-                        src="/svgs/ultra-horizontal.svg"
-                        height="25"
-                        width="100"
-                        style="margin-bottom: 25px; margin-top: 10px"
-                    />
-                    <!-- Top Text -->
-                    <div class="headline">
-                        <span v-for="text in data.headline.split(' ')">
-                            {{ text }}
-                        </span>
-                    </div>
-                    <!-- Getting Started Section -->
-                    <section id="getting-started">
-                        <section-title>Getting Started</section-title>
-                        <div class="spacer-sm" />
-                        <template v-for="section in data.gettingstarted">
-                            <section-title-sm>{{ section.title }}</section-title-sm>
-                            <section-content>
-                                {{ section.content }}
-                            </section-content>
-                        </template>
-                    </section>
-                    <!-- Documentation Section -->
-                    <section id="documentation">
-                        <section-title>Documentation</section-title>
-                        <div class="spacer-sm" />
-                        <section-content>
-                            {{ data.documentation.content }}
-                        </section-content>
-                        <a :href="data.documentation.bighero.link">
-                            <div class="table-wrapper make-hoverable split-space-between">
-                                <div class="split">
-                                    <div class="stack">
-                                        <section-title-xsm>{{ data.documentation.bighero.title }}</section-title-xsm>
-                                        <section-content>{{ data.documentation.bighero.content }}</section-content>
-                                    </div>
-                                    <div class="big-arrow">&gt;</div>
-                                </div>
+            </section>
+            <!-- Documentation Section -->
+            <section id="documentation">
+                <section-title>Documentation</section-title>
+                <div class="spacer-sm" />
+                <section-content>
+                    {{ data.documentation.content }}
+                </section-content>
+                <a :href="data.documentation.bighero.link">
+                    <div class="table-wrapper make-hoverable split-space-between braincloud">
+                        <div class="split">
+                            <div class="stack">
+                                <section-title-xsm>{{ data.documentation.bighero.title }}</section-title-xsm>
+                                <section-content>{{ data.documentation.bighero.content }}</section-content>
                             </div>
-                        </a>
-                        <UltraSection title="Learn Blockchain Concepts" :section="data.documentation.concepts" />
-                        <UltraSection title="Guides" :section="data.documentation.guides" />
-                    </section>
-                    <!-- Technology Section -->
-                    <section id="technology">
-                        <section-title>Technology</section-title>
-                        <div class="spacer-sm" />
-                        <section-group>
-                            <UltraStat icon="/svgs/blocks.svg">
-                                <template #data>{{ blockCount.toLocaleString() }} </template>
-                                <template #description>Blocks Produced</template>
-                            </UltraStat>
-                            <UltraStat icon="/svgs/blocktime.svg">
-                                <template #data>0.5s</template>
-                                <template #description>Block Time</template>
-                            </UltraStat>
-                            <UltraStat icon="/svgs/transactioncost.svg">
-                                <template #data>$0.00</template>
-                                <template #description>Average Transaction Cost</template>
-                            </UltraStat>
-                        </section-group>
-                    </section>
-                    <!-- Tooling Section -->
-                    <section id="tooling">
-                        <section-title>Tooling</section-title>
-                        <div class="spacer-sm" />
-                        <section-content>
-                            {{ data.tooling.content }}
-                        </section-content>
-                        <section-group>
-                            <UltraLink
-                                v-for="(linkData, index) in data.tooling.links"
-                                :key="index"
-                                :link="linkData.link"
-                                :icon="linkData.icon"
-                            >
-                                <template #title>{{ linkData.title }}</template>
-                            </UltraLink>
-                        </section-group>
-                    </section>
-                    <!-- Support Section -->
-                    <section id="support">
-                        <section-title>Support</section-title>
-                        <div class="spacer-sm" />
-                        <section-content>
-                            {{ data.support.content }}
-                        </section-content>
-                        <UltraSupport
-                            v-for="(linkData, index) in data.support.links"
-                            :key="index"
-                            :link="linkData.link"
-                        >
-                            <template #title>{{ linkData.title }}</template>
-                            <template #text>{{ linkData.text }}</template>
-                        </UltraSupport>
-                    </section>
-                </div>
-            </div>
+                            <div class="big-arrow">&gt;</div>
+                        </div>
+                    </div>
+                </a>
+                <UltraSection title="Learn Blockchain Concepts" :section="data.documentation.concepts" />
+                <UltraSection title="Guides" :section="data.documentation.guides" />
+            </section>
+            <!-- Technology Section -->
+            <section id="technology">
+                <section-title>Technology</section-title>
+                <div class="spacer-sm" />
+                <section-group>
+                    <UltraStat icon="/svgs/blocks.svg">
+                        <template #data>{{ blockCount.toLocaleString() }} </template>
+                        <template #description>Blocks Produced</template>
+                    </UltraStat>
+                    <UltraStat icon="/svgs/blocktime.svg">
+                        <template #data>0.5s</template>
+                        <template #description>Block Time</template>
+                    </UltraStat>
+                    <UltraStat icon="/svgs/transactioncost.svg">
+                        <template #data>$0.00</template>
+                        <template #description>Average Transaction Cost</template>
+                    </UltraStat>
+                </section-group>
+            </section>
+            <!-- Tooling Section -->
+            <section id="tooling">
+                <section-title>Tooling</section-title>
+                <div class="spacer-sm" />
+                <section-content>
+                    {{ data.tooling.content }}
+                </section-content>
+                <section-group>
+                    <UltraLink
+                        v-for="(linkData, index) in data.tooling.links"
+                        :key="index"
+                        :link="linkData.link"
+                        :icon="linkData.icon"
+                    >
+                        <template #title>{{ linkData.title }}</template>
+                    </UltraLink>
+                </section-group>
+            </section>
+            <!-- Support Section -->
+            <section id="support">
+                <section-title>Support</section-title>
+                <div class="spacer-sm" />
+                <section-content>
+                    {{ data.support.content }}
+                </section-content>
+                <UltraSupport v-for="(linkData, index) in data.support.links" :key="index" :link="linkData.link">
+                    <template #title>{{ linkData.title }}</template>
+                    <template #text>{{ linkData.text }}</template>
+                </UltraSupport>
+            </section>
             <UltraFooter :sections="data.footer.sections" />
         </div>
     </div>
 </template>
 
 <style>
+.main-container-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    color: white;
+    box-sizing: border-box;
+    min-height: 100%;
+    background: #28262c;
+}
+
+.bg {
+    position: absolute;
+    min-width: 800px;
+    max-width: 800px;
+    min-height: 800px;
+    max-height: 800px;
+    z-index: 0;
+    right: 64px;
+}
+
+.bg img {
+    filter: var(--vp-image-filter);
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    padding-top: 64px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: calc(var(--vp-layout-max-width) - 64px);
+    z-index: 1;
+}
+
 .main-container .headline {
     display: flex;
     flex-direction: column;
@@ -258,6 +250,11 @@ onMounted(() => {
     text-transform: uppercase;
     line-height: 80px;
     margin-bottom: 24px;
+    background: var(--vp-home-hero-name-background);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    user-select: none;
 }
 
 .main-container section-title {
@@ -265,6 +262,7 @@ onMounted(() => {
     width: 100%;
     font-size: 32px;
     font-weight: 600;
+    user-select: none;
 }
 
 .main-container section-title-sm {
@@ -272,12 +270,15 @@ onMounted(() => {
     width: 100%;
     font-size: 24px;
     font-weight: 400;
+    user-select: none;
 }
 
 .main-container section-title-xsm {
     display: block;
     font-size: 18px;
     font-weight: 600;
+    user-select: none;
+    color: var(--vp-c-brand);
 }
 
 .main-container section-content {
@@ -286,6 +287,8 @@ onMounted(() => {
     font-size: 16px;
     margin-top: 12px;
     margin-bottom: 24px;
+    opacity: 0.6;
+    user-select: none;
 }
 
 .main-container #getting-started {
@@ -294,7 +297,8 @@ onMounted(() => {
 
 .main-container section {
     display: block;
-    margin-bottom: 128px;
+    margin-bottom: 48px;
+    width: auto;
 }
 
 .main-container .hero {
@@ -315,6 +319,7 @@ onMounted(() => {
 
 .main-container .make-hoverable:hover {
     opacity: 1;
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3);
 }
 
 .main-container .spacer {
@@ -355,30 +360,6 @@ onMounted(() => {
 
 .main-container .sidebar-links li {
     margin-bottom: 24px;
-}
-
-.main-container-wrapper {
-    background: #190249;
-    color: white;
-}
-
-.main-container {
-    display: flex;
-    flex-direction: column;
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    background-image: url('/images/home/bg.png');
-    background-size: 800px;
-    background-repeat: no-repeat;
-    background-position: right 0px top 0px;
-}
-
-.main-content {
-    width: 100%;
-    min-height: 100vh;
-    padding-left: 25vw;
-    padding-right: 15vw;
-    box-sizing: border-box;
-    padding-top: 100px;
 }
 
 .main-container .sidebar {
@@ -433,12 +414,13 @@ onMounted(() => {
 
 .main-container .table-wrapper {
     position: relative;
-    background: #240c58;
-    border: 1px solid #896ae2;
+    border: 1px solid var(--vp-c-brand);
     border-radius: 6px;
     padding: 48px;
     width: 100%;
     box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
 }
 
 .main-container .table-split {
@@ -495,71 +477,36 @@ onMounted(() => {
     display: none;
 }
 
-@media (max-width: 1000px) {
-    .mobile-open {
-        display: flex;
-        width: 100%;
-        color: white;
-        fill: white;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-right: 50px;
-    }
+.braincloud {
+    background: url('/images/home/braincloud.png') !important;
+    background-size: 50% !important;
+    background-repeat: no-repeat !important;
+    background-position: right top !important;
+    background-color: #2b292f !important;
+}
 
+.learn {
+    background: url('/images/home/learn.png') !important;
+    background-size: 50% !important;
+    background-repeat: no-repeat !important;
+    background-position: right top !important;
+    background-color: #2b292f !important;
+}
+
+@media (max-width: 1458px) {
+    .main-container {
+        padding-left: 32px !important;
+        padding-right: 32px !important;
+    }
+}
+
+@media (max-width: 1000px) {
     .main-container .sections {
         grid-template-columns: 1fr;
     }
 
-    .main-container .sidebar {
+    .bg {
         display: none;
-    }
-
-    .main-container .navbar {
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        user-select: none !important;
-        background: #240c58;
-        border-bottom: 2px solid #36157b;
-        top: 0;
-        width: 100%;
-        z-index: 99;
-    }
-
-    .main-container .sidebar-links {
-        width: 100%;
-        margin-bottom: 12px;
-        padding-right: 50px;
-    }
-
-    .main-container .social-links {
-        display: flex;
-        flex-direction: column;
-        text-align: right;
-        width: 100%;
-        align-items: center;
-        padding-right: 50px;
-    }
-
-    .main-container .social-links a {
-        margin-bottom: 36px;
-    }
-
-    .main-container .sidebar-links li {
-        margin-bottom: 36px;
-        text-align: center;
-    }
-
-    .main-container {
-        background-image: url('/bg.png');
-        background-size: 500px;
-        background-repeat: no-repeat;
-        background-position: right 0px top 50px;
-    }
-
-    .main-container .main-content {
-        padding-left: 5vw;
-        padding-right: 5vw;
     }
 }
 </style>

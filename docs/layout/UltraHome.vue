@@ -230,6 +230,16 @@ onMounted(() => {
 </template>
 
 <style>
+/**
+ * Variables can be located in the following locations:
+ * docs/.vitepress/theme/style.css
+ * packages/mainnet/docs/.vitepress/theme/style.css
+ * packages/staging/docs/.vitepress/theme/style.css
+ *
+ * Each version of the docs has its own theme applied.
+ * You should use the different npm scripts to run them.
+ */
+
 .main-container-wrapper {
     display: flex;
     flex-direction: column;
@@ -249,7 +259,7 @@ onMounted(() => {
     display: flex;
     flex-direction: row;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-    background-image: url('/images/home/bg.png');
+    background-image: var(--vp-bg-background);
     background-size: 800px;
     background-repeat: no-repeat;
     background-position: right 0px top 0px;
@@ -260,7 +270,7 @@ onMounted(() => {
     min-height: 100vh;
     box-sizing: border-box;
     padding-top: 96px;
-    padding-left: 20vw;
+    padding-left: calc(200px + 5vw);
 }
 
 .main-container .headline {
@@ -281,9 +291,6 @@ onMounted(() => {
     background: transparent !important;
     box-sizing: border-box;
     padding-top: 105px;
-    font-size: 24px;
-    line-height: 29px;
-    font-weight: 700;
     user-select: none;
     transition: all 0.2s;
 }
@@ -295,7 +302,7 @@ onMounted(() => {
 .main-container section-title {
     display: block;
     width: 100%;
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 700;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 36px;
@@ -306,7 +313,7 @@ onMounted(() => {
 .main-container section-title-sm {
     display: block;
     width: 100%;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 32px;
@@ -324,10 +331,16 @@ onMounted(() => {
     user-select: none;
 }
 
+.main-container section {
+    display: block;
+    margin-bottom: 48px;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
 .main-container section-content {
     display: block;
     width: 100%;
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 400;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 32px;
@@ -371,12 +384,6 @@ onMounted(() => {
     margin-top: 64px;
 }
 
-.main-container section {
-    display: block;
-    margin-bottom: 128px;
-    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-}
-
 .main-container .hero {
     width: 100%;
 }
@@ -401,13 +408,15 @@ onMounted(() => {
     list-style-type: none;
     padding: 0;
     margin-bottom: 64px;
+    min-width: 200px;
+    max-width: 200px;
 }
 
 .main-container .sidebar-links li a {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
     line-height: 29px;
     transition: all 0.1s;
 }
@@ -527,15 +536,24 @@ onMounted(() => {
     }
 
     .main-container {
-        background-image: url('/bg.png');
-        background-size: 500px;
+        background-size: 800px;
         background-repeat: no-repeat;
-        background-position: right 0px top 50px;
+        background-position: right -100px top 0px;
     }
 
     .main-container .main-content {
-        padding-left: 5vw;
-        padding-right: 5vw;
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .main-container-wrapper {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    ultra-footer-wrapper {
+        padding-left: 24px;
+        padding-right: 24px;
     }
 }
 </style>

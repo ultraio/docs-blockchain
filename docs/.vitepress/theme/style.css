@@ -8,12 +8,15 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-    --vp-c-bg: #28262c;
-    --vp-c-bg-alt: #312f35;
+    /* --vp-c-bg: #28262c;
+    --vp-c-bg-alt: #312f35; */
+    --vp-c-bg: #26272c;
+    --vp-c-bg-alt: #2f2f35;
     --vp-nav-bg-color: #201e23;
     --vp-c-gutter: rgba(0, 0, 0, 0.2);
     --vp-c-border-color: #464449;
     --vp-c-home-text: #c0c0c0;
+    --vp-bg-background: url('/images/home/bg-experimental.png');
 
     --vp-c-brand: #74c3ff;
     --vp-c-brand-light: #81ecec;

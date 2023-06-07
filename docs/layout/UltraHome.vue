@@ -69,6 +69,7 @@ let data = ref<UltraHomeMatter>(frontmatter.value as UltraHomeMatter);
 let blockCount = ref<number>(5000000);
 let currentProducer = ref<string>('eosnation');
 let currentLinkIndex = ref<number>(0);
+let moveSidebarDown = ref<boolean>(false);
 
 async function getBlockCount() {
     const result = await fetch('https://api.mainnet.ultra.io/v1/chain/get_info');
@@ -85,6 +86,23 @@ async function getBlockCount() {
     currentProducer.value = dataSet.head_block_producer;
 }
 
+function handleScroll(e: Event) {
+    if (window.scrollY < 100) {
+        if (!moveSidebarDown.value) {
+            return;
+        }
+
+        moveSidebarDown.value = false;
+        return;
+    }
+
+    if (moveSidebarDown.value) {
+        return;
+    }
+
+    moveSidebarDown.value = true;
+}
+
 onMounted(() => {
     getBlockCount();
 
@@ -92,13 +110,15 @@ onMounted(() => {
     // Updates every 2.5s, and times out after 5 minutes to prevent too much ingestion for APIs.
     const blockCountInterval = setInterval(getBlockCount, 2500);
     setTimeout(() => clearInterval(blockCountInterval), 60000 * 5);
+
+    window.addEventListener('scroll', handleScroll);
 });
 </script>
 
 <template>
-    <div class="main-container-wrapper">
+    <div class="main-container-wrapper" @scroll="handleScroll">
         <div class="main-container">
-            <left-sidebar>
+            <left-sidebar :class="moveSidebarDown ? ['remove-pad'] : []">
                 <ul class="sidebar-links">
                     <li v-for="(link, index) in links" :key="index">
                         <a
@@ -120,93 +140,89 @@ onMounted(() => {
                             {{ text }}
                         </span>
                     </div>
-                    <!-- Getting Started Section -->
-                    <section id="getting-started">
-                        <section-title>Getting Started</section-title>
-                        <template v-for="section in data.gettingstarted">
-                            <section-title-sm>{{ section.title }}</section-title-sm>
-                            <section-content>
-                                {{ section.content }}
-                            </section-content>
-                        </template>
-                    </section>
-                    <!-- Documentation Section -->
-                    <section id="documentation">
-                        <section-title>Documentation</section-title>
+                </div>
+                <!-- Getting Started Section -->
+                <section id="getting-started">
+                    <section-title>Getting Started</section-title>
+                    <template v-for="section in data.gettingstarted">
+                        <section-title-sm>{{ section.title }}</section-title-sm>
                         <section-content>
-                            {{ data.documentation.content }}
+                            {{ section.content }}
                         </section-content>
-                        <a :href="data.documentation.bighero.link">
-                            <div class="table-wrapper split-space-between hoverable">
-                                <div class="split">
-                                    <div class="stack">
-                                        <section-title-xsm class="accent">
-                                            {{ data.documentation.bighero.title }}
-                                        </section-title-xsm>
-                                        <link-content>{{ data.documentation.bighero.content }}</link-content>
-                                    </div>
-                                    <div class="big-arrow">&gt;</div>
+                    </template>
+                </section>
+                <!-- Documentation Section -->
+                <section id="documentation">
+                    <section-title>Documentation</section-title>
+                    <section-content>
+                        {{ data.documentation.content }}
+                    </section-content>
+                    <a :href="data.documentation.bighero.link">
+                        <div class="table-wrapper split-space-between hoverable">
+                            <div class="split">
+                                <div class="stack">
+                                    <section-title-xsm class="accent">
+                                        {{ data.documentation.bighero.title }}
+                                    </section-title-xsm>
+                                    <link-content>{{ data.documentation.bighero.content }}</link-content>
                                 </div>
+                                <div class="big-arrow">&gt;</div>
                             </div>
-                        </a>
-                        <UltraSection title="Learn Blockchain Concepts" :section="data.documentation.concepts" />
-                        <UltraSection title="Guides" :section="data.documentation.guides" />
-                    </section>
-                    <!-- Technology Section -->
-                    <section id="technology">
-                        <section-title>Technology</section-title>
-                        <section-group style="margin-top: 48px">
-                            <UltraStat icon="/svgs/blocks.svg">
-                                <template #data>{{ blockCount.toLocaleString() }} </template>
-                                <template #description>Blocks Produced</template>
-                            </UltraStat>
-                            <UltraStat icon="/svgs/producer.svg">
-                                <template #data>{{ currentProducer }}</template>
-                                <template #description>Block Producer</template>
-                            </UltraStat>
-                            <UltraStat icon="/svgs/blocktime.svg">
-                                <template #data>0.5s</template>
-                                <template #description>Block Time</template>
-                            </UltraStat>
-                            <UltraStat icon="/svgs/transactioncost.svg">
-                                <template #data>$0.00</template>
-                                <template #description>Avg Transaction Cost</template>
-                            </UltraStat>
-                        </section-group>
-                    </section>
-                    <!-- Tooling Section -->
-                    <section id="tooling">
-                        <section-title>Tooling</section-title>
-                        <section-content>
-                            {{ data.tooling.content }}
-                        </section-content>
-                        <section-group>
-                            <UltraLink
-                                v-for="(linkData, index) in data.tooling.links"
-                                :key="index"
-                                :link="linkData.link"
-                                :icon="linkData.icon"
-                            >
-                                <template #title>{{ linkData.title }}</template>
-                            </UltraLink>
-                        </section-group>
-                    </section>
-                    <!-- Support Section -->
-                    <section id="support">
-                        <section-title>Support</section-title>
-                        <section-content>
-                            {{ data.support.content }}
-                        </section-content>
-                        <UltraSupport
-                            v-for="(linkData, index) in data.support.links"
+                        </div>
+                    </a>
+                    <UltraSection title="Learn Blockchain Concepts" :section="data.documentation.concepts" />
+                    <UltraSection title="Guides" :section="data.documentation.guides" />
+                </section>
+                <!-- Technology Section -->
+                <section id="technology">
+                    <section-title>Technology</section-title>
+                    <section-group style="margin-top: 48px">
+                        <UltraStat icon="/svgs/blocks.svg">
+                            <template #data>{{ blockCount.toLocaleString() }} </template>
+                            <template #description>Blocks Produced</template>
+                        </UltraStat>
+                        <UltraStat icon="/svgs/producer.svg">
+                            <template #data>{{ currentProducer }}</template>
+                            <template #description>Block Producer</template>
+                        </UltraStat>
+                        <UltraStat icon="/svgs/blocktime.svg">
+                            <template #data>0.5s</template>
+                            <template #description>Block Time</template>
+                        </UltraStat>
+                        <UltraStat icon="/svgs/transactioncost.svg">
+                            <template #data>$0.00</template>
+                            <template #description>Avg Transaction Cost</template>
+                        </UltraStat>
+                    </section-group>
+                </section>
+                <!-- Tooling Section -->
+                <section id="tooling">
+                    <section-title>Tooling</section-title>
+                    <section-content>
+                        {{ data.tooling.content }}
+                    </section-content>
+                    <section-group>
+                        <UltraLink
+                            v-for="(linkData, index) in data.tooling.links"
                             :key="index"
                             :link="linkData.link"
+                            :icon="linkData.icon"
                         >
                             <template #title>{{ linkData.title }}</template>
-                            <template #text>{{ linkData.text }}</template>
-                        </UltraSupport>
-                    </section>
-                </div>
+                        </UltraLink>
+                    </section-group>
+                </section>
+                <!-- Support Section -->
+                <section id="support">
+                    <section-title>Support</section-title>
+                    <section-content>
+                        {{ data.support.content }}
+                    </section-content>
+                    <UltraSupport v-for="(linkData, index) in data.support.links" :key="index" :link="linkData.link">
+                        <template #title>{{ linkData.title }}</template>
+                        <template #text>{{ linkData.text }}</template>
+                    </UltraSupport>
+                </section>
             </div>
         </div>
         <UltraFooter :sections="data.footer.sections" />
@@ -269,6 +285,11 @@ onMounted(() => {
     line-height: 29px;
     font-weight: 700;
     user-select: none;
+    transition: all 0.2s;
+}
+
+.main-container left-sidebar.remove-pad {
+    padding-top: 24px !important;
 }
 
 .main-container section-title {

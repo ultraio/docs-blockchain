@@ -121,3 +121,8 @@
 .VPNavBarTitle .title {
     border-bottom: 0px !important;
 }
+
+.VPNavBarAppearance,
+.VPNavScreenAppearance {
+    display: none !important;
+}

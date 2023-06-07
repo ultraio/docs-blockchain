@@ -6,7 +6,7 @@ const props = defineProps<{ icon: string }>();
     <div class="stat">
         <div class="small-split">
             <div class="icon">
-                <img :src="props.icon" width="75" height="75" />
+                <img :src="props.icon" width="50" height="50" />
             </div>
             <div class="stack">
                 <div class="data">
@@ -25,6 +25,7 @@ const props = defineProps<{ icon: string }>();
     display: flex;
     flex-direction: column;
     justify-content: center;
+    user-select: none;
 }
 
 .small-split {
@@ -34,30 +35,37 @@ const props = defineProps<{ icon: string }>();
 .stat {
     width: auto;
     flex-grow: 1;
+    background: var(--vp-c-bg-alt);
+    border: 1px solid var(--vp-c-border-color);
+    border-radius: 6px;
+    padding: 40px;
 }
 
 .data {
     font-size: 24px;
     font-weight: 600;
-    padding-top: 6px;
 }
 
 .description {
+    display: flex;
     font-size: 18px;
-    padding-bottom: 6px;
     opacity: 0.5;
+    user-select: none;
+    flex-grow: 1;
+    height: 100%;
+    align-items: flex-end;
 }
 
 .icon {
     display: flex;
     justify-content: center;
-    background: #240c58;
+    background: #27262a;
     margin-right: 24px;
-    min-height: 100px;
-    max-height: 100px;
-    min-width: 100px;
-    max-width: 100px;
+    min-height: 55px;
+    max-height: 55px;
+    min-width: 55px;
+    max-width: 55px;
     box-sizing: border-box;
-    border-radius: 12px;
+    border-radius: 6px;
 }
 </style>

@@ -14,21 +14,26 @@ const props = defineProps<{ section: SectionGroup[]; title: string }>();
 </script>
 
 <template>
-    <div class="section-header">
-        <section-title-sm>{{ props.title }}</section-title-sm>
-    </div>
-    <div class="table-wrapper table-split">
+    <div class="table-wrapper table-split section-wrapper">
+        <div class="section-header accent">
+            {{ props.title }}
+        </div>
         <div class="sections">
             <template v-for="section in props.section">
                 <UltraSectionData>
                     <template #header>
-                        <a :href="section.link" title="Blockchains" class="split-space-between">
+                        <a :href="section.link" title="Blockchains" class="split-space-between hoverable">
                             <div class="title">{{ section.title }}</div>
                             <div class="small-arrow">&gt;</div>
                         </a>
                     </template>
                     <template #links>
-                        <a v-for="linkInfo in section.links" :href="linkInfo.link" :title="linkInfo.title">
+                        <a
+                            v-for="linkInfo in section.links"
+                            :href="linkInfo.link"
+                            :title="linkInfo.title"
+                            class="hoverable"
+                        >
                             {{ linkInfo.title }}
                         </a>
                     </template>
@@ -38,10 +43,24 @@ const props = defineProps<{ section: SectionGroup[]; title: string }>();
     </div>
 </template>
 
-<style>
+<style scoped>
+.section-wrapper {
+    margin-top: 48px;
+}
+
 .section-header {
-    margin-top: 32px;
-    margin-bottom: 32px;
     user-select: none;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.main-container .sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 48px;
+    row-gap: 48px;
+    width: 100%;
 }
 </style>

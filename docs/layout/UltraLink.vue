@@ -3,9 +3,11 @@ const props = defineProps<{ icon: string; link: string }>();
 </script>
 
 <template>
-    <a :href="props.link" class="stat make-hoverable">
+    <a :href="props.link" class="stat hoverable">
         <div class="icon">
-            <img :src="props.icon" width="75" height="75" />
+            <div class="inner-icon">
+                <img :src="props.icon" width="50" height="50" />
+            </div>
         </div>
         <div class="title">
             <slot name="title"></slot>
@@ -38,14 +40,25 @@ const props = defineProps<{ icon: string; link: string }>();
 .icon {
     display: flex;
     justify-content: center;
-    background: #240c58;
-    border: 2px solid #896ae2;
+    align-items: center;
+    background: var(--vp-c-bg-alt);
+    border: 1px solid var(--vp-c-border-color);
+    border-radius: 6px;
     min-height: 125px;
     max-height: 125px;
     min-width: 125px;
     max-width: 125px;
     box-sizing: border-box;
-    border-radius: 12px;
     margin-bottom: 24px;
+}
+
+.inner-icon {
+    display: flex;
+    background: #27262a;
+    border-radius: 50%;
+    height: 65px;
+    width: 65px;
+    justify-content: center;
+    align-items: center;
 }
 </style>

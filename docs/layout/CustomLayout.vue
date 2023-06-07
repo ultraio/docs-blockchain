@@ -30,19 +30,3 @@ function getLinks() {
         </template>
     </Layout>
 </template>
-
-<style>
-.Layout:has(.main-container-wrapper) .VPNav {
-    display: none !important;
-    height: 0px !important;
-}
-
-.Layout:has(.main-container-wrapper) .VPLocalNav {
-    display: none !important;
-    height: 0px !important;
-}
-
-.Layout:has(.main-container-wrapper) .VPContent {
-    padding-top: 0px !important;
-}
-</style>

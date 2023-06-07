@@ -29,11 +29,8 @@
     align-items: center;
     width: 100%;
     text-decoration: none;
-    opacity: 0.5;
-}
-
-.header:hover {
-    opacity: 1;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .header a {
@@ -58,10 +55,5 @@
     color: white;
     text-decoration: none;
     margin-top: 12px !important;
-    opacity: 0.5;
-}
-
-.section-links a:hover {
-    opacity: 1;
 }
 </style>

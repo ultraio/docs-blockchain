@@ -10,19 +10,11 @@ import UltraSupport from './UltraSupport.vue';
 const { frontmatter } = useData();
 
 const links = ref([
-    { href: '/guides/Basics/introduction', text: 'Go to Docs' },
     { href: '#getting-started', text: 'Getting Started' },
     { href: '#documentation', text: 'Documentation' },
     { href: '#technology', text: 'Technology' },
     { href: '#tooling', text: 'Tooling' },
     { href: '#support', text: 'Support' },
-    { href: '/search', text: 'Search' },
-]);
-
-const socials = ref([
-    { href: '#', icon: '/svgs/discord.svg', title: 'Discord' },
-    { href: '#', icon: '/svgs/twitter.svg', title: 'Twitter' },
-    { href: '#', icon: '/svgs/youtube.svg', title: 'YouTube' },
 ]);
 
 interface SectionGroup {
@@ -74,8 +66,9 @@ interface UltraHomeMatter {
 }
 
 let data = ref<UltraHomeMatter>(frontmatter.value as UltraHomeMatter);
-let mobileOpen = ref(false);
 let blockCount = ref<number>(5000000);
+let currentProducer = ref<string>('eosnation');
+let currentLinkIndex = ref<number>(0);
 
 async function getBlockCount() {
     const result = await fetch('https://api.mainnet.ultra.io/v1/chain/get_info');
@@ -89,66 +82,38 @@ async function getBlockCount() {
     }
 
     blockCount.value = dataSet.head_block_num;
+    currentProducer.value = dataSet.head_block_producer;
 }
 
 onMounted(() => {
-    setInterval(getBlockCount, 2500);
     getBlockCount();
+
+    // Create a block count interval
+    // Updates every 2.5s, and times out after 5 minutes to prevent too much ingestion for APIs.
+    const blockCountInterval = setInterval(getBlockCount, 2500);
+    setTimeout(() => clearInterval(blockCountInterval), 60000 * 5);
 });
 </script>
 
 <template>
     <div class="main-container-wrapper">
         <div class="main-container">
-            <div class="navbar">
-                <div class="mobile-open" @click="mobileOpen = !mobileOpen">
-                    <svg viewBox="0 0 100 80" width="25" height="75" class="make-hoverable">
-                        <rect width="100" height="10"></rect>
-                        <rect y="30" width="100" height="10"></rect>
-                        <rect y="60" width="100" height="10"></rect>
-                    </svg>
-                </div>
-                <template v-if="mobileOpen">
-                    <ul class="sidebar-links">
-                        <li v-for="(link, index) in links" :key="index">
-                            <a :href="link.href">{{ link.text }}</a>
-                        </li>
-                    </ul>
-                    <div class="social-links">
-                        <a
-                            v-for="(social, index) in socials"
-                            class="make-hoverable"
-                            :href="social.href"
-                            :title="social.title"
-                        >
-                            <div class="split">
-                                <img :key="index" width="25" :src="social.icon" />
-                                <span>{{ social.title }}</span>
-                            </div>
-                        </a>
-                    </div>
-                </template>
-            </div>
-            <div class="sidebar">
+            <left-sidebar>
                 <ul class="sidebar-links">
                     <li v-for="(link, index) in links" :key="index">
-                        <a :href="link.href">{{ link.text }}</a>
+                        <a
+                            :href="link.href"
+                            @click="currentLinkIndex = index"
+                            :class="currentLinkIndex === index ? ['active'] : []"
+                        >
+                            {{ link.text }}
+                        </a>
                     </li>
                 </ul>
-                <div class="social-links">
-                    <a v-for="(social, index) in socials" :href="social.href" :title="social.title">
-                        <img :key="index" width="25" :src="social.icon" />
-                    </a>
-                </div>
-            </div>
+            </left-sidebar>
             <div class="main-content">
                 <div class="hero">
-                    <img
-                        src="/svgs/ultra-horizontal.svg"
-                        height="25"
-                        width="100"
-                        style="margin-bottom: 25px; margin-top: 10px"
-                    />
+                    <img src="/svgs/ultra-horizontal.svg" width="150" style="margin-bottom: 48px; margin-top: 5px" />
                     <!-- Top Text -->
                     <div class="headline">
                         <span v-for="text in data.headline.split(' ')">
@@ -158,7 +123,6 @@ onMounted(() => {
                     <!-- Getting Started Section -->
                     <section id="getting-started">
                         <section-title>Getting Started</section-title>
-                        <div class="spacer-sm" />
                         <template v-for="section in data.gettingstarted">
                             <section-title-sm>{{ section.title }}</section-title-sm>
                             <section-content>
@@ -169,16 +133,17 @@ onMounted(() => {
                     <!-- Documentation Section -->
                     <section id="documentation">
                         <section-title>Documentation</section-title>
-                        <div class="spacer-sm" />
                         <section-content>
                             {{ data.documentation.content }}
                         </section-content>
                         <a :href="data.documentation.bighero.link">
-                            <div class="table-wrapper make-hoverable split-space-between">
+                            <div class="table-wrapper split-space-between hoverable">
                                 <div class="split">
                                     <div class="stack">
-                                        <section-title-xsm>{{ data.documentation.bighero.title }}</section-title-xsm>
-                                        <section-content>{{ data.documentation.bighero.content }}</section-content>
+                                        <section-title-xsm class="accent">
+                                            {{ data.documentation.bighero.title }}
+                                        </section-title-xsm>
+                                        <link-content>{{ data.documentation.bighero.content }}</link-content>
                                     </div>
                                     <div class="big-arrow">&gt;</div>
                                 </div>
@@ -190,11 +155,14 @@ onMounted(() => {
                     <!-- Technology Section -->
                     <section id="technology">
                         <section-title>Technology</section-title>
-                        <div class="spacer-sm" />
-                        <section-group>
+                        <section-group style="margin-top: 48px">
                             <UltraStat icon="/svgs/blocks.svg">
                                 <template #data>{{ blockCount.toLocaleString() }} </template>
                                 <template #description>Blocks Produced</template>
+                            </UltraStat>
+                            <UltraStat icon="/svgs/producer.svg">
+                                <template #data>{{ currentProducer }}</template>
+                                <template #description>Block Producer</template>
                             </UltraStat>
                             <UltraStat icon="/svgs/blocktime.svg">
                                 <template #data>0.5s</template>
@@ -202,14 +170,13 @@ onMounted(() => {
                             </UltraStat>
                             <UltraStat icon="/svgs/transactioncost.svg">
                                 <template #data>$0.00</template>
-                                <template #description>Average Transaction Cost</template>
+                                <template #description>Avg Transaction Cost</template>
                             </UltraStat>
                         </section-group>
                     </section>
                     <!-- Tooling Section -->
                     <section id="tooling">
                         <section-title>Tooling</section-title>
-                        <div class="spacer-sm" />
                         <section-content>
                             {{ data.tooling.content }}
                         </section-content>
@@ -227,7 +194,6 @@ onMounted(() => {
                     <!-- Support Section -->
                     <section id="support">
                         <section-title>Support</section-title>
-                        <div class="spacer-sm" />
                         <section-content>
                             {{ data.support.content }}
                         </section-content>
@@ -242,50 +208,142 @@ onMounted(() => {
                     </section>
                 </div>
             </div>
-            <UltraFooter :sections="data.footer.sections" />
         </div>
+        <UltraFooter :sections="data.footer.sections" />
     </div>
 </template>
 
 <style>
+.main-container-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--vp-c-bg);
+    color: white;
+    width: 100%;
+    max-width: var(--vp-layout-max-width);
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    background-image: url('/images/home/bg.png');
+    background-size: 800px;
+    background-repeat: no-repeat;
+    background-position: right 0px top 0px;
+}
+
+.main-content {
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding-top: 96px;
+    padding-left: 20vw;
+}
+
 .main-container .headline {
     display: flex;
     flex-direction: column;
-    font-family: Inter;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-size: 80px;
     font-weight: 900;
     text-transform: uppercase;
     line-height: 80px;
     margin-bottom: 24px;
+    user-select: none;
+}
+
+.main-container left-sidebar {
+    position: fixed;
+    background: transparent !important;
+    box-sizing: border-box;
+    padding-top: 105px;
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 700;
+    user-select: none;
 }
 
 .main-container section-title {
     display: block;
     width: 100%;
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 36px;
+    font-weight: 700;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 36px;
+    margin-bottom: 24px;
+    user-select: none;
 }
 
 .main-container section-title-sm {
     display: block;
     width: 100%;
     font-size: 24px;
-    font-weight: 400;
+    font-weight: 700;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 32px;
+    margin-bottom: 24px;
+    user-select: none;
 }
 
 .main-container section-title-xsm {
     display: block;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 32px;
+    margin-bottom: 24px;
+    user-select: none;
 }
 
 .main-container section-content {
     display: block;
     width: 100%;
-    font-size: 16px;
-    margin-top: 12px;
+    font-size: 24px;
+    font-weight: 400;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 32px;
+    color: var(--vp-c-home-text);
     margin-bottom: 24px;
+    user-select: none;
+}
+
+.main-container link-content {
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 23px;
+    letter-spacing: 0.04em;
+    color: var(--vp-c-home-text);
+}
+
+.hoverable:hover {
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+}
+
+.accent {
+    color: var(--vp-c-brand) !important;
+}
+
+.accent-hoverable:hover {
+    text-shadow: 0px 0px 5px var(--vp-c-brand);
+}
+
+.accent-alt {
+    color: var(--vp-c-brand-light) !important;
+}
+
+.accent-alt-hoverable:hover {
+    text-shadow: 0px 0px 5px var(--vp-c-brand-light);
 }
 
 .main-container #getting-started {
@@ -295,6 +353,7 @@ onMounted(() => {
 .main-container section {
     display: block;
     margin-bottom: 128px;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .main-container .hero {
@@ -317,24 +376,6 @@ onMounted(() => {
     opacity: 1;
 }
 
-.main-container .spacer {
-    min-height: 50px;
-    width: 100%;
-}
-
-.main-container .spacer-sm {
-    min-height: 25px;
-    width: 100%;
-}
-
-.main-container .social-links {
-    display: flex;
-}
-
-.main-container .social-links img {
-    margin-right: 12px;
-}
-
 .main-container .sidebar-links {
     list-style-type: none;
     padding: 0;
@@ -344,8 +385,9 @@ onMounted(() => {
 .main-container .sidebar-links li a {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 700;
+    line-height: 29px;
     transition: all 0.1s;
 }
 
@@ -354,41 +396,15 @@ onMounted(() => {
 }
 
 .main-container .sidebar-links li {
+    color: rgba(255, 255, 255, 1) !important;
+}
+
+.active {
+    color: white !important;
+}
+
+.main-container .sidebar-links li {
     margin-bottom: 24px;
-}
-
-.main-container-wrapper {
-    background: #190249;
-    color: white;
-}
-
-.main-container {
-    display: flex;
-    flex-direction: column;
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    background-image: url('/images/home/bg.png');
-    background-size: 800px;
-    background-repeat: no-repeat;
-    background-position: right 0px top 0px;
-}
-
-.main-content {
-    width: 100%;
-    min-height: 100vh;
-    padding-left: 25vw;
-    padding-right: 15vw;
-    box-sizing: border-box;
-    padding-top: 100px;
-}
-
-.main-container .sidebar {
-    position: fixed;
-    left: 0;
-    margin-left: 5vw;
-    min-width: 200px;
-    background: transparent !important;
-    box-sizing: border-box;
-    top: 100px;
 }
 
 .main-container .stack {
@@ -428,13 +444,13 @@ onMounted(() => {
     font-weight: 400;
     line-height: 32px;
     font-size: 16px;
-    font-family: Inter;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .main-container .table-wrapper {
     position: relative;
-    background: #240c58;
-    border: 1px solid #896ae2;
+    background: var(--vp-c-bg-alt);
+    border: 1px solid var(--vp-c-border-color);
     border-radius: 6px;
     padding: 48px;
     width: 100%;
@@ -454,10 +470,7 @@ onMounted(() => {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-}
-
-.main-container section-group > * {
-    margin-bottom: 48px;
+    gap: 48px;
 }
 
 .main-container .table-wrapper .big-arrow {
@@ -483,71 +496,13 @@ onMounted(() => {
     padding-bottom: 4px;
 }
 
-.main-container .sections {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 64px;
-    row-gap: 64px;
-    width: 100%;
-}
-
-.main-container .navbar {
-    display: none;
-}
-
 @media (max-width: 1000px) {
-    .mobile-open {
-        display: flex;
-        width: 100%;
-        color: white;
-        fill: white;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-right: 50px;
-    }
-
     .main-container .sections {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
-    .main-container .sidebar {
+    .main-container left-sidebar {
         display: none;
-    }
-
-    .main-container .navbar {
-        position: fixed;
-        display: flex;
-        flex-direction: column;
-        user-select: none !important;
-        background: #240c58;
-        border-bottom: 2px solid #36157b;
-        top: 0;
-        width: 100%;
-        z-index: 99;
-    }
-
-    .main-container .sidebar-links {
-        width: 100%;
-        margin-bottom: 12px;
-        padding-right: 50px;
-    }
-
-    .main-container .social-links {
-        display: flex;
-        flex-direction: column;
-        text-align: right;
-        width: 100%;
-        align-items: center;
-        padding-right: 50px;
-    }
-
-    .main-container .social-links a {
-        margin-bottom: 36px;
-    }
-
-    .main-container .sidebar-links li {
-        margin-bottom: 36px;
-        text-align: center;
     }
 
     .main-container {

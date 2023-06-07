@@ -8,14 +8,24 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-    --vp-c-brand: #896ae2;
-    --vp-c-brand-light: #c5abff;
-    --vp-c-brand-lighter: #c5abff;
-    --vp-c-brand-lightest: #c5abff;
-    --vp-c-brand-dark: #c5abff;
-    --vp-c-brand-darker: #c5abff;
+    --vp-c-bg: #28262c;
+    --vp-c-bg-alt: #312f35;
+    --vp-nav-bg-color: #201e24;
+    --vp-c-gutter: rgba(0, 0, 0, 0.2);
+    --vp-c-border-color: #464449;
+    --vp-c-home-text: #c0c0c0;
+    --vp-bg-background: url('/images/home/bg-mainnet.png');
+
+    --vp-c-brand: #c5abff;
+    --vp-c-brand-light: #896ae2;
+    --vp-c-brand-lighter: #896ae2;
+    --vp-c-brand-lightest: #896ae2;
+    --vp-c-brand-dark: #896ae2;
+    --vp-c-brand-darker: #896ae2;
     --vp-c-brand-dimm: rgba(162, 100, 255, 0.08);
-    --vp-local-search-highlight-bg: rgba(168, 128, 228, 0.6);
+    --vp-c-mute: rgba(0, 0, 0, 0.1);
+    --vp-c-text-code: var(--vp-c-brand);
+    --vp-local-search-highlight-bg: rgba(195, 128, 228, 0.6);
 
     --vp-custom-block-danger-border: #fb9393;
     --vp-custom-block-danger-text: #fb9393;
@@ -48,10 +58,31 @@
 
 :root {
     --vp-home-hero-name-color: transparent;
-    --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #896ae2 30%, #c5abff);
+    --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #98f5fa 30%, #5dbcff);
 
-    --vp-home-hero-image-background-image: linear-gradient(-45deg, #886ae246 50%, #c6abff45 50%);
+    --vp-home-hero-image-background-image: linear-gradient(-45deg, #6abee246 50%, #abe6ff45 50%);
     --vp-home-hero-image-filter: blur(100px) opacity(20%);
+}
+
+.VPHero .VPImage {
+    filter: hue-rotate(-40deg);
+}
+
+.VPNav {
+    background-color: var(--vp-nav-bg-color);
+    transition: none !important;
+}
+
+.VPLink {
+    color: #94929a !important;
+}
+
+.VPLink.active {
+    color: white !important;
+}
+
+.VPLink:hover {
+    color: white !important;
 }
 
 @media (min-width: 640px) {
@@ -88,4 +119,13 @@
 
 .DocSearch {
     --docsearch-primary-color: var(--vp-c-brand) !important;
+}
+
+.VPNavBarTitle .title {
+    border-bottom: 0px !important;
+}
+
+.VPNavBarAppearance,
+.VPNavScreenAppearance {
+    display: none !important;
 }

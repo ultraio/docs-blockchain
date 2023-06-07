@@ -30,3 +30,12 @@ function getLinks() {
         </template>
     </Layout>
 </template>
+
+<style>
+.VPNavBarTitle .title::before {
+    content: '> ';
+    color: var(--vp-c-brand) !important;
+    padding-right: 6px;
+    padding-bottom: 3px;
+}
+</style>

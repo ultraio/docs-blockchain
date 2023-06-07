@@ -8,11 +8,9 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-    /* --vp-c-bg: #28262c;
-    --vp-c-bg-alt: #312f35; */
-    --vp-c-bg: #26272c;
-    --vp-c-bg-alt: #2f2f35;
-    --vp-nav-bg-color: #201e23;
+    --vp-c-bg: #303138;
+    --vp-c-bg-alt: #2f2f36;
+    --vp-nav-bg-color: #25252c;
     --vp-c-gutter: rgba(0, 0, 0, 0.2);
     --vp-c-border-color: #464449;
     --vp-c-home-text: #c0c0c0;
@@ -25,6 +23,8 @@
     --vp-c-brand-dark: #81ecec;
     --vp-c-brand-darker: #81ecec;
     --vp-c-brand-dimm: rgba(162, 100, 255, 0.08);
+    --vp-c-mute: rgba(0, 0, 0, 0.1);
+    --vp-c-text-code: var(--vp-c-brand);
     --vp-local-search-highlight-bg: rgba(128, 201, 228, 0.6);
 
     --vp-custom-block-danger-border: #fb9393;
@@ -69,7 +69,7 @@
 }
 
 .VPNav {
-    background-color: #201e23;
+    background-color: var(--vp-nav-bg-color);
     transition: none !important;
 }
 

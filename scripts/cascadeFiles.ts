@@ -5,18 +5,19 @@ import { normalizePath } from './shared';
 
 type Envs = 'experimental' | 'staging' | 'mainnet';
 
-const environmentFolders: Array<{ from: string; to: Array<Envs> }> = [
+const filesAndFoldersToCopy: Array<{ from: string; to: Array<Envs>; isFile?: true }> = [
     // These are folders that we should directly copy to all other environments outright.
     // They are considered 'static'
     { from: 'docs/public', to: ['staging', 'mainnet'] },
     { from: 'docs/layout', to: ['staging', 'mainnet'] },
+    { from: 'docs/.vitepress/theme/index.ts', to: ['staging', 'mainnet'], isFile: true },
 ];
 
 /**
  * Copies all static environment files into environment specific folders.
  */
 function copyEnvironmentFiles() {
-    for (let path of environmentFolders) {
+    for (let path of filesAndFoldersToCopy) {
         const startPath = normalizePath(path.from);
         if (!fs.existsSync(startPath)) {
             console.warn(`Path: ${startPath} does not exist, should we be copying it?`);
@@ -29,8 +30,14 @@ function copyEnvironmentFiles() {
                 continue;
             }
 
-            const endPath = `packages/${env}/docs/${slicedPath[slicedPath.length - 1]}`;
-            fs.cpSync(startPath, endPath, { recursive: true, preserveTimestamps: true, force: true });
+            if (!path.isFile) {
+                const endPath = `packages/${env}/docs/${slicedPath[slicedPath.length - 1]}`;
+                fs.cpSync(startPath, endPath, { recursive: true, preserveTimestamps: true, force: true });
+                continue;
+            }
+
+            const endPath = `packages/${env}/${startPath}`;
+            fs.cpSync(startPath, endPath);
         }
     }
 }

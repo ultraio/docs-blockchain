@@ -19,3 +19,34 @@ To interact with the wallet, the wallet injects an object named ultra into the j
 - [Demo application](https://stackblitz.com/edit/ultra-wallet-test)
 - [Developer resources](./developer-resources.md)
 - [App Template](https://github.com/Stuyk/ultra-wallet-app-template)
+
+## Try It
+
+Use the button below to try connecting with the Ultra Wallet, it should pop up when clicked if the extension is installed.
+
+<ClientOnly>
+    <Button @onClick="openWallet" align="left">Open Wallet</Button>
+</ClientOnly>
+
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+let isOpening = ref<bool>(false);
+
+async function openWallet() {
+    if (isOpening.value) {
+        return;
+    }
+
+    isOpening.value = true;
+
+    if (window && window.ultra) {
+        await window.ultra.connect();
+        alert('Wallet Connected!')
+    } else {
+        alert('Wallet Unavailable')
+    }
+
+    isOpening.value = false;
+}
+</script>

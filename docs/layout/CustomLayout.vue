@@ -14,14 +14,18 @@ const defaultURLs = {
 };
 
 function generateLink(type: keyof typeof defaultURLs) {
+    if (type === 'mainnet') {
+        return window.location.origin + '/' + page.value.relativePath.replace('.md', '.html');
+    }
+
     return window.location.origin + defaultURLs[type] + page.value.relativePath.replace('.md', '.html');
 }
 
 function getLinks() {
     return [
-        { text: 'Mainnet', link: generateLink('mainnet'), target: 'e' },
-        { text: 'Staging', link: generateLink('staging'), target: 'e' },
-        { text: 'Experimental', link: generateLink('experimental'), target: 'e' },
+        { text: 'Mainnet', link: generateLink('mainnet'), target: '_parent', rel: 'noopener' },
+        { text: 'Staging', link: generateLink('staging'), target: '_parent', rel: 'noopener' },
+        { text: 'Experimental', link: generateLink('experimental'), target: '_parent', rel: 'noopener' },
     ];
 }
 </script>

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { withBase } from 'vitepress';
 import UltraSectionData from './UltraSectionData.vue';
 
 interface SectionGroup {
@@ -22,7 +23,7 @@ const props = defineProps<{ section: SectionGroup[]; title: string }>();
             <template v-for="section in props.section">
                 <UltraSectionData>
                     <template #header>
-                        <a :href="section.link" title="Blockchains" class="split-space-between hoverable">
+                        <a :href="withBase(section.link)" title="Blockchains" class="split-space-between hoverable">
                             <div class="title">{{ section.title }}</div>
                             <div class="small-arrow">
                                 <svg
@@ -40,7 +41,7 @@ const props = defineProps<{ section: SectionGroup[]; title: string }>();
                     <template #links>
                         <a
                             v-for="linkInfo in section.links"
-                            :href="linkInfo.link"
+                            :href="withBase(linkInfo.link)"
                             :title="linkInfo.title"
                             class="hoverable"
                         >

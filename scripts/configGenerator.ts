@@ -19,14 +19,17 @@ const configs: { [key in environment]: PartialConfig } = {
     experimental: {
         title: 'Experimental Docs',
         outDir: normalizePath(process.cwd() + '/dist/experimental'),
+        ignoreDeadLinks: true,
     },
     staging: {
         title: 'Staging Docs',
         outDir: normalizePath(process.cwd() + '/dist/staging'),
+        ignoreDeadLinks: true,
     },
     mainnet: {
         title: 'Mainnet Docs',
         outDir: normalizePath(process.cwd() + '/dist/mainnet'),
+        ignoreDeadLinks: true,
     },
 };
 

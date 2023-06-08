@@ -8,14 +8,26 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-    --vp-c-brand: #fad198;
-    --vp-c-brand-light: #ffe2ba;
-    --vp-c-brand-lighter: #ffe2ba;
-    --vp-c-brand-lightest: #ffe2ba;
-    --vp-c-brand-dark: #ffe2ba;
-    --vp-c-brand-darker: #ffe2ba;
-    --vp-c-brand-dimm: rgba(162, 100, 255, 0.08);
-    --vp-local-search-highlight-bg: rgba(228, 185, 128, 0.6);
+    /* --vp-c-bg: #2b262c;
+    --vp-c-bg-alt: #352f35; */
+    --vp-c-bg: #2e2b2e;
+    --vp-c-bg-alt: #343034;
+    --vp-nav-bg-color: #282528;
+    --vp-c-gutter: rgba(0, 0, 0, 0.2);
+    --vp-c-border-color: #464449;
+    --vp-c-home-text: #c0c0c0;
+    --vp-bg-background: url('/images/home/bg-staging.png');
+
+    --vp-c-brand: #f598c5;
+    --vp-c-brand-light: #f3b4d3;
+    --vp-c-brand-lighter: #f3b4d3;
+    --vp-c-brand-lightest: #f3b4d3;
+    --vp-c-brand-dark: #f3b4d3;
+    --vp-c-brand-darker: #f3b4d3;
+    --vp-c-brand-dimm: rgba(239, 100, 255, 0.08);
+    --vp-c-mute: rgba(0, 0, 0, 0.1);
+    --vp-c-text-code: var(--vp-c-brand);
+    --vp-local-search-highlight-bg: rgba(201, 128, 228, 0.6);
 
     --vp-custom-block-danger-border: #fb9393;
     --vp-custom-block-danger-text: #fb9393;
@@ -48,15 +60,32 @@
 
 :root {
     --vp-home-hero-name-color: transparent;
-    --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #fad198 30%, #ffbb5d);
+    --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #98f5fa 30%, #5dbcff);
 
-    --vp-home-hero-image-background-image: linear-gradient(-45deg, #e2b66a46 50%, #ffe3ab45 50%);
+    --vp-home-hero-image-background-image: linear-gradient(-45deg, #6abee246 50%, #abe6ff45 50%);
     --vp-home-hero-image-filter: blur(100px) opacity(20%);
 }
 
 .VPHero .VPImage {
-    filter: hue-rotate(135deg);
-} 
+    filter: hue-rotate(-40deg);
+}
+
+.VPNav {
+    background-color: var(--vp-nav-bg-color);
+    transition: none !important;
+}
+
+.VPLink {
+    color: #94929a !important;
+}
+
+.VPLink.active {
+    color: white !important;
+}
+
+.VPLink:hover {
+    color: white !important;
+}
 
 @media (min-width: 640px) {
     :root {
@@ -92,4 +121,13 @@
 
 .DocSearch {
     --docsearch-primary-color: var(--vp-c-brand) !important;
+}
+
+.VPNavBarTitle .title {
+    border-bottom: 0px !important;
+}
+
+.VPNavBarAppearance,
+.VPNavScreenAppearance {
+    display: none !important;
 }

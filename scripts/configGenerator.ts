@@ -17,15 +17,15 @@ type PartialConfig = Partial<UserConfig<DefaultTheme.Config>>;
  * */
 const configs: { [key in environment]: PartialConfig } = {
     experimental: {
-        title: 'Experimental',
+        title: 'Experimental Docs',
         outDir: normalizePath(process.cwd() + '/dist/experimental'),
     },
     staging: {
-        title: 'Staging',
+        title: 'Staging Docs',
         outDir: normalizePath(process.cwd() + '/dist/staging'),
     },
     mainnet: {
-        title: 'Mainnet',
+        title: 'Mainnet Docs',
         outDir: normalizePath(process.cwd() + '/dist/mainnet'),
     },
 };

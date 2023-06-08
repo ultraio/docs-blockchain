@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme';
-import { useData } from 'vitepress';
 import VPFlyout from 'vitepress/dist/client/theme-default/components/VPFlyout.vue';
 
-const { page, frontmatter } = useData();
 const { Layout } = DefaultTheme;
 
 const defaultURLs = {
@@ -32,3 +30,29 @@ function getLinks() {
         </template>
     </Layout>
 </template>
+
+<style>
+.VPNav {
+    border-top: 1px solid var(--vp-c-brand);
+    background: rgba(40, 38, 44, 0.62);
+    backdrop-filter: blur(15px);
+}
+
+.VPNavBar.has-sidebar .content-body {
+    background-color: transparent !important;
+}
+
+.VPNavBarTitle .title::before {
+    content: '';
+    background-color: var(--vp-c-brand) !important;
+    margin-right: 6px;
+    width: 8px;
+    height: 8px;
+    display: block;
+    border-radius: 4px;
+}
+
+.VPFlyout .appearance {
+    display: none !important;
+}
+</style>

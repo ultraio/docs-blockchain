@@ -8,13 +8,23 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-    --vp-c-brand: #6cc5d5;
-    --vp-c-brand-light: #baefff;
-    --vp-c-brand-lighter: #baefff;
-    --vp-c-brand-lightest: #baefff;
-    --vp-c-brand-dark: #baefff;
-    --vp-c-brand-darker: #baefff;
+    --vp-c-bg: #303138;
+    --vp-c-bg-alt: #2f2f36;
+    --vp-nav-bg-color: #25252c;
+    --vp-c-gutter: rgba(0, 0, 0, 0.2);
+    --vp-c-border-color: #464449;
+    --vp-c-home-text: #c0c0c0;
+    --vp-bg-background: url('/images/home/bg-experimental.png');
+
+    --vp-c-brand: #74c3ff;
+    --vp-c-brand-light: #81ecec;
+    --vp-c-brand-lighter: #81ecec;
+    --vp-c-brand-lightest: #81ecec;
+    --vp-c-brand-dark: #81ecec;
+    --vp-c-brand-darker: #81ecec;
     --vp-c-brand-dimm: rgba(162, 100, 255, 0.08);
+    --vp-c-mute: rgba(0, 0, 0, 0.1);
+    --vp-c-text-code: var(--vp-c-brand);
     --vp-local-search-highlight-bg: rgba(128, 201, 228, 0.6);
 
     --vp-custom-block-danger-border: #fb9393;
@@ -58,6 +68,23 @@
     filter: hue-rotate(-40deg);
 }
 
+.VPNav {
+    background-color: var(--vp-nav-bg-color);
+    transition: none !important;
+}
+
+.VPLink {
+    color: #94929a !important;
+}
+
+.VPLink.active {
+    color: white !important;
+}
+
+.VPLink:hover {
+    color: white !important;
+}
+
 @media (min-width: 640px) {
     :root {
         --vp-home-hero-image-filter: blur(56px);
@@ -92,4 +119,18 @@
 
 .DocSearch {
     --docsearch-primary-color: var(--vp-c-brand) !important;
+}
+
+.VPNavBarTitle .title {
+    border-bottom: 0px !important;
+}
+
+.VPNavBarAppearance,
+.VPNavScreenAppearance {
+    display: none !important;
+}
+
+.VPNavScreen {
+    position: unset !important;
+    height: 100vh;
 }

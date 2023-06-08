@@ -166,7 +166,17 @@ onMounted(() => {
                                     </section-title-xsm>
                                     <link-content>{{ data.documentation.bighero.content }}</link-content>
                                 </div>
-                                <div class="big-arrow">&gt;</div>
+                                <div class="big-arrow">
+                                    <svg
+                                        width="25"
+                                        height="41"
+                                        viewBox="0 0 25 41"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M1 1L24 20.5L1 40" stroke="white" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -245,7 +255,7 @@ onMounted(() => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--vp-c-bg);
+    background: transparent;
     color: white;
     width: 100%;
     max-width: var(--vp-layout-max-width);
@@ -255,14 +265,17 @@ onMounted(() => {
     box-sizing: border-box;
 }
 
-.main-container {
+.VPContent {
     display: flex;
     flex-direction: row;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-    background-image: var(--vp-bg-background);
-    background-size: 800px;
+    background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+        var(--vp-bg-background) right -240px top -200px no-repeat;
     background-repeat: no-repeat;
-    background-position: right 0px top 0px;
+}
+
+.VPContent.has-sidebar {
+    background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
 }
 
 .main-content {
@@ -278,12 +291,18 @@ onMounted(() => {
     flex-direction: column;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
-    font-size: 80px;
-    font-weight: 900;
     text-transform: uppercase;
-    line-height: 80px;
     margin-bottom: 24px;
     user-select: none;
+
+    font-weight: 900;
+    font-size: 130px;
+    line-height: 98.5%;
+
+    background: linear-gradient(-130deg, var(--vp-c-brand-light) 50%, #fff 80%);
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .main-container left-sidebar {
@@ -302,11 +321,11 @@ onMounted(() => {
 .main-container section-title {
     display: block;
     width: 100%;
-    font-size: 24px;
+    font-size: 36px;
     font-weight: 700;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 36px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     user-select: none;
 }
 
@@ -316,8 +335,8 @@ onMounted(() => {
     font-size: 20px;
     font-weight: 700;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 32px;
-    margin-bottom: 24px;
+    line-height: 26px;
+    margin-bottom: 20px;
     user-select: none;
 }
 
@@ -333,7 +352,7 @@ onMounted(() => {
 
 .main-container section {
     display: block;
-    margin-bottom: 48px;
+    margin-bottom: 140px;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
@@ -361,7 +380,9 @@ onMounted(() => {
 }
 
 .hoverable:hover {
-    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.5);
+    filter: brightness(125%);
+    transition: 0.12s all ease-in-out;
+    transform: scale(1.025);
 }
 
 .accent {
@@ -382,6 +403,7 @@ onMounted(() => {
 
 .main-container #getting-started {
     margin-top: 64px;
+    width: 33%;
 }
 
 .main-container .hero {
@@ -415,10 +437,12 @@ onMounted(() => {
 .main-container .sidebar-links li a {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 29px;
     transition: all 0.1s;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
 }
 
 .main-container .sidebar-links li a:hover {
@@ -434,7 +458,7 @@ onMounted(() => {
 }
 
 .main-container .sidebar-links li {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .main-container .stack {
@@ -526,7 +550,42 @@ onMounted(() => {
     padding-bottom: 4px;
 }
 
+@media (max-width: 1600px) {
+    .VPContent {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+            var(--vp-bg-background) right -500px top -300px no-repeat;
+    }
+
+    .VPContent.has-sidebar {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+    }
+}
+
+@media (max-width: 1400px) {
+    .VPContent {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+            var(--vp-bg-background) right -540px top -300px no-repeat;
+    }
+
+    .VPContent.has-sidebar {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+    }
+
+    .main-container #getting-started {
+        width: 50%;
+    }
+}
+
 @media (max-width: 1000px) {
+    .VPContent {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+            var(--vp-bg-background) right -640px top -200px no-repeat;
+    }
+
+    .VPContent.has-sidebar {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+    }
+
     .main-container .sections {
         grid-template-columns: 1fr !important;
     }
@@ -554,6 +613,17 @@ onMounted(() => {
     ultra-footer-wrapper {
         padding-left: 24px;
         padding-right: 24px;
+    }
+}
+
+@media (max-width: 800px) {
+    .VPContent {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+            var(--vp-bg-background) right -800px top -200px no-repeat;
+    }
+
+    .VPContent.has-sidebar {
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
     }
 }
 </style>

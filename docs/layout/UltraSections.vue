@@ -24,7 +24,17 @@ const props = defineProps<{ section: SectionGroup[]; title: string }>();
                     <template #header>
                         <a :href="section.link" title="Blockchains" class="split-space-between hoverable">
                             <div class="title">{{ section.title }}</div>
-                            <div class="small-arrow">&gt;</div>
+                            <div class="small-arrow">
+                                <svg
+                                    width="9"
+                                    height="14"
+                                    viewBox="0 0 9 14"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M1 1L8 7L1 13" stroke="white" />
+                                </svg>
+                            </div>
                         </a>
                     </template>
                     <template #links>

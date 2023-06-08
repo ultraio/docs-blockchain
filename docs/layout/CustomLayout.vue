@@ -32,10 +32,23 @@ function getLinks() {
 </template>
 
 <style>
+.VPNav {
+    border-top: 1px solid var(--vp-c-brand);
+    background: rgba(40, 38, 44, 0.62);
+    backdrop-filter: blur(15px);
+}
+
+.VPNavBar.has-sidebar .content-body {
+    background-color: transparent !important;
+}
+
 .VPNavBarTitle .title::before {
-    content: '> ';
-    color: var(--vp-c-brand) !important;
-    padding-right: 6px;
-    padding-bottom: 3px;
+    content: '';
+    background-color: var(--vp-c-brand) !important;
+    margin-right: 6px;
+    width: 8px;
+    height: 8px;
+    display: block;
+    border-radius: 4px;
 }
 </style>

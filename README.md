@@ -47,24 +47,8 @@ npm run dev:mainnet
 
 Builds a static version of the website that can be deployed anywhere.
 
-You can also build all versions with `npm run build:all`.
-
-### Experimental
-
 ```
-npm run build
-```
-
-### Staging
-
-```
-npm run build:staging
-```
-
-### Mainnet
-
-```
-npm run build:mainnet
+npm run build:all
 ```
 
 ## File Deployment Guide

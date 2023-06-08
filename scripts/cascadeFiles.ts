@@ -69,6 +69,10 @@ function copyDocsPerEnvironment() {
 }
 
 function start() {
+    if (fs.existsSync('dist')) {
+        fs.rmSync('dist', { force: true, recursive: true });
+    }
+
     copyEnvironmentFiles();
     copyDocsPerEnvironment();
 }

@@ -4,14 +4,16 @@
         "packages/*"
     ],
     "scripts": {
+        "cleanup": "npx ts-node ./scripts/cleanup.ts",
         "update:files": "npx ts-node ./scripts/cascadeFiles.ts",
         "dev": "vitepress dev docs",
         "dev:staging": "npm run update:files && vitepress dev ./packages/staging/docs",
         "dev:mainnet": "npm run update:files && vitepress dev ./packages/mainnet/docs",
-        "build": "npm run update:files && vitepress build docs",
-        "build:staging": "npm run update:files && vitepress build ./packages/staging/docs",
-        "build:mainnet": "npm run update:files && vitepress build ./packages/mainnet/docs",
-        "build:all": "npm run build & npm run build:staging & npm run build:mainnet"
+        "build:experimental": "vitepress build docs",
+        "build:staging": "vitepress build ./packages/staging/docs",
+        "build:mainnet": "vitepress build ./packages/mainnet/docs",
+        "build:together": "npm run build:mainnet & npm run build:staging & npm run build:experimental",
+        "build:all": "npm run update:files && npm run build:together && npx ts-node ./scripts/reorganize.ts"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",

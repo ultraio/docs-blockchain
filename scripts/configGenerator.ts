@@ -30,7 +30,7 @@ const configs: { [key in environment]: PartialConfig } = {
     },
     mainnet: {
         title: 'Mainnet Docs',
-        outDir: normalizePath(process.cwd() + '/dist'),
+        outDir: normalizePath(process.cwd() + '/dist/mainnet'),
         ignoreDeadLinks: true,
         base: '/',
     },

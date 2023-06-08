@@ -23,6 +23,7 @@ async function execute() {
     });
 
     if (!result || !result.ok) {
+        response.value = result.toString();
         return;
     }
 

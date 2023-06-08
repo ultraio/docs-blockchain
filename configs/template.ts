@@ -39,6 +39,7 @@ export const templateConfig: UserConfig<DefaultTheme.Config> = {
         ['link', { rel: 'manifest', href: BASE_URL + 'site.webmanifest' }],
         ['link', { rel: 'mask-icon', href: BASE_URL + 'safari-pinned-tab.svg', color: '#5bbad5' }],
         ['meta', { name: 'msapplication-TileColor', content: '#da532c' }],
+        ['link', { rel: 'sitemap', type: 'application/xml', title: 'Sitemap', href: '/sitemap.xml' }],
         // Open Graph
         ['meta', { name: 'description', content: description }],
         ['meta', { property: 'og:type', content: 'website' }],

@@ -11,18 +11,22 @@ export const templateConfig: UserConfig<DefaultTheme.Config> = {
     ignoreDeadLinks: false,
     lastUpdated: true,
     cleanUrls: false,
-    
+
     themeConfig: {
         nav,
         sidebar: [],
         socialLinks: [
             { icon: 'github', link: 'https://github.com/ultraio/docs-blockchain' },
-            { icon: 'discord', link: 'https://discord.gg/ultraio' },
+            { icon: 'discord', link: 'https://discord.gg/invite/U7raPf6qZu' },
         ],
         search: {
             provider: 'local',
         },
         lastUpdatedText: 'Last Updated',
+        editLink: {
+            pattern: 'https://github.com/ultraio/docs-blockchain/edit/main/docs/:path',
+            text: 'Edit this page on GitHub',
+        },
     },
     head: [
         ['link', { rel: 'icon', type: 'image/x-icon', href: BASE_URL + 'favicon.ico' }],

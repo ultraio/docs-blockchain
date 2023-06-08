@@ -3,7 +3,7 @@ title: 'Smart Contracts'
 deploy: ['staging', 'mainnet']
 ---
 
-# Smart Contracts
+# Smart Contracts Overview
 
 If you are looking to learn about the Smart Contracts deployed by Ultra.io, this is it.
 

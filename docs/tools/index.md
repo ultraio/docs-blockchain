@@ -1,9 +1,9 @@
 ---
-title: 'Tools'
+title: 'Overview'
 deploy: ['staging', 'mainnet']
 ---
 
-# Tools
+# Tools Overview
 
 ## Useful Resources
 

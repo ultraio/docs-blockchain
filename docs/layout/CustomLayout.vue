@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import DefaultTheme from 'vitepress/theme';
 import VPFlyout from 'vitepress/dist/client/theme-default/components/VPFlyout.vue';
+import { useData } from 'vitepress';
 
 const { Layout } = DefaultTheme;
 
+const { page } = useData();
+
 const defaultURLs = {
-    mainnet: 'https://changeme.mainnet.ultra.io',
-    staging: 'https://changeme.staging.ultra.io',
-    experimental: 'https://changeme.experimental.ultra.io',
+    mainnet: '/',
+    staging: '/staging/',
+    experimental: '/experimental/',
 };
 
 function generateLink(type: keyof typeof defaultURLs) {
-    return defaultURLs[type] + window.location.pathname;
+    return window.location.origin + defaultURLs[type] + page.value.relativePath.replace('.md', '.html');
 }
 
 function getLinks() {

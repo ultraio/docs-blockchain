@@ -26,7 +26,9 @@ function getLinks() {
 <template>
     <Layout>
         <template #nav-bar-content-after>
-            <VPFlyout :class="{ VPNavBarMenuGroup: false, active: false }" button="Version" :items="getLinks()" />
+            <ClientOnly>
+                <VPFlyout :class="{ VPNavBarMenuGroup: false, active: false }" button="Version" :items="getLinks()" />
+            </ClientOnly>
         </template>
     </Layout>
 </template>

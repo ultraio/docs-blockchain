@@ -6,6 +6,7 @@ import UltraFooter from './UltraFooter.vue';
 import UltraStat from './UltraStat.vue';
 import UltraLink from './UltraLink.vue';
 import UltraSupport from './UltraSupport.vue';
+import UltraHomeScroll from './UltraHomeScroll.vue';
 
 const { frontmatter } = useData();
 
@@ -86,21 +87,8 @@ async function getBlockCount() {
     currentProducer.value = dataSet.head_block_producer;
 }
 
-function handleScroll(e: Event) {
-    if (window.scrollY < 100) {
-        if (!moveSidebarDown.value) {
-            return;
-        }
-
-        moveSidebarDown.value = false;
-        return;
-    }
-
-    if (moveSidebarDown.value) {
-        return;
-    }
-
-    moveSidebarDown.value = true;
+function onScrollDown(isScrolledDown: boolean) {
+    moveSidebarDown.value = isScrolledDown;
 }
 
 onMounted(() => {
@@ -110,13 +98,14 @@ onMounted(() => {
     // Updates every 2.5s, and times out after 5 minutes to prevent too much ingestion for APIs.
     const blockCountInterval = setInterval(getBlockCount, 2500);
     setTimeout(() => clearInterval(blockCountInterval), 60000 * 5);
-
-    window.addEventListener('scroll', handleScroll);
 });
 </script>
 
 <template>
-    <div class="main-container-wrapper" @scroll="handleScroll">
+    <ClientOnly>
+        <UltraHomeScroll @onScrollDown="onScrollDown" />
+    </ClientOnly>
+    <div class="main-container-wrapper">
         <div class="main-container">
             <left-sidebar :class="moveSidebarDown ? ['remove-pad'] : []">
                 <ul class="sidebar-links">

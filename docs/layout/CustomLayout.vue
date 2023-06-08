@@ -19,9 +19,9 @@ function generateLink(type: keyof typeof defaultURLs) {
 
 function getLinks() {
     return [
-        { text: 'Mainnet', link: generateLink('mainnet') },
-        { text: 'Staging', link: generateLink('staging') },
-        { text: 'Experimental', link: generateLink('experimental') },
+        { text: 'Mainnet', link: generateLink('mainnet'), target: 'e' },
+        { text: 'Staging', link: generateLink('staging'), target: 'e' },
+        { text: 'Experimental', link: generateLink('experimental'), target: 'e' },
     ];
 }
 </script>

@@ -44,9 +44,9 @@ After the shares are distributed and no additional transfers need to occur the t
 
 The resale table will have the token erased as well.
 
-**Notificaitons**
+**Notifications**
 
-Accounts **buyer**, **receiver** and **owner** of a reselled token will get a notification.
+`require_recipient` is done for `buyer`, `receiver`, `owner` of a token under resell and for asset manager of the token factory.
 
 ## Action Parameters
 

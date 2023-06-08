@@ -10,17 +10,23 @@ Allows a token manager to set metadata uri and hash for an existing token.
 
 ## Technical Behavior
 
-The required authorization is the token_factory_manager as the manager is responsible for updating the data.
+The required authorization is the token factory manager as the manager is responsible for updating the data.
 
-token_id is required and must exist.
+- `token_id` is required and must exist.
 
-owner is required and must own the token with id token_id
+- `owner` is required and must own the token with id `token_id`
 
-memo value has a 256 byte limitation
+- `memo` value has a 256 byte limitation
 
-uri is required to have non-zero length or be null
+- `uri` is required to have non-zero length or be null
 
-owner and token factory asset manager wil get a notification.
+If factory has `lock_hash` set to `true`:
+
+- Can change the `uri`, but `hash` must remain unchanged. If the token does not have a `hash` then a hash can be changed regardless of `lock_hash` state.
+
+**Notifications**
+
+`require_recipient` is done for `owner` and `asset_manager` of the token factory
 
 ## RAM usage
 

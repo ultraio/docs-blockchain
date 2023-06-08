@@ -12,6 +12,10 @@ Deletes a factory group with specified id.
 
 ID should be valid and transaction signed by the manager of the corresponding group.
 
+**RAM usage/cost calculation and payment/refund**
+
+- After deleting a token factory group the UOS locked in the factory group is released back to the original payer
+
 ## Action Parameters
 
 | field name | c++ type | js type |

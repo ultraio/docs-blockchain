@@ -8,6 +8,10 @@ deploy: ['staging', 'mainnet']
 
 Authorize an account to be able to mint tokens.
 
+::: warning
+Deprecated. Use `authmint.b` instead
+:::
+
 ## Behavior
 
 This action allows a factory Asset Manager to be able to authorize (delegate) minting of factory tokens to another account called Authorized Minter (further - AuthMinter). The following rules apply for this action:

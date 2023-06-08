@@ -8,6 +8,10 @@ deploy: ['staging', 'mainnet']
 
 Create a token factory.
 
+::: warning
+Deprecated. Use `create.b` instead
+:::
+
 ## Behavior
 
 Used to create a token factory for the **asset_creator** and will be managed by the **asset_manager**.

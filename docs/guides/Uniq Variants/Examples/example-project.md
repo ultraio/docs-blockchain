@@ -1,4 +1,10 @@
-# Example project with reveal
+---
+title: 'Example Metadata Project'
+deploy: ['staging', 'mainnet']
+---
+
+
+# Example Project with Reveal
 
 Let's create a minimalistic bored ape factory. It has to contain 3 metadata files and 3 jsons
 for factory, default token and uniq. For the sake of simplicity, we'll only fill the required fields for each metadata file. You can of course enrich uniqs, for example, by adding `attributes` to them. See [uniq metadata fields](../uniq-metadata.md#metadata-fields).

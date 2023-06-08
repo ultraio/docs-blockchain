@@ -1,3 +1,9 @@
+---
+title: 'Validating Metadata'
+deploy: ['staging', 'mainnet']
+---
+
+
 # Validating Metadata
 
 The factory metadata contains information about each file, including its integrity. This integrity is established by calculating a hash using the SHA256 algorithm, which is typically represented in hex format. Additionally, the type of hash used is usually SHA256 for uniqs created on Ultra.

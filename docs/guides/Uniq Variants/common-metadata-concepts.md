@@ -1,3 +1,8 @@
+---
+title: 'Common Metadata Concepts'
+deploy: ['staging', 'mainnet']
+---
+
 # Common metadata concepts
 
 ## Integrity

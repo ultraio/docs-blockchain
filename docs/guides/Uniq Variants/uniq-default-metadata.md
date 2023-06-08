@@ -1,3 +1,9 @@
+---
+title: 'Uniq Default Metadata'
+deploy: ['staging', 'mainnet']
+---
+
+
 # Uniq default metadata
 
 ## Introduction

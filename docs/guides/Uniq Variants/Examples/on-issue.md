@@ -1,5 +1,5 @@
 ---
-title: 'On issue.b smart contract example'
+title: 'issue Smart Contract Example'
 deploy: ['staging', 'mainnet']
 ---
 

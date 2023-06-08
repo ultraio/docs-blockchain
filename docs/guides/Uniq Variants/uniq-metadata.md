@@ -1,3 +1,9 @@
+---
+title: 'Uniq Metadata'
+deploy: ['staging', 'mainnet']
+---
+
+
 # Uniq metadata
 
 ## Introduction
@@ -12,17 +18,17 @@ Refer to this page for explanation on some concepts used in the metadata files
 
 ## Metadata fields
 
-| Property Name     | Description                                                                                                                                                                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| specVersion       | Defines the specification version for this metadata. The only allowed value is 1.0 for this version of specification                                                                                                                                   |
-| name              | Name of this token. Used for identification purposes so best to make it distinguishable from other tokens                                                                                                                                              |
-| subName           | Additional flavor name used to describe this Uniq token                                                                                                                                                                                                |
-| description       | Detailed explanation about what this token is. Description could include some trivia or details about how it can be sued                                                                                                                               |
-| author            | Specifies who the author of this token is                                                                                                                                                                                                              |
-| defaultLocale     | Specifies the locale of this token metadata. For this version the only allowed value is `en-US`.                                                                                                                                                       |
+| Property Name     | Description                                                                                                                                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| specVersion       | Defines the specification version for this metadata. The only allowed value is 1.0 for this version of specification                                                                                                             |
+| name              | Name of this token. Used for identification purposes so best to make it distinguishable from other tokens                                                                                                                        |
+| subName           | Additional flavor name used to describe this Uniq token                                                                                                                                                                          |
+| description       | Detailed explanation about what this token is. Description could include some trivia or details about how it can be sued                                                                                                         |
+| author            | Specifies who the author of this token is                                                                                                                                                                                        |
+| defaultLocale     | Specifies the locale of this token metadata. For this version the only allowed value is `en-US`.                                                                                                                                 |
 | media             | Contains the media used to display this token. Refer to [Metadata media](./common-metadata-concepts.md#metadata-media) for more details                                                                                          |
-| properties        | Arbitrary data that you can supply that does not fit any other category                                                                                                                                                                                |
-| attributes        | Here you can specify a list of simple numerical or string attributes to go with the token. Allowed types for each of the attributes are: `boolean`, `string` and `number`                                                                              |
+| properties        | Arbitrary data that you can supply that does not fit any other category                                                                                                                                                          |
+| attributes        | Here you can specify a list of simple numerical or string attributes to go with the token. Allowed types for each of the attributes are: `boolean`, `string` and `number`                                                        |
 | dynamicAttributes | This field is represented as a single [dynamicResource](./common-metadata-concepts.md#dynamic-resource) and it is used to provide a URI to an external resource detailing the content of dynamic attributes for this token.      |
 | resources         | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a `staticResource` (details here [staticResource](./common-metadata-concepts.md#static-resource))            |
 | dynamicResources  | Allows additional dynamic media or reference data to be added as a part of the metadata. Each resource must be described as a `dynamicResource` (details here [dynamicResource](./common-metadata-concepts.md#dynamic-resource)) |

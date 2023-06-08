@@ -1,3 +1,8 @@
+---
+title: 'Updating Metadata'
+deploy: ['staging', 'mainnet']
+---
+
 # Updating uniqs
 
 An important aspect of the Ultra NFT standard is metadata updates. Game publishers should be able to change uniq's traits based on certain events in their games. On the other hand integrators should be able to verify its authenticity. Let's see how it works with the examples below:

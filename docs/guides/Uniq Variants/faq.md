@@ -1,3 +1,8 @@
+---
+title: 'FAQ'
+deploy: ['staging', 'mainnet']
+---
+
 # FAQ
 
 ## Whats the difference between asset creator and asset manager roles inside token factory?

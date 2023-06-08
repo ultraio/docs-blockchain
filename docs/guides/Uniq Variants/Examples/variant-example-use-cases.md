@@ -1,3 +1,9 @@
+---
+title: 'Variant Example Use Cases'
+deploy: ['staging', 'mainnet']
+---
+
+
 # Variant example use cases
 
 Variant standard is quite flexible and allows for a variety of potential projects and use cases. This page will cover some of them and explain how they work
@@ -23,8 +29,8 @@ Similar to the previous example we have a simple factory for game tokens where a
 | factory.default_token_hash | b0dafd687d5527cef28300392e                    |
 | token.uri (#1000000)       | MyGame.com/1MthMetadata                       |
 | token.hash (#1000000)      | 4e3304e9af1ec7aaa05206b                       |
-| token.uri (rest of Uniqs)     | *null*                                        |
-| token.hash (rest of Uniqs)      | *null* |                                               |
+| token.uri (rest of Uniqs)  | *null*                                        |
+| token.hash (rest of Uniqs) | *null*                                        |  |
 
 ## Simple profile picture project
 

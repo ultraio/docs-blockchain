@@ -1,3 +1,9 @@
+---
+title: 'Organizing Metadata'
+deploy: ['staging', 'mainnet']
+---
+
+
 # Organizing metadata
 
 This page will cover how the metadata off-chain can be linked to on-chain data and what options you have to better organize your metadata URIs

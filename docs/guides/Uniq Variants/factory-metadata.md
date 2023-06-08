@@ -1,3 +1,9 @@
+---
+title: 'Factory Metadata'
+deploy: ['staging', 'mainnet']
+---
+
+
 # Factory metadata
 
 ## Introduction
@@ -22,10 +28,10 @@ Here is a short breakdown of possible fields for factory metadata and their purp
 | description   | Detailed explanation about what this factory represents, mints anr/or used for                                                                                                                                                                                                                                                                                                                                                                   |
 | author        | Specifies who the author of this factory is                                                                                                                                                                                                                                                                                                                                                                                                      |
 | defaultLocale | Specifies the locale of this factory metadata. For this version the only allowed value is `en-US`.                                                                                                                                                                                                                                                                                                                                               |
-| media         | Contains the media used to display this factory. Refer to [Metadata media](./common-metadata-concepts.md#metadata-media) for more details                                                                                                                                                                                                                                                                                  |
+| media         | Contains the media used to display this factory. Refer to [Metadata media](./common-metadata-concepts.md#metadata-media) for more details                                                                                                                                                                                                                                                                                                        |
 | properties    | Arbitrary data that you can supply that does not fit any other category                                                                                                                                                                                                                                                                                                                                                                          |
 | attributes    | This field allows you to specify structured numerical or string data for the factory. Each attribute must be represented as an object with a `name` - title of the attribute; `description` - details about what this attribute is; `type` - either `boolean`, `number`, `string` or `ISODateString`; `dynamic` - true or false depending on if it is intended to change over time or not, in any case it will be a part of the hash calculation |
-| resources     | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a `staticResource` (details here [staticResource](./common-metadata-concepts.md#static-resource))                                                                                                                                                                                                      |
+| resources     | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a `staticResource` (details here [staticResource](./common-metadata-concepts.md#static-resource))                                                                                                                                                                                                                            |
 
 The following fields are required to be specified:
 - `specVersion`

@@ -11,6 +11,7 @@ export const templateConfig: UserConfig<DefaultTheme.Config> = {
     ignoreDeadLinks: false,
     lastUpdated: true,
     cleanUrls: false,
+    
     themeConfig: {
         nav,
         sidebar: [],

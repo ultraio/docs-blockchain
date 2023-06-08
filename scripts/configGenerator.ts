@@ -21,18 +21,21 @@ const configs: { [key in environment]: PartialConfig } = {
         outDir: normalizePath(process.cwd() + '/dist/experimental'),
         ignoreDeadLinks: true,
         base: '/experimental/',
+        appearance: 'dark',
     },
     staging: {
         title: 'Staging Docs',
         outDir: normalizePath(process.cwd() + '/dist/staging'),
         ignoreDeadLinks: true,
         base: '/staging/',
+        appearance: 'dark',
     },
     mainnet: {
         title: 'Mainnet Docs',
         outDir: normalizePath(process.cwd() + '/dist/mainnet'),
         ignoreDeadLinks: true,
         base: '/',
+        appearance: 'dark',
     },
 };
 

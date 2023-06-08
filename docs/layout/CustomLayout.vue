@@ -21,11 +21,24 @@ function generateLink(type: keyof typeof defaultURLs) {
     return window.location.origin + defaultURLs[type] + page.value.relativePath.replace('.md', '.html');
 }
 
+function forceReload(e: InputEvent) {
+    if (!e || !e.target) {
+        return;
+    }
+
+    const el = e.target as HTMLInputElement;
+    if (!el.classList.contains('VPLink')) {
+        return;
+    }
+
+    window.location.reload();
+}
+
 function getLinks() {
     return [
-        { text: 'Mainnet', link: generateLink('mainnet'), target: '_parent', rel: 'noopener' },
-        { text: 'Staging', link: generateLink('staging'), target: '_parent', rel: 'noopener' },
-        { text: 'Experimental', link: generateLink('experimental'), target: '_parent', rel: 'noopener' },
+        { text: 'Mainnet', link: generateLink('mainnet'), target: '_parent', rel: 'noreferrer' },
+        { text: 'Staging', link: generateLink('staging'), target: '_parent', rel: 'noreferrer' },
+        { text: 'Experimental', link: generateLink('experimental'), target: '_parent', rel: 'noreferrer' },
     ];
 }
 </script>
@@ -34,7 +47,12 @@ function getLinks() {
     <Layout>
         <template #nav-bar-content-after>
             <ClientOnly>
-                <VPFlyout :class="{ VPNavBarMenuGroup: false, active: false }" button="Version" :items="getLinks()" />
+                <VPFlyout
+                    :class="{ VPNavBarMenuGroup: false, active: false }"
+                    button="Version"
+                    :items="getLinks()"
+                    @click="forceReload"
+                />
             </ClientOnly>
         </template>
     </Layout>

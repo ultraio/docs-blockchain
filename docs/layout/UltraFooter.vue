@@ -64,6 +64,7 @@ ultra-footer-wrapper {
 
 .link-group a {
     margin-bottom: 12px;
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 .link-header {

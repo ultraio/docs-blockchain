@@ -438,7 +438,7 @@ onMounted(() => {
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     transition: all 0.1s;
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 24px;

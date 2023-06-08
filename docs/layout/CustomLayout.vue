@@ -51,4 +51,8 @@ function getLinks() {
     display: block;
     border-radius: 4px;
 }
+
+.VPFlyout .appearance {
+    display: none !important;
+}
 </style>

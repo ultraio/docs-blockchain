@@ -129,3 +129,8 @@
 .VPNavScreenAppearance {
     display: none !important;
 }
+
+.VPNavScreen {
+    position: unset !important;
+    height: 100vh;
+}

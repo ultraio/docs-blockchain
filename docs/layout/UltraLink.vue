@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { withBase } from 'vitepress';
+
 const props = defineProps<{ icon: string; link: string }>();
 </script>
 
@@ -6,7 +8,7 @@ const props = defineProps<{ icon: string; link: string }>();
     <a :href="props.link" class="stat hoverable">
         <div class="icon">
             <div class="inner-icon">
-                <img :src="props.icon" width="50" height="50" />
+                <img :src="withBase(props.icon)" width="50" height="50" />
             </div>
         </div>
         <div class="title">

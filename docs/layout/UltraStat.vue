@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { withBase } from 'vitepress';
+
 const props = defineProps<{ icon: string }>();
 </script>
 
@@ -6,7 +8,7 @@ const props = defineProps<{ icon: string }>();
     <div class="stat">
         <div class="small-split">
             <div class="icon">
-                <img :src="props.icon" width="50" height="50" />
+                <img :src="withBase(props.icon)" width="50" height="50" />
             </div>
             <div class="stack">
                 <div class="data">

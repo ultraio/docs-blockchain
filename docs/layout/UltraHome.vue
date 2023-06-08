@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useData } from 'vitepress';
+import { useData, withBase } from 'vitepress';
 import UltraSection from './UltraSections.vue';
 import UltraFooter from './UltraFooter.vue';
 import UltraStat from './UltraStat.vue';
@@ -122,7 +122,11 @@ onMounted(() => {
             </left-sidebar>
             <div class="main-content">
                 <div class="hero">
-                    <img src="/svgs/ultra-horizontal.svg" width="150" style="margin-bottom: 48px; margin-top: 5px" />
+                    <img
+                        :src="withBase('/svgs/ultra-horizontal.svg')"
+                        width="150"
+                        style="margin-bottom: 48px; margin-top: 5px"
+                    />
                     <!-- Top Text -->
                     <div class="headline">
                         <span v-for="text in data.headline.split(' ')">

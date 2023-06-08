@@ -32,3 +32,15 @@ curl -X POST -d '{ "code": "eosio.token", "account": "ultra.nft.ft", "symbol": "
 ]
 ```
 :::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_currency_balance" 
+	:body="[
+        { key: 'code', value: 'eosio.token' },
+        { key: 'account', value: 'ultra.nft.ft' },
+        { key: 'symbol', value: 'UOS' }
+    ]"
+/>

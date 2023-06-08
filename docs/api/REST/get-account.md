@@ -99,3 +99,12 @@ curl -X POST -d '{ "account_name": "ultra" }'  https://api.ultra.eossweden.org/v
 }
 ```
 :::
+
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_account" 
+	:body="[{ key: 'account_name', value: 'ultra' }]"
+/>

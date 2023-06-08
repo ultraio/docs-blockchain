@@ -56,3 +56,16 @@ If the response has "more" with an account name that means there are more entrie
 }
 ```
 :::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_table_rows" 
+	:body="[
+		{ key: 'code', value: 'eosio.nft.ft'},
+		{ key: 'table', value: 'factory.b' },
+		{ key: 'scope', value: 'eosio.nft.ft' },
+		{ key: 'limit', value: 5 },
+	]"
+/>

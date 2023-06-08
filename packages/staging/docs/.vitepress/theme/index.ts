@@ -1,17 +1,19 @@
-import { h } from 'vue';
 import Theme from 'vitepress/theme';
 import { useData, useRoute } from 'vitepress';
 import giscusTalk from 'vitepress-plugin-comment-with-giscus';
 import './style.css';
 
-// @ts-ignore
+// @ts-expect-error
 import CustomLayout from '../../layout/CustomLayout.vue';
+
+// @ts-expect-error
+import DemoApiVue from '../../layout/widgets/DemoApi.vue';
 
 export default {
     ...Theme,
     Layout: CustomLayout,
     enhanceApp({ app, router, siteData }) {
-        // Unused at this time
+        app.component('DemoApi', DemoApiVue);
     },
     setup() {
         const { frontmatter } = useData();

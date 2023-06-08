@@ -24,6 +24,8 @@ There are many additional parameters but here are the useful ones.
 
 * upper_bound - The highest matching point in the table rows. Useful for looking from back to forward.
 
+* table - filter by table name
+
 * limit - How many entries to return.
 
 ### Request
@@ -59,3 +61,15 @@ If the response has "more" with an account name that means there are more entrie
 }
 ```
 :::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_table_by_scope" 
+	:body="[
+		{ key: 'code', value: 'eosio.token'},
+		{ key: 'table', value: 'accounts' },
+		{ key: 'limit', value: 10 }
+	]"
+/>

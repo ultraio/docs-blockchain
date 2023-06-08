@@ -10,8 +10,6 @@ const sitemapStream = new SitemapStream({ hostname: 'https://docs.ultra.io' });
 
 async function build() {
     const links = await fg([`${inputDirectory}/**/*.html`], { onlyFiles: true, globstar: true });
-    console.log(links);
-
     const linkList = links.map((url) => {
         return { url: url.replace(inputDirectory, ''), changefreq: 'weekly' };
     });

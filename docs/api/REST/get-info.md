@@ -38,3 +38,11 @@ curl -X GET https://api.ultra.eossweden.org/v1/chain/get_info
 }
 ```
 :::
+
+## Try It
+
+<DemoApi 
+	type="GET" 
+	query="/v1/chain/get_info" 
+	:body="[]"
+/>

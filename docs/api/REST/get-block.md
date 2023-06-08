@@ -48,3 +48,11 @@ curl -X POST -d '{ "block_num_or_id": 61672404 }'  https://api.ultra.eossweden.o
 }
 ```
 :::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_block" 
+	:body="[{ key: 'block_num_or_id', value: '8675309' }]"
+/>

@@ -1,13 +1,14 @@
 ---
 title: '/get_abi'
 deploy: ['staging', 'mainnet']
+outline: [0,4]
 ---
 
 # POST - /get_abi
 
 Returns information about a smart contract's available actions, tables, etc. This is really useful for creating data validation off-chain for forms when having a user create a transaction based on manual entries.
 
-### Body
+## Body
 
 ```typescript
 {
@@ -15,13 +16,13 @@ Returns information about a smart contract's available actions, tables, etc. Thi
 }
 ```
 
-### Request
+## Request
 
 ```
 curl -X POST -d '{ "account_name": "ultra.tools" }'  https://api.ultra.eossweden.org/v1/chain/get_abi
 ```
 
-### Response
+## Response
 
 ::: details Response
 ```typescript
@@ -74,3 +75,11 @@ curl -X POST -d '{ "account_name": "ultra.tools" }'  https://api.ultra.eossweden
 }
 ```
 :::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_abi" 
+	:body="[{ key: 'account_name', value: 'eosio.token' }]"
+/>

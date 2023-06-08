@@ -38,7 +38,18 @@ This action allows a factory asset manager to be able to authorize (delegate) mi
 
 **RAM usage/cost calculation and payment/refund**
 
--   RAM usage used to store authorized minter info is covered by eosio.nftram account. If the unused RAM of eosio.nftram is less than or equal to 200MB, the action can’t be executed.
+-   RAM usage used to store authorized minter info is covered by `eosio.nftram` account. If the unused RAM of eosio.nftram is less than or equal to 200MB, the action can’t be executed.
+
+-   The cost of a authorized minter entry is paid to `eosio.nftram` and it will be locked up in the authorized minter entry. The funds are released back to the orinigal payer after the authorized tokens are minted
+
+        -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+            -   NFT RAM payment size: **124 bytes**
+
+            -   RAM price: **0.15 USD/KB**
+
+        -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
+            (124B/1024B \* 0.15USD/KB) / (conversion rate) = `0.01816406` **USD**/(conversion rate)
 
 -   When a manager (i.e., factory’s asset manager)/authorized minter add a new authorized minter
 
@@ -57,7 +68,7 @@ This action allows a factory asset manager to be able to authorize (delegate) mi
 
 **Notifications**
 
-**authorized_minter**, **asset_manager** and **authrizer** (if different from **asset_manager**) will get a notification.
+`require_recipient` is done for `authorizer`, `authorized_minter` and for  of a token under resell and for asset manager of the token factory.
 
 ## Action Parameters
 
@@ -65,24 +76,24 @@ The action parameters as an **JSON Array of Objects.** The Object description is
 
 ### V0
 
-| Fields            | Type                      | Description                           |
-| ----------------- | ------------------------- | ------------------------------------- |
-| authorizer        | eosio::name               | The account that authorizes           |
-| authorized_minter | eosio::name               | The account being authorized          |
-| quantity          | uint32_t                  | The number of tokens being authorized |
-| token_factory_id  | std::optional`<uint64_t>` | The issuing token factory ID          |
-| memo              | std::string               | A short operation description.        |
+| Fields            | Type                     | Description                           |
+| ----------------- | ------------------------ | ------------------------------------- |
+| authorizer        | eosio::name              | The account that authorizes           |
+| authorized_minter | eosio::name              | The account being authorized          |
+| quantity          | uint32_t                 | The number of tokens being authorized |
+| token_factory_id  | std::optional\<uint64_t> | The issuing token factory ID          |
+| memo              | std::string              | A short operation description.        |
 
 ### V1
 
-| Fields              | Type                      | Description                                          |
-| ------------------- | ------------------------- | ---------------------------------------------------- |
-| authorizer          | eosio::name               | The account that authorizes                          |
-| authorized_minter   | eosio::name               | The account being authorized                         |
-| token_factory_id    | uint64_t                  | The issuing token factory ID                         |
-| quantity            | uint32_t                  | The number of tokens being authorized                |
-| maximum_uos_payment | std::optional`<uint64_t>` | Maximum UOS payment the authorizer is willing to pay |
-| memo                | std::string               | A short operation description.                       |
+| Fields              | Type                     | Description                                          |
+| ------------------- | ------------------------ | ---------------------------------------------------- |
+| authorizer          | eosio::name              | The account that authorizes                          |
+| authorized_minter   | eosio::name              | The account being authorized                         |
+| token_factory_id    | uint64_t                 | The issuing token factory ID                         |
+| quantity            | uint32_t                 | The number of tokens being authorized                |
+| maximum_uos_payment | std::optional\<uint64_t> | Maximum UOS payment the authorizer is willing to pay |
+| memo                | std::string              | A short operation description.                       |
 
 ## CLI - cleos
 

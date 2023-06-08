@@ -10,13 +10,17 @@ Allows a token manager to set metadata uri and hash for an existing token factor
 
 ## Technical Behavior
 
-The required authorization is the token_factory_manager as the manager is responsible for updating the data.
+-   The required authorization is the token_factory_manager as the manager is responsible for updating the data.
 
-token_factory_id is required and must exist.
+-   `token_factory_id` is required and must exist.
 
-memo value has a 256 byte limitation
+-   `memo` value has a 256 byte limitation
 
-factory_uri is required to have non-zero length
+-   `factory_uri` is required to have non-zero length
+
+If factory has `lock_hash` set to `true`:
+
+-   Can change the `factory_uri`, but `factory_hash` must remain unchanged
 
 ## RAM usage
 

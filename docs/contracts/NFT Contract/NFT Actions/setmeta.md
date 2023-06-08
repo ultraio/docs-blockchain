@@ -8,6 +8,10 @@ deploy: ['staging', 'mainnet']
 
 Set token factory metadata uri and hash.
 
+::: warning
+Deprecated. Use `setmeta.b` instead
+:::
+
 ## Behavior
 
 Allows a token manager to set metadata uri and hash for an existing token factory.

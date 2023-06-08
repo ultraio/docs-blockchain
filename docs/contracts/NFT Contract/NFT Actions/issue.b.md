@@ -53,10 +53,6 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
     -   **authorizer**'s minting quota stored in authorized minter info table is reduced by the number of minted tokens, and if it reaches zero, their authorized minter info record is removed from the table.
 
-**Notifications**
-
-**asset_manager**, **authorizer** (if specified) and **to** will get a notifaction.
-
 **RAM usage**
 
 -   Creating new token
@@ -65,18 +61,20 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
     -   Token data is stored to `token.b` table and each entry’s pack size will be **192 bytes**.
 
-    -   If the RAM usage for token exceeds maximum pack size of **320 bytes**, action will fail.
+    -   If the RAM usage for token exceeds maximum pack size of **384 bytes**, action will fail.
 
     -   If **asset_manager** or **authorizer** is other than `ultra.nft.ft`, The cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the token minted.
 
         -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 
-            -   NFT RAM payment size: **320 bytes**
+            -   NFT RAM payment size: **384 bytes**
+
+                - estimated for a token with URI of size 192
 
             -   RAM price: **0.15 USD/KB**
 
         -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
-            (160B/1024B \* 0.15USD/KB) / (conversion rate) = `0.046875` **USD**/(conversion rate)
+            (384B/1024B \* 0.15USD/KB) / (conversion rate) = `0.05625` **USD**/(conversion rate)
 
 -   When a mintstats.a entry is added due to first time minting to an account from a factory with minting limit, it will charge the cost for adding each mintstat.a entry. The payer is the authorizer of the minting (it’s the authorized minter if using authorizer, ortherwise the manager). It pays to eosio.nftram, and its ram usage and payment will be bookkept in the manager’s vault.
 
@@ -86,6 +84,10 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
     -   The factory’s manager will get the refund proportional to the amount of RAM released from the RAM vault, i.e.
         refund = (accumulated RAM payment) \* (released amount of RAM)/(accumulated amount of RAM usage).
+
+**Notifications**
+
+`require_recipient` is done for `asset_manager` of the token factory, `to` account that recieves the token and `authorizer` (if specified in the action)
 
 ## Action Parameters
 

@@ -20,7 +20,7 @@ The required authorization is the token_factory_manager as the manager is respon
 
     -   RAM usage is covered by eosio.nftram. But this action will fail if the unused RAM of eosio.nftram is less than or equal to 200MB.
 
-    -   If the RAM usage is exceed token maximum pack size of 320 bytes, action will fail.
+    -   If the RAM usage is exceed token maximum pack size of 384 bytes, action will fail.
 
 -   Updating or remove meta data which result in no bytes is added, there will be no restriction.
 

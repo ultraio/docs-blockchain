@@ -12,14 +12,14 @@ Adds factory ids to a factory group.
 
 ID should be valid and transaction signed by the manager of the corresponding group.
 
-Factories argument should not contain any existing ids. Factory group pack size should be within the limit after modification.
+Factories argument should not contain any existing ids. Factory group pack size should be within the limit of 960 bytes after modification.
 
 ## Action Parameters
 
-| field name | c++ type           | js type         |
-| ---------- | ------------------ | --------------- |
-| id         | uint64_t           | number          |
-| factories  | `vector<uint64_t>` | `Array<number>` |
+| field name | c++ type          | js type        |
+| ---------- | ----------------- | -------------- |
+| id         | uint64_t          | number         |
+| factories  | vector\<uint64_t> | Array\<number> |
 
 ## CLI
 

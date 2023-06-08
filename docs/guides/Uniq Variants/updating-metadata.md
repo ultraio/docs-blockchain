@@ -1,6 +1,7 @@
 ---
 title: 'Updating Metadata'
 deploy: ['staging', 'mainnet']
+order: -99992
 ---
 
 # Updating uniqs

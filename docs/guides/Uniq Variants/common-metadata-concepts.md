@@ -1,6 +1,7 @@
 ---
 title: 'Common Metadata Concepts'
 deploy: ['staging', 'mainnet']
+order: -99996
 ---
 
 # Common metadata concepts

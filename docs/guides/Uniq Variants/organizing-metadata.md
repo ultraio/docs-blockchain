@@ -1,8 +1,8 @@
 ---
 title: 'Organizing Metadata'
 deploy: ['staging', 'mainnet']
+order: -99997
 ---
-
 
 # Organizing metadata
 

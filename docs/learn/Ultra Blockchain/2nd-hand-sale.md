@@ -17,7 +17,7 @@ An owner can also set up promoter share in the direct resell feature.
 
 ## How it works
 
-### Gloabl Share set by Ultra
+### Global Share set by Ultra
 
 -   Ultra can set up a global resale share that applies to any resale.
 

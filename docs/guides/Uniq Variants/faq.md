@@ -1,6 +1,7 @@
 ---
 title: 'FAQ'
 deploy: ['staging', 'mainnet']
+order: -99998
 ---
 
 # FAQ

@@ -81,7 +81,7 @@ export function getFolderAsSidebar(basePath: string, folderPath: string, appendB
         const directoryName = directorySplit[directorySplit.length - 1];
         items.push({
             text: directoryName,
-            collapsed: false,
+            collapsed: true,
             items: getFolderAsSidebar(basePath, startPath, false).sort((a, b) => {
                 if (a.order && b.order) {
                     return a.order - b.order;
@@ -93,7 +93,7 @@ export function getFolderAsSidebar(basePath: string, folderPath: string, appendB
 
                 return 0;
             }),
-            order: 0,
+            order: 99,
         });
     }
 

@@ -1,8 +1,8 @@
 ---
 title: 'Factory Metadata'
 deploy: ['staging', 'mainnet']
+order: -99995
 ---
-
 
 # Factory metadata
 

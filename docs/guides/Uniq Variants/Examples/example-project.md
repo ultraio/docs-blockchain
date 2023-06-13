@@ -11,7 +11,7 @@ for factory, default token and uniq. For the sake of simplicity, we'll only fill
 
 Since this is a reveal scenario each uniq will be displayed as a question mark until it's minted. This is controlled by `default_token_uri` which acts as fallback in case there's no uri for a token.
 
-Download the example project [here](https://s3.us-east-1.wasabisys.com/ultraio-uniq-dev/example-pfp-project.zip).
+Download the example project [here](https://github.com/ultraio/docs-example-x/blob/main/nft/example-pfp-project.zip?raw=true).
 
 ## Creating a Bored Ape Factory
 

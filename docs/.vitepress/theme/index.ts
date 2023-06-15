@@ -21,7 +21,7 @@ export default {
             {
                 repo: 'ultraio/docs-blockchain',
                 repoId: 'R_kgDOJZVdMQ',
-                category: 'Documentation Feedback',
+                category: 'Comments',
                 categoryId: 'DIC_kwDOJZVdMc4CV7Lb',
                 mapping: 'pathname',
                 term: 'Leave a comment!',

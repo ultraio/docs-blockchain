@@ -6,6 +6,7 @@ import './style.css';
 import CustomLayout from '../../layout/CustomLayout.vue';
 import DemoApiVue from '../../layout/widgets/DemoApi.vue';
 import ButtonVue from '../../layout/widgets/Button.vue';
+import TabsVue from '../../layout/widgets/Tabs.vue';
 
 export default {
     ...Theme,
@@ -13,6 +14,7 @@ export default {
     enhanceApp({ app, router, siteData }) {
         app.component('DemoApi', DemoApiVue);
         app.component('Button', ButtonVue);
+        app.component('Tabs', TabsVue);
     },
     setup() {
         const { frontmatter } = useData();

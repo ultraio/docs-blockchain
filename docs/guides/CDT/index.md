@@ -3,6 +3,7 @@ title: 'CDT Overview'
 deploy: ['staging', 'mainnet']
 order: -99999
 oultine: [0, 4]
+prev: false
 ---
 
 # Contract Development Kit (CDT)

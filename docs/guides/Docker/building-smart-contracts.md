@@ -3,6 +3,7 @@ title: 'Building Smart Contracts'
 deploy: ['staging', 'mainnet']
 order: -9990
 outline: [0,4]
+prev: false
 ---
 
 # Building Smart Contracts

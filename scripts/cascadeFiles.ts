@@ -10,6 +10,7 @@ const filesAndFoldersToCopy: Array<{ from: string; to: Array<Envs>; isFile?: tru
     // They are considered 'static'
     { from: 'docs/public', to: ['staging', 'mainnet'] },
     { from: 'docs/layout', to: ['staging', 'mainnet'] },
+    { from: 'docs/examples', to: ['staging', 'mainnet'] },
     { from: 'docs/.vitepress/theme/index.ts', to: ['staging', 'mainnet'], isFile: true },
 ];
 
@@ -49,7 +50,7 @@ function copyEnvironmentFiles() {
  *
  */
 function copyDocsPerEnvironment() {
-    const files = glob.sync('docs/**/*.md');
+    const files = glob.sync(['docs/**/*.md']);
     for (let filePath of files) {
         const startPath = normalizePath(filePath);
         const frontMatter = matter.read(startPath) as matter.GrayMatterFile<string> & { isEmpty: boolean };

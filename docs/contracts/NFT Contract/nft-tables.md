@@ -44,7 +44,7 @@ The table contains token factories settings and the operational info.
 | default_token_hash      | std::optional\<checksum256>       | The default token metadata hash                                                                                                          |
 | lock_hash               | bool                              | Controls whether metadata of the factory, tokens or default tokens could be changed |
 
-Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstat**
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus**
 
 ## factory.a
 
@@ -83,7 +83,7 @@ Deprecated. Refer to `factory.b` instead
 | minted_tokens_no                | uint32_t                          | The number of minted of tokens.                                                                                                          |
 | existing_tokens_no              | uint32_t                          | The number of minted minus number of burnt tokens.                                                                                       |
 
-Most relevant actions: **create, issue, setcondrecv, setmeta, setstat**
+Most relevant actions: **create, issue, setcondrecv, setmeta, setstatus**
 
 -   `cleos` Query Example
 

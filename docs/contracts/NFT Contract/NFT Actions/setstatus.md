@@ -6,7 +6,7 @@ deploy: ['staging', 'mainnet']
 
 # setstatus
 
-#Set token factory state.
+Set token factory state.
 
 ## Behavior
 
@@ -42,7 +42,7 @@ await api.transact(
         actions: [
             {
                 account: 'eosio.nft.ft',
-                name: 'setstat',
+                name: 'setstatus',
                 authorization: [{ actor: 'manager.acc', permission: 'active' }],
                 data: {
                     token_factory_id: 1,

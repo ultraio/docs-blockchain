@@ -20,7 +20,7 @@ The **asset_manager** and the **asset_creator** need to agree on the token f
 
 By creating the token factory together, the **asset_creator** agrees to all the terms, including letting the **asset_manager** manage the factory and its tokens.
 
-If the `stat` parameter is not specified, a new token factory is created in inactive state which may be changed with the `setstat` action.
+If the `stat` parameter is not specified, a new token factory is created in inactive state which may be changed with the `setstatus` action.
 
 ## Technical Behavior
 

@@ -98,7 +98,7 @@ Placeholder
 
 If you need one file in `docs` to have specific content for a specific `environment` you can use these tags.
 
-They are support `inline` as well.
+They support `inline` as well.
 
 ```html
 <Experimental>

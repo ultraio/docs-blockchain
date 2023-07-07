@@ -8,6 +8,4 @@
 import { ref } from 'vue';
 
 let shouldRender = ref<boolean>(window.location.pathname.includes('/experimental'));
-
-console.log(shouldRender.value);
 </script>

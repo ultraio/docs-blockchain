@@ -76,14 +76,11 @@ Placeholder
 Specifying the order as a lesser number ensures it is higher up in the sidebar.
 
 ie.
-
-- 0 first
-- 1 second
-- 2 third
-
-However, if you want to go lower you can specify a negative number.
-
-The max value ranges between `-9007199254740991` <-> `9007199254740991`.
+- -99999999 - Highest
+- 1 - High
+- 2 - Medium
+- 3 - Low
+- 99 - Lowest
 
 ```md
 ---
@@ -95,4 +92,24 @@ deploy: ['staging', 'mainnet']
 # Example Markdown File
 
 Placeholder
+```
+
+## Environment Sections
+
+If you need one file in `docs` to have specific content for a specific `environment` you can use these tags.
+
+They are support `inline` as well.
+
+```html
+<Experimental>
+Only shows in experimental
+</Experimental>
+
+<Staging>
+Only shows in staging
+</Staging>
+
+<Mainnet>
+Only shows in mainnet
+</Mainnet>
 ```

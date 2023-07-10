@@ -15,7 +15,7 @@ Before you get started, please make sure to get your [client_id](./requesting-a-
 
 We provide access to the Ultra Unity plugin via a public repository.
 
-[Download the Unity plugin here]()
+[Download the Unity plugin here](https://github.com/ultraio/unity-auth-plugin)
 
 ## Installing the Ultra Unity Plugin
 

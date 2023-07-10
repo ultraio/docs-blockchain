@@ -7,6 +7,9 @@ import CustomLayout from '../../layout/CustomLayout.vue';
 import DemoApiVue from '../../layout/widgets/DemoApi.vue';
 import ButtonVue from '../../layout/widgets/Button.vue';
 import TabsVue from '../../layout/widgets/Tabs.vue';
+import MainnetVue from '../../layout/environments/Mainnet.vue';
+import StagingVue from '../../layout/environments/Staging.vue';
+import ExperimentalVue from '../../layout/environments/Experimental.vue';
 
 export default {
     ...Theme,
@@ -15,6 +18,9 @@ export default {
         app.component('DemoApi', DemoApiVue);
         app.component('Button', ButtonVue);
         app.component('Tabs', TabsVue);
+        app.component('Mainnet', MainnetVue);
+        app.component('Staging', StagingVue);
+        app.component('Experimental', ExperimentalVue);
     },
     setup() {
         const { frontmatter } = useData();

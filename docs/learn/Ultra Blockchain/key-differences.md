@@ -42,7 +42,7 @@ On the Ultra blockchain, the ranking mechanism for the queuing of transactions h
 
 Extensive changes have been made by Ultra to the core concept of **CPU/NET**. On Ultra these have been combined into a simplified, single resource called POWER. User accounts stake **UOS** to gain **POWER**. Dapp user can pay for their users' transaction **POWER** usage.
 
-Read more in the <Experimental>[Power Policy](./power-resource.md) section as well as the [Rate Limiting](./rate-limiting.md)</Experimental><Staging>[Transaction Queue](./transaction-limits-queues.md)</Staging><Mainnet>[Transaction Queue](./transaction-limits-queues.md)</Mainnet>.
+Read more in the [Power Policy](./power-resource.md) section as well as the <Experimental>[Rate Limiting](./rate-limiting.md)</Experimental><Staging>[Transaction Queue](./transaction-limits-queues.md)</Staging><Mainnet>[Transaction Queue](./transaction-limits-queues.md)</Mainnet>.
 
 **RAM**
 

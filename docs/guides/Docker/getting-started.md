@@ -100,10 +100,29 @@ Inside of the docker image navigate into the `contracts` directory, and run the 
 ```
 cd /opt/ultra_workdir/contracts
 ```
+<Mainnet>
 
 ```
 eosio-cpp -abigen -o hello.wasm hello.cpp
 ```
+
+</Mainnet>
+
+<Staging>
+
+```
+eosio-cpp -abigen -o hello.wasm hello.cpp
+```
+
+</Staging>
+
+<Experimental>
+
+```
+cdt-cpp -abigen -o hello.wasm hello.cpp
+```
+
+</Experimental>
 
 ## Writing your first test
 

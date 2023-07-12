@@ -12,7 +12,7 @@ All information about Contract Development Kit on how to develop a smart contrac
 
 EOSIO.CDT (Contract Development Toolkit) is a toolchain for WebAssembly (WASM) and a set of tools to facilitate smart contract development for the EOSIO platform. In addition to being a general purpose WebAssembly toolchain, EOSIO specific optimizations are available to support building EOSIO smart contracts. 
 
-This toolchain is built around Clang 7, which means that EOSIO.CDT has the most currently available optimizations and analyses from LLVM, but as the WASM target is still considered experimental, some optimizations are incomplete or not available.
+This toolchain is built around Clang <Mainnet>7</Mainnet><Staging>7</Staging><Experimental>9</Experimental>, which means that EOSIO.CDT has the most currently available optimizations and analyses from LLVM, but as the WASM target is still considered experimental, some optimizations are incomplete or not available.
 
 ## <Mainnet>eosio-cpp</Mainnet><Staging>eosio-cpp</Staging><Experimental>cdt-cpp</Experimental>
 

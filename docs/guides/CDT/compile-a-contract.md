@@ -23,11 +23,35 @@ Navigate to the hello folder in examples (./examples/hello), you should then see
 
 Run the following commands
 
+<Staging>
+
 ```shell script
 $ mkdir build
 $ cd build
 $ eosio-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
 ```
+
+</Staging>
+
+<Mainnet>
+
+```shell script
+$ mkdir build
+$ cd build
+$ eosio-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+```
+
+</Mainnet>
+
+<Experimental>
+
+```shell script
+$ mkdir build
+$ cd build
+$ cdt-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+```
+
+</Experimental>
 
 This will generate 2 files
 

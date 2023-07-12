@@ -54,7 +54,7 @@ class [[eosio::contract]] hello : public eosio::contract {
 
 _Above is Content for `hello.cpp`_
 
-## eosio-cpp binary
+## <Mainnet>eosio-cpp</Mainnet><Staging>eosio-cpp</Staging><Experimental>cdt-cpp</Experimental> binary
 
 There is a single binary which is included with our docker image.
 
@@ -65,19 +65,59 @@ There is a single binary which is included with our docker image.
 
 ### Usage
 
+<Mainnet>
+
 ```
 eosio-cpp -help
 ```
 
+</Mainnet>
+
+<Staging>
+
+```
+eosio-cpp -help
+```
+
+</Staging>
+
+<Experimental>
+
+```
+cdt-cpp -help
+```
+
+</Experimental>
+
 ## Compiling a Smart Contract
 
-Using the above `hello.cpp` file we can utilize `eosio-cpp` to compile it.
+Using the above `hello.cpp` file we can utilize <Mainnet>`eosio-cpp`</Mainnet><Staging>`eosio-cpp`</Staging><Experimental>`cdt-cpp`</Experimental> to compile it.
 
 Run the following command **inside the docker image**.
+
+<Mainnet>
 
 ```cpp
 eosio-cpp hello.cpp
 ```
+
+</Mainnet>
+
+<Staging>
+
+```cpp
+eosio-cpp hello.cpp
+```
+
+</Staging>
+
+<Experimental>
+
+```cpp
+cdt-cpp hello.cpp
+```
+
+</Experimental>
 
 Three files should be created in the `hello` directory.
 
@@ -95,7 +135,7 @@ After compiling the smart contract there are two options for deployment in the l
 
 ## CMake
 
-When building smart contracts, developers may have more than one file. While `eosio-cpp` provides the basics, it is recommended to use CMake for anything more complex than single file.
+When building smart contracts, developers may have more than one file. While <Mainnet>`eosio-cpp`</Mainnet><Staging>`eosio-cpp`</Staging><Experimental>`cdt-cpp`</Experimental> provides the basics, it is recommended to use CMake for anything more complex than single file.
 
 We will try compiling the `eosio.token` contract in this example.
 

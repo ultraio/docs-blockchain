@@ -2,6 +2,8 @@
 node_modules
 packages/*/docs/.vitepress/cache
 dist
+.DS_Store
+.meta
 
 # =======================================
 # Global Ignores

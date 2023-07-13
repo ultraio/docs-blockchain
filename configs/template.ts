@@ -43,16 +43,24 @@ export const templateConfig: UserConfig<DefaultTheme.Config> = {
         // Open Graph
         ['meta', { name: 'description', content: description }],
         ['meta', { property: 'og:type', content: 'website' }],
-        ['meta', { property: 'og:url', content: 'https://docs.ultra.io' }],
-        ['meta', { property: 'og:title', content: 'Ultra.io Documentation' }],
+        ['meta', { property: 'og:url', content: 'https://developers.ultra.io' }],
+        ['meta', { property: 'og:title', content: 'Ultra Developer Portal' }],
         ['meta', { property: 'og:description', content: description }],
         ['meta', { property: 'og:image', content: '/meta.png' }],
         // Twitter
         ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
-        ['meta', { property: 'twitter:url', content: 'https://docs.ultra.io' }],
-        ['meta', { property: 'twitter:title', content: 'Ultra.io Docs' }],
+        ['meta', { property: 'twitter:url', content: 'https://developers.ultra.io' }],
+        ['meta', { property: 'twitter:title', content: 'Ultra Developer Portal' }],
         ['meta', { property: 'twitter:description', content: description }],
         ['meta', { property: 'twitter:image', content: '/meta.png' }],
+        // Google Analytics
+        [
+            'script',
+            {
+                async: true,
+                src: 'https://www.googletagmanager.com/gtag/js?id=GTM-WVKHHPB',
+            },
+        ],
     ],
     vue: {
         template: {

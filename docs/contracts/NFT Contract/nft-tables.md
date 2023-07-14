@@ -481,3 +481,36 @@ cleos get table eosio.nft.ft eosio.nft.ft factorygrp.a
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factorygrp.a", "json": true}'
 ```
+
+<Experimental>
+## saleshrlimcfg
+
+-   Table: `saleshrlimcfg`
+-   Code: `eosio.nft.ft`
+-   Scope: `0 - second hand, 1 - first hand`
+-   Key: N/A
+
+The table stores information about maximum share basis points that can be distributed during token purchase
+
+| Fields                | Type                        | Description                                   |
+| --------------------- | --------------------------- | --------------------------------------------- |
+| max_ultra_share_bp    | uint16_t                    | ID of this token factory group                |
+| max_factory_share_bp  | uint16_t                    | Manager of the factory group                  |
+| min_promoter_share_bp | uint16_t                    | URI of the factory group metadata             |
+| max_promoter_share_bp | uint16_t                    | Hash of the factory group metadata            |
+| default_promoter      | std::optional\<eosio::name> | Array of factories in the token factory group |
+
+Most relevant actions: `setsharelim`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 saleshrlimcfg
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlimcfg", "json": true}'
+```
+</Experimental>

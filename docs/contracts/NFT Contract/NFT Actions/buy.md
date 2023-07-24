@@ -34,7 +34,7 @@ If min_resell_price for a token factory is in USD the final price is calculated 
 min_resell_price converted to UOS using 1 min moving average. If max_price is less than final price
 transaction is reverted.
 
-If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly.
+If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If not promoter is specified then default promoter will be used specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `default_promoter`.
 
 Resale shares in the global resale table will be initialized if un-available.
 

@@ -1,10 +1,10 @@
 ---
-title: 'adjtrdwin.a'
-order: 5
+title: 'settrdwin.a'
+order: 27
 deploy: []
 ---
 
-# adjtrdwin.a - adjust trading windows
+# settrdwin.a - set trading window
 
 Allows a token manager to update the `trading_window_start` and `trading_window_end` for an existing token factory.
 
@@ -37,7 +37,7 @@ to one of these:
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft adjtrdwin.a '[ 1, "2023-01-01T00:00:00", "2023-01-01T00:00:30" ]' -p manager.acc
+cleos push action eosio.nft.ft settrdwin.a '[ 1, "2023-01-01T00:00:00", "2023-01-01T00:00:30" ]' -p manager.acc
 ```
 
 ## JavaScript - eosjs
@@ -47,7 +47,7 @@ await api.transact({
     actions: [
         {
             account: 'eosio.nft.ft',
-            name: 'adjtrdwin.a',
+            name: 'settrdwin.a',
             authorization: [{ actor: 'manager.acc', permission: 'active' }],
             data: {
                 token_factory_id: 1,

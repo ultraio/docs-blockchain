@@ -12,14 +12,14 @@ Allows a token manager to update the `trading_window_start` and `trading_window_
 
 Tradeability can only be update from this:
 
--   Uniq is never Tradable (null, 0)
+-   Uniq is never Tradable (`trading_window_start`=null, `trading_window_end`=0)
 
 to one of these:
 
--   Uniq is always Tradable (null, null)
--   There is a start date (X, null)
--   There is an end date (null, Y)
--   There is a full trading window (X, Y)
+-   Uniq is always Tradable (`trading_window_start`=null, `trading_window_end`=null)
+-   There is a start date (`trading_window_start`=X, `trading_window_end`=null)
+-   There is an end date (`trading_window_start`=null, `trading_window_end`=Y)
+-   There is a full trading window (`trading_window_start`=X, `trading_window_end`=Y)
 
 **Parameter validation**
 
@@ -31,13 +31,13 @@ to one of these:
 | Property Name        | C++ Type                 | Javascript Type | Example               |
 | -------------------- | ------------------------ | --------------- | --------------------- |
 | token_factory_id     | uint64_t                 | number          | 1                     |
-| trading_window_start | optional<time_point_sec> | string          | "1970-01-01T00:00:00" |
-| trading_window_end   | optional<time_point_sec> | string          | "1970-01-01T00:00:30" |
+| trading_window_start | optional<time_point_sec> | string          | "2023-01-01T00:00:00" |
+| trading_window_end   | optional<time_point_sec> | string          | "2023-01-01T00:00:30" |
 
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft adjtrdwin.a '[ 1, "1970-01-01T00:00:00", "1970-01-01T00:00:30" ]' -p manager.acc
+cleos push action eosio.nft.ft adjtrdwin.a '[ 1, "2023-01-01T00:00:00", "2023-01-01T00:00:30" ]' -p manager.acc
 ```
 
 ## JavaScript - eosjs
@@ -51,8 +51,8 @@ await api.transact({
             authorization: [{ actor: 'manager.acc', permission: 'active' }],
             data: {
                 token_factory_id: 1,
-                trading_window_start: '1970-01-01T00:00:00',
-                trading_window_end: '1970-01-01T00:00:30',
+                trading_window_start: '2023-01-01T00:00:00',
+                trading_window_end: '2023-01-01T00:00:30',
             },
         },
     ],

@@ -26,7 +26,7 @@ After the transaction execution the maximum share in basis points will be adjust
 | Fields                    | Type                        | Description                                                                 |
 | ------------------------- | --------------------------- | --------------------------------------------------------------------------- |
 | max_ultra_share_bp        | uint16_t                    | Maximum sale share for Ultra protocol in basis points                       |
-| max_factory_share_cfg     | uint16_t                    | Maximum total share of all factory beneficiaries in basis points            |
+| max_factory_share_bp      | uint16_t                    | Maximum total share of all factory beneficiaries in basis points            |
 | min_promoter_share_bp     | uint16_t                    | Minimum allowed promoter share in basis points                              |
 | max_promoter_share_bp     | uint16_t                    | Maximum allowed promoter share in basis points                              |
 | default_promoter          | std::optional\<eosio::name> | Default promoter account to be used if no promoter is specified             |

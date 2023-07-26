@@ -483,6 +483,7 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 ```
 
 <Experimental>
+
 ## saleshrlimcfg
 
 -   Table: `saleshrlmcfg`
@@ -514,4 +515,5 @@ cleos get table eosio.nft.ft 0 saleshrlmcfg
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlmcfg", "json": true}'
 ```
+
 </Experimental>

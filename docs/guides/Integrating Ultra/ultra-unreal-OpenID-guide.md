@@ -2,7 +2,7 @@
 title: 'Ultra Unreal OpenID guide'
 deploy: ['staging', 'mainnet']
 outline: [0, 5]
-order: 4
+order: 5
 ---
 
 # Ultra Unreal OpenID guide

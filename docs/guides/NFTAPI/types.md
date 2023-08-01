@@ -16,7 +16,7 @@ supporting 34 decimal digits of significand and an exponent range of
 
 ##### Example
 
-``` hljs
+``` js
 987.65
 ```
 
@@ -31,7 +31,7 @@ value.
 
 ##### Example
 
-``` hljs
+``` js
 987
 ```
 
@@ -52,7 +52,7 @@ Represent an on chain type of transaction.
 
 ##### Example
 
-``` hljs
+``` js
 "IRREVERSIBLE"
 ```
 
@@ -63,12 +63,6 @@ Represent an on chain type of transaction.
 ##### Description
 
 The `Boolean` scalar type represents `true` or `false`.
-
-##### Example
-
-``` hljs
-true
-```
 
 [Types](#group-Types)
 
@@ -87,10 +81,10 @@ Represents a currency, can be used to display pricing unit.
 
 ##### Example
 
-``` hljs
+``` js
 {
-  "code": "xyz789",
-  "symbol": "abc123"
+  "code": "abc123",
+  "symbol": "xyz789"
 }
 ```
 
@@ -106,7 +100,7 @@ format.
 
 ##### Example
 
-``` hljs
+``` js
 "Thu Jul 13 2023 13:27:11 GMT+0200"
 ```
 
@@ -122,7 +116,7 @@ values as specified by [IEEE
 
 ##### Example
 
-``` hljs
+``` js
 987.65
 ```
 
@@ -137,8 +131,8 @@ values. Int can represent values between -(2^31) and 2^31 - 1.
 
 ##### Example
 
-``` hljs
-123
+``` js
+987
 ```
 
 [Types](#group-Types)
@@ -151,7 +145,7 @@ Represent a JSON object.
 
 ##### Example
 
-``` hljs
+``` js
 {"someProperty": "myStringValue", "otherProperty": 987}
 ```
 
@@ -165,7 +159,7 @@ Represent all supported primitive type for json object.
 
 ##### Example
 
-``` hljs
+``` js
 "true | "myStringValue" | 987 | 987.65"
 ```
 
@@ -187,7 +181,7 @@ unit.
 
 ##### Example
 
-``` hljs
+``` js
 {"amount": 987.65, "currency": Currency}
 ```
 
@@ -209,8 +203,8 @@ is 25.
 
 ##### Example
 
-``` hljs
-{"limit": 123, "skip": 123}
+``` js
+{"limit": 123, "skip": 987}
 ```
 
 [Types](#group-Types)
@@ -232,8 +226,8 @@ limit to 25 maximum results per page.
 
 ##### Example
 
-``` hljs
-{"limit": 987, "skip": 987}
+``` js
+{"limit": 123, "skip": 123}
 ```
 
 [Types](#group-Types)
@@ -248,8 +242,8 @@ represent free-form human-readable text.
 
 ##### Example
 
-``` hljs
-"xyz789"
+``` js
+"abc123"
 ```
 
 [Types](#group-Types)
@@ -277,7 +271,7 @@ The Uniq object represents all information about a uniq.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "factory": UniqFactory,
   "id": 987,
@@ -310,9 +304,9 @@ video or a file. It can be refreshed to discover changes.
 
 ##### Example
 
-``` hljs
+``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "uris": ["abc123"]
 }
 ```
@@ -346,7 +340,7 @@ The UniqFactory object represents all information about a uniq factory.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "accountMintingLimit": 987,
   "assetCreator": "aa1aa2aa3ag4",
@@ -392,7 +386,7 @@ Interface for actions on a window period.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
@@ -418,7 +412,7 @@ pagination information.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "data": [UniqFactory],
   "pagination": Pagination,
@@ -447,7 +441,7 @@ related to a uniq factory.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
@@ -475,7 +469,7 @@ describing attributes available for uniqs related to a factory.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "key": "xyz789",
   "value": UniqMetadataAttributeDescriptor
@@ -505,7 +499,7 @@ follows the uniq factory metadata structure of the NFT standard.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "attributes": [UniqFactoryMetadataAttribute],
   "description": "xyz789",
@@ -513,7 +507,7 @@ follows the uniq factory metadata structure of the NFT standard.
   "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "abc123"
+  "subName": "xyz789"
 }
 ```
 
@@ -538,7 +532,7 @@ end\], can only be minted between the start and end dates
 
 ##### Example
 
-``` hljs
+``` js
 {
   "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
@@ -564,7 +558,7 @@ factory.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "minimumPrice": MonetaryAmount,
   "shares": [UniqFactoryResaleShare]
@@ -591,10 +585,10 @@ that will be applied when the uniq is sold.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "account": "aa1aa2aa3ag4",
-  "basisPoints": 987,
+  "basisPoints": 123,
   "ratio": 123.45
 }
 ```
@@ -617,7 +611,7 @@ Uniq factory on chain status.
 
 ##### Example
 
-``` hljs
+``` js
 "ACTIVE"
 ```
 
@@ -642,7 +636,7 @@ purpose.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "authorized": 987,
   "existing": 987,
@@ -674,7 +668,7 @@ buy/resell action is performed.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
@@ -703,7 +697,7 @@ It's being checked when a transfer action is performed.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
@@ -729,11 +723,11 @@ information.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "data": [Uniq],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -757,7 +751,7 @@ so it could be nicely displayed in the frontend.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "gallery": [UniqResource],
   "hero": UniqResource,
@@ -792,7 +786,7 @@ to give some flavour to the token.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "cachedSource": UniqResource,
   "content": UniqMetadataContent,
@@ -820,7 +814,7 @@ attributes available for the uniq.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "descriptor": UniqMetadataAttributeDescriptor,
   "key": "xyz789",
@@ -848,11 +842,11 @@ numerical or string data for the factory.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "description": "xyz789",
   "dynamic": false,
-  "name": "xyz789",
+  "name": "abc123",
   "type": "ISODateString"
 }
 ```
@@ -876,7 +870,7 @@ Primitive type of the attribute.
 
 ##### Example
 
-``` hljs
+``` js
 "ISODateString"
 ```
 
@@ -905,17 +899,17 @@ uniq metadata structure of the NFT standard.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "attributes": [UniqMetadataAttribute],
-  "description": "xyz789",
+  "description": "abc123",
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
   "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "abc123"
+  "subName": "xyz789"
 }
 ```
 
@@ -937,7 +931,7 @@ of the metadata. Each resource must be described as a dynamicResource.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "key": "abc123",
   "value": UniqDynamicResource
@@ -963,9 +957,9 @@ described as a staticResource.
 
 ##### Example
 
-``` hljs
+``` js
 {
-  "key": "xyz789",
+  "key": "abc123",
   "value": UniqStaticResource
 }
 ```
@@ -988,7 +982,7 @@ Internal status of the metadata resolution.
 
 ##### Example
 
-``` hljs
+``` js
 "INVALID"
 ```
 
@@ -1009,7 +1003,7 @@ The UniqResale object represents information about the resale action.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "onSaleDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "price": UniqRevenue
@@ -1035,7 +1029,7 @@ file.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "contentType": "xyz789",
   "integrity": UniqResourceIntegrity,
@@ -1062,8 +1056,8 @@ the attended one.
 
 ##### Example
 
-``` hljs
-{"hash": "xyz789", "type": "SHA256"}
+``` js
+{"hash": "abc123", "type": "SHA256"}
 ```
 
 [Types](#group-Types)
@@ -1082,7 +1076,7 @@ Type of cryptographic hash used.
 
 ##### Example
 
-``` hljs
+``` js
 "SHA256"
 ```
 
@@ -1108,7 +1102,7 @@ applied if the uniq is sold.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "amount": 987.65,
   "creators": UniqSharedRevenue,
@@ -1137,7 +1131,7 @@ to filter uniqs by a range of serial number inside a factory.
 
 ##### Example
 
-``` hljs
+``` js
 {"max": 987, "min": 987}
 ```
 
@@ -1161,8 +1155,8 @@ will be applied when a uniq is sold.
 
 ##### Example
 
-``` hljs
-{"amount": 987.65, "basisPoints": 123, "ratio": 987.65}
+``` js
+{"amount": 987.65, "basisPoints": 987, "ratio": 987.65}
 ```
 
 [Types](#group-Types)
@@ -1184,7 +1178,7 @@ video or a file. Represented as a UniqResource with a hash specified.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "contentType": "xyz789",
   "integrity": UniqResourceIntegrity,
@@ -1214,7 +1208,7 @@ between the start and end dates.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "duration": 987,
   "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
@@ -1244,7 +1238,7 @@ end\], can only be transferred between the start and end dates.
 
 ##### Example
 
-``` hljs
+``` js
 {
   "duration": 987,
   "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
@@ -1269,7 +1263,7 @@ Specify the type of the uniq asset.
 
 ##### Example
 
-``` hljs
+``` js
 "COLLECTIBLE"
 ```
 
@@ -1283,6 +1277,6 @@ A non empty string that represent a user wallet id.
 
 ##### Example
 
-``` hljs
+``` js
 "aa1aa2aa3ag4"
 ```

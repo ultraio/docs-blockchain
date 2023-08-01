@@ -27,7 +27,7 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Query
 
-``` hljs
+``` js
 subscription UniqFactories($assetManager: WalletId) {
   uniqFactories(assetManager: $assetManager) {
     accountMintingLimit
@@ -247,13 +247,13 @@ subscription UniqFactories($assetManager: WalletId) {
 
 ##### Variables
 
-``` hljs
+``` js
 {"assetManager": "aa1aa2aa3ag4"}
 ```
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqFactories": {
@@ -304,7 +304,7 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Query
 
-``` hljs
+``` js
 subscription UniqsOfFactory(
   $blockStep: BlockStep,
   $factoryId: BigInt!,
@@ -672,7 +672,7 @@ subscription UniqsOfFactory(
 
 ##### Variables
 
-``` hljs
+``` js
 {
   "blockStep": "IRREVERSIBLE",
   "factoryId": 987,
@@ -683,7 +683,7 @@ subscription UniqsOfFactory(
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqsOfFactory": {
@@ -726,7 +726,7 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Query
 
-``` hljs
+``` js
 subscription UniqsOfWallet(
   $blockStep: BlockStep,
   $ids: [BigInt!],
@@ -1092,7 +1092,7 @@ subscription UniqsOfWallet(
 
 ##### Variables
 
-``` hljs
+``` js
 {
   "blockStep": "IRREVERSIBLE",
   "ids": [987],
@@ -1102,7 +1102,7 @@ subscription UniqsOfWallet(
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqsOfWallet": {

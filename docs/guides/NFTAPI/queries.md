@@ -27,7 +27,7 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Query
 
-``` hljs
+``` js
 query Uniq(
   $blockStep: BlockStep,
   $id: BigInt!
@@ -391,13 +391,13 @@ query Uniq(
 
 ##### Variables
 
-``` hljs
+``` js
 {"blockStep": "IRREVERSIBLE", "id": 987}
 ```
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniq": {
@@ -440,7 +440,7 @@ Returns a [`UniqFactoryList!`](types.md#uniqfactorylist)
 
 ##### Query
 
-``` hljs
+``` js
 query UniqFactories(
   $assetManager: WalletId,
   $pagination: PaginationInput
@@ -673,7 +673,7 @@ query UniqFactories(
 
 ##### Variables
 
-``` hljs
+``` js
 {
   "assetManager": "aa1aa2aa3ag4",
   "pagination": PaginationInput
@@ -682,13 +682,13 @@ query UniqFactories(
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -716,7 +716,7 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Query
 
-``` hljs
+``` js
 query UniqFactory($id: BigInt!) {
   uniqFactory(id: $id) {
     accountMintingLimit
@@ -936,13 +936,13 @@ query UniqFactory($id: BigInt!) {
 
 ##### Variables
 
-``` hljs
+``` js
 {"id": 987}
 ```
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqFactory": {
@@ -994,7 +994,7 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Query
 
-``` hljs
+``` js
 query UniqsOfFactory(
   $blockStep: BlockStep,
   $factoryId: BigInt!,
@@ -1371,7 +1371,7 @@ query UniqsOfFactory(
 
 ##### Variables
 
-``` hljs
+``` js
 {
   "blockStep": "IRREVERSIBLE",
   "factoryId": 987,
@@ -1383,7 +1383,7 @@ query UniqsOfFactory(
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqsOfFactory": {
@@ -1420,7 +1420,7 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Query
 
-``` hljs
+``` js
 query UniqsOfWallet(
   $blockStep: BlockStep,
   $ids: [BigInt!],
@@ -1795,7 +1795,7 @@ query UniqsOfWallet(
 
 ##### Variables
 
-``` hljs
+``` js
 {
   "blockStep": "IRREVERSIBLE",
   "ids": [987],
@@ -1806,13 +1806,13 @@ query UniqsOfWallet(
 
 ##### Response
 
-``` hljs
+``` js
 {
   "data": {
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }

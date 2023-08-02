@@ -7,6 +7,12 @@ order: 5
 
 # Using the Ultra Unreal Subsystem
 
+## Example Project
+
+We've put together an example project which illustrates the expected flow. You can grab the [example project here](https://github.com/ultraio/UnrealSampleProject).
+
+## Access
+
 You'll need a `client_id` for this. To get one, [you can request one directly from Ultra](https://developers.ultra.io/guides/Integrating%20Ultra/requesting-a-client_id.html).
 
 ## Configuration

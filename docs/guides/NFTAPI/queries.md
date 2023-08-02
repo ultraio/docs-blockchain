@@ -1389,7 +1389,7 @@ query UniqsOfFactory(
     "uniqsOfFactory": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -1812,7 +1812,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }

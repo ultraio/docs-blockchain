@@ -84,7 +84,7 @@ Represents a currency, can be used to display pricing unit.
 ``` js
 {
   "code": "abc123",
-  "symbol": "xyz789"
+  "symbol": "abc123"
 }
 ```
 
@@ -132,7 +132,7 @@ values. Int can represent values between -(2^31) and 2^31 - 1.
 ##### Example
 
 ``` js
-987
+123
 ```
 
 [Types](#group-Types)
@@ -204,7 +204,7 @@ is 25.
 ##### Example
 
 ``` js
-{"limit": 123, "skip": 987}
+{"limit": 987, "skip": 123}
 ```
 
 [Types](#group-Types)
@@ -227,7 +227,7 @@ limit to 25 maximum results per page.
 ##### Example
 
 ``` js
-{"limit": 123, "skip": 123}
+{"limit": 987, "skip": 123}
 ```
 
 [Types](#group-Types)
@@ -243,7 +243,7 @@ represent free-form human-readable text.
 ##### Example
 
 ``` js
-"abc123"
+"xyz789"
 ```
 
 [Types](#group-Types)
@@ -306,7 +306,7 @@ video or a file. It can be refreshed to discover changes.
 
 ``` js
 {
-  "contentType": "abc123",
+  "contentType": "xyz789",
   "uris": ["abc123"]
 }
 ```
@@ -416,7 +416,7 @@ pagination information.
 {
   "data": [UniqFactory],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -445,7 +445,7 @@ related to a uniq factory.
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": false,
+  "locked": true,
   "source": UniqResource,
   "status": "INVALID"
 }
@@ -471,7 +471,7 @@ describing attributes available for uniqs related to a factory.
 
 ``` js
 {
-  "key": "xyz789",
+  "key": "abc123",
   "value": UniqMetadataAttributeDescriptor
 }
 ```
@@ -502,12 +502,12 @@ follows the uniq factory metadata structure of the NFT standard.
 ``` js
 {
   "attributes": [UniqFactoryMetadataAttribute],
-  "description": "xyz789",
+  "description": "abc123",
   "medias": UniqMedias,
   "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "xyz789"
+  "subName": "abc123"
 }
 ```
 
@@ -588,7 +588,7 @@ that will be applied when the uniq is sold.
 ``` js
 {
   "account": "aa1aa2aa3ag4",
-  "basisPoints": 123,
+  "basisPoints": 987,
   "ratio": 123.45
 }
 ```
@@ -727,7 +727,7 @@ information.
 {
   "data": [Uniq],
   "pagination": Pagination,
-  "totalCount": 123
+  "totalCount": 987
 }
 ```
 
@@ -846,7 +846,7 @@ numerical or string data for the factory.
 {
   "description": "xyz789",
   "dynamic": false,
-  "name": "abc123",
+  "name": "xyz789",
   "type": "ISODateString"
 }
 ```
@@ -902,7 +902,7 @@ uniq metadata structure of the NFT standard.
 ``` js
 {
   "attributes": [UniqMetadataAttribute],
-  "description": "abc123",
+  "description": "xyz789",
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
@@ -933,7 +933,7 @@ of the metadata. Each resource must be described as a dynamicResource.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqDynamicResource
 }
 ```
@@ -959,7 +959,7 @@ described as a staticResource.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqStaticResource
 }
 ```
@@ -1057,7 +1057,7 @@ the attended one.
 ##### Example
 
 ``` js
-{"hash": "abc123", "type": "SHA256"}
+{"hash": "xyz789", "type": "SHA256"}
 ```
 
 [Types](#group-Types)
@@ -1156,7 +1156,7 @@ will be applied when a uniq is sold.
 ##### Example
 
 ``` js
-{"amount": 987.65, "basisPoints": 987, "ratio": 987.65}
+{"amount": 987.65, "basisPoints": 123, "ratio": 987.65}
 ```
 
 [Types](#group-Types)
@@ -1182,7 +1182,7 @@ video or a file. Represented as a UniqResource with a hash specified.
 {
   "contentType": "xyz789",
   "integrity": UniqResourceIntegrity,
-  "uri": "abc123"
+  "uri": "xyz789"
 }
 ```
 

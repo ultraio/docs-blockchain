@@ -16,6 +16,7 @@ To interact with the wallet, the wallet injects an object named ultra into the j
 ## Links
 
 - [How to install the extension](./installing-extension.md)
+- [How to get tokens on Testnet](./get-tokens-testnet.md)
 - [Demo application](https://stackblitz.com/edit/ultra-wallet-test)
 - [Developer resources](./developer-resources.md)
 - [App Template](https://github.com/Stuyk/ultra-wallet-app-template)

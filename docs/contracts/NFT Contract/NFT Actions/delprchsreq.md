@@ -10,7 +10,7 @@ This action is used to delete purchase requirements for a token factory.
 
 ## Technical Behavior
 
-TBA
+`token_factory_id` and `index` of the purchase requirement to remove. Transaction should be signed by factories asset manager otherwise it reverts.
 
 ## Action Parameters
 

@@ -28,6 +28,8 @@ Factory manager can specify purchase options for users. Note they currently have
 
 If RAM price is greater than `maximum_uos_payment` transaction reverts.
 
+If token factory is inactive transaction reverts as well.
+
 `memo` - a string of no more than 256 characters. useful for parsing on a backend.
 
 ## Action Parameters

@@ -1,8 +1,8 @@
 ---
-title: 'The setavatar action'
+title: 'The `setavatar` action'
 deploy: ['staging', 'mainnet']
 outline: [0, 4]
-order: 1
+order: 2
 ---
 
 # The setavatar action

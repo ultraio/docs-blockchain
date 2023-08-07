@@ -1,8 +1,8 @@
 ---
-title: 'The clearavatar action'
+title: 'The `clearavatar` action'
 deploy: ['staging', 'mainnet']
 outline: [0, 4]
-order: 1
+order: 3
 ---
 
 # The clearavatar action

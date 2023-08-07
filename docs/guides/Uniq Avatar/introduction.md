@@ -17,12 +17,11 @@ If a user loses possession of the Uniq through transfer or burn actions, it can 
 
 ## What are Uniq Avatars for?
 
--   how do we intend for them to be used within the ecosystem?
-
--   what's the value?
+We intend for Uniq Avatars to be used within Ultra as cross-ecosystem visual identifiers of users and their identity. This means that if you see someone with a Uniq as their avatar in a game or an application, you can rest assured that **it is verifiable**.
 
 ## Developer Use
 
--   for developers:
-    -   setting your avatar
-    -   clearing your avatar
+For developers we provide details about the two actions available via the on-chain ABI.
+
+-   [setavatar](./setavatar.md)
+-   [clearavatar](./clearavatar.md)

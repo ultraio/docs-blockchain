@@ -7,19 +7,21 @@ oultine: [0, 4]
 
 # Ultra Wallet Browser Extension
 
-Ultra Wallet browser extension is a crypto wallet that helps you access decentralized applications on Ultra blockchain and securely manage digital assets.
+![](/images/uwax_main.png)
 
-The principal function is to create and manage private keys on behalf of its users and manage the connections between the wallet and web applications. 
+The Ultra Wallet browser extension is a crypto wallet that allows you to access decentralized applications on Ultra's blockchain and securely manage your digital assets.
 
-To interact with the wallet, the wallet injects an object named ultra into the javascript context of every site. This object contains all the methods required to obtain the blockchain id, the private key, and sign blockchain transactions.
+The principal functions are to create and manage private keys on behalf of its users, to manage the connections between the wallet and web applications, and allow users to securely sign transactions.
+
+To interact with the wallet, the wallet injects an object named `ultra` into the javascript context of every site. This object contains all the methods required to obtain the user's blockchain id, their public key, and to sign blockchain transactions.
 
 ## Links
 
-- [How to install the extension](./installing-extension.md)
-- [How to get tokens on Testnet](./get-tokens-testnet.md)
-- [Demo application](https://stackblitz.com/edit/ultra-wallet-test)
-- [Developer resources](./developer-resources.md)
-- [App Template](https://github.com/Stuyk/ultra-wallet-app-template)
+-   [How to install the extension](./installing-extension.md)
+-   [How to get tokens on Testnet](./get-tokens-testnet.md)
+-   [Demo application](https://stackblitz.com/edit/ultra-wallet-test)
+-   [Developer resources](./developer-resources.md)
+-   [App Template](https://github.com/Stuyk/ultra-wallet-app-template)
 
 ## Try It
 

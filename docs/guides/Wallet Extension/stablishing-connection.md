@@ -2,12 +2,12 @@
 title: 'Establishing a Connection'
 deploy: ['staging', 'mainnet']
 order: 5
-outline: [0,4]
+outline: [0, 4]
 ---
 
 # Establishing a Connection
 
-To begin interacting with Ultra Wallet, a web application must first establish a connection. This connection request will ask the user for permission to share its blockchain id and public key, indicating that they are willing to continue interacting. Once the permission is set for the first time, the web application domain will be whitelisted for future connection requests.
+To begin interacting with the Ultra Wallet, a web application must first establish a connection. This connection request will ask the user for permission to share its blockchain id and public key, indicating that they are willing to continue interacting. Once the permission is set for the first time, the web application domain will be whitelisted for future connection requests.
 Similarly, it is possible to terminate the connection both on the application and on the user side.
 
 ## Connecting
@@ -28,8 +28,8 @@ The `connect()` call will return a Promise that is resolved when the user accept
 
 ### Eagerly Connecting
 
-After a web application connects to Ultra Wallet for the first time, it gains a trusted status.
-Once this trust is established, the application can seamlessly link with Ultra Wallet during future visits or when the page is refreshed, 
+After a web application connects to the Ultra Wallet for the first time, it gains a trusted status.
+Once this trust is established, the application can seamlessly link with Ultra Wallet during future visits or when the page is refreshed,
 eliminating the need to ask the user for authorization. This concept is commonly known as "eagerly connecting".
 
 To implement this, web applications should pass an `onlyIfTrusted` option into the `connect()` call.
@@ -52,7 +52,7 @@ To implement this, applications should pass the referralCode option into the con
 ultra.connect({referralCode: 'ecd1f052-9d0d-4b84-8dd3-10a753d044b5'});
 ```
 
-To get your referral code, go to the Ultra Desktop client -> Wallet and look for the "My referral link" section
+To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section
 
 ## Disconnecting
 
@@ -64,7 +64,7 @@ try {
 }
 ```
 
-The `disconnect()` method revokes the connection permission that the user granted to the web application, if the application is already disconnected,  the Promise will throw an error.
+The `disconnect()` method revokes the connection permission that the user granted to the web application, if the application is already disconnected, the Promise will throw an error.
 
 To handle disconnections, the app can also subscribe to disconnect events.
 

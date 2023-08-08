@@ -2,12 +2,12 @@
 title: 'Response interface'
 deploy: ['staging', 'mainnet']
 order: 3
-outline: [0,4]
+outline: [0, 4]
 ---
 
 # Response interface
 
-To standardize the communication between the decentralized applications and the extension, each method will respond with a Promise and this response format.
+To standardize the communication between decentralized applications and the extension, each method will respond with a Promise and this response format.
 
 ```JavaScript
 /**

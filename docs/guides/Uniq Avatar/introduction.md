@@ -13,7 +13,7 @@ The user sets an avatar using the `setavatar` action and it is then availabe for
 
 Users can change their avatar with the same action or remove avatar completely with the `clearavatar` action.
 
-If a user loses possession of the Uniq through transfer or burn actions, it can no longer be used as an avatar.
+If a user loses possession of the Uniq through transfer or burn actions, it can no longer be used as an avatar and an active avatar with such a Uniq will be cleared.
 
 ## What are Uniq Avatars for?
 

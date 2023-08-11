@@ -52,7 +52,9 @@ To implement this, applications should pass the referralCode option into the con
 ultra.connect({referralCode: 'ecd1f052-9d0d-4b84-8dd3-10a753d044b5'});
 ```
 
-To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section
+To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section, click on the link to copy it.
+
+Once you copy your referral link you can get the referral code from the URL. For example, the next link https://ultra.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5 has the referral code `ecd1f052-9d0d-4b84-8dd3-10a753d044b5`.
 
 ## Disconnecting
 

@@ -6,3 +6,5 @@ outline: [0, 4]
 ---
 
 # Minting your first Uniq
+
+## Using your Token Factory

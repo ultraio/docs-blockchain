@@ -20,11 +20,11 @@ Just to be absolutely clear, the expected flow for building a Token Factory is:
 
 Without the images already in situ, the metadata tool can not verify that they exist, nor can it create the unique hashes that identify them.
 
----
+::: warning
 
 **It is up to you to manage the Token Factory images and ensure that they are permanently available for the network to access.**
 
----
+:::
 
 If you'd prefer to focus just on this section and learn how to push the on-chain transaction that generates the Token Factory, we have prepared a simple example zip file for you that already has been generated based on files that are located in this developer guide. You're welcome to upload this to anywhere semi-permanent for your learning purposes. We suggest Github, and you can access it as a RAW file from there.
 

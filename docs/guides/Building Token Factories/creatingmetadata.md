@@ -25,7 +25,7 @@ This tool takes CSVs and media files (Uniq images, videos and other supported me
 
 ## Obtaining the Metadata tool
 
-1. You can download the latest release of the tool from [here](TODO).
+1. You can download the latest release of the tool from [here](https://github.com/ultraio/metadata-tool/releases).
 2. **[Optional]** Create a `config.json` file in the same directory as your binary/executable. Refer to [Configuration file](#configuration-file) section for more info on the config file.
 
 ## Configuration file

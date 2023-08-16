@@ -14,7 +14,7 @@ ID should be valid and transaction signed by the manager of the corresponding gr
 
 **RAM usage/cost calculation and payment/refund**
 
-- After deleting a token factory group the UOS locked in the factory group is released back to the original payer
+-   After deleting a token factory group, 85% of UOS locked in the factory group is released back to the original payer, while 15% goes to the `eosio.pool` account.
 
 ## Action Parameters
 

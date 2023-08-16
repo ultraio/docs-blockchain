@@ -1,6 +1,6 @@
 ---
 title: 'Transaction Queue and Rate Limiting'
-deploy: ['experimental']
+deploy: ['experimental','staging', 'mainnet']
 outline: [0,4]
 order: -93
 ---

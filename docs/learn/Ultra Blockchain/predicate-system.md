@@ -2,7 +2,7 @@
 title: 'Predicate System'
 deploy: ['staging', 'mainnet']
 outline: [0,4]
-order: -94
+order: -96
 ---
 
 # Predicate System

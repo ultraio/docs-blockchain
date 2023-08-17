@@ -23,13 +23,13 @@ The simplest example is providing the same metadata to all the tokens minted fro
 Similar to the previous example we have a simple factory for game tokens where all of them are identical except for a few unique cases. For those unique tokens (here it is token #1000000) we provide a specific URI and hash so it does not fallback to default
 
 | Property                   | Value                                         |
-| -------------------------- | --------------------------------------------- | --- |
+| -------------------------- | --------------------------------------------- |
 | factory.default_token_uri  | MyGame.com/DefaultMetadataMyGame.com/Metadata |
 | factory.default_token_hash | b0dafd687d5527cef28300392e                    |
 | token.uri (#1000000)       | MyGame.com/1MthMetadata                       |
 | token.hash (#1000000)      | 4e3304e9af1ec7aaa05206b                       |
 | token.uri (rest of Uniqs)  | _null_                                        |
-| token.hash (rest of Uniqs) | _null_                                        |     |
+| token.hash (rest of Uniqs) | _null_                                        |
 
 ## Simple profile picture project
 

@@ -17,9 +17,9 @@ If no dynamic value is used inside `default_token_uri` then this URI will be con
 Acceptable dynamic URI values:
 
 -   `factory_id` - Factory ID based on the on-chain data
--   `token_serial_number` - Serial number of a specific token. Incremental value starting from 1
--   `token_id` - ID of the token. Pool of possible IDs is shared between all Uniqs and in general you won't know it until the token is minted
--   `token_hash` - Hash of the token metadata stored per token
+-   `serial_number` - Serial number of a specific token. Incremental value starting from 1
+-   `id` - ID of the token. Pool of possible IDs is shared between all Uniqs and in general you won't know it until the token is minted
+-   `hash` - Hash of the token metadata stored per token
 
 Example of `static` default token URI: http://myfactory.io/deafult_token.json
 

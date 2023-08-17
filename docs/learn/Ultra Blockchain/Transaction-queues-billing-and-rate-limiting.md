@@ -19,7 +19,7 @@ However, many transactions sent to API nodeos and block producer nodeos pass sig
 
 # Subjective Billing
 
-To address this, subjective billing was introduced. It aims to bill failed transactions and reject any accounts that go subjectively negative. Successful transactions replace their temporary subjective billing with objective billing upon blockchain recording. While this approach significantly reduced CPU waste, it can result in inconsistent billing across nodeos. Consequently, transactions might be lost at any point, potentially causing an account to encounter recurring resource errors and subsequent subjective billings. [For a deeper dive, refer to this article.](https://eosnetwork.com/blog/api-plus-an-introduction-to-subjective-billing-and-lost-transactions/ "An Introduction to Subjective Billing and Lost Transactions").
+To address this, subjective billing was introduced. It aims to bill failed transactions and reject any accounts that go subjectively negative. Successful transactions replace their temporary subjective billing with objective billing upon blockchain recording. While this approach significantly reduced CPU waste, it can result in inconsistent billing across nodeos. Consequently, transactions might be lost at any point, potentially causing an account to encounter recurring resource errors and subsequent subjective billings. For a deeper dive, refer to ['An Introduction to Subjective Billing and Lost Transactions'](https://eosnetwork.com/blog/api-plus-an-introduction-to-subjective-billing-and-lost-transactions/ "An Introduction to Subjective Billing and Lost Transactions").
 
 # Staking and the Ranked Transaction Queue
 
@@ -33,11 +33,11 @@ To balance free network usage for end users and ensure staked users access their
 
 2. **Free User Queue**: For users without staking. This queue can use the remaining CPU time (e.g., 20%). If one queue is vacant, the other can use more CPU time.
 
-To counter spamming from non-staking users, there's a rate limit. Exceeding a set CPU usage threshold results in users getting rate-limited. Higher transaction demands necessitate more staking. [See more details here](./rate-limiting.html)
+To counter spamming from non-staking users, there's a rate limit. Exceeding a set CPU usage threshold results in users getting rate-limited. Higher transaction demands necessitate more staking. See more details in ['Transaction Queue and Rate Limiting'](./rate-limiting.html).
 
 # Addressing Failed Transactions
 
-The volume of failed transactions from both groups remains concerning. A "failed transaction billing" system has been added to minimize the impact on both user types. In this system, failed transactions are added to blocks. Other nodeos validate and apply the provided block billing. Failed transactions only modify billing, not the blockchain state. If a transaction fails at the API nodeos level, it's added to a speculative block but isn't broadcast to the wider network. This is distinct from subjective billing, which bills on all nodes and doesn't add billed transactions to blocks. Furthermore, subjective billing tracks billing locally per nodeos, while failed transaction billing operates only on the active BP node. A transaction with invalid signature or insufficient authority will always be rejected right away.
+The volume of failed transactions from both groups remains concerning. A "failed transaction billing" system has been added to minimize the impact on both user types. In this system, failed transactions are added to blocks. Other nodeos validate and apply the provided block billing. Failed transactions only modify billing, not the blockchain state. If a transaction fails at the API nodeos level, it's added to a speculative block but isn't broadcast to the wider network. This is distinct from subjective billing, which bills on all nodes and doesn't add billed transactions to blocks. Furthermore, subjective billing tracks billing locally per nodeos, while failed transaction billing operates only on the active BP node. Failures are treated differently. A transaction with invalid signature or insufficient authority will always be rejected right away, instead of included in a block and get billed. Some failures will also be given 2nd chance to run, like transactions hit block deadline.
 
 # Current Status
 

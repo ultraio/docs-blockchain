@@ -72,7 +72,7 @@ There are a few things to note.
 To make it compliant with the token id card you must provide images:
 
 -   product: the principal image used when you expand the token id card
--   square: used t o represent your asset when the token id card is collapsed
+-   square: used to represent your asset when the token id card is collapsed
 -   hero: used as the background when you expand the token id card
 -   gallery: a list of images and videos available in the carousel
 
@@ -113,8 +113,8 @@ However, the folder structure can be modified and replaced with a single folder 
 1.  Use the following CSV template: [Google Sheets Metadata Tool Template](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing) (Visit the link and go to `File -> Make a Copy` to make a copy in your own Google Drive).
 2.  Open your copied CSV template in your Google Drive and begin modifications of individual fields. (Read the first sheet for information regarding the template).
 3.  Export both `factory` and `tokens` sheets as CSV files. `File -> Download -> csv`
-4.  Rename factory file to `factory.json` and place in your root folder. (See [Folder Structure](#folder-structure) Above)
-5.  Rename token file to `tokens.json` and place in your root folder.
+4.  Rename factory file to `factory.csv` and place in your root folder. (See [Folder Structure](#folder-structure) Above)
+5.  Rename token file to `tokens.csv` and place in your root folder.
 
 ### Image/Media Pathing:
 
@@ -146,10 +146,9 @@ The tool currently only supports the follow media types:
 
 Once the CSV files and all related images/media files are present in the folder, you can process the folder for JSON creation.
 
-1. Drag & Drop the Folder onto the Executable
+1. In Windows you can drag and drop the folder onto the executable. For Mac and Linux you'll have to run the executable from the command line with the folder as the parameter.
 
     a. Watch the console window for errors.
-
     b. If errors have occurred, you can check the report generated after closing the application
 
 2. If there are no errors, an `upload.json` file will be generated in your root folder.

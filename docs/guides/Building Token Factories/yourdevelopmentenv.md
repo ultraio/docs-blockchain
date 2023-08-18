@@ -23,6 +23,6 @@ Next you will need to set up your local wallet, which will house your private ke
 
 ## 3. Testnet Account
 
-Lastly, you will need a Testnet account which will be the authorizing account that creates the Token Factory and mints the transactions.
+Lastly, you will need a [Testnet account](https://faucet.testnet.app.ultra.io/) which will be the authorizing account that creates the Token Factory and mints the transactions. While you are creating your account, make sure to get tokens for use on Testnet. You'll need these to create Token Factories and Mint tokens.
 
 To set up your account, you can follow [this easy to understand guide](../Basics/create-a-testnet-account.md). You will need docker set up to create your keys, so make sure that you've completed the previous step.

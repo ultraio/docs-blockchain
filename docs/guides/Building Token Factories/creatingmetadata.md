@@ -108,6 +108,10 @@ example/ 📁 (This is your Root Folder)
 
 However, the folder structure can be modified and replaced with a single folder that contains CSV files and relevant images/media files.
 
+We provide a template example for you to use in the context of this guide.
+
+[![Download](/images/token-factories/download.png)](/zip/example.zip)
+
 ### Setup CSV Template:
 
 1.  Use the following CSV template: [Google Sheets Metadata Tool Template](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing) (Visit the link and go to `File -> Make a Copy` to make a copy in your own Google Drive).

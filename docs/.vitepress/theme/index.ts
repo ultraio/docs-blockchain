@@ -8,6 +8,7 @@ import CustomLayout from '../../layout/CustomLayout.vue';
 import DemoApiVue from '../../layout/widgets/DemoApi.vue';
 import ButtonVue from '../../layout/widgets/Button.vue';
 import TabsVue from '../../layout/widgets/Tabs.vue';
+import googleAnalytics from 'vitepress-plugin-google-analytics';
 
 export default {
     ...Theme,
@@ -24,6 +25,10 @@ export default {
             'Experimental',
             await defineAsyncComponent(() => import('../../layout/environments/Experimental.vue'))
         );
+
+        googleAnalytics({
+            id: 'G-904T1HX43E', // Replace with your GoogleAnalytics ID, which should start with the 'G-'
+        });
     },
     setup() {
         const { frontmatter } = useData();

@@ -10,7 +10,20 @@ This action is used to purchase uniqs directly from a token factory.
 
 ## Technical Behavior
 
-TBA
+### Supplying Uniqs for Purchases
+
+In some cases a token factory may require certain uniqs to exist in the user inventory table to enable the user to purchase a uniq.
+
+Think of it like a pre-requisite or an entry ticket to purchasing other uniqs.
+
+When a uniq is being purchased it goes through our `verify_user_uniqs` function that looks into the buyer's inventory and verifies that the token factories required uniqs matches the user supplied uniqs. The function checks that the `user supplied uniqs` from the user matches the `factory required uniqs`. The function checks that the user is passing uniqs that have the correct token factory id, and checks that the user **is not** passing irrelavant uniqs.
+
+It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
+
+Strategy meaning.... `0` just check, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
+
+All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
+
 
 ## Action Parameters
 

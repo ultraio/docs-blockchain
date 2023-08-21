@@ -19,6 +19,7 @@
         "@types/fs-extra": "^11.0.1",
         "@types/node": "^18.15.12",
         "vitepress": "^1.0.0-beta.7",
+        "vitepress-plugin-google-analytics": "^1.0.2",
         "vue": "^3.2.47"
     },
     "dependencies": {

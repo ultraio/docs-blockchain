@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useData, withBase } from 'vitepress';
-import UltraSection from './UltraSections.vue';
 import UltraFooter from './UltraFooter.vue';
-import UltraStat from './UltraStat.vue';
-import UltraLink from './UltraLink.vue';
 import UltraSupport from './UltraSupport.vue';
 import UltraHomeScroll from './UltraHomeScroll.vue';
 
@@ -200,33 +197,7 @@ let currentProducer = ref<string>('eosnation');
 let currentLinkIndex = ref<number>(0);
 let moveSidebarDown = ref<boolean>(false);
 
-async function getBlockCount() {
-    const result = await fetch('https://api.mainnet.ultra.io/v1/chain/get_info');
-    if (!result || !result.ok) {
-        return;
-    }
-
-    const dataSet = await result.json();
-    if (!dataSet) {
-        return;
-    }
-
-    blockCount.value = dataSet.head_block_num;
-    currentProducer.value = dataSet.head_block_producer;
-}
-
-function onScrollDown(isScrolledDown: boolean) {
-    moveSidebarDown.value = isScrolledDown;
-}
-
-onMounted(() => {
-    getBlockCount();
-
-    // Create a block count interval
-    // Updates every 2.5s, and times out after 5 minutes to prevent too much ingestion for APIs.
-    const blockCountInterval = setInterval(getBlockCount, 2500);
-    setTimeout(() => clearInterval(blockCountInterval), 60000 * 5);
-});
+onMounted(() => {});
 </script>
 
 <template>

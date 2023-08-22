@@ -1141,4 +1141,8 @@ onMounted(() => {});
 .splash-image {
     margin-bottom: 80px;
 }
+
+#enterprises h3 {
+    margin-top: 40px;
+}
 </style>

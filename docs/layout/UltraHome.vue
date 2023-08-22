@@ -552,6 +552,13 @@ onMounted(() => {});
     -webkit-text-fill-color: transparent;
 }
 
+@media (max-width: 800px) {
+    .main-container .headline {
+        font-size: 80px;
+        margin: 0 auto;
+    }
+}
+
 .main-container left-sidebar {
     position: fixed;
     background: transparent !important;
@@ -868,17 +875,28 @@ onMounted(() => {});
 @media (max-width: 800px) {
     .VPContent {
         background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
-            var(--vp-bg-background) right -800px top -200px no-repeat;
+            none right -800px top -200px no-repeat;
     }
 
     .VPContent.has-sidebar {
         background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+    }
+
+    .main-container .main-content {
+        max-width: 100vw;
     }
 }
 
 .getting-started-description {
     width: 33%;
     margin-bottom: 140px;
+}
+
+@media (max-width: 800px) {
+    .getting-started-description {
+        width: 100%;
+        margin-bottom: 140px;
+    }
 }
 
 .quick-start-grid {
@@ -908,8 +926,10 @@ onMounted(() => {});
     padding: 0 40px 100px 0;
 }
 
-@media (max-width: 1400px) {
-    padding: 0 0 80px 0;
+@media (max-width: 800px) {
+    .quick-start {
+        padding: 0 0 40px;
+    }
 }
 
 .persona {
@@ -1021,6 +1041,15 @@ onMounted(() => {});
     gap: 40px;
 }
 
+@media (max-width: 800px) {
+    .links-grid {
+        gap: 0;
+        row-gap: 20px;
+        max-width: 80vw;
+        margin: 0 auto 20px;
+    }
+}
+
 .single-link {
     padding: 40px;
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1042,6 +1071,12 @@ onMounted(() => {});
 @media (max-width: 1400px) {
     .single-link {
         width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 800px) {
+    .single-link {
+        width: 100%;
     }
 }
 
@@ -1091,10 +1126,26 @@ onMounted(() => {});
     gap: 40px;
 }
 
+@media (max-width: 800px) {
+    .coreflex {
+        gap: 0px;
+        row-gap: 20px;
+    }
+}
+
 .coreflex .left,
 .coreflex .right {
     width: 50%;
     margin-bottom: 60px;
+}
+
+@media (max-width: 800px) {
+    .coreflex .left {
+        width: 100%;
+    }
+    .coreflex .right {
+        display: none;
+    }
 }
 
 .coreflex .bigheader {
@@ -1107,6 +1158,12 @@ onMounted(() => {});
     text-transform: uppercase;
     color: #ffffff;
     margin-bottom: 40px;
+}
+
+@media (max-width: 800px) {
+    .coreflex .bigheader {
+        font-size: 36px;
+    }
 }
 
 .coreflex p {
@@ -1127,6 +1184,12 @@ onMounted(() => {});
     background-clip: text;
     text-fill-color: transparent;
     margin-bottom: 40px;
+}
+
+@media (max-width: 800px) {
+    .persona-section h3 {
+        font-size: 28px;
+    }
 }
 
 .persona-section p {

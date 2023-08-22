@@ -10,6 +10,25 @@ This action is used to purchase uniqs directly from a token factory.
 
 ## Technical Behavior
 
+1. User provides information about the Uniq they wish to purchase.
+
+2. Verify that the Uniq has a purchase requirement
+
+3. Obtain the price of the Uniq and convert to UOS
+
+4. Verify that if the purchase requirement requires additional uniqs that the uniqs passed are relevant to the purchase requirement.
+
+5. Additional transfer, and burning actions may be used on individual uniqs during the verification process. (They are kept if the transaction fails)
+
+6. Distribute shares based on purchase requirements, done through inline calls
+
+7. Send remainder of shares to the factory manager, done through inline calls
+
+8. Issue the token to the user
+
+9. Increment the number of tokens purchased for the given user
+
+
 ### Supplying Uniqs for Purchases
 
 In some cases a token factory may require certain uniqs to exist in the user inventory table to enable the user to purchase a uniq.
@@ -23,6 +42,20 @@ It also ensures that the strategy that is being passed for each uniq matches the
 Strategy meaning.... `0` just check, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
 
 All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
+
+### Burning Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `1` it will automatically perform an inline call to the `burn` action and pass over any tokens that need to be burned.
+
+Internally we are constructing a vector of which `token_ids` to be burned.
+
+### Transferring Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `2` it will automatically perform an inline call to the `transfer` action and pass over any tokens that need to be transferred.
+
+The transferred uniqs will automatically be moved to the `transfer_tokens_receiver_account` that was setup during the purchase requirements setup.
+
+Internally we are constructing a vector of which `token_ids` to be transferred.
 
 
 ## Action Parameters

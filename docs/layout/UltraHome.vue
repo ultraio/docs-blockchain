@@ -552,6 +552,13 @@ onMounted(() => {});
     -webkit-text-fill-color: transparent;
 }
 
+@media (max-width: 800px) {
+    .main-container .headline {
+        font-size: 80px;
+        margin: 0 auto;
+    }
+}
+
 .main-container left-sidebar {
     position: fixed;
     background: transparent !important;
@@ -868,12 +875,337 @@ onMounted(() => {});
 @media (max-width: 800px) {
     .VPContent {
         background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
-            var(--vp-bg-background) right -800px top -200px no-repeat;
+            none right -800px top -200px no-repeat;
     }
 
     .VPContent.has-sidebar {
         background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
     }
+
+    .main-container .main-content {
+        max-width: 100vw;
+    }
+}
+
+.getting-started-description {
+    width: 33%;
+    margin-bottom: 140px;
+}
+
+@media (max-width: 800px) {
+    .getting-started-description {
+        width: 100%;
+        margin-bottom: 140px;
+    }
+}
+
+.quick-start-grid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50% 50%;
+    column-gap: 40px;
+    row-gap: 40px;
+}
+
+@media (max-width: 1400px) {
+    .quick-start-grid {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
+        column-gap: 0px;
+        row-gap: 0px;
+    }
+}
+
+.highlight {
+    color: #fff;
+    font-weight: bold;
+}
+
+.quick-start {
+    margin-bottom: 80px;
+}
+
+@media (max-width: 800px) {
+    .quick-start {
+        margin-bottom: 80px;
+    }
+}
+
+.persona {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 32px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+.persona-game-developers .persona {
+    background: linear-gradient(272.38deg, rgba(137, 106, 226, 0.53) 7.76%, #bda6ff 93.5%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    mix-blend-mode: normal;
+}
+
+.persona-content-creators .persona {
+    background: linear-gradient(270.18deg, rgba(114, 207, 123, 0.53) 40.42%, #72cf7b 97.07%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    mix-blend-mode: normal;
+}
+
+.persona-enterprises .persona {
+    background: linear-gradient(270.18deg, rgba(234, 197, 52, 0.53) 40.42%, #eac534 97.07%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    mix-blend-mode: normal;
+}
+
+.persona-marketplace-owners .persona {
+    background: linear-gradient(271.35deg, rgba(67, 150, 214, 0.53) 10.28%, #4396d6 40.74%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    mix-blend-mode: normal;
+}
+
+.quick-start-title {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 32px;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    mix-blend-mode: normal;
+    margin-bottom: 30px;
+}
+
+.quick-start-description {
+    margin-bottom: 30px;
+}
+
+.quick-start-click {
+    padding: 32px 40px;
+    color: #ffffff;
+    width: 100%;
+    font-weight: bold;
+    display: block;
+    border-radius: 6px;
+    transition: all 0.12s ease-in-out;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: right;
+}
+
+.quick-start-click:hover {
+    outline: 2px solid white;
+    outline-offset: 4px;
+    background-size: 110%;
+}
+
+.persona-game-developers .quick-start-click {
+    background-color: #a78af1;
+    background-image: url('/images/home/gamedev.png');
+}
+
+.persona-content-creators .quick-start-click {
+    background-color: #72cf7b;
+    background-image: url('/images/home/creator.png');
+}
+
+.persona-marketplace-owners .quick-start-click {
+    background-color: #4396d6;
+    background-image: url('/images/home/marketplace.png');
+}
+
+.persona-enterprises .quick-start-click {
+    background-color: #eac534;
+    background-image: url('/images/home/enterprise.png');
+}
+
+.links-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+@media (max-width: 800px) {
+    .links-grid {
+        gap: 0;
+        row-gap: 20px;
+        margin: 0 auto 20px;
+    }
+}
+
+.single-link {
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.12s ease-in-out;
+    border-radius: 6px;
+    width: calc(33% - 40px);
+    height: 300px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.single-link.short {
+    height: 220px;
+}
+
+@media (max-width: 1400px) {
+    .single-link {
+        width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 800px) {
+    .single-link {
+        width: 100%;
+    }
+}
+
+.single-link:hover {
+    outline: 2px solid white;
+    outline-offset: 4px;
+}
+
+.single-link .title {
+    font-weight: bold;
+    color: #fff;
+    margin: 10px 0;
+}
+
+.single-link .description {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.single-link .icon {
+    opacity: 0.6;
+    transition: all 0.12s ease-in-out;
+}
+
+.single-link .click {
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: -60px;
+    transition: all 0.12s ease-in-out;
+}
+
+.single-link:hover .click {
+    margin: 0;
+}
+
+.single-link:hover .icon {
+    opacity: 1;
+}
+
+.coreflex {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+@media (max-width: 800px) {
+    .coreflex {
+        gap: 0px;
+        row-gap: 20px;
+    }
+}
+
+.coreflex .left,
+.coreflex .right {
+    width: 50%;
+    margin-bottom: 60px;
+}
+
+@media (max-width: 800px) {
+    .coreflex .left {
+        width: 100%;
+    }
+    .coreflex .right {
+        display: none;
+    }
+}
+
+.coreflex .bigheader {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 60px;
+    line-height: 98.5%;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 800px) {
+    .coreflex .bigheader {
+        font-size: 36px;
+    }
+}
+
+.coreflex p {
+    margin-bottom: 40px;
+    color: #ffffffbc;
+}
+
+.persona-section h3 {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 120%;
+    letter-spacing: -0.02em;
+    background: linear-gradient(104.01deg, #ffffff 27.53%, #919191 87.61%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 800px) {
+    .persona-section h3 {
+        font-size: 28px;
+    }
+}
+
+.persona-section p {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 200%;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.splash-image {
+    margin-bottom: 80px;
+}
+
+#enterprises h3 {
+    margin-top: 40px;
 }
 
 .getting-started-description {

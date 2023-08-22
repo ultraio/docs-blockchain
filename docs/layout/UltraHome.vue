@@ -454,7 +454,6 @@ onMounted(() => {});
                         core. This means that you can define exactly who has access to what, ensuring that your assets
                         are always secure.
                     </p>
-                    <img class="splash-image" src="/images/home/splash_enterprise.png" alt="Enterprise" />
 
                     <h3>Quick Start</h3>
                     <div class="links-grid">

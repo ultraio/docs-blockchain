@@ -910,8 +910,8 @@ onMounted(() => {});
 @media (max-width: 1400px) {
     .quick-start-grid {
         display: grid;
-        grid-template-columns: 100%;
-        grid-template-rows: 100%;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
         column-gap: 0px;
         row-gap: 0px;
     }
@@ -923,12 +923,12 @@ onMounted(() => {});
 }
 
 .quick-start {
-    padding: 0 40px 100px 0;
+    margin-bottom: 80px;
 }
 
 @media (max-width: 800px) {
     .quick-start {
-        padding: 0 0 40px;
+        margin-bottom: 80px;
     }
 }
 
@@ -1045,7 +1045,6 @@ onMounted(() => {});
     .links-grid {
         gap: 0;
         row-gap: 20px;
-        max-width: 80vw;
         margin: 0 auto 20px;
     }
 }

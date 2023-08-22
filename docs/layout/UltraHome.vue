@@ -913,7 +913,7 @@ onMounted(() => {});
 }
 
 .persona {
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -960,7 +960,7 @@ onMounted(() => {});
 }
 
 .quick-start-title {
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 36px;
@@ -1057,7 +1057,7 @@ onMounted(() => {});
 }
 
 .single-link .description {
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1098,7 +1098,7 @@ onMounted(() => {});
 }
 
 .coreflex .bigheader {
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 60px;
@@ -1115,7 +1115,7 @@ onMounted(() => {});
 }
 
 .persona-section h3 {
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 44px;
@@ -1130,7 +1130,7 @@ onMounted(() => {});
 }
 
 .persona-section p {
-    font-family: 'Inter';
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;

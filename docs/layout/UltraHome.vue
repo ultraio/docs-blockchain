@@ -610,6 +610,12 @@ onMounted(() => {});
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+@media (max-width: 800px) {
+    .main-container section {
+        margin-bottom: 80px;
+    }
+}
+
 .main-container section-content {
     display: block;
     width: 100%;
@@ -900,21 +906,11 @@ onMounted(() => {});
 }
 
 .quick-start-grid {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
+    display: flex;
+    flex-direction: row;
     column-gap: 40px;
     row-gap: 40px;
-}
-
-@media (max-width: 1400px) {
-    .quick-start-grid {
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: auto;
-        column-gap: 0px;
-        row-gap: 0px;
-    }
+    flex-wrap: wrap;
 }
 
 .highlight {
@@ -1075,7 +1071,7 @@ onMounted(() => {});
 
 @media (max-width: 800px) {
     .single-link {
-        width: 100%;
+        width: 100% !important;
     }
 }
 
@@ -1140,7 +1136,7 @@ onMounted(() => {});
 
 @media (max-width: 800px) {
     .coreflex .left {
-        width: 100%;
+        width: 100% !important;
     }
     .coreflex .right {
         display: none;
@@ -1161,7 +1157,7 @@ onMounted(() => {});
 
 @media (max-width: 800px) {
     .coreflex .bigheader {
-        font-size: 36px;
+        font-size: 36px !important;
     }
 }
 
@@ -1187,7 +1183,7 @@ onMounted(() => {});
 
 @media (max-width: 800px) {
     .persona-section h3 {
-        font-size: 28px;
+        font-size: 28px !important;
     }
 }
 
@@ -1213,21 +1209,9 @@ onMounted(() => {});
     margin-bottom: 140px;
 }
 
-.quick-start-grid {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
-    column-gap: 40px;
-    row-gap: 40px;
-}
-
-@media (max-width: 1400px) {
-    .quick-start-grid {
-        display: grid;
-        grid-template-columns: 100%;
-        grid-template-rows: 100%;
-        column-gap: 0px;
-        row-gap: 0px;
+@media (max-width: 800px) {
+    .getting-started-description {
+        width: 100%;
     }
 }
 
@@ -1237,11 +1221,15 @@ onMounted(() => {});
 }
 
 .quick-start {
-    padding: 0 40px 100px 0;
+    padding: 0 40px 0 0;
+    width: calc(50% - 20px);
 }
 
 @media (max-width: 1400px) {
-    padding: 0 0 80px 0;
+    .quick-start {
+        padding: 0;
+        width: 100%;
+    }
 }
 
 .persona {
@@ -1291,18 +1279,6 @@ onMounted(() => {});
     mix-blend-mode: normal;
 }
 
-.quick-start-title {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 32px;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-    mix-blend-mode: normal;
-    margin-bottom: 30px;
-}
-
 .quick-start-description {
     margin-bottom: 30px;
 }
@@ -1318,6 +1294,12 @@ onMounted(() => {});
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: right;
+}
+
+@media (max-width: 800px) {
+    .quick-start-click {
+        padding: 20px;
+    }
 }
 
 .quick-start-click:hover {

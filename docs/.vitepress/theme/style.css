@@ -131,8 +131,9 @@
 }
 
 .VPNavScreen {
-    position: unset !important;
+    /* position: unset !important; */
     height: 100vh;
+    z-index: 9999 !important;
 }
 
 .vp-doc img {

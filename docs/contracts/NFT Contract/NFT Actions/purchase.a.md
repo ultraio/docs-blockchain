@@ -1,10 +1,10 @@
 ---
-title: 'purchase'
+title: 'purchase.a'
 order: 31
 deploy: ['experimental']
 ---
 
-# Purchase
+# purchase.a
 
 This action is used to purchase uniqs directly from a token factory.
 
@@ -22,11 +22,13 @@ This action is used to purchase uniqs directly from a token factory.
 
 6. Distribute shares based on purchase requirements, done through inline calls
 
-7. Send remainder of shares to the factory manager, done through inline calls
+7. Send protocol fee. Amount and account are configured under `global.share` table scope `0`, done through inline calls
 
-8. Issue the token to the user
+8. Send remainder of shares to the factory manager, done through inline calls
 
-9. Increment the number of tokens purchased for the given user
+9. Issue the token to the user
+
+10. Increment the number of tokens purchased for the given user
 
 
 ### Supplying Uniqs for Purchases
@@ -39,7 +41,7 @@ When a uniq is being purchased it goes through our `verify_user_uniqs` function 
 
 It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
 
-Strategy meaning.... `0` just check, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
+Strategy meaning: `0` just check, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
 
 All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
 

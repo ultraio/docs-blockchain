@@ -1,10 +1,10 @@
 ---
-title: 'delprchsreq'
+title: 'delprchsreq.a'
 order: 33
 deploy: ['experimental']
 ---
 
-# Purchase
+# delprchsreq.a
 
 This action is used to delete purchase requirements for a token factory.
 

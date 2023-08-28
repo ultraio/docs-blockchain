@@ -1,7 +1,7 @@
 ---
 title: 'fhglobalshr'
 order: 35
-deploy: []
+deploy: ['experimental']
 ---
 
 # fhglobalshr

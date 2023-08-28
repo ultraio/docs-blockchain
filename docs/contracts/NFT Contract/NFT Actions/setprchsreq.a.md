@@ -1,10 +1,10 @@
 ---
-title: 'setprchsreq'
+title: 'setprchsreq.a'
 order: 32
 deploy: ['experimental']
 ---
 
-# setprchsreq
+# setprchsreq.a
 
 This action is used to set purchase requirements for a token factory.
 

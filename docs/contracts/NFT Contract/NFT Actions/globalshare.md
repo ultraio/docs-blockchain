@@ -1,7 +1,7 @@
 ---
 title: 'globalshare'
 order: 34
-deploy: ['staging', 'mainnet']
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 # globalshare

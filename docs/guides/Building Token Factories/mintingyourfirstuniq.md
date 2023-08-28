@@ -15,7 +15,7 @@ Now that you have your Token Factory up and running, you are free to mint some U
 
 As with the Token Factory, there is some specific data that you must include in the command.
 
--   `<YOUR UNIQ URI>` - The URI of the metadata either as a zip file, or targeting the `factory.json` file with a full path
+-   `<YOUR UNIQ URL>` - The URL of the metadata either as a zip file, or targeting the `X.json` file with a full path
 -   `<YOUR META HASH>` - The hash of the uniq, you can find this in `upload.json` in the `factory` block at the top
 
 You can find these in the `upload.json` file and they will look something like this:

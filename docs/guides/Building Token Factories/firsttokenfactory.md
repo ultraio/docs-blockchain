@@ -18,7 +18,7 @@ Just to be absolutely clear, the expected flow for building a Token Factory is:
 3. Calculate hashes
 4. Push on-chain
 
-Without the images already in situ, the metadata tool can not verify that they exist, nor can it create the unique hashes that identify them.
+Without the images already uploaded to the correct location, the metadata tool can not verify that they exist, nor can it create the unique hashes that identify them.
 
 ::: warning
 
@@ -87,6 +87,6 @@ You should see a new transaction that shows that your new Token Factory has been
 
 ![](/images/token-factories/great_success.png)
 
-We are glossing over a lot of functionality here, in the interest of getting yup up and running quickly. Later guides will cover some of the more advanced features that our NFT standard supports, including variants, authorized minters, and much more.
+We are glossing over a lot of functionality here, in the interest of getting you up and running quickly. Later guides will cover some of the more advanced features that our NFT standard supports, including variants, authorized minters, and much more.
 
 In the meantime, congratulations on creating your first Token Factory. **Now, let's go mint your first Uniq!**

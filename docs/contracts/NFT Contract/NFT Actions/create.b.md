@@ -97,7 +97,7 @@ Try to think of the action parameters as a **JSON Object** when reading this tab
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft create.b '[{"memo":"","asset_manager":"ultra.nft.ft","asset_creator":"ultra","minimum_resell_price":null,"resale_shares":[{"receiver":"ultra.nft.ft", "basis_point":1}],"mintable_window_start":"2021-05-31T00:00:00","mintable_window_end":null,"trading_window_start": "2021-05-31T00:00:00","trading_window_end":null,"recall_window_start": 5,"recall_window_end":null,"max_mintable_tokens":10000,"lockup_time":0,"conditionless_receivers":null,"stat":0,"factory_uri":"test","factory_hash":null, "authorized_minters":null,"account_minting_limit":100,"transfer_window_start":1,"transfer_window_end":null, maximum_uos_payment: null, "default_token_uri": "test2", "default_token_hash":null, "lock_hash":false}]' -p ultra.nft.ft -p ultra
+cleos push action eosio.nft.ft create.b '[{"memo":"","asset_manager":"ultra.nft.ft","asset_creator":"ultra","minimum_resell_price":null,"resale_shares":[{"receiver":"ultra.nft.ft", "basis_point":1}],"mintable_window_start":"2021-05-01T00:00:00","mintable_window_end":null,"trading_window_start": "2021-05-01T00:00:00","trading_window_end":null,"recall_window_start": null,"recall_window_end":null,"max_mintable_tokens":10,"lockup_time":null,"conditionless_receivers":null,"stat":0,"factory_uri":"test","factory_hash":"d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523", "authorized_minters":[{"authorized_minter":"ultra.mrktng","quantity":10}],"account_minting_limit":10,"transfer_window_start":"1970-01-01T00:00:00","transfer_window_end":null, "maximum_uos_payment": null, "default_token_uri": "test2", "default_token_hash":"d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523", "lock_hash":false}]' -p ultra.nft.ft -p ultra
 ```
 
 ## JavaScript - eosjs
@@ -123,22 +123,22 @@ await api.transact({
           mintable_window_end: null,
           trading_window_start: '2021-05-31T00:00:00',
           trading_window_end: null,
-          recall_window_start: 5,
+          recall_window_start: null,
           recall_window_end: null,
           max_mintable_tokens: null,
-          lockup_time: 0,
+          lockup_time: null,
           conditionless_receivers: ['receiver1'],
           stat: 0,
           factory_uri: 'test',
           factory_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523',
           authorized_minters : [{authorized_minter:"ultra", quantity: 1}],
           account_minting_limit: 100,
-          transfer_window_start: 1,
+          transfer_window_start: "1970-01-01T00:00:00",
           transfer_window_end: null,
           maximum_uos_payment: null,
           default_token_uri: 'test2',
-          default_token_hash: null,
-          lock_hash: null
+          default_token_hash: "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523",
+          lock_hash: false
         },
       },
     },

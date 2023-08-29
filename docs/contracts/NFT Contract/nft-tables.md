@@ -488,7 +488,7 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 
 -   Table: `saleshrlmcfg`
 -   Code: `eosio.nft.ft`
--   Scope: `0 - second hand, 1 - first hand`
+-   Scope: `0 - first hand, 1 - second hand`
 -   Key: N/A
 
 The table stores information about maximum share basis points that can be distributed during token purchase

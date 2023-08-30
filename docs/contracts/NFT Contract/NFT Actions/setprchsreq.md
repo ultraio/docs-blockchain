@@ -16,7 +16,7 @@ Factory manager can specify purchase options for users. Note they currently have
 
 `index` - purchase requirements index. starts with 0.
 
-`price` - price per uniq. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq.
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq.
 
 `purchase_limit` - how much users can buy via purchase action. it has to be less than factory limit setting and greater or equal to what was already minted via the action.
 
@@ -36,34 +36,32 @@ If token factory is inactive transaction reverts as well.
 
 **Action Interface**
 
-| Property Name              | C++ Type                       | JavaScript Type       |
-| ---------------------------| ------------------------------ | --------------------- |
-| token_factory_id           | uint64_t                       | number                |
-| index                      | uint64_t                       | number                |
-| price                      | asset                          | string                |
-| purchase_limit             | optional\<uint32_t\>           | number / null         |
-| promoter_basis_point       | uint16_t                       | number                |
-| purchase_option_with_uniqs | optional provided_user_uniqs   | Object / null         |
-| sale_shares                | vector                         | Array                 |
-| maximum_uos_payment        | optional\<asset\>              | asset / null          |
-| memo                       | string                         | string                |
+| Property Name              | C++ Type                     | JavaScript Type |
+| -------------------------- | ---------------------------- | --------------- |
+| token_factory_id           | uint64_t                     | number          |
+| index                      | uint64_t                     | number          |
+| price                      | asset                        | string          |
+| purchase_limit             | optional\<uint32_t\>         | number / null   |
+| promoter_basis_point       | uint16_t                     | number          |
+| purchase_option_with_uniqs | optional provided_user_uniqs | Object / null   |
+| sale_shares                | vector                       | Array           |
+| maximum_uos_payment        | optional\<asset\>            | asset / null    |
+| memo                       | string                       | string          |
 
 **purchase_requirement_with_uniqs option breakdown**
 
-| Property Name                            | C++ Type | JavaScript Type |
-| ---------------------------------------- | ---------| --------------- |
-| transfer_tokens_receiver_account         | uint64_t | number          |
-| factories                                | vector   | Array           |
+| Property Name                    | C++ Type | JavaScript Type |
+| -------------------------------- | -------- | --------------- |
+| transfer_tokens_receiver_account | uint64_t | number          |
+| factories                        | vector   | Array           |
 
 **factories option breakdown**
 
-| Property Name            | C++ Type | JavaScript Type |
-| ------------------------ | ---------| --------------- |
-| token_factory_id         | uint64_t | number          |
-| count                    | vector   | Array           |
-| strategy                 | uint8_t  | number          |
-
-
+| Property Name    | C++ Type | JavaScript Type |
+| ---------------- | -------- | --------------- |
+| token_factory_id | uint64_t | number          |
+| count            | vector   | Array           |
+| strategy         | uint8_t  | number          |
 
 ## CLI - cleos
 
@@ -93,35 +91,41 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 ## JavaScript - eosjs
 
 ```js
-await api.transact({
-  actions: [{
-      account: 'eosio.nft.ft',
-      name: 'setprchsreq.a',
-      authorization: [{ actor: 'factory.manager', permission: 'active' }],
-      data: {
-        purchase_option: {
-          token_factory_id: 100,
-          index: 1,
-          price: '50 UOS',
-          purchase_limit: 1,
-          promoter_basis_point: 100,
-          purchase_option_with_uniqs: {
-            transfer_tokens_receiver_account: '',
-            factories: [{
-              token_factory_id: 42,
-              count: 3,
-              strategy: 0
-            }]
-          },
-          sale_shares: [],
-          maximum_uos_payment: '2 UOS',
-          memo: ''
-        }
-      },
-    }],
-  }, {
-    blocksBehind: 3,
-    expireSeconds: 30,
-  }
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setprchsreq.a',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    purchase_option: {
+                        token_factory_id: 100,
+                        index: 1,
+                        price: '50 UOS',
+                        purchase_limit: 1,
+                        promoter_basis_point: 100,
+                        purchase_option_with_uniqs: {
+                            transfer_tokens_receiver_account: '',
+                            factories: [
+                                {
+                                    token_factory_id: 42,
+                                    count: 3,
+                                    strategy: 0,
+                                },
+                            ],
+                        },
+                        sale_shares: [],
+                        maximum_uos_payment: '2 UOS',
+                        memo: '',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
 );
 ```

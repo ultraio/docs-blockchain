@@ -1,7 +1,7 @@
 ---
 title: 'settrnfwin.a'
 order: 28
-deploy: []
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 # settrnfwin.a - set transfer window
@@ -10,9 +10,11 @@ Allows a token manager to update the `transfer_window_start` and `transfer_windo
 
 ## Technical Behavior
 
+Required authorization is a token factory manager
+
 Transferability can only be update from this:
 
--   Uniq is never transferable (`transfer_window_start`=null, `transfer_window_end`=0)
+-   Uniq is never transferable (`transfer_window_start` = `null`, `transfer_window_end` = `1970-01-01T00:00:00`)
 
 to one of these:
 

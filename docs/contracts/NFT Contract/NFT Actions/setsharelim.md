@@ -1,7 +1,7 @@
 ---
 title: 'setsharelim'
 order: 31
-deploy: []
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 # setsharelim

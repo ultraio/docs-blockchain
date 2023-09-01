@@ -1,7 +1,7 @@
 ---
 title: 'settrdwin.a'
 order: 27
-deploy: []
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 # settrdwin.a - set trading window
@@ -10,9 +10,11 @@ Allows a token manager to update the `trading_window_start` and `trading_window_
 
 ## Technical Behavior
 
+Required authorization is a token factory manager
+
 Tradeability can only be update from this:
 
--   Uniq is never Tradable (`trading_window_start`=null, `trading_window_end`=0)
+-   Uniq is never Tradable (`trading_window_start` = null, `trading_window_end` = `1970-01-01T00:00:00`)
 
 to one of these:
 

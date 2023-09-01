@@ -233,17 +233,17 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<TOKEN FACTOR
 
 -   Table: `global.share`
 -   Code: `eosio.nft.ft`
--   Scope: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft` <Experimental> (for second hand), `0` (for first hand)</Experimental>
 -   Key: N/A
 
-The table stores information about global share of each second hand token resell: which account and how many basis points it receives (each basis point = 0.01%)
+The table stores information about global share of each <Experimental>first hand purchase or</Experimental> second hand token sale: which account and how many basis points it receives (each basis point = 0.01%)
 
-| Fields      | Type        | Description                                       |
-| ----------- | ----------- | ------------------------------------------------- |
-| receiver    | eosio::name | Receiver of the global resale share               |
-| basis_point | uint16_t    | Share of the resale specified in the basis points |
+| Fields      | Type        | Description                                     |
+| ----------- | ----------- | ----------------------------------------------- |
+| receiver    | eosio::name | Receiver of the global sale share               |
+| basis_point | uint16_t    | Share of the sale specified in the basis points |
 
-Most relevant actions: `buy`, `resell`
+Most relevant actions: `buy`, `resell`, `globalshare` <Experimental>, `fhglobalshr`, `purchase.a`</Experimental>
 
 -   `cleos` Query Example
 

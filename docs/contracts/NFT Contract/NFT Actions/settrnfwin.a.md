@@ -32,14 +32,14 @@ to one of these:
 
 | Property Name         | C++ Type                 | Javascript Type | Example               |
 | --------------------- | ------------------------ | --------------- | --------------------- |
-| token_factory_id      | uint64_t                 | number          | 1                     |
+| token_factory_id      | uint64_t                 | number          | 123                   |
 | transfer_window_start | optional<time_point_sec> | string          | "2023-01-01T00:00:00" |
-| transfer_window_end   | optional<time_point_sec> | string          | "2023-01-01T00:00:30" |
+| transfer_window_end   | optional<time_point_sec> | string          | "2023-01-01T12:00:00" |
 
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft settrnfwin.a '[ 1, "2023-01-01T00:00:00", "2023-01-01T00:00:30" ]' -p manager.acc
+cleos push action eosio.nft.ft settrnfwin.a '[ 123, "2023-01-01T00:00:00", "2023-01-01T12:00:00" ]' -p manager.acc
 ```
 
 ## JavaScript - eosjs
@@ -52,9 +52,9 @@ await api.transact({
             name: 'settrnfwin.a',
             authorization: [{ actor: 'manager.acc', permission: 'active' }],
             data: {
-                token_factory_id: 1,
+                token_factory_id: 123,
                 transfer_window_start: '2023-01-01T00:00:00',
-                transfer_window_end: '2023-01-01T00:00:30',
+                transfer_window_end: '2023-01-01T12:00:00',
             },
         },
     ],

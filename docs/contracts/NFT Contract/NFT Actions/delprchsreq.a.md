@@ -18,11 +18,11 @@ If the asset manager of the factory is an account other than `ultra.nft.ft`, 85%
 
 **Action Interface**
 
-| Property Name    | C++ Type | JavaScript Type |
-| ---------------- | -------- | --------------- |
-| token_factory_id | uint64_t | number          |
-| index            | uint64_t | number          |
-| memo             | string   | string          |
+| Property Name    | C++ Type    | JavaScript Type | Description                                                  |
+| ---------------- | ----------- | --------------- | ------------------------------------------------------------ |
+| token_factory_id | uint64_t    | number          | ID of the token factory to delete purchase requirement from  |
+| index            | uint64_t    | number          | Valid index of existing purchase option for provided factory |
+| memo             | std::string | string          | A short operation description                                |
 
 ## CLI - cleos
 

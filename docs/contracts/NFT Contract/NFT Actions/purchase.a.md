@@ -30,6 +30,7 @@ This action is used to purchase uniqs directly from a token factory.
 
 10. Increment the number of tokens purchased for the given user
 
+If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If no promoter is specified then default promoter will be used and is specified by Ultra in `saleshrlmcfg` table under a scope of `0` in `default_promoter`.
 
 ### Supplying Uniqs for Purchases
 
@@ -64,23 +65,23 @@ Internally we are constructing a vector of which `token_ids` to be transferred.
 
 **Action Interface**
 
-| Property Name       | C++ Type                       | JavaScript Type       |
-| ------------------- | ------------------------------ | --------------------- |
-| token_factory_id    | uint64_t                       | number                |
-| index               | uint64_t                       | number                |
-| max_price           | asset                          | string                |
-| buyer               | optional name                  | string / null         |
-| receiver            | optional asset                 | string / null         |
-| promoter_id         | optional name                  | string / null         |
-| user_uniqs          | optional provided_user_uniqs   | Array / null          |
-| memo                | string                         | string                |
+| Property Name    | C++ Type                            | JavaScript Type | Description                                                                                                                                                                         |
+| ---------------- | ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t                            | number          | ID of a token factory to purchase from                                                                                                                                              |
+| index            | uint64_t                            | number          | Index of purchase option to use                                                                                                                                                     |
+| max_price        | asset                               | string          | Maximum amount of UOS you allow to be withdrawn from your account. If price is set in USD this will prevent transaction from overcharging you in case USD price goes down           |
+| buyer            | eosio::name                         | string          | Account that will pay UOS and/or Uniqs for this purchase                                                                                                                            |
+| receiver         | eosio::asset                        | string          | Account that will receive the Uniq from this purchase                                                                                                                               |
+| promoter_id      | std::optional\<eosio::name>         | string / null   | Optional promoter of the purchase transaction. If no promoter is provided then the default promoter specified in `saleshrlmcfg` (scope `0`) will be used if present                 |
+| user_uniqs       | std::optional\<provided_user_uniqs> | Array / null    | List of uniqs the buyer is willing to provide for this purchase option to either be taken from him or to just verify their presence. Refer to `provided_user_uniqs` breakdown below |
+| memo             | std::string                         | string          | A short operation description                                                                                                                                                       |
 
 **provided_user_uniqs Interface**
 
-| Property Name    | C++ Type | JavaScript Type |
-| ---------------- | -------- | --------------- |
-| token_id         | uint64_t | number          |
-| strategy         | uint8_t  | number          |
+| Property Name | C++ Type | JavaScript Type | Description                                                                                                                     |
+| ------------- | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                               |
+| strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](./nft-tables.md#fctrprchs-a) for allowed values and usage |
 
 
 ## CLI - cleos

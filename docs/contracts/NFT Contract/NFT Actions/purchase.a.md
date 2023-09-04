@@ -26,7 +26,7 @@ This action is used to purchase uniqs directly from a token factory.
 
 8. Send remainder of shares to the factory manager, done through inline calls
 
-9. Issue the token to the user
+9. Issue the token to the user. **Note**: minting a Uniq requires additional UOS paid by the factory manager. Refer for details to [issue.b - issue tokens with token factory](./issue.b.md)
 
 10. Increment the number of tokens purchased for the given user
 

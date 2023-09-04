@@ -6,7 +6,7 @@ deploy: ['staging', 'mainnet']
 
 # rmgrpfcts
 
-Remove factory ids from a factory.
+Remove factory ids from a group.
 
 ## Technical Behavior
 

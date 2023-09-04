@@ -40,6 +40,13 @@ export const templateConfig: UserConfig<DefaultTheme.Config> = {
         ['link', { rel: 'mask-icon', href: BASE_URL + 'safari-pinned-tab.svg', color: '#5bbad5' }],
         ['meta', { name: 'msapplication-TileColor', content: '#da532c' }],
         ['link', { rel: 'sitemap', type: 'application/xml', title: 'Sitemap', href: '/sitemap.xml' }],
+        ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+        ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'crossorigin' }],
+        [
+            'link',
+            { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap' },
+        ],
+
         // Open Graph
         ['meta', { name: 'description', content: description }],
         ['meta', { property: 'og:type', content: 'website' }],

@@ -2,14 +2,14 @@
 title: 'Signing a Message'
 deploy: ['staging', 'mainnet']
 order: 7
-outline: [0,4]
+outline: [0, 4]
 ---
 
 # Signing a Message
 
 In some cases, a web application can also request the user to sign a given message to verify the ownership of a blockchain account. Applications are free to write their messages which will be displayed to users from within the Ultra Wallet's signature prompt using the method `signMessage()`. These messages should have one of the next prefixes: `0x`, `UOSx`, or `message:`.
 
-Message signatures do not involve network fees.
+**Message signatures do not involve network fees.**
 
 ```JavaScript
 try {

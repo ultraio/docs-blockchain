@@ -15,10 +15,11 @@ The distinction between static and dynamic metadata URI applies only for `defaul
 If no dynamic value is used inside `default_token_uri` then this URI will be considered static.
 
 Acceptable dynamic URI values:
-- `factory_id` - Factory ID based on the on-chain data
-- `serial_number` - Serial number of a specific token. Incremental value starting from 1
-- `id` - ID of the token. Pool of possible IDs is shared between all Uniqs and in general you won't know it until the token is minted
-- `hash` - Hash of the token metadata stored per token
+
+-   `factory_id` - Factory ID based on the on-chain data
+-   `serial_number` - Serial number of a specific token. Incremental value starting from 1
+-   `id` - ID of the token. Pool of possible IDs is shared between all Uniqs and in general you won't know it until the token is minted
+-   `hash` - Hash of the token metadata stored per token
 
 Example of `static` default token URI: http://myfactory.io/deafult_token.json
 
@@ -59,8 +60,9 @@ The first step is to check if there is a URI specified on the token itself by ch
 In case the `uri` is empty or points to an invalid file you need to fallback to default token URI stored inside the token factory. Token factory ID is available in the token data and by querying the `factory.b` table you will be able to access it's `default_token_uri` field.
 
 Then depending on if `default_token_uri` is dynamic or not one of two following paths should be used:
-- `default_token_uri` is `static` - go to the URI pointed by `default_token_uri` and fetch the metadata
-- `default_token_uri` is `dynamic` - substitute all dynamic values inside the URI with information available in the token data (e.g. serial number) and then fetch the metadata using the generated URI.
+
+-   `default_token_uri` is `static` - go to the URI pointed by `default_token_uri` and fetch the metadata
+-   `default_token_uri` is `dynamic` - substitute all dynamic values inside the URI with information available in the token data (e.g. serial number) and then fetch the metadata using the generated URI.
 
 Refer to the following diagram for details:
 

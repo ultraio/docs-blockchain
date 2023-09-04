@@ -25,7 +25,7 @@ If you're building with Unity, we have a set of helpful examples and a plugin wh
 
 ## Are you building with Unreal?
 
-If you're building with Unreal, we have some information that you'll find useful.
+If you're building with Unity, we have a set of helpful examples and a plugin which will help you get started. You should check our [Ultra Unreal Subsystem integration guide](./get-ultra-unreal.md) which houses the details for where to get the Unreal Subsystem, and how to use it.
 
 Many developers use Epic's Online Service for multiplayer so that they can unify their player base across all deployments. We have put [together a document](./ultra-unreal-OpenID-guide.md) that specifies exactly how to do that so that your game can connect Ultra's users to those of other platforms.
 

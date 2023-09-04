@@ -28,6 +28,13 @@ const props = defineProps<{ link: string }>();
     box-sizing: border-box;
 }
 
+@media (max-width: 800px) {
+    .link-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
 .title {
     font-size: 16px;
     font-weight: 600;

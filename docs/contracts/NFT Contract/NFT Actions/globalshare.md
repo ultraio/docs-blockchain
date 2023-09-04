@@ -18,10 +18,10 @@ The required authorization is the `ultra.nft.ft`
 
 ## Action Parameters
 
-| Property Name | C++ Type                     | Javascript Type | Example     |
-| ------------- | ---------------------------- | --------------- | ----------- |
-| share         | uint16_t                     | number          | 200         |
-| receiver      | std::optional\<eosio::name\> | string          | ultra.prtcl |
+| Property Name | C++ Type                    | Javascript Type | Example     |
+| ------------- | --------------------------- | --------------- | ----------- |
+| share         | uint16_t                    | number          | 200         |
+| receiver      | std::optional\<eosio::name> | string          | ultra.prtcl |
 
 ## CLI - cleos
 

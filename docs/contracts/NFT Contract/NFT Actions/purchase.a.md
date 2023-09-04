@@ -10,15 +10,15 @@ This action is used to purchase uniqs directly from a token factory.
 
 ## Technical Behavior
 
-1. User provides information about the Uniq they wish to purchase.
+1. User provides information about the Uniq they wish to purchase
 
 2. Verify that the Uniq has a purchase requirement
 
 3. Obtain the price of the Uniq and convert to UOS
 
-4. Verify that if the purchase requirement requires additional uniqs that the uniqs passed are relevant to the purchase requirement.
+4. Verify that if the purchase requirement requires additional uniqs that the uniqs passed are relevant to the purchase requirement
 
-5. Additional transfer, and burning actions may be used on individual uniqs during the verification process. (They are kept if the transaction fails)
+5. Additional transfer, and burning actions may be used on individual uniqs during the verification process. They are kept if the transaction fails
 
 6. Distribute shares based on purchase requirements, done through inline calls
 

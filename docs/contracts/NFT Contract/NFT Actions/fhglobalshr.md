@@ -6,15 +6,15 @@ deploy: ['experimental']
 
 # fhglobalshr
 
-Ultra configures protocol fee for first hand token purchase
+Ultra configures the protocol fee for first hand token purchases
 
 ## Technical Behavior
 
-The required authorization is the `ultra.nft.ft`
+The required authorization is the `ultra.nft.ft` account
 
-`share` must not exceed the value specified in `saleshrlmcfg` table under a scope of `0` (if exists) or 1000 (10%) otherwise
+`share` must not exceed the value specified in the `saleshrlmcfg` table under a scope of `0` (if it exists) or 1000 (10%) otherwise
 
-`receiver` must be an existing account if value is provided. If no value is provided the global share receiver account will remain unchanged
+`receiver` must be an existing account if a value is provided. If no value is provided the global share receiver account will remain unchanged
 
 ## Action Parameters
 

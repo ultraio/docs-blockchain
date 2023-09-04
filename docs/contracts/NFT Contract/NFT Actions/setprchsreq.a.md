@@ -10,9 +10,9 @@ This action is used to set purchase requirements for a token factory.
 
 ## Technical Behavior
 
-Factory manager can specify purchase options for users. Note that currently have to use the same action for both creation and modification of purchase requirements.
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
 
--   If **asset_manager** is other than `ultra.nft.ft`, The cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
 
     -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 

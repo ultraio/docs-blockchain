@@ -10,11 +10,11 @@ Ultra configures protocol fee for second hand token resells
 
 ## Technical Behavior
 
-The required authorization is the `ultra.nft.ft`
+The required authorization is the `ultra.nft.ft` account
 
-`share` must not exceed the value specified in `saleshrlmcfg` table under a scope of `1` (if exists) or 1000 (10%) otherwise
+`share` must not exceed the value specified in `saleshrlmcfg` table under a scope of `1` (if it exists) or 1000 (10%) otherwise
 
-`receiver` must be an existing account if value is provided. If no value is provided the global share receiver account will remain unchanged
+`receiver` must be an existing account if a value is provided. If no value is provided the global share receiver account will remain unchanged
 
 ## Action Parameters
 

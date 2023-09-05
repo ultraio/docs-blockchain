@@ -10,13 +10,26 @@ This action is used to set purchase requirements for a token factory.
 
 ## Technical Behavior
 
-Factory manager can specify purchase options for users. Note they currently have to use the same action for both creation and modification of purchase requirements.
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
+
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   NFT RAM payment size: **1656 bytes**
+
+            - estimated for a token with `purchase_option_with_uniqs` of 64
+
+        -   RAM price: **0.15 USD/KB**
+
+    -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
+        (1656B/1024B \* 0.15USD/KB) / (conversion rate) = `0.24257813` **USD**/(conversion rate)
 
 `token_factory_id` - token factory managed by a factory manager.
 
 `index` - purchase requirements index. starts with 0.
 
-`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq.
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
 
 `purchase_limit` - how much users can buy via purchase action. it has to be less than factory limit setting and greater or equal to what was already minted via the action.
 
@@ -36,32 +49,25 @@ If token factory is inactive transaction reverts as well.
 
 **Action Interface**
 
-| Property Name              | C++ Type                     | JavaScript Type |
-| -------------------------- | ---------------------------- | --------------- |
-| token_factory_id           | uint64_t                     | number          |
-| index                      | uint64_t                     | number          |
-| price                      | asset                        | string          |
-| purchase_limit             | optional\<uint32_t\>         | number / null   |
-| promoter_basis_point       | uint16_t                     | number          |
-| purchase_option_with_uniqs | optional provided_user_uniqs | Object / null   |
-| sale_shares                | vector                       | Array           |
-| maximum_uos_payment        | optional\<asset\>            | asset / null    |
-| memo                       | string                       | string          |
+| Property Name              | C++ Type                            | JavaScript Type | Description                                                                                                                                                                                                                                          |
+| -------------------------- | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id           | uint64_t                            | number          | ID of the factory to add (or update) purchase option to                                                                                                                                                                                              |
+| index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
+| price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
+| purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                                                                                                                                |
+| purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
+| sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
+| maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
+| memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
 
 **purchase_requirement_with_uniqs option breakdown**
 
-| Property Name                    | C++ Type | JavaScript Type |
-| -------------------------------- | -------- | --------------- |
-| transfer_tokens_receiver_account | uint64_t | number          |
-| factories                        | vector   | Array           |
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
-**factories option breakdown**
+**uniqs_count type breakdown**
 
-| Property Name    | C++ Type | JavaScript Type |
-| ---------------- | -------- | --------------- |
-| token_factory_id | uint64_t | number          |
-| count            | vector   | Array           |
-| strategy         | uint8_t  | number          |
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
 ## CLI - cleos
 

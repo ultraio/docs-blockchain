@@ -22,18 +22,18 @@ The table contains token factories settings and the operational info.
 | asset_creator           | eosio::name                       | Account that ceates the token factory.                                                                                                   |
 | minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                             |
 | resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the token resale.                                      |
-| mintable_window_start   | std::optional<uint32_t>           | The beginning of the time window when tokens can be minted.                                                                              |
-| mintable_window_end     | std::optional<uint32_t>           | The end of the time window when tokens can be minted.                                                                                    |
-| trading_window_start    | std::optional<uint32_t>           | The beginning of the time window when tokens can be traded.                                                                              |
-| trading_window_end      | std::optional<uint32_t>           | The end of the time window when tokens can be traded.                                                                                    |
-| recall_window_start     | std::optional<uint32_t>           | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
-| recall_window_end       | std::optional<uint32_t>           | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
-| lockup_time             | std::optional<uint32_t>           | *Disabled*. The time window since token minting in which the token cannot be transferred                                                 |
+| mintable_window_start   | std::optional\<uint32_t>           | The beginning of the time window when tokens can be minted.                                                                              |
+| mintable_window_end     | std::optional\<uint32_t>           | The end of the time window when tokens can be minted.                                                                                    |
+| trading_window_start    | std::optional\<uint32_t>           | The beginning of the time window when tokens can be traded.                                                                              |
+| trading_window_end      | std::optional\<uint32_t>           | The end of the time window when tokens can be traded.                                                                                    |
+| recall_window_start     | std::optional\<uint32_t>           | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
+| recall_window_end       | std::optional\<uint32_t>           | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
+| lockup_time             | std::optional\<uint32_t>           | *Disabled*. The time window since token minting in which the token cannot be transferred                                                 |
 | conditionless_receivers | std::vector\<eosio::name>         | A set of token receiver account tokens can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
 | stat                    | uint8_t                           | The token factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                 |
 | factory_uri             | std::string                       | The token factory metadata URI vector.                                                                                                   |
 | factory_hash            | eosio::checksum256                | The token factory metadata hash.                                                                                                         |
-| max_mintable_tokens     | std::optional<uint32_t>           | The maximal number of tokens that can be minted with the factory.                                                                        |
+| max_mintable_tokens     | std::optional\<uint32_t>           | The maximal number of tokens that can be minted with the factory.                                                                        |
 | minted_tokens_no        | uint32_t                          | The number of minted of tokens.                                                                                                          |
 | existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt tokens.                                                                                       |
 | authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of tokens that authorized minters can issue                                                                         |
@@ -62,24 +62,24 @@ Deprecated. Refer to `factory.b` instead
 | Fields                          | Type                              | Description                                                                                                                              |
 | ------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | id                              | uint64_t                          | (primary key) The token factory ID                                                                                                       |
-| asset_manager                   | eosio::name                       | Account that manages the token lifecycle - issuing, burning, reselling etc.                                                                           |
-| asset_creator                   | eosio::name                       | Account that creates the token factory.                                                                                                               |
-| conversion_rate_oracle_contract | eosio::name                       | *Deprecated*. Please do not use.                                                                                                           |
-| chosen_rate                     | std::vector\<eosio::asset>        | *Deprecated*. Please do not use.                                                                                                           |
+| asset_manager                   | eosio::name                       | Account that manages the token lifecycle - issuing, burning, reselling etc.                                                              |
+| asset_creator                   | eosio::name                       | Account that creates the token factory.                                                                                                  |
+| conversion_rate_oracle_contract | eosio::name                       | *Deprecated*. Please do not use.                                                                                                         |
+| chosen_rate                     | std::vector\<eosio::asset>        | *Deprecated*. Please do not use.                                                                                                         |
 | minimum_resell_price            | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                             |
 | resale_shares                   | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the token resale.                                      |
-| mintable_window_start           | std::optional<uint32_t>           | The beginning of the time window when tokens can be minted.                                                                              |
-| mintable_window_end             | std::optional<uint32_t>           | The end of the time window when tokens can be minted.                                                                                    |
-| trading_window_start            | std::optional<uint32_t>           | The beginning of the time window when tokens can be traded.                                                                              |
-| trading_window_end              | std::optional<uint32_t>           | The end of the time window when tokens can be traded.                                                                                    |
-| recall_window_start             | std::optional<uint32_t>           | The beginning of the time window when tokens can be recalled.                                                                            |
-| recall_window_end               | std::optional<uint32_t>           | The beginning of the time window when tokens can be recalled.                                                                            |
-| lockup_time                     | std::optional<uint32_t>           | The time window since token minting in which the token cannot be transferred                                                             |
+| mintable_window_start           | std::optional\<uint32_t>          | The beginning of the time window when tokens can be minted.                                                                              |
+| mintable_window_end             | std::optional\<uint32_t>          | The end of the time window when tokens can be minted.                                                                                    |
+| trading_window_start            | std::optional\<uint32_t>          | The beginning of the time window when tokens can be traded.                                                                              |
+| trading_window_end              | std::optional\<uint32_t>          | The end of the time window when tokens can be traded.                                                                                    |
+| recall_window_start             | std::optional\<uint32_t>          | The beginning of the time window when tokens can be recalled.                                                                            |
+| recall_window_end               | std::optional\<uint32_t>          | The beginning of the time window when tokens can be recalled.                                                                            |
+| lockup_time                     | std::optional\<uint32_t>          | The time window since token minting in which the token cannot be transferred                                                             |
 | conditionless_receivers         | std::vector\<eosio::name>         | A set of token receiver account tokens can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
 | stat                            | uint8_t                           | The token factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                 |
 | meta_uris                       | std::vector\<std::string>         | The token factory metadata URI vector.                                                                                                   |
 | meta_hash                       | eosio::checksum256                | The token factory metadata hash.                                                                                                         |
-| max_mintable_tokens             | std::optional<uint32_t>           | The maximal number of tokens that can be minted with the factory.                                                                        |
+| max_mintable_tokens             | std::optional\<uint32_t>          | The maximal number of tokens that can be minted with the factory.                                                                        |
 | minted_tokens_no                | uint32_t                          | The number of minted of tokens.                                                                                                          |
 | existing_tokens_no              | uint32_t                          | The number of minted minus number of burnt tokens.                                                                                       |
 
@@ -108,14 +108,14 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 
 The table stores the tokens owned by a user.
 
-| Fields           | Type                                | Description                                              |
-| ---------------- | ----------------------------------- | -------------------------------------------------------- |
-| id               | uint64_t                            | (primary key) Global token ID                            |
-| token_factory_id | uint64_t                            | The token factory ID the token was issued with.          |
-| mint_date        | eosio::time_point_sec               | The token mint date.                                     |
-| serial_number    | uint32_t                            | The ordinal number of the token assigned during issuance |
-| uri              | std::optional\<string\>             | URI pointing to the metadata of this token               |
-| hash             | std::optional\<eosio::checksum256\> | hash of the metadata for this token                      |
+| Fields           | Type                               | Description                                              |
+| ---------------- | ---------------------------------- | -------------------------------------------------------- |
+| id               | uint64_t                           | (primary key) Global token ID                            |
+| token_factory_id | uint64_t                           | The token factory ID the token was issued with.          |
+| mint_date        | eosio::time_point_sec              | The token mint date.                                     |
+| serial_number    | uint32_t                           | The ordinal number of the token assigned during issuance |
+| uri              | std::optional\<string>             | URI pointing to the metadata of this token               |
+| hash             | std::optional\<eosio::checksum256> | hash of the metadata for this token                      |
 
 Most relevant actions: **buy**, **burn**, **issue.b**, **resell**.
 
@@ -397,7 +397,7 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 
 -   Table: `mintstat.a`
 -   Code: `eosio.nft.ft`
--   Scope: `factory_id`
+-   Scope: `token factory ID`
 -   Key: `user`
 
 The table stores information about how many tokens were minted to the specific user account. Utilized to check against minting limit within the token factory
@@ -412,13 +412,13 @@ Most relevant actions: `issue`, `issue.b`
 -   `cleos` Query Example
 
 ```sh
-cleos get table eosio.nft.ft ...........1j mintstat.a
+cleos get table eosio.nft.ft 15 mintstat.a
 ```
 
 -   `curl` query example
 
 ```sh
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"...........1j", "code":"eosio.nft.ft", "table":"mintstat.a", "json": true}'
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"15", "code":"eosio.nft.ft", "table":"mintstat.a", "json": true}'
 ```
 
 ## ramvault.a
@@ -513,3 +513,54 @@ cleos get table eosio.nft.ft 0 saleshrlmcfg
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlmcfg", "json": true}'
 ```
+
+<Experimental>
+
+## fctrprchs.a
+
+-   Table: `fctrprchs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `token factory ID`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields                     | Type                                            | Description                                                                                                                                        |
+| -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                         | uint64_t                                        | ID of this purchase requirement                                                                                                                    |
+| price                      | asset                                           | Price of the uniq specified in UOS or USD                                                                                                          |
+| purchase_limit             | uint32_t                                        | Total number of uniqs purchased through this option                                                                                                |
+| purchased_tokens_no        | eosio::checksum256                              | Hash of the factory group metadata                                                                                                                 |
+| promoter_basis_point       | uint16_t                                        | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                              |
+| purchase_option_with_uniqs | std::optional\<purchase_requirement_with_uniqs> | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories |
+| sale_shares                | std::vector\<sale_share>                        | A vector of [account, share] pairs setting the share each account receives during the purchase                                                     |
+| uos_payment                | int64_t                                         | UOS payment charged during the creation of the purchase option                                                                                     |
+
+The table below describes the structure and usage of each of the fields inside `purchase_option_with_uniqs` structure that can be provided 
+
+| `purchase_option_with_uniqs` Field | Type                        | Description                                                                                                                                                |
+| ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transfer_tokens_receiver_account   | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
+| factories                          | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
+
+| `uniqs_count` Field | Type     | Description                                                                                                                                                                                                                                                                                                                         |
+| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id    | uint64_t | ID of the factory that the user needs to have tokens from                                                                                                                                                                                                                                                                           |
+| count               | uint32_t | How many tokens are needed from the specified factory                                                                                                                                                                                                                                                                               |
+| strategy            | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the tokens is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
+
+Most relevant actions: `setprchsreq.a`, `delprchsreq.a`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 123 fctrprchs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"123", "code":"eosio.nft.ft", "table":"fctrprchs.a", "json": true}'
+```
+
+</Experimental>

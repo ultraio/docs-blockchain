@@ -63,11 +63,11 @@ If token factory is inactive transaction reverts as well.
 
 **purchase_requirement_with_uniqs option breakdown**
 
-Refer to [fctrprchs.a](./nft-tables.md#fctrprchs-a)
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
 **uniqs_count type breakdown**
 
-Refer to [fctrprchs.a](./nft-tables.md#fctrprchs-a)
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
 ## CLI - cleos
 

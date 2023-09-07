@@ -78,7 +78,7 @@ For each group, the following information is stored on-chain:
 
 ## `create.a`
 
-The `create.a` action is the initial version of the create action for the Ultra blockchain. It registers a new group in the `groups.a` table using the parameters specified by the user.
+The `create.a` action is the first version of the create action for the Ultra blockchain. It registers a new group in the `groups.a` table using the parameters specified by the creator.
 
 ### Behavior
 
@@ -129,7 +129,7 @@ await api.transact({
 
 ## `setmeta.a`
 
-The `setmeta.a` action is the initial version of the setmeta action for the Ultra blockchain. It allows users to set or update the `meta_uri` and `meta_hash` for an existing group in the `groups.a` table.
+The `setmeta.a` action is the first version of the setmeta action for the Ultra blockchain. It allows users to set or update the `meta_uri` and `meta_hash` for an existing group in the `groups.a` table.
 
 ### Behavior
 
@@ -155,7 +155,7 @@ The `setmeta.a` action is the initial version of the setmeta action for the Ultr
 To set or update the metadata of a group, use the following `cleos` command:
 
 ```bash
-cleos push action eosio.group setmeta.a '{"creator": "alice", "group_id": 1, "meta_uri": "https://ultra/group/meta/germany", "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", "memo": "new group"}' -p alice@active
+cleos push action eosio.group setmeta.a '{"creator": "alice", "group_id": 1, "meta_uri": "https://ultra/group/meta/germany", "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", "memo": "set group meta"}' -p alice@active
 ```
 
 
@@ -243,7 +243,7 @@ The `rmuser.a` action is the first version of the `rmuser` action in the Ultra b
 
 - The creator of the group can remove users from it.
 - The `nr_users` field in `groups.a` table is decremented by the number of users removed.
-- The action will fail if any of the user names are not already in the group.
+- The action will fail if any of the user names are not in the group.
 
 ### Action Parameters
 
@@ -296,7 +296,7 @@ The `clear.a` action is the first version of the `clear` action in the Ultra blo
 
 - The creator of the group can remove all or a specified number of users from the group.
 - The `nr_users` field in the `groups.a` table will be decremented by the number of users removed.
-- The action will fail if any of the user names are not already in the group.
+- The action will fail if there are no users in the group.
 
 ### Action Parameters
 
@@ -342,7 +342,7 @@ await api.transact({
 
 ## Table Descriptions
 
-The Ultra blockchain employs various tables to store information about groups and their corresponding users. This chapter outlines the structure, properties, and example states of these tables.
+The Ultra blockchain employs various tables to store information about groups and their users. This chapter outlines the structure, properties, and example states of these tables.
 
 ### `groupid` Table
 

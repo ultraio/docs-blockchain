@@ -23,7 +23,7 @@ The factory manager can specify purchase options for users. Note that currently 
         -   RAM price: **0.15 USD/KB**
 
     -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
-        (1656B/1024B \* 0.15USD/KB) / (conversion rate) = `0.24257813` **USD**/(conversion rate)
+        (1661B/1024B \* 0.15USD/KB) / (conversion rate) = `0.24331055` **USD**/(conversion rate)
 
 `token_factory_id` - token factory managed by a factory manager.
 
@@ -31,7 +31,7 @@ The factory manager can specify purchase options for users. Note that currently 
 
 `price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
 
-`purchase_limit` - how much users can buy via purchase action. it has to be less than factory limit setting and greater or equal to what was already minted via the action.
+`purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
 
 `promoter_basis_point` is used to specify how much % of a sale a promoter will get.
 

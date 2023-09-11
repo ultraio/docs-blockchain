@@ -1,7 +1,7 @@
 ---
 title: 'rmuser'
 order: 4
-deploy: ['experiment']
+deploy: ['experimental']
 ---
 
 ## `rmuser.a`

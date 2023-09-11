@@ -1,6 +1,6 @@
 ---
 title: 'On-Chain User Groups Tables'
-deploy: ['experiment']
+deploy: ['experimental']
 outline: [0, 4]
 order: -98
 ---

@@ -1,7 +1,7 @@
 ---
 title: 'setmeta'
 order: 2
-deploy: ['experiment']
+deploy: ['experimental']
 ---
 
 ## `setmeta.a`

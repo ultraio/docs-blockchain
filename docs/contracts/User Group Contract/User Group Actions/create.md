@@ -1,7 +1,7 @@
 ---
 title: 'create'
 order: 1
-deploy: ['experiment']
+deploy: ['experimental']
 ---
 
 ## `create.a`

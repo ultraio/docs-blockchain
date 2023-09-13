@@ -63,7 +63,7 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
     -   If the RAM usage for token exceeds maximum pack size of **384 bytes**, action will fail.
 
-    -   If **asset_manager** or **authorizer** is other than `ultra.nft.ft`, The cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the token minted.
+    -   If **asset_manager** or **authorizer** is other than `ultra.nft.ft`, The cost of creating a token is paid to `eosio.nftram` and it will be locked up in the token minted.
 
         -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 

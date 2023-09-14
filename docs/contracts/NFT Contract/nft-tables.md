@@ -536,19 +536,6 @@ The table stores information about the utilization of RAM vault per account with
 | sale_shares                | std::vector\<sale_share>                        | A vector of [account, share] pairs setting the share each account receives during the purchase                                                     |
 | uos_payment                | int64_t                                         | UOS payment charged during the creation of the purchase option                                                                                     |
 
-The table below describes the structure and usage of each of the fields inside `purchase_option_with_uniqs` structure that can be provided 
-
-| `purchase_option_with_uniqs` Field | Type                        | Description                                                                                                                                                |
-| ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transfer_tokens_receiver_account   | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
-| factories                          | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
-
-| `uniqs_count` Field | Type     | Description                                                                                                                                                                                                                                                                                                                         |
-| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| token_factory_id    | uint64_t | ID of the factory that the user needs to have tokens from                                                                                                                                                                                                                                                                           |
-| count               | uint32_t | How many tokens are needed from the specified factory                                                                                                                                                                                                                                                                               |
-| strategy            | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the tokens is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
-
 Most relevant actions: `setprchsreq.a`, `delprchsreq.a`, `purchase.a`
 
 -   `cleos` Query Example
@@ -562,5 +549,22 @@ cleos get table eosio.nft.ft 123 fctrprchs.a
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"123", "code":"eosio.nft.ft", "table":"fctrprchs.a", "json": true}'
 ```
+
+The tables below describe the structure and usage of each of the fields inside `purchase_option_with_uniqs` and `uniqs_count` structures that can be provided 
+
+### `purchase_option_with_uniqs` type
+
+| Field | Type                        | Description                                                                                                                                                |
+| ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transfer_tokens_receiver_account   | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
+| factories                          | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
+
+### `uniqs_count` type
+
+| Field            | Type     | Description                                                                                                                                                                                                                                                                                                                         |
+| ---------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t | ID of the factory that the user needs to have tokens from                                                                                                                                                                                                                                                                           |
+| count            | uint32_t | How many tokens are needed from the specified factory                                                                                                                                                                                                                                                                               |
+| strategy         | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the tokens is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
 
 </Experimental>

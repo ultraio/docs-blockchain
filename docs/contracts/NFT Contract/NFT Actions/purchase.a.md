@@ -42,7 +42,7 @@ When a uniq is being purchased it goes through our `verify_user_uniqs` function 
 
 It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
 
-Strategy meaning: `0` just check, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
+Strategy meaning: `0` just check ownership of the provided nft, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
 
 All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
 
@@ -76,12 +76,12 @@ Internally we are constructing a vector of which `token_ids` to be transferred.
 | user_uniqs       | std::optional\<provided_user_uniqs> | Array / null    | List of uniqs the buyer is willing to provide for this purchase option to either be taken from him or to just verify their presence. Refer to `provided_user_uniqs` breakdown below |
 | memo             | std::string                         | string          | A short operation description                                                                                                                                                       |
 
-**provided_user_uniqs Interface**
+`user_uniqs` is a vector of `provided_user_uniqs`, which has the following structure
 
 | Property Name | C++ Type | JavaScript Type | Description                                                                                                                     |
 | ------------- | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                               |
-| strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](./nft-tables.md#fctrprchs-a) for allowed values and usage |
+| strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a) for allowed values and usage |
 
 
 ## CLI - cleos

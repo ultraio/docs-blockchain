@@ -42,9 +42,9 @@ This action allows a factory asset manager to be able to authorize (delegate) mi
 
 -   The cost of a authorized minter entry is paid to `eosio.nftram` and it will be locked up in the authorized minter entry. The funds are released back to the orinigal payer after the authorized tokens are minted
 
-        -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+        -   First, the cost in USD is (Authorized Minter RAM payment size) \* (RAM price), where
 
-            -   NFT RAM payment size: **124 bytes**
+            -   Authorized Minter RAM payment size: **124 bytes**
 
             -   RAM price: **0.15 USD/KB**
 

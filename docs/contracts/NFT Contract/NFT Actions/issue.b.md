@@ -57,7 +57,7 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
 -   Creating new token
 
-    -   RAM usage of a factory creation is covered by `eosio.nftram`. **4GB** will be gifted to `eosio.nfrram` to start with. The action fails If the unused RAM of `eosio.nftram` is less than or equal to **200MB**.
+    -   RAM usage of creating a token is covered by `eosio.nftram`. **4GB** will be gifted to `eosio.nfrram` to start with. The action fails If the unused RAM of `eosio.nftram` is less than or equal to **200MB**.
 
     -   Token data is stored to `token.b` table and each entry’s pack size will be **192 bytes**.
 

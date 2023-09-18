@@ -74,6 +74,8 @@ Internally we are constructing a vector of which `token_ids` to be transferred.
 | receiver         | eosio::asset                        | string          | Account that will receive the Uniq from this purchase                                                                                                                               |
 | promoter_id      | std::optional\<eosio::name>         | string / null   | Optional promoter of the purchase transaction. If no promoter is provided then the default promoter specified in `saleshrlmcfg` (scope `0`) will be used if present                 |
 | user_uniqs       | std::optional\<provided_user_uniqs> | Array / null    | List of uniqs the buyer is willing to provide for this purchase option to either be taken from him or to just verify their presence. Refer to `provided_user_uniqs` breakdown below |
+| start            | std::optional\<time_point_sec>      | string / null          | Start time of purchase window (optional)
+| end            | std::optional\<time_point_sec>      | string / null          | End time of purchase window (optional)
 | memo             | std::string                         | string          | A short operation description                                                                                                                                                       |
 
 `user_uniqs` is a vector of `provided_user_uniqs`, which has the following structure
@@ -101,6 +103,8 @@ cleos push action eosio.nft.ft purchase.a '[
         "strategy": 2
       }]
     },
+    "start": "2023-09-18T13:21:10.724",
+    "end": "2023-11-18T13:21:10.724",
     "memo": ""
   }
 ]' -p alice
@@ -128,6 +132,8 @@ await api.transact({
               strategy: 2
             }]
           },
+          start: "2023-09-18T13:21:10.724",
+          end: "2023-11-18T13:21:10.724",
           memo: ""
         }
       },

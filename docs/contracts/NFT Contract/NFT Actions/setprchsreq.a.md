@@ -57,7 +57,7 @@ If token factory is inactive transaction reverts as well.
 Logical Operators
 The logical operators are defined as bitwise flags in the following manner:
 
-```c++
+```scss
 #define OR        0X1000'0000'0000'0000   // 0: AND, 1: OR
 #define NEGATION  0X2000'0000'0000'0000   // 0: No negation, 1: Negation
 ```
@@ -95,7 +95,7 @@ L = O1(g1) OP2 O2(g2) OP3 O3(g3) ... OPn On(gn)
 
 Where:
 
-* `Oi(gi)` represents the membership status for `gi`, which may be negated depending on the NEGATION bit.
+* `Oi(gi)` checks whether a user belongs to the group `gi` if there is no NEGATION bit, otherwise, it checks whether a user **does not** belong to the group `gi`.
 * `OPi` is the logical operator (AND/OR) determined by the OR bit in `gi`, taking effect starting from `i=2` to `n`.
 
 Notes:

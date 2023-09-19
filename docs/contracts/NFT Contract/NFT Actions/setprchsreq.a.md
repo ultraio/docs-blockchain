@@ -22,14 +22,14 @@ The factory manager can specify purchase options for users. Note that currently 
 
     -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 
-        -   NFT RAM payment size: **1679 bytes**
+        -   NFT RAM payment size: **1671 bytes**
 
             - estimated for a token with `purchase_option_with_uniqs` of 64
 
         -   RAM price: **0.15 USD/KB**
 
-    -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
-        (1661B/1024B \* 0.15USD/KB) / (conversion rate) = `0.24331055` **USD**/(conversion rate)
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 1671B/1024B \* 0.15USD/KB ~ 0.24$ = 0.24 UOS
 
 `token_factory_id` - token factory managed by a factory manager.
 

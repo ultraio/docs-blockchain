@@ -100,7 +100,7 @@ cleos push action eosio.nft.ft purchase.a '[
         "token_id": 77,
         "strategy": 2
       }]
-    }
+    },
     "memo": ""
   }
 ]' -p alice

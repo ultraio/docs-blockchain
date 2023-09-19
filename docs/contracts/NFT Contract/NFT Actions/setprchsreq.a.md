@@ -65,8 +65,8 @@ If token factory is inactive transaction reverts as well.
 | purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
 | sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
 | maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
-| start            | std::optional\<time_point_sec>      | string / null          | Start time of purchase window (optional)
-| end            | std::optional\<time_point_sec>      | string / null          | End time of purchase window (optional)
+| purchase_window_start            | std::optional\<time_point_sec>      | string / null          | Start time of purchase window (optional)
+| purchase_window_end            | std::optional\<time_point_sec>      | string / null          | End time of purchase window (optional)
 | memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
 
 **purchase_requirement_with_uniqs option breakdown**
@@ -84,11 +84,11 @@ cleos push action eosio.nft.ft setprchsreq.a '[
   {
     "token_factory_id": 100,
     "index": 1,
-    "price": "50 UOS",
+    "price": "50.00000000 UOS",
     "purchase_limit": 1,
     "promoter_basis_point": 100,
     "purchase_option_with_uniqs": {
-      "transfer_tokens_receiver_account": "",
+      "transfer_tokens_receiver_account": null,
       "factories": [{
         "token_factory_id": 42,
         "count": 3,
@@ -96,9 +96,9 @@ cleos push action eosio.nft.ft setprchsreq.a '[
       }]
     },
     "sale_shares": [],
-    "maximum_uos_payment": "2 UOS",
-    start: "2023-09-18T13:21:10.724",
-    end: "2023-11-18T13:21:10.724",
+    "maximum_uos_payment": "2.00000000 UOS",
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
     "memo": ""
   }
 ]' -p factory.manager
@@ -118,11 +118,11 @@ await api.transact(
                     purchase_option: {
                         token_factory_id: 100,
                         index: 1,
-                        price: '50 UOS',
+                        price: '50.00000000 UOS',
                         purchase_limit: 1,
                         promoter_basis_point: 100,
                         purchase_option_with_uniqs: {
-                            transfer_tokens_receiver_account: '',
+                            transfer_tokens_receiver_account: null,
                             factories: [
                                 {
                                     token_factory_id: 42,
@@ -132,9 +132,9 @@ await api.transact(
                             ],
                         },
                         sale_shares: [],
-                        maximum_uos_payment: '2 UOS',
-                        start: "2023-09-18T13:21:10.724",
-                        end: "2023-11-18T13:21:10.724",
+                        maximum_uos_payment: '2.00000000 UOS',
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
                         memo: '',
                     },
                 },

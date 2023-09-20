@@ -22,14 +22,14 @@ The factory manager can specify purchase options for users. Note that currently 
 
     -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 
-        -   NFT RAM payment size: **1656 bytes**
+        -   NFT RAM payment size: **1671 bytes**
 
             - estimated for a token with `purchase_option_with_uniqs` of 64
 
         -   RAM price: **0.15 USD/KB**
 
-    -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
-        (1661B/1024B \* 0.15USD/KB) / (conversion rate) = `0.24331055` **USD**/(conversion rate)
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 1671B/1024B \* 0.15USD/KB ~ 0.24$ = 0.24 UOS
 
 `token_factory_id` - token factory managed by a factory manager.
 
@@ -123,6 +123,8 @@ By understanding this formalization, you can ensure a clear and standardized way
 | sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
 | maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
 | group_restriction          | optional<uint64_t_vector>           | Array / null    | Vector of 64-bit integers specifying logical restrictions based on group membership. Follows specific logical operator rules as outlined above.                                                                                                      |
+| purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
+| purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
 | memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
 
 **purchase_requirement_with_uniqs option breakdown**
@@ -140,11 +142,11 @@ cleos push action eosio.nft.ft setprchsreq.a '[
   {
     "token_factory_id": 100,
     "index": 1,
-    "price": "50 UOS",
+    "price": "50.00000000 UOS",
     "purchase_limit": 1,
     "promoter_basis_point": 100,
     "purchase_option_with_uniqs": {
-      "transfer_tokens_receiver_account": "",
+      "transfer_tokens_receiver_account": null,
       "factories": [{
         "token_factory_id": 42,
         "count": 3,
@@ -152,8 +154,10 @@ cleos push action eosio.nft.ft setprchsreq.a '[
       }]
     },
     "sale_shares": [],
-    "maximum_uos_payment": "2 UOS",
+    "maximum_uos_payment": "2.00000000 UOS",
     "group_restriction": [],
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
     "memo": ""
   }
 ]' -p factory.manager
@@ -173,11 +177,11 @@ await api.transact(
                     purchase_option: {
                         token_factory_id: 100,
                         index: 1,
-                        price: '50 UOS',
+                        price: '50.00000000 UOS',
                         purchase_limit: 1,
                         promoter_basis_point: 100,
                         purchase_option_with_uniqs: {
-                            transfer_tokens_receiver_account: '',
+                            transfer_tokens_receiver_account: null,
                             factories: [
                                 {
                                     token_factory_id: 42,
@@ -187,8 +191,10 @@ await api.transact(
                             ],
                         },
                         sale_shares: [],
-                        maximum_uos_payment: '2 UOS',
+                        maximum_uos_payment: '2.00000000 UOS',
                         group_restriction: [],
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
                         memo: '',
                     },
                 },

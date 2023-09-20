@@ -96,7 +96,7 @@ cleos push action eosio.nft.ft purchase.a '[
   {
     "token_factory_id": 100,
     "index": 1,
-    "max_price": "100 UOS",
+    "max_price": "100.00000000 UOS",
     "buyer": "alice",
     "receiver": "token_receiver_account",
     "promoter_id": "",
@@ -123,7 +123,7 @@ await api.transact({
         purchase: {
           token_factory_id: 100,
           index: 1,
-          max_price: "100 UOS",
+          max_price: "100.00000000 UOS",
           buyer: "alice",
           receiver: "token_receiver_account",
           promoter_id: "",

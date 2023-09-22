@@ -33,9 +33,10 @@ The required authorization is the token_factory_manager as the manager is respon
 ## CLI - cleos
 
 cleos push action eosio.nft.ft lckfactory '[1]' -p manager.acc@active
-JavaScript - eosjs
 
-```javascript
+## JavaScript - eosjs
+
+```js
 await api.transact(
     {
         actions: [

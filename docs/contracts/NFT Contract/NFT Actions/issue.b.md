@@ -4,7 +4,7 @@ order: 14
 deploy: ['staging', 'mainnet']
 ---
 
-# issue
+# issue.b
 
 This action can be used to issue tokens by factory managers or authorized minters
 

@@ -134,3 +134,20 @@ The **setconrecv** action allows the _Asset Manager_ to set the token factory co
 
 -   [setconrecv - set conditionless receivers](./NFT%20Actions/setconrecv.md)
 -   [factory.b](./nft-tables.md#factory-b)
+
+<Experimental>
+
+## Adding factory purchase options
+
+The _Asset Manager_ can add the factory first-hand purchase requirements
+
+The **setprchsreq.a** action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
+
+Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
+
+-   [setprchsreq.a - set purchase requirement](./NFT%20Actions/setprchsreq.a.md)
+-   [delprchsreq.a - delete purchase requirement](./NFT%20Actions/delprchsreq.a.md)
+-   [purchase.a - purchase a token](./NFT%20Actions/purchase.a.md)
+-   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)
+
+</Experimental>

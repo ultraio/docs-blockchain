@@ -21,6 +21,6 @@ We currently allow **EBA accounts** to be created through the official ultra.io 
 
 Using our docker image you can create local accounts for testing.
 
-- [Read more in the cleos section](../../guides/Docker/cleos.md#creating-an-account)
+- [Read more in the cleos section](../../tools/protocol/cleos.md#creating-an-account)
 
 

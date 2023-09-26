@@ -9,7 +9,7 @@ outline: [0,4]
 
 Tokens can be obtained in one of two ways in the **local environment**.
 
-The first way involves obtaining tokens in a unit test, check the [ultratest](./ultratest.md#adduos) documentation for more information.
+The first way involves obtaining tokens in a unit test, check the [ultratest](../../tools/ultratest/ultratest.md#adduos) documentation for more information.
 
 The second way involves an `ultratest` no test instance and `cleos`.
 
@@ -17,9 +17,9 @@ The second way involves an `ultratest` no test instance and `cleos`.
 
 You should be inside of the docker image.
 
-You should have [ultratest running in a no-tests instance](./ultratest.md#starting-a-system-node).
+You should have [ultratest running in a no-tests instance](../../tools/ultratest/ultratest.md#starting-a-system-node).
 
-Make sure you have [created an account locally](./cleos.md#creating-an-account) before running the following command.
+Make sure you have [created an account locally](../../tools/protocol/cleos.md#creating-an-account) before running the following command.
 
 ## The Transfer Action
 

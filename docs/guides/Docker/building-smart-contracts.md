@@ -130,8 +130,8 @@ Three files should be created in the `hello` directory.
 
 After compiling the smart contract there are two options for deployment in the local development environment.
 
-- [Deploy with 'ultratest' framework](./ultratest.md)
-- ['cleos' based contract deployment](./cleos.md#deploying-a-smart-contract)
+- [Deploy with 'ultratest' framework](../../tools/ultratest/ultratest.md)
+- ['cleos' based contract deployment](../../tools/protocol/cleos.md#deploying-a-smart-contract)
 
 ## CMake
 
@@ -169,19 +169,19 @@ Obtain the following files from [the following markdown page](../../examples/eos
         |- eosio.token.cpp
 ```
 
-### Building with the Wrapper Script
+### Building using CMakeLists.txt
 
-Inside of the docker image there is a script called `build_contracts` which can be ran from anywhere inside of the docker image.
+After preparing all the smart contract files and CMakeLists.txt you should be able to proceed with building the contract using the following commands:
 
-This script will create a build folder and put build artifacts (wasm and abi files) in the folder.
-
-Run the following command in any folder.
-
-```
-build_contracts
+```sh
+mkdir -p build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ../
+make
 ```
 
-If everything is setup correctly the script will automatically tap into the `CMakeLists.txt` and build your contract.
+If you want to rebuild the contract you can either run the `make` command in the `build` directory again or delete the `build` directory and perform the commands above again
+
+If everything is setup correctly the commands will use the `CMakeLists.txt` and build your contract.
 
 ![](/images/vscode-eosio-token-contract-build.png)
 

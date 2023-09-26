@@ -21,7 +21,7 @@ To get an Easy Blockchain Account you only have to create an Ultra account using
 
 ## Non-EBA (Self-managed blockchain account)
 
-A non-EBA account is a typical blockchain account controlled by private keys that you must secure yourself. This type of account is recommended for developers and other advanced users. To learn more about how to generate your own keys, read this [documentation page](/guides/Docker/nodeos.md).
+A non-EBA account is a typical blockchain account controlled by private keys that you must secure yourself. This type of account is recommended for developers and other advanced users. To learn more about how to generate your own keys, read this [documentation page](../../tools/protocol/nodeos.md).
 
 ![](/images/uwax-private-key-btn.png)
 

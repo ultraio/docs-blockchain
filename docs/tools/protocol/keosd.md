@@ -1,7 +1,7 @@
 ---
 title: 'Keosd Usage'
 deploy: ['staging', 'mainnet']
-order: -9995
+order: 1
 outline: [0,4]
 ---
 
@@ -20,7 +20,7 @@ We have created a Docker image that has pre-created scripts, tools, and pre-pack
 
 Individual binaries are not currently available for download.
 
-[Docker Image Usage](./docker-image-usage.md)
+[Docker Image Usage](../../guides/Docker/docker-image-usage.md)
 
 ## Usage
 

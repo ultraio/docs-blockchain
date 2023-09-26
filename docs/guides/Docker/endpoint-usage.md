@@ -11,9 +11,9 @@ In many cases when working with smart contracts, or on-chain actions you will ne
 
 ## Cleos Usage
 
-Cleos has a section on using [external endpoints](./cleos.md#external-apis).
+Cleos has a section on using [external endpoints](../../tools/protocol/cleos.md#external-apis).
 
-In short append the `-u` flag with a url.
+In short append the `-u` flag with a url. If you are using local environment then this flag can be skipped. The default value of `http://127.0.0.1:8888` will be used
 
 ```
 cleos -u <endpoint>
@@ -24,7 +24,7 @@ cleos -u <endpoint>
 cUrl can be used normally but suggested to use `json_pp` to help prettify the output from a cUrl response.
 
 ```
-curl <endpoint>/v1/chain/get_info
+curl -X POST <endpoint>/v1/chain/get_info
 ```
 
 ## wget Usage

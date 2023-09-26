@@ -15,7 +15,7 @@ For non-EBA wallet accounts, it is possible to add custom networks for testing p
 
 2. Fill all the fields with your custom network parameters and click “Add Network”
     * Network name: This is the name used to be displayed in the environment dropdown list.
-    * Network HTTP URL: URL used to connect to your Ultra blockchain node, for more information follow this [documentation page](/guides/Docker/nodeos.md).
+    * Network HTTP URL: URL used to connect to your Ultra blockchain node, for more information follow this [documentation page](../../tools/protocol/nodeos.md).
     * Block explorer URL: URL for the blockchain explorer, for example, https://local.bloks.io
 
    ![](/images/uwax-add-net.png)

@@ -13,7 +13,7 @@ Most convinent way to interact with a docker container and manage the files insi
 
 For the local environment you just open `~/ultra_workdir` if you're on Linux or `C:\Users\Username\ultra_workdir` on Windows using VSCode. You can write all the tests and smart contract code locally. Then if you want to build and test use one of the following pathways:
 - [VSCode extension](../../tools/smart-contract-toolkit/index.md)
-- [Run build commands in docker](./building-smart-contracts.md)
+- [Run build commands in docker](./docker-contract-development-flow.md)
 
 ## Docker
 

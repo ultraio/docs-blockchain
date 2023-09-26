@@ -1,12 +1,12 @@
 ---
-title: 'Building Smart Contracts'
+title: 'Docker Contract Development Flow'
 deploy: ['staging', 'mainnet']
 order: -9990
 outline: [0,4]
 prev: false
 ---
 
-# Building Smart Contracts
+# Docker Contract Development Flow
 
 A smart contract is written in C++ but compiled into WASM.
 

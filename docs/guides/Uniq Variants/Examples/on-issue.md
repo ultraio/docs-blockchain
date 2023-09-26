@@ -57,7 +57,7 @@ This contract assumes no one will be issuing tokens to `onissue` contract so if 
 
 ### How to build and test
 
-First step after writing the `onissue.hpp` and `onissue.cpp` will be to build the contract. Follow [this](../../Docker/building-smart-contracts.md) for instructions of the build process.
+First step after writing the `onissue.hpp` and `onissue.cpp` will be to build the contract. Follow [this](../../Smart%20Contracts/3.compile.md) for instructions of the build process.
 
 As an alternative the build command using <Mainnet>`eosio-cpp`</Mainnet><Staging>`eosio-cpp`</Staging><Experimental>`cdt-cpp`</Experimental>:
 <Mainnet>

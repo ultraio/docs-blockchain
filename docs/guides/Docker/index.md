@@ -12,6 +12,6 @@ This section highlights the tools provided inside of a Docker image.
 - [Setup a Development Environment](./development-environment.md)
 - [Docker Image Usage](./docker-image-usage.md)
 - [Endpoint Usage](./endpoint-usage.md)
-- [Building Smart Contracts](./building-smart-contracts.md)
+- [Docker Contract Development Flow](./docker-contract-development-flow.md)
 - [Obtaining Tokens Locally](./obtaining-tokens-locally.md)
 - [Troubleshooting Docker Image](./troubleshooting.md)

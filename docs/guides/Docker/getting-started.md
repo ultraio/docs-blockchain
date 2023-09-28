@@ -15,7 +15,6 @@ The goal of this document is to get a development environment setup in as little
 -   [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
 -   [Git for Windows / Linux](https://git-scm.com/)
     -   Ensure that you install Git Bash
-- [Clone Ultra Blockchain Dev Tools](https://github.com/ultraio/blockchain-development-tools)
 
 ## Obtaining the Docker Image
 
@@ -29,38 +28,30 @@ _The above image tag may be out of date. Visit [our official quay.io repository]
 
 ## Starting / Stopping Image
 
-Inside of the `blockchain-development-tools` directory run the following command to start the image.
+Open your terminal (on Windows use `Git Bash`) and use the following command to create development tools container
 
 ```sh
-./scripts/docker/start_docker.sh
+docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra/ultra_workdir:/opt/ultra_workdir --name ultra quay.io/ultra.io/3rdparty-devtools:latest
 ```
 
-Alternatively you can optionally specify a full docker image URL with a tag:
+::: warning
+The above command will utilize ports 8888 and 9876. If those ports are occupied the docker will fail to create the container. You will have an option to change which ports will be used on your host machine later.
+:::
+
+After you created the container you realistically won't need to create it again. Existing container will be accessible under the name of `ultra`.
+
+To stop the container without destroying it you can use the following command
 
 ```sh
-./scripts/docker/start_docker.sh quay.io/ultra.io/3rdparty-devtools:0.1.1
-```
-
-To stop existing development docker instance use the stop script
-
-```sh
-./scripts/docker/stop_docker.sh
+docker stop ultra
 ```
 
 ## Accessing the Image
 
-If the `start_docker` script does not attach automatically you can use the following command to get access inside the container.
-
-**Linux**
+After you created the container you will be able to attach to it using the following command. It will also start the container if it is currently stopped (for Windows keep in mind to use `Git Bash` still).
 
 ```sh
-docker exec -it ultra-dev-environment bash
-```
-
-**Windows**
-
-```sh
-winpty docker exec -it ultra-dev-environment bash
+docker start ultra && docker attach ultra
 ```
 
 ## Accessing Docker Volume
@@ -76,6 +67,8 @@ The docker container has a shared directory located somewhere in your operating 
 ## Creating a Smart Contract
 
 Create a directory in the `ultra_workdir` directory called `contracts` with a file inside called `hello.cpp`.
+- You can do it either on your host machine (Windows/Linux) or inside the docker image using your editor of choice (`nano` is preinstalled, other editors require manual installation)
+- You also have an option to use [VSCode Environment](./development-environment.md)
 
 ```cpp
 #include <eosio/eosio.hpp>
@@ -95,10 +88,10 @@ class [[eosio::contract]] hello : public eosio::contract {
 
 ### Compiling a Smart Contract
 
-Inside of the docker image navigate into the `contracts` directory, and run the following command.
+Inside of the docker image (using the terminal that is attached to the `ultra` container) navigate into the `contracts` directory, and run the following command.
 
 ```
-cd /opt/ultra_workdir/contracts
+mkdir -p /opt/ultra_workdir/contracts && cd /opt/ultra_workdir/contracts
 ```
 <Mainnet>
 
@@ -143,7 +136,9 @@ This directory structure should be reflected inside of the docker image.
 
 ### Write Tests
 
-Test files are written in JavaScript and must have `ultra_test.js` suffix.
+Test files are written in JavaScript and must have `ultra_test.js` suffix (e.g. `hello.ultra_test.js`).
+
+Now try adding the following code snippet to `hello.ultra_test.js`. You should place the file `ultra_workdir/tests` directory like the file tree in the section above suggests
 
 ```js
 module.exports = class test {
@@ -201,7 +196,11 @@ cd /opt/ultra_workdir
 ```
 
 ```
-ultratest -D
+ultratest
 ```
 
-If you are experiencing issues with deployment try appending `-P` as a parameter.
+If you did everything properly you should see the test line stating `All Tests Passed`
+
+::: info
+If the test run fails or gets stuck you can kill it using the ^C (Ctrl + C) termination command.
+:::

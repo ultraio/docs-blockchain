@@ -8,7 +8,7 @@ order: -99
 # Testnet Faucet Guide
 
 To create an account on testnet you need a key. The easiest way to do this is via
-[cleos](../Docker/cleos.md#create-a-key-pair):
+[cleos](../../tools/protocol/cleos.md#create-a-key-pair):
 
 ```sh
 $ cleos create key --to-console

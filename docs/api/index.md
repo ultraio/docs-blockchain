@@ -20,7 +20,7 @@ _It is recommended to use a package such as [enf-eosjs](https://github.com/eosne
 - https://ultra.eosrio.io
 - https://api.ultra.cryptolions.io/
 - https://ultra-api.eoseoul.io/
-- https://uos.eosusa.news
+- https://ultra.eosusa.io
 - https://api.ultra.eossweden.org
 
 **Test Network (Staging)**
@@ -28,7 +28,7 @@ _It is recommended to use a package such as [enf-eosjs](https://github.com/eosne
 - https://ultratest-api.eoseoul.io/
 - http://ultratest.api.eosnation.io
 - https://testnet.ultra.eosrio.io
-- https://test.uos.eosusa.news
+- https://test.ultra.eosusa.io
 - https://api.ultra-testnet.cryptolions.io
 - https://api.testnet.ultra.eossweden.org
 

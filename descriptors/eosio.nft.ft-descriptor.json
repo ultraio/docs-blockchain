@@ -17,13 +17,16 @@
                             "description": "List of factories to issue tokens from",
                             "fields": {
                                 "token_factory_id": {
-                                    "friendlyName": "Token factory ID"
+                                    "friendlyName": "Token factory ID",
+                                    "description": "ID of the factory from which the tokens should be minted"
                                 },
                                 "amount": {
-                                    "friendlyName": "Amount"
+                                    "friendlyName": "Amount",
+                                    "description": "Number of tokens to be minted"
                                 },
                                 "custom_data": {
-                                    "friendlyName": "Custom data"
+                                    "friendlyName": "Custom data",
+                                    "description": "Currently unused"
                                 }
                             }
                         },

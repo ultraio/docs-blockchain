@@ -13,8 +13,17 @@ The goal of this document is to get a development environment setup in as little
 
 -   [Docker for Windows](https://docs.docker.com/desktop/windows/install/)
 -   [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
+-   [Docker for Mac](https://docs.docker.com/desktop/install/mac-install/)
 -   [Git for Windows / Linux](https://git-scm.com/)
     -   Ensure that you install Git Bash
+
+Make sure docker engine is up on your system:
+
+```sh
+docker --version
+```
+
+`Docker version 20.10.21, build baeda1f`
 
 ## Obtaining the Docker Image
 
@@ -31,7 +40,7 @@ _The above image tag may be out of date. Visit [our official quay.io repository]
 Open your terminal (on Windows use `Git Bash`) and use the following command to create development tools container
 
 ```sh
-docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra/ultra_workdir:/opt/ultra_workdir --name ultra quay.io/ultra.io/3rdparty-devtools:latest
+docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra_workdir:/opt/ultra_workdir --name ultra quay.io/ultra.io/3rdparty-devtools:latest
 ```
 
 ::: warning
@@ -61,6 +70,8 @@ The docker container has a shared directory located somewhere in your operating 
 -   Windows: `C:\\Users\\Username\\ultra_workdir`
 
 -   Linux: `~/ultra_workdir`
+
+-   Mac OS: `~/ultra_workdir`
 
 -   Docker Container: `/opt/ultra_workdir`
 

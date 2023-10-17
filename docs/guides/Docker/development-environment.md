@@ -17,8 +17,8 @@ For the local environment you just open `~/ultra_workdir` if you're on Linux or 
 
 ## Docker
 
-Run the [docker start command](./docker-image-usage.md#running-the-image).
-It'll start a container called `ultra` to which you can connect using VSCode.
+Start a docker container using this [command](./docker-image-usage.md#running-the-image).
+It'll start a container called `ultra` which you can connect to using VSCode.
 By default your `ultra-workdir` is mounted to the `/opt/ultra_workdir` directory inside
 the container so any changes in that directory will persist on your filesystem.
 Go to the `Remote-Explorer` and attach to the `ultra` container.

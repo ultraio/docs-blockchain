@@ -4,19 +4,193 @@
             "friendlyName": "Authorize minter",
             "description": "Authorize an account to be able to mint tokens",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/authmint.b.html",
-            "fields": {}
+            "fields": {
+                "authorizer": {
+                    "friendlyName": "Authorizer",
+                    "description": "The account that authorizes"
+                },
+                "authorized_minter": {
+                    "friendlyName": "Authorized minter",
+                    "description": "The account being authorized to mint tokens"
+                },
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "The issuing token factory ID"
+                },
+                "quantity": {
+                    "friendlyName": "Quantity",
+                    "description": "The number of tokens being authorized"
+                },
+                "maximum_uos_payment": {
+                    "friendlyName": "Maximum UOS payment",
+                    "description": "Maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "clrmintst": {
             "friendlyName": "Clear minting status",
-            "description": "",
+            "description": "Clears (i.e., deletes the rows of) minting status table of a token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/clrmintst.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "The token factory ID"
+                },
+                "no_of_entries": {
+                    "friendlyName": "Num of entries",
+                    "description": "Optional, the number of entries to delete from the token_factory's mintstat table. If no_of_entries is not specified (i.e., null), all entries are deleted"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "create.b": {
             "friendlyName": "Create token factory",
-            "description": "",
+            "description": "Create a new token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/create.b.html",
-            "fields": {}
+            "fields": {
+                "create": {
+                    "friendlyName": "create wrapper",
+                    "fields": {
+                        "to": {
+                            "friendlyName": "To",
+                            "description": "Receiver of the minted token"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        },
+                        "asset_creator": {
+                            "friendlyName": "Asset creator",
+                            "description": "Token factory creator"
+                        },
+                        "asset_manager": {
+                            "friendlyName": "Asset manager",
+                            "description": "Token factory manager"
+                        },
+                        "minimum_resell_price": {
+                            "friendlyName": "Minimum resell price",
+                            "description": "Optional, the minimum resale price for the uniqs of this factory"
+                        },
+                        "resale_shares": {
+                            "friendlyName": "Resale shares",
+                            "description": "Optional, the resale share(s) configuration",
+                            "fields": {
+                                "receiver": {
+                                    "friendlyName": "Receiver",
+                                    "description": "Resale share receiver account"
+                                },
+                                "basis_point": {
+                                    "friendlyName": "Basis points",
+                                    "description": "Resale share commission"
+                                }
+                            }
+                        },
+                        "mintable_window_start": {
+                            "friendlyName": "Mintable window start",
+                            "description": "Optional, the starting date for minting window"
+                        },
+                        "mintable_window_end": {
+                            "friendlyName": "Mintable window end",
+                            "description": "Optional, the ending date for minting window"
+                        },
+                        "trading_window_start": {
+                            "friendlyName": "Trading window start",
+                            "description": "Optional, the starting date for minting window"
+                        },
+                        "trading_window_end": {
+                            "friendlyName": "Trading window end",
+                            "description": "Optional, the ending date for minting window"
+                        },
+                        "recall_window_start": {
+                            "friendlyName": "Recall window start",
+                            "description": "Deprecated, use null"
+                        },
+                        "recall_window_end": {
+                            "friendlyName": "Recall window end",
+                            "description": "Deprecated, use null"
+                        },
+                        "max_mintable_tokens": {
+                            "friendlyName": "Max mintable tokens",
+                            "description": "Optional, max number of tokens in this factory. Null means an unlimited number of tokens"
+                        },
+                        "lockup_time": {
+                            "friendlyName": "Lockup time",
+                            "description": "Deprecated, use null"
+                        },
+                        "conditionless_receivers": {
+                            "friendlyName": "Conditionless receivers",
+                            "description": "Optional, list of accounts that can receive tokens without meeting transfer conditions",
+                            "fields": {
+                                "name": {
+                                    "friendlyName": "Conditionless receiver",
+                                    "description": "Conditionless receiver account"
+                                }
+                            }
+                        },
+                        "stat": {
+                            "friendlyName": "Stat",
+                            "description": "Optional, factory status. Use null for default"
+                        },
+                        "factory_uri": {
+                            "friendlyName": "Metadata URI",
+                            "description": "Factory metadata URI"
+                        },
+                        "factory_hash": {
+                            "friendlyName": "Metadata hash",
+                            "description": "Optional, factory metadata hash"
+                        },
+                        "authorized_minters": {
+                            "friendlyName": "Authorized minters",
+                            "description": "Optional, accounts authorized to mint tokens from the factory",
+                            "fields": {
+                                "authorized_minters": {
+                                    "friendlyName": "Authorized Minter",
+                                    "description": "The account being authorized to mint"
+                                },
+                                "quantity": {
+                                    "friendlyName": "Quantity",
+                                    "description": "Quantity that the authorized account can mint"
+                                }
+                            }
+                        },
+                        "account_minting_limit": {
+                            "friendlyName": "Account minting limit",
+                            "description": "Max number of tokens an account can mint. Set to null to allow for unlimited tokens per account"
+                        },
+                        "transfer_window_start": {
+                            "friendlyName": "Transfer window start",
+                            "description": "Optional, the starting date for transfer window"
+                        },
+                        "transfer_window_end": {
+                            "friendlyName": "Transfer window start",
+                            "description": "Optional, the starting date for transfer window"
+                        },
+                        "default_token_uri": {
+                            "friendlyName": "Default token URI",
+                            "description": "URI pointing to the token metadata if there is no token-specific metadata"
+                        },
+                        "default_token_hash": {
+                            "friendlyName": "Default token hash",
+                            "description": "Optional, hash of static default token metadata"
+                        },
+                        "lock_hash": {
+                            "friendlyName": "Lock hash",
+                            "description": "Optional, whether to prevent changes to the hashes provided during the factory creation. Defaults to false"
+                        },
+                        "maximum_uos_payment": {
+                            "friendlyName": "Maximum UOS payment",
+                            "description": "Maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage"
+                        }
+                    }
+                }
+            }
         },
         "issue.b": {
             "friendlyName": "Issue tokens",
@@ -80,23 +254,42 @@
         },
         "lckfactory": {
             "friendlyName": "Lock factory",
-            "description": "",
+            "description": "Allows a factory manager to lock hashes for the factory, default token and all minted tokens as well as any token minted afterwards",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/lckfactory.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                }
+            }
         },
         "limitmint": {
             "friendlyName": "Set minting limit",
-            "description": "",
+            "description": "Sets/Resets the minting limit per account of a token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/limitmint.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                },
+                "account_minting_limit": {
+                    "friendlyName": "Account minting limit",
+                    "description": "Max number of tokens an account can mint"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "setconrecv": {
             "friendlyName": "Set conditionless receivers",
-            "description": "",
+            "description": "Set accounts that can receive tokens without meeting transfer conditions",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setconrecv.html",
             "fields": {
                 "token_factory_id": {
-                    "friendlyName": "Token factory ID"
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
                 },
                 "memo": {
                     "friendlyName": "Memo",
@@ -110,93 +303,400 @@
         },
         "setdflttkn": {
             "friendlyName": "Set default token metadata",
-            "description": "",
+            "description": "Set metadata URI and hash for default token of a token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setdflttkn.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                },
+                "uri": {
+                    "friendlyName": "Metadata URI",
+                    "description": "URI of the default token metadata"
+                },
+                "hash": {
+                    "friendlyName": "Metadata hash",
+                    "description": "Hash of the default token metadata"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "setmeta.b": {
             "friendlyName": "Set factory metadata",
-            "description": "",
+            "description": "Set metadata uri and hash for a token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setmeta.b.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                },
+                "factory_uri": {
+                    "friendlyName": "Metadata URI",
+                    "description": "URI of the factory metadata"
+                },
+                "factory_hash": {
+                    "friendlyName": "Metadata hash",
+                    "description": "Hash of the factory metadata"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "setstatus": {
             "friendlyName": "Set factory state",
-            "description": "",
+            "description": "Set token factory state",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setstatus.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                },
+                "status": {
+                    "friendlyName": "Status",
+                    "description": "State of the factory (0 = Active, 1 = Inactive, 2 = Shutdown)"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "settknmeta": {
             "friendlyName": "Set token metadata",
-            "description": "",
+            "description": "Set metadata uri and hash for a uniq",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/settknmeta.html",
-            "fields": {}
+            "fields": {
+                "token_id": {
+                    "friendlyName": "Token ID",
+                    "description": "ID of the token"
+                },
+                "owner": {
+                    "friendlyName": "Owner",
+                    "description": "Owner of the token"
+                },
+                "uri": {
+                    "friendlyName": "Metadata URI",
+                    "description": "URI of the token metadata"
+                },
+                "hash": {
+                    "friendlyName": "Metadata hash",
+                    "description": "Hash of the token metadata"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         },
         "settrdwin.a": {
             "friendlyName": "Set trading window",
-            "description": "",
+            "description": "Set the trading window for a token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/settrdwin.a.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                },
+                "trading_window_start": {
+                    "friendlyName": "Trading window start",
+                    "description": "Optional, the starting date for minting window"
+                },
+                "trading_window_end": {
+                    "friendlyName": "Trading window end",
+                    "description": "Optional, the ending date for minting window"
+                }
+            }
         },
         "settrnfwin.a": {
             "friendlyName": "Set transfer window",
-            "description": "",
+            "description": "Set the transfer window for a token factory",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/settrnfwin.a.html",
-            "fields": {}
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory"
+                },
+                "transfer_window_start": {
+                    "friendlyName": "Transfer window start",
+                    "description": "Optional, the starting date for minting window"
+                },
+                "transfer_window_end": {
+                    "friendlyName": "Transfer window end",
+                    "description": "Optional, the ending date for minting window"
+                }
+            }
         },
         "burn": {
             "friendlyName": "Burn a token",
-            "description": "",
+            "description": "Burns token(s)",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/burn.html",
-            "fields": {}
+            "fields": {
+                "burn": {
+                    "friendlyName": "Burn wrapper",
+                    "fields": {
+                        "owner": {
+                            "friendlyName": "Owner",
+                            "description": "Owner of the tokens to be burned"
+                        },
+                        "token_ids": {
+                            "friendlyName": "Token IDs",
+                            "description": "List of token IDs to burn",
+                            "fields": {
+                                "id": {
+                                    "friendlyName": "Token ID",
+                                    "description": "ID of the token to burn"
+                                }
+                            }
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
         },
         "buy": {
             "friendlyName": "Purchase a token",
-            "description": "",
+            "description": "Purchase a token from the resale marketplace",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/buy.html",
-            "fields": {}
+            "fields": {
+                "buy": {
+                    "friendlyName": "buy wrapper",
+                    "fields": {
+                        "buyer": {
+                            "friendlyName": "Buyer",
+                            "description": "The account that pays for the uniq"
+                        },
+                        "receiver": {
+                            "friendlyName": "Receiver",
+                            "description": "The account that receives the uniq"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        },
+                        "token_id": {
+                            "friendlyName": "Token ID",
+                            "description": "ID of the Uniq to buy"
+                        },
+                        "max_price": {
+                            "friendlyName": "Max Price",
+                            "description": "Maximum amount of UOS that is allowed to be used for the purchase"
+                        },
+                        "promoter_id": {
+                            "friendlyName": "Promoter ID",
+                            "description": "The promoter account that receives commission"
+                        }
+                    }
+                }
+            }
         },
         "cancelresell": {
             "friendlyName": "Cancel token resale",
-            "description": "",
+            "description": "Cancel the resale of a token",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/cancelresell.html",
-            "fields": {}
+            "fields": {
+                "cancelresell": {
+                    "friendlyName": "cancelresell wrapper",
+                    "fields": {
+                        "token_id": {
+                            "friendlyName": "Token ID",
+                            "description": "ID of the Uniq to cancel resale for"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
+        },
+        "transfer": {
+            "friendlyName": "Transfer token",
+            "description": "Transfer tokens to another user",
+            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/transfer.html",
+            "fields": {
+                "transfer": {
+                    "friendlyName": "transfer wrapper",
+                    "fields": {
+                        "from": {
+                            "friendlyName": "From",
+                            "description": "The sending account"
+                        },
+                        "to": {
+                            "friendlyName": "To",
+                            "description": "The receiving account"
+                        },
+                        "token_ids": {
+                            "friendlyName": "Token IDs",
+                            "description": "List of token IDs to transfer",
+                            "fields": {
+                                "id": {
+                                    "friendlyName": "Token ID",
+                                    "description": "ID of the token to transfer"
+                                }
+                            }
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
         },
         "resell": {
             "friendlyName": "Resell token",
-            "description": "",
+            "description": "Place tokens for sale on the resell marketplace",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/resell.html",
-            "fields": {}
+            "fields": {
+                "resell": {
+                    "friendlyName": "resell wrapper",
+                    "fields": {
+                        "seller": {
+                            "friendlyName": "Seller",
+                            "description": "The owner of the Uniq"
+                        },
+                        "token_id": {
+                            "friendlyName": "Token ID",
+                            "description": "ID of the Uniq to sell"
+                        },
+                        "price": {
+                            "friendlyName": "Price",
+                            "description": "The resale price"
+                        },
+                        "promoter_basis_point": {
+                            "friendlyName": "Promoter Basis Points",
+                            "description": "The resale promoter commission"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
         },
         "addgrpfcts": {
             "friendlyName": "Add factory to factory group",
-            "description": "",
+            "description": "Adds factory IDs to a factory group",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/addgrpfcts.html",
-            "fields": {}
+            "fields": {
+                "id": {
+                    "friendlyName": "Factory Group ID",
+                    "description": "ID of the factory group in which the factories will be added"
+                },
+                "factories": {
+                    "friendlyName": "Factory IDs",
+                    "description": "List of factory IDs to add to the factory group",
+                    "fields": {
+                        "id": {
+                            "friendlyName": "Factory ID",
+                            "description": "ID of the token factory"
+                        }
+                    }
+                }
+            }
         },
         "creategrp": {
             "friendlyName": "Create factory group",
-            "description": "",
+            "description": "Creates a factory group",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/creategrp.html",
-            "fields": {}
+            "fields": {
+                "manager": {
+                    "friendlyName": "Manager",
+                    "description": "Factory group manager"
+                },
+                "uri": {
+                    "friendlyName": "Metadata URI",
+                    "description": "Factory group metadata URI"
+                },
+                "hash": {
+                    "friendlyName": "Metadata Hash",
+                    "description": "Factory group metadata hash"
+                },
+                "factories": {
+                    "friendlyName": "Factory IDs",
+                    "description": "List of factory IDs to add to the factory group",
+                    "fields": {
+                        "id": {
+                            "friendlyName": "Factory ID",
+                            "description": "ID of the token factory"
+                        }
+                    }
+                },
+                "max_uos_payment": {
+                    "friendlyName": "Maximum UOS payment",
+                    "description": "Maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage"
+                }
+            }
         },
         "deletegrp": {
             "friendlyName": "Delete factory group",
-            "description": "",
+            "description": "Deletes a factory group with specified id",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/deletegrp.html",
-            "fields": {}
+            "fields": {
+                "id": {
+                    "friendlyName": "Factory Group ID",
+                    "description": "ID of the factory group to delete"
+                }
+            }
         },
         "rmgrpfcts": {
             "friendlyName": "Remove factories from factory group",
-            "description": "",
+            "description": "Remove factories from a factory group",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/rmgrpfcts.html",
-            "fields": {}
+            "fields": {
+                "id": {
+                    "friendlyName": "Factory Group ID",
+                    "description": "ID of the factory group from which the factories will be removed"
+                },
+                "factories": {
+                    "friendlyName": "Factory IDs",
+                    "description": "List of factory IDs to remove from the factory group",
+                    "fields": {
+                        "id": {
+                            "friendlyName": "Factory ID",
+                            "description": "ID of the token factory"
+                        }
+                    }
+                }
+            }
         },
         "updategrp": {
             "friendlyName": "Update factory group",
-            "description": "",
+            "description": "Updates factory group parameters: uri, hash and factory list",
             "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/updategrp.html",
-            "fields": {}
+            "fields": {
+                "id": {
+                    "friendlyName": "Factory Group ID",
+                    "description": "ID of the factory group to update"
+                },
+                "uri": {
+                    "friendlyName": "Metadata URI",
+                    "description": "Factory group metadata URI"
+                },
+                "hash": {
+                    "friendlyName": "Metadata Hash",
+                    "description": "Factory group metadata hash"
+                },
+                "factories": {
+                    "friendlyName": "Factory IDs",
+                    "description": "List of new factory IDs to add to the factory group",
+                    "fields": {
+                        "id": {
+                            "friendlyName": "Factory ID",
+                            "description": "ID of the token factory"
+                        }
+                    }
+                }
+            }
         }
     }
 }

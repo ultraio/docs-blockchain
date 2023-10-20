@@ -155,7 +155,7 @@ The logical operators' values are defined as
     - parameter calculation 
         * = [Group1_ID, Group2_ID]
         * = [1,2]
-    - parameter value:  ``` "group_restriction": [1, 2] ``` (which is used in the cleos example)
+    - parameter value:  ``` "group_restriction": [1, 2] ```
 3. users belong to either Group1 or Group2 can purchase form this option
     - logical expression: Group1 | Group2 
     - parameter calculation
@@ -175,8 +175,8 @@ The logical operators' values are defined as
     - parameter calculation:
         * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
         * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
-        * = [2305843009213693953, 3458764513820540932]
-    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540932] ``` (which is used in the javascript example)
+        * = [2305843009213693953, 3458764513820540930]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540930] ```
 
 
 
@@ -200,7 +200,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
     },
     "sale_shares": [],
     "maximum_uos_payment": "2.00000000 UOS",
-    "group_restriction": [1,2],
+    "group_restriction": [2305843009213693953, 3458764513820540930],
     "purchase_window_start": "2023-09-18T13:21:10.724",
     "purchase_window_end": "2023-11-18T13:21:10.724",
     "memo": ""
@@ -237,7 +237,7 @@ await api.transact(
                         },
                         sale_shares: [],
                         maximum_uos_payment: '2.00000000 UOS',
-                        group_restriction: [2305843009213693953, 3458764513820540932],
+                        group_restriction: [2305843009213693953, 3458764513820540930],
                         purchase_window_start: "2023-09-18T13:21:10.724",
                         purchase_window_end: "2023-11-18T13:21:10.724",
                         memo: '',

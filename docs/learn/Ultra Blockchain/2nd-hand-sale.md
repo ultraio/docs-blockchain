@@ -41,7 +41,7 @@ The above information cannot be updated once the token factory is created, no ma
 
 | Resell Configs | Meaning                                                                                                                                                                               |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| promoter share | How much share for a promoter, it must be between 2.5% and 10%. If given value is less than 2.5%, it will use 2.5%. If given value is more than 10%, it will fail to list for resale. |
+| promoter share | How much share for a promoter, it must be between 2% and 10%. If given value is less than 2%, it will use 2%. If given value is more than 10%, it will fail to list for resale. |
 
 The buyer can specify the name of the promoter when buying an NFT. In Ultra marketplace, Ultra can set it to an Ultra’s account, but buyer could edit it with some effort.
 

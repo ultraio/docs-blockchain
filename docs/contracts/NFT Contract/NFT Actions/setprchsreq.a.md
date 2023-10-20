@@ -144,36 +144,36 @@ The logical operators' values are defined as
 - **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
 
  Let's say we have two user groups
- - GroupA_ID = 1
- - GroupB_ID = 2
+ - Group1_ID = 1
+ - Group2_ID = 2
 
 #### Use cases
 1. no group requriement.
     - parameter value ``` "group_restriction": [] ```
-2. users belong to GroupA and GroupB can purchase from this option
-    - logical expression: GroupA & GroupB
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
     - parameter calculation 
-        * = [GroupA_ID, GroupB_ID]
+        * = [Group1_ID, Group2_ID]
         * = [1,2]
     - parameter value:  ``` "group_restriction": [1, 2] ``` (which is used in the cleos example)
-3. users belong to either GroupA or GroupB can purchase form this option
-    - logical expression: GroupA | GroupB 
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2 
     - parameter calculation
-        * = [GroupA_ID, OR + GroupB_ID]
+        * = [Group1_ID, OR + Group2_ID]
         * = [1, 1152921504606846976 + 2]
         * = [1, 1152921504606846978]
     - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
-4. users not belong to GroupA but belong to GroupB can purchase form this option
-    - logical expression: ~GroupA & GroupB 
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2 
     - parameter calculation
-        * = [NEGATION + GroupA_ID, GroupB_ID]
+        * = [NEGATION + Group1_ID, Group2_ID]
         * = [2305843009213693952 + 1, 2]
         * = [2305843009213693953, 2]
     - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
-5. users not belong to GroupA or not GroupB can purchase form this option
-    - logical expression: ~GroupA | ~GroupB 
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2 
     - parameter calculation:
-        * = [NEGATION + GroupA_ID, OR + NEGATION + GroupB_ID]
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
         * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
         * = [2305843009213693953, 3458764513820540932]
     - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540932] ``` (which is used in the javascript example)

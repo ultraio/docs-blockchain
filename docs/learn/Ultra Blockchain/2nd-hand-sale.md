@@ -21,7 +21,7 @@ An owner can also set up promoter share in the direct resell feature.
 
 -   Ultra can set up a global resale share that applies to any resale.
 
-    -   By default it is 2.5%.
+    -   By default it is 2%.
     -   It can be updated to any value between 0% to 10%, **which will be applied to all existing token factories and new token factories**.
 
 ### Resale Shares(beneficiaries) set by creator and manager
@@ -58,7 +58,7 @@ The buyer can specify the name of the promoter when buying an NFT. In Ultra mark
 
 For example; Token A from token Factory F is on resell at the price of 100 UOS.
 
--   Ultra global share is 2.5%
+-   Ultra global share is 2%
 
 -   Resale shares of token factory F are (dev1, 10%), (dev2,20%)
 
@@ -66,7 +66,7 @@ For example; Token A from token Factory F is on resell at the price of 100 UOS.
 
 When a user buys token A specify the promoter opensea.
 
--   Ultra receives 2.5% \* 100 UOS = 2.5 UOS
+-   Ultra receives 2% \* 100 UOS = 2 UOS
 
 -   dev1 receives 10% \* 100 UOS = 10 UOS
 
@@ -74,7 +74,7 @@ When a user buys token A specify the promoter opensea.
 
 -   Promoter opensea receives 5% \* 100 UOS = 5 UOS
 
--   Seller A got 100 UOS - 2.5UOS - 10 UOS - 20 UOS - 5UOS = 62.5UOS
+-   Seller A got 100 UOS - 2UOS - 10 UOS - 20 UOS - 5UOS = 62UOS
 
 ## Relevant actions
 

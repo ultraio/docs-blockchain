@@ -135,6 +135,51 @@ Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
 Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
+### Example Usage of the parameter ```"group_restriction"```
+
+The logical operators' values are defined as
+- **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
+- **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
+- **AND**: 0, This is implicit. It can be ignored since it's 0.
+- **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
+
+ Let's say we have two user groups
+ - Group1_ID = 1
+ - Group2_ID = 2
+
+#### Use cases
+1. no group requriement.
+    - parameter value ``` "group_restriction": [] ```
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
+    - parameter calculation 
+        * = [Group1_ID, Group2_ID]
+        * = [1,2]
+    - parameter value:  ``` "group_restriction": [1, 2] ```
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2 
+    - parameter calculation
+        * = [Group1_ID, OR + Group2_ID]
+        * = [1, 1152921504606846976 + 2]
+        * = [1, 1152921504606846978]
+    - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2 
+    - parameter calculation
+        * = [NEGATION + Group1_ID, Group2_ID]
+        * = [2305843009213693952 + 1, 2]
+        * = [2305843009213693953, 2]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2 
+    - parameter calculation:
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
+        * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
+        * = [2305843009213693953, 3458764513820540930]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540930] ```
+
+
+
 ## CLI - cleos
 
 ```bash
@@ -155,7 +200,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
     },
     "sale_shares": [],
     "maximum_uos_payment": "2.00000000 UOS",
-    "group_restriction": [],
+    "group_restriction": [2305843009213693953, 3458764513820540930],
     "purchase_window_start": "2023-09-18T13:21:10.724",
     "purchase_window_end": "2023-11-18T13:21:10.724",
     "memo": ""
@@ -192,7 +237,7 @@ await api.transact(
                         },
                         sale_shares: [],
                         maximum_uos_payment: '2.00000000 UOS',
-                        group_restriction: [],
+                        group_restriction: [2305843009213693953, 3458764513820540930],
                         purchase_window_start: "2023-09-18T13:21:10.724",
                         purchase_window_end: "2023-11-18T13:21:10.724",
                         memo: '',

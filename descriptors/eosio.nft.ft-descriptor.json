@@ -150,7 +150,7 @@
                             "friendlyName": "Authorized minters",
                             "description": "Optional, accounts authorized to mint tokens from the factory",
                             "fields": {
-                                "authorized_minters": {
+                                "authorized_minter": {
                                     "friendlyName": "Authorized Minter",
                                     "description": "The account being authorized to mint"
                                 },
@@ -297,7 +297,13 @@
                 },
                 "conditionless_receivers": {
                     "friendlyName": "Conditionless receivers",
-                    "description": "List of accounts that can receive tokens without meeting transfer conditions"
+                    "description": "List of accounts that can receive tokens without meeting transfer conditions",
+                    "fields": {
+                        "name": {
+                            "friendlyName": "Conditionless receiver",
+                            "description": "Conditionless receiver account"
+                        }
+                    }
                 }
             }
         },

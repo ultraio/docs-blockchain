@@ -17,7 +17,7 @@ Increases the receiver's ram quota based upon current price and quantity of toke
 ## CLI - cleos
 
 ```sh
-cleos push action eosio buyram '["joe", "joji", "5.000 UOS"]' -p joe
+cleos push action eosio buyram '["bob", "alice", "5.00000000 UOS"]' -p bob
 ```
 
 ## JavaScript - eosjs
@@ -28,10 +28,10 @@ await api.transact({
     {
       account: "eosio",
       name: "buyram",
-      authorization: [{ actor: "joe", permission: "active" }],
+      authorization: [{ actor: "bob", permission: "active" }],
       data: {
-        payer: "joe",
-        receiver: "joji",
+        payer: "bob",
+        receiver: "alice",
         quant: "5.00000000 UOS"
       },
     },

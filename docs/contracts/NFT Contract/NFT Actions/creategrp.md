@@ -18,13 +18,13 @@ Creates a factory group.
 
 -   RAM usage used to store factory group info is covered by `eosio.nftram` account. If the unused RAM of eosio.nftram is less than or equal to 200MB, the action can’t be executed.
 
--   The cost of a factory group entry is paid to `eosio.nftram` and it will be locked up in this entry. The funds are released back to the orinigal payer after the factory group is deleted
+-   The cost of a factory group entry is paid to `eosio.nftram` and it will be locked up in this entry. The funds are released back to the original payer after the factory group is deleted
 
       -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 
           -   NFT RAM payment size: **960 bytes**. Estimated for:
               - `uri` with length of 256
-              - 64 etnries in `factories`
+              - 64 entries in `factories`
 
           -   RAM price: **0.15 USD/KB**
 
@@ -60,7 +60,7 @@ await transact([{
     authorization: [{actor: 'ubisoft', permission: 'active'}],
     data: {
         manager: "ubisoft",
-        uri: "https://nft.ubisoft.com/factorygroups/assasinscreed"
+        uri: "https://nft.ubisoft.com/factorygroups/assasinscreed",
         hash: "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523",
         factories: [1, 2, 5, 10],
         max_uos_payment: "1.00000000 UOS"

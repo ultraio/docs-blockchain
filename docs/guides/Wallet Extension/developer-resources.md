@@ -1,7 +1,7 @@
 ---
 title: 'Developer resources'
 deploy: ['staging', 'mainnet']
-order: 13
+order: 15
 outline: [0, 4]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'Errors'
 deploy: ['staging', 'mainnet']
-order: 9
+order: 10
 outline: [0, 4]
 ---
 

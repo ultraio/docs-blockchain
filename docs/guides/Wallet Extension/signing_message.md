@@ -1,7 +1,7 @@
 ---
 title: 'Signing a Message'
 deploy: ['staging', 'mainnet']
-order: 7
+order: 8
 outline: [0, 4]
 ---
 

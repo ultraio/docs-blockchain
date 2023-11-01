@@ -22,14 +22,14 @@ The factory manager can specify purchase options for users. Note that currently 
 
     -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
 
-        -   NFT RAM payment size: **1671 bytes**
+        -   NFT RAM payment size: **2060 bytes**
 
-            - estimated for a token with `purchase_option_with_uniqs` of 64
+            - estimated for `purchase_option_with_uniqs` and `group_restriction` of 64
 
         -   RAM price: **0.15 USD/KB**
 
     -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
-        > 1671B/1024B \* 0.15USD/KB ~ 0.24$ = 0.24 UOS
+        > 2060B/1024B \* 0.15USD/KB ~ 0.3$ = 0.3 UOS
 
 `token_factory_id` - token factory managed by a factory manager.
 
@@ -152,26 +152,26 @@ The logical operators' values are defined as
     - parameter value ``` "group_restriction": [] ```
 2. users belong to Group1 and Group2 can purchase from this option
     - logical expression: Group1 & Group2
-    - parameter calculation 
+    - parameter calculation
         * = [Group1_ID, Group2_ID]
         * = [1,2]
     - parameter value:  ``` "group_restriction": [1, 2] ```
 3. users belong to either Group1 or Group2 can purchase form this option
-    - logical expression: Group1 | Group2 
+    - logical expression: Group1 | Group2
     - parameter calculation
         * = [Group1_ID, OR + Group2_ID]
         * = [1, 1152921504606846976 + 2]
         * = [1, 1152921504606846978]
     - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
 4. users not belong to Group1 but belong to Group2 can purchase form this option
-    - logical expression: ~Group1 & Group2 
+    - logical expression: ~Group1 & Group2
     - parameter calculation
         * = [NEGATION + Group1_ID, Group2_ID]
         * = [2305843009213693952 + 1, 2]
         * = [2305843009213693953, 2]
     - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
 5. users not belong to Group1 or not Group2 can purchase form this option
-    - logical expression: ~Group1 | ~Group2 
+    - logical expression: ~Group1 | ~Group2
     - parameter calculation:
         * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
         * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]

@@ -1,7 +1,7 @@
 ---
 title: 'Demo application'
 deploy: ['staging', 'mainnet']
-order: 13
+order: 14
 outline: [0,4]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'Events'
 deploy: ['staging', 'mainnet']
-order: 8
+order: 9
 outline: [0, 4]
 ---
 

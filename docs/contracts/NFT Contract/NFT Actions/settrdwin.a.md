@@ -8,6 +8,10 @@ deploy: ['experimental', 'staging', 'mainnet']
 
 Allows a token manager to update the `trading_window_start` and `trading_window_end` for an existing token factory.
 
+:::warning
+This action is disabled.
+:::
+
 ## Technical Behavior
 
 Required authorization is a token factory manager

@@ -10,7 +10,9 @@ order: 3
 
 In this guide we will cover the possibility of issuing a new Uniq to the user when he burns or transfers some other Uniq. The purpose of such an exchange may be to migrate user Uniq to a newer factory which may have different set of rules (e.g. Uniqs from new factory can be transferred).
 
-Alternative use case could be if you want to allow users to redeem a Uniq using some "ticket" Uniq which does not have anything useful by itself but can be exchanged for an actual Uniq from a different factory
+Alternative use case could be if you want to allow users to redeem a Uniq using some "ticket" Uniq which does not have anything useful by itself but can be exchanged for an actual Uniq from a different factory.
+
+Since some of the values inside the factory cannot be changed after creation that can be an alternative solution to effectively provide the option to users to migrate to a new factory with alternative values.
 
 ## When do you need a smart contract
 

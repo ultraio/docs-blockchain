@@ -34,6 +34,8 @@ There are various use cases that are covered by the first hand purchase feature.
     - Allows user to exchange or swap Uniqs
 - Verify eligibility using Uniqs from other factories or user groups
     - Those are read-only operations so user does not loose Uniqs or membership of the user group
+- I need to migrate Uniqs of my factory to a new one which has desired alternative values set
+    - Since some of the values inside the factory cannot be changed after creation that can be an alternative solution to effectively provide the option to users to migrate to a new factory with alternative values
 
 ### First-hand purchase directly from Uniq factory
 

@@ -1,7 +1,7 @@
 ---
 title: 'adduser'
 order: 3
-deploy: ['experimental', 'staging']
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 ## `adduser.a`

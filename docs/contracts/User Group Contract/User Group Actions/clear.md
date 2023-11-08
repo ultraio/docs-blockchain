@@ -1,7 +1,7 @@
 ---
 title: 'clear'
 order: 5
-deploy: ['experimental', 'staging']
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 ## `clear.a`

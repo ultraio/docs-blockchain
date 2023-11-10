@@ -8,8 +8,10 @@ deploy: ['experimental', 'staging', 'mainnet']
 
 Allows a token manager to update the `transfer_window_start` and `transfer_window_end` for an existing token factory.
 
-:::warning
+::: warning
 This action is disabled.
+
+Refer to *[exchange a uniq guide](../../../guides/Uniq%20Factory%20Management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../guides/Uniq%20Factory%20Management/factory-purchase-options.md#swap-uniqs)* pages for alternative migration solutions to a new factory
 :::
 
 ## Technical Behavior

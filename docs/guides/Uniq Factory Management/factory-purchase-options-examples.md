@@ -233,7 +233,7 @@ cleos push action eosio.nft.ft purchase.a '[
 
 ## Using purchase option for swapping
 
-"Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44. Note how `strategy` is set to 1 ([1 means "burn"](../../contracts/NFT%20Contract/NFT%20Actions/purchase.a.md#supplying-uniqs-for-purchases)).
+"Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44, no additional UOS payment needed. Note how `strategy` is set to 1 ([1 means "burn"](../../contracts/NFT%20Contract/NFT%20Actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
 ::: details setprchsreq.a
 ```sh
@@ -241,7 +241,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
   {
     "token_factory_id": 100,
     "index": 0,
-    "price": "50.00000000 UOS",
+    "price": "0.00000000 UOS",
     "purchase_limit": null,
     "promoter_basis_point": 100,
     "purchase_option_with_uniqs": {
@@ -275,7 +275,7 @@ cleos push action eosio.nft.ft purchase.a '[
   {
     "token_factory_id": 100,
     "index": 0,
-    "max_price": "100.00000000 UOS",
+    "max_price": "0.00000000 UOS",
     "buyer": "alice",
     "receiver": "alice",
     "promoter_id": null,
@@ -304,7 +304,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
   {
     "token_factory_id": 100,
     "index": 0,
-    "price": "50.00000000 UOS",
+    "price": "0.00000000 UOS",
     "purchase_limit": null,
     "promoter_basis_point": 100,
     "purchase_option_with_uniqs": {
@@ -334,7 +334,7 @@ cleos push action eosio.nft.ft purchase.a '[
   {
     "token_factory_id": 100,
     "index": 0,
-    "max_price": "100.00000000 UOS",
+    "max_price": "0.00000000 UOS",
     "buyer": "alice",
     "receiver": "alice",
     "promoter_id": null,

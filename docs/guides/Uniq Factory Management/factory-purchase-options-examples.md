@@ -7,13 +7,13 @@ order: 2
 
 # Factory Purchase Options Examples
 
-Here we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice
+Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
 
 -   [setprchsreq.a - set purchase requirement](../../contracts/NFT%20Contract/NFT%20Actions/setprchsreq.a.md)
 -   [purchase.a - purchase a token](../../contracts/NFT%20Contract/NFT%20Actions/purchase.a.md)
 
 ::: info
-Note that throughout this page the factory IDs, token IDs, user group IDs and account names used are not real and you must replace them with actual values you are interested in
+Please keep in mind that the factory IDs, token IDs, user group IDs, and account names used throughout this page are not real and must be replaced with the actual data you are interested in.
 :::
 
 ## Simple UOS/USD pricing
@@ -83,9 +83,30 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 ```
 :::
 
+When purchasing using the option that has USD pricing you still provide `max_price` in UOS. The conversion from the USD price into appropriate UOS price will be done automatically.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
 ## Limited purchase quantity
 
-Setting `purchase_limit` is optional and it allows to restrict the total number of tokens that can be purchased using this option
+Setting `purchase_limit` is optional, and it allows to restrict the total number of tokens that can be purchased using this option. The limit applies to the single option itself and not the accounts that purchase from your factory. So if you set the `purchase_limit` to 10 it means that one account can purchase 10 tokens or five accounts can purchase 2 tokens or ten accounts can purchase 1 token and anything in between.
+
+After exceeding the `purchase_limit`, no one will be able to use this specific purchase option and you either need to create a new purchase option or update an existing one to increase the `purchase_limit` (history for the number of Uniqs purchased is preserved).
 
 ::: details setprchsreq.a
 ```sh
@@ -110,7 +131,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 
 ## Exclusive access to purchase option via Uniq ownership
 
-`purchase_option_with_uniqs` is a more advanced use case where you are able to link the purchase option to other factories. Example below requires the user to own 1 Uniq from factory with ID 42. If user owns it then he will be able to use this purchase option, the token from factory 42 will be left untouched. Note how `strategy` is set to 0
+`purchase_option_with_uniqs` is a more advanced use case where you are able to link the purchase option to other factories. The example below requires the user to own 1 Uniq from factory with ID 42. If the user owns it then he will be able to use this purchase option, the token from factory 42 will be left untouched. Note how `strategy` is set to 0 ([0 means "check"](../../contracts/NFT%20Contract/NFT%20Actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
 ::: details setprchsreq.a
 ```sh
@@ -140,7 +161,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 ```
 :::
 
-When purchasing the transaction needs to specify which token exactly the user shows as a proof of satisfying condition of ownership for the token from factory 42. In this case assume token 77 was minted from factory 42
+When purchasing, the transaction needs to specify which token exactly the user shows as a proof of satisfying condition of ownership for the token from factory 42. In this case, assume token 77 was minted from factory 42.
 
 ::: details purchase.a
 ```sh
@@ -168,7 +189,7 @@ cleos push action eosio.nft.ft purchase.a '[
 
 Alternative condition for allowing direct purchases from the factory can be the usage of user groups ([covered here](../../contracts/User%20Group%20Contract/overview.md)). In this case user must belong to certain group(s) or not be a part of a specific group(s).
 
-Example below covers the simplest case where user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage reference the action documentation: [setprchsreq.a user groups support](../../contracts/NFT%20Contract/NFT%20Actions/setprchsreq.a.md#example-usage-of-the-parameter-group-restriction)
+Example below covers the simplest case where a user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage, reference the action documentation: [setprchsreq.a user groups support](../../contracts/NFT%20Contract/NFT%20Actions/setprchsreq.a.md#example-usage-of-the-parameter-group-restriction)
 
 ::: details setprchsreq.a
 ```sh
@@ -191,7 +212,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 ```
 :::
 
-When purchasing no extra input is required from the user, the verification of groups membership will be verified by the smart contract automatically
+When purchasing no extra input is required from the user, the verification of group's membership will be verified by the smart contract automatically
 
 ::: details purchase.a
 ```sh
@@ -212,7 +233,7 @@ cleos push action eosio.nft.ft purchase.a '[
 
 ## Using purchase option for swapping
 
-"Swapping" in this case implies the process where user looses ownership of his Uniq, the Uniq gets destroyed in the process and user gets a new Uniq from the factory instead. Example below requires user to give up two Uniqs: one from factory 43 and one from factory 44. Note how `strategy` is set to 1
+"Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44. Note how `strategy` is set to 1 ([1 means "burn"](../../contracts/NFT%20Contract/NFT%20Actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
 ::: details setprchsreq.a
 ```sh
@@ -246,7 +267,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 ```
 :::
 
-Purchasing from such a purchase option requires user to specify which Uniqs he is willing be give up. Here assume token 123 is from factory 43 and token 124 is from factory 44. Note how the `strategy` matches the value of the purchase option
+Purchasing from such a purchase option requires the user to specify which Uniqs the user is willing to be given up. Here, assumes token 123 is from factory 43 and token 124 is from factory 44. Note how the `strategy` matches the value of the purchase option.
 
 ::: details purchase.a
 ```sh
@@ -275,7 +296,7 @@ cleos push action eosio.nft.ft purchase.a '[
 
 ## Using purchase option for exchange
 
-Exchanging a uniq is similar to swapping it but this time instead of user loosing access to his Uniq and burning a Uniq it will simply be transferred to a dedicated account. This may be useful in case Uniqs have valuable metadata attached to them and you will later utilize those Uniqs in some other scenario. Example below configures the receiver of transferred Uniqs as `1aa2aa3aa4aa` account and it also must be a Uniq from factory 45 to be able to use this purchase option. Specifying `transfer_tokens_receiver_account` is mandatory in such scenario. Note how `strategy` is set to 2
+Exchanging a Uniq is similar to swapping it but this time instead of a user losing access to his Uniq and burning a Uniq it will simply be transferred to a dedicated account. This may be useful in case Uniqs have valuable metadata attached to them, and you will later utilize those Uniqs in some other scenario. The example below configures the receiver of transferred Uniqs as `1aa2aa3aa4aa` account, and it also must be a Uniq from factory 45 to be able to use this purchase option. Specifying `transfer_tokens_receiver_account` is mandatory in such scenario. Note how `strategy` is set to 2 ([2 means "transfer"](../../contracts/NFT%20Contract/NFT%20Actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
 ::: details setprchsreq.a
 ```sh
@@ -305,7 +326,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 ```
 :::
 
-Purchasing using the above option is similar to previous examples. User needs to specify which Uniq will be used during the purchase and this Uniq will be transferred to `1aa2aa3aa4aa` at the end. The `strategy`, again, should match the `strategy` specified in the purchase option itself
+Purchasing using the above option is similar to previous examples. User needs to specify which Uniq will be used during the purchase and this Uniq will be transferred to `1aa2aa3aa4aa` at the end. The `strategy`, again, should match the `strategy` specified in the purchase option itself.
 
 ::: details purchase.a
 ```sh

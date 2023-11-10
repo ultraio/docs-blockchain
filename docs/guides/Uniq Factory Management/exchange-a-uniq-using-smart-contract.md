@@ -8,11 +8,11 @@ order: 3
 
 ## What does "Exchange a Uniq" mean
 
-In this guide we will cover the possibility of issuing a new Uniq to the user when he burns or transfers some other Uniq. The purpose of such an exchange may be to migrate user Uniq to a newer factory which may have different set of rules (e.g. Uniqs from new factory can be transferred).
+In this guide, we will cover the possibility of issuing a new Uniq to the user when he burns or transfers some other Uniq. The purpose of such an exchange may be to migrate a user Uniq to a newer factory which may have different set of rules (e.g. Uniqs from new factory can be transferred).
 
-Alternative use case could be if you want to allow users to redeem a Uniq using some "ticket" Uniq which does not have anything useful by itself but can be exchanged for an actual Uniq from a different factory.
+An alternative use case could be if you want to allow users to redeem a Uniq using some "ticket" Uniq which does not have anything useful by itself but can be exchanged for an actual Uniq from a different factory.
 
-Since some of the values inside the factory cannot be changed after creation that can be an alternative solution to effectively provide the option to users to migrate to a new factory with alternative values.
+Some of the factory's values are immutable after they are created, and when a Uniq is exchanged it provides the opportunity for customers to migrate to a new factory with different values.
 
 ## When do you need a smart contract
 
@@ -22,7 +22,7 @@ You should consider using the smart contract approach in the following scenarios
 - I want to exchange Uniq only if some specific conditions are met which are not covered by first-hand purchase feature
     - examples include: requiring preregistration using a dedicated smart contract action; having alternative pricing model where you will check that the payment was done using smart contract; 
 - I have some automation requirements which requires minimum user input
-    - since smart contracts are flexible you are able to do more things than besides simply minting a Uniq
+    - since smart contracts are flexible, you are able to do more things than besides simply minting a Uniq
 - There is an extra interaction with other smart contract that needs to happen
     - NFT contract by default notifies only certain accounts about the action execution and if you need to extend this list you will have to rely on your own smart contract to notify other contracts
 
@@ -34,13 +34,13 @@ Smart contract provided on this page does and showcases the following:
     - Transfer notification happens for both sender, receiver of the token and the token factory manager
 - Smart contract issues a new Uniq from the pre-configured factory to the original owner of the Uniq
 
-To make the contract below work based on your needs you will need to do some adjustments:
+To make the contract below work based on your needs, you will need to do some adjustments:
 - Change name of the factory manager account to the one appropriate to the factory you are trying to mint from
 - Change factory id of the factory you are going to mint from
 - Add any necessary preliminary checks before issuing a token
-    - you may potentially want to check what token was burnt or transferred (id of the token, serial number of factory id)
-    - there could be other requirements that you want to impose like requiring user to register via some other smart contract action
-- Depending on the permission structure and where you put the contract you may want to add `smart_contract_name@eosio.code` permission under the `factory_manager@active` so that the contract will be able to issue tokens in the name of the factory manager
+    - You may potentially want to check what token was burnt or transferred (id of the token, serial number of factory id)
+    - There could be other requirements that you want to impose, like requiring user to register via some other smart contract action
+- Depending on the permission structure and where you put the contract, you may want to add `smart_contract_name@eosio.code` permission under the `factory_manager@active` so that the contract will be able to issue tokens in the name of the factory manager
 
 ::: info
 Note that in the later versions of NFT standard the specific names of the actions and their interface may change so be sure to reference the pages under *[NFT contract actions](../../contracts/NFT%20Contract/NFT%20Actions/)*

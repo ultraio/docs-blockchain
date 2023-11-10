@@ -1,7 +1,7 @@
 ---
 title: 'purchase.a'
 order: 31
-deploy: ['experimental']
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 # purchase.a

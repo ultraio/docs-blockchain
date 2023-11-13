@@ -233,17 +233,17 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<TOKEN FACTOR
 
 -   Table: `global.share`
 -   Code: `eosio.nft.ft`
--   Scope: `eosio.nft.ft` <Experimental> (for second hand), `0` (for first hand)</Experimental>
+-   Scope: `eosio.nft.ft` (for second hand), `0` (for first hand)
 -   Key: N/A
 
-The table stores information about global share of each <Experimental>first hand purchase or</Experimental> second hand token sale: which account and how many basis points it receives (each basis point = 0.01%)
+The table stores information about global share of each first hand purchase or second hand token sale: which account and how many basis points it receives (each basis point = 0.01%)
 
 | Fields      | Type        | Description                                     |
 | ----------- | ----------- | ----------------------------------------------- |
 | receiver    | eosio::name | Receiver of the global sale share               |
 | basis_point | uint16_t    | Share of the sale specified in the basis points |
 
-Most relevant actions: `buy`, `resell`, `globalshare` <Experimental>, `fhglobalshr`, `purchase.a`</Experimental>
+Most relevant actions: `buy`, `resell`, `globalshare`, `fhglobalshr`, `purchase.a`
 
 -   `cleos` Query Example
 
@@ -514,8 +514,6 @@ cleos get table eosio.nft.ft 0 saleshrlmcfg
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlmcfg", "json": true}'
 ```
 
-<Experimental>
-
 ## fctrprchs.a
 
 -   Table: `fctrprchs.a`
@@ -569,4 +567,3 @@ The tables below describe the structure and usage of each of the fields inside `
 | count            | uint32_t | How many tokens are needed from the specified factory                                                                                                                                                                                                                                                                               |
 | strategy         | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the tokens is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
 
-</Experimental>

@@ -1,7 +1,7 @@
 ---
 title: 'setprchsreq.a'
 order: 32
-deploy: ['experimental']
+deploy: ['experimental', 'staging', 'mainnet']
 ---
 
 # setprchsreq.a
@@ -9,6 +9,12 @@ deploy: ['experimental']
 This action is used to set purchase requirements for a token factory.
 
 Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
+
+<Mainnet>
+::: warning
+This action is currently disabled.
+:::
+</Mainnet>
 
 ::: warning
 Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager

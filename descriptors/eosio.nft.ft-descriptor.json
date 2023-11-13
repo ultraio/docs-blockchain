@@ -169,8 +169,8 @@
                             "description": "Optional, the starting date for transfer window"
                         },
                         "transfer_window_end": {
-                            "friendlyName": "Transfer window start",
-                            "description": "Optional, the starting date for transfer window"
+                            "friendlyName": "Transfer window end",
+                            "description": "Optional, the ending date for transfer window"
                         },
                         "default_token_uri": {
                             "friendlyName": "Default token URI",

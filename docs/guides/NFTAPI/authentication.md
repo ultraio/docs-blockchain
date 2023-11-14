@@ -12,7 +12,7 @@ order: 1
 # Sandbox:
 https://api.sandbox.ultra.io/graphql
 # Production:
-https://api.ultra.io/graphql
+https://api.staging.ultra.io/graphql
 ```
 
 ## Get your access token

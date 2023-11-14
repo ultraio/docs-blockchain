@@ -10,7 +10,7 @@ order: 1
 
 ```yaml
 # Sandbox:
-https://api.sandbox.ultra.io/graphql
+https://staging.api.ultra.io/graphql
 # Production:
 https://api.ultra.io/graphql
 ```
@@ -24,7 +24,7 @@ curl \
   -d "client_id=YOUR_CLIENT_ID" \
   -d "client_secret=YOUR_CLIENT_SECRET" \
   -d "grant_type=client_credentials" \
-  "https://auth.sandbox.ultra.io/auth/realms/ultraio/protocol/openid-connect/token"
+  "https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/token"
 ```
 
 Then, the response will be like this :

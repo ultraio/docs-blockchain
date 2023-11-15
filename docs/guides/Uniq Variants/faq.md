@@ -28,7 +28,7 @@ Depending on the use case the metadata files could be as large as a couple of me
 
 There could be many different use cases for associating a specific token with some other property (token id, token factory id, token owner, serial number, etc). We decided that the most common use case is to view a list of tokens owned by a specific user since any interaction with a specific token always goes through the owner of that token (e.g. to transfer or sell a token you need owner's approval).
 
-If there is a need to bypass that requirement (e.g. showing a gallery of all tokens for a specific token factory) then you must rely on alternative solutions either through streaming (DFuse API) or by querying the full metadata table and performing data manipulation locally
+If there is a need to bypass that requirement (e.g. showing a gallery of all tokens for a specific token factory) then you must rely on alternative solutions either through streaming or by querying the full metadata table and performing data manipulation locally
 
 ## Why some actions have .b (or similar) extension at the end and others don't? Why I can (or can't) use the action without .b extension instead?
 

@@ -49,19 +49,3 @@ Chain ID:
 ```
 http://ultra.api.eosnation.io/v1/chain/get_info
 ```
-
-## dFuse Endpoints
-
-**Main Network (Production)**
-
-- https://api.mainnet.ultra.io/
-
-**Test Network (Staging)**
-
-- https://api.testnet.ultra.io/
-
-**Example**
-
-```
-https://api.mainnet.ultra.io/v1/chain/get_info
-```

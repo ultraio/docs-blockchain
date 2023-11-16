@@ -35,6 +35,7 @@ const navbar: DefaultTheme.NavItem[] = [
         items: [
             //
             { text: 'Overview', link: '/blockchain/general/index' },
+            { text: 'Block Producers', link: '/blockchain/block-producers/index' },
             { text: 'Contracts', link: '/blockchain/contracts/index' },
         ],
     },

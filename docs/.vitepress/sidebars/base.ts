@@ -111,6 +111,35 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         },
     ],
     // ################
+    // blockchain/block-producers
+    // ################
+    '/blockchain/block-producers': [
+        {
+            text: 'Block Producers',
+            items: [
+                {
+                    text: 'What is a Block Producer?',
+                    link: '/blockchain/block-producers/index',
+                },
+            ],
+        },
+        {
+            text: 'Infrastructure',
+            items: getMarkdownFiles('/blockchain/block-producers/infrastructure'),
+            collapsed: true,
+        },
+        {
+            text: 'Launch Procedures',
+            items: getMarkdownFiles('/blockchain/block-producers/launch-procedures'),
+            collapsed: true,
+        },
+        {
+            text: 'Maintenance',
+            items: getMarkdownFiles('/blockchain/block-producers/maintenance'),
+            collapsed: true,
+        },
+    ],
+    // ################
     // blockchain/contracts
     // ################
     '/blockchain/contracts': [

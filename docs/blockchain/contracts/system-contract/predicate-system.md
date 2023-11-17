@@ -12,9 +12,9 @@ Developers may allow certain actions to be performed by other accounts at the co
 
 ## Relevant Actions
 
-[allowpred - setup a predicate](./System%20Actions/allowpred.html)
+[allowpred - setup a predicate](./system-actions/allowpred.html)
 
-[revokepred - reset a predicate](./System%20Actions/revokepred.html)
+[revokepred - reset a predicate](./system-actions/revokepred.html)
 
 ## Relevant Tables
 

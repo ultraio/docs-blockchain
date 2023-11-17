@@ -7,14 +7,15 @@ order: -99
 
 # Testnet Faucet Guide
 
-To create an account on testnet you need a key. The easiest way to do this is via
-[cleos](../../tools/protocol/cleos.md#create-a-key-pair):
+Keys can be created in a variety of ways and through many different websites.
 
-```sh
-$ cleos create key --to-console
-Private key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-Public key: EOS6DErFdPHRJxeQr5vRrX71LkzsKuXTgGFzwA2bzHoEtJhxxmMwP
-```
+_We would never recommend using an external website for a Main Network keypair_
+
+Anyway, here's a few websites you can do it on, or you can use [cleos](..)
+
+* [EOS Authority](https://eosauthority.com/generate_eos_private_key)
+* [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
+* [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
 
 Next go to the https://faucet.testnet.app.ultra.io/ and paste public key into the form as shown below
 

@@ -18,7 +18,7 @@ If your app is web-based, next you will need to decide whether or not you need v
 For any app that is not embedded in the Ultra client directly, it is sufficient to simply allow users to sign transactions. A good example of an app that requires user verification is Ultra Arena, which is deeply integrated into Ultra's ecosystem.
 
 -   If your app is deeply integrated into Ultra's ecosystem, you must follow our [Ultra SSO integration guide](./web/index.md).
--   If your app is a web-based app that a user will connect to via their browser, you should follow our [Wallet Extension guide](../../tutorials/wallet-extension/index.md).
+-   If your app is a web-based app that a user will connect to via their browser, you should follow our [Wallet Extension guide](../products/ultra-wallet/index.md).
 
 ## Are you building with Unity?
 

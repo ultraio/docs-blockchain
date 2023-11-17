@@ -9,7 +9,7 @@ order: 2
 
 To connect the Ultra client to your Unity-based game, you must use our Unity plugin. The plugin passes the user's wallet id and an auth token into Unity from Ultra's client. This is used to connect to Braincloud's SDK and authenticate.
 
-Before you get started, please make sure to get your [client_id](./requesting-a-client_id.md), as you'll need this to be able to use the Ultra Unity Plugin.
+Before you get started, please make sure to get your [client_id](../web/get-client-id.md), as you'll need this to be able to use the Ultra Unity Plugin.
 
 ## Getting the Ultra Unity Plugin
 

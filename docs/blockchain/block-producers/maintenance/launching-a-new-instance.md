@@ -14,7 +14,7 @@ cleos wallet create --name YOUR_WALLET_NAME --file WALLET_PASSWD_FILE
 cleos wallet import --name YOUR_WALLET_NAME --private-key YOUR_PRIVATE_KEY
 ```
 
-**Please note** that it is not a requirement to run _cleos_ and have a wallet on all of the node instances, however, this is a _requirement_ for [Synchronizing with Genesis Node](../Launch%20Procedures/synchronizing-with-genesis-node.md) .
+**Please note** that it is not a requirement to run _cleos_ and have a wallet on all of the node instances, however, this is a _requirement_ for [Synchronizing with Genesis Node](../launch-procedures/synchronizing-with-genesis-node.md) .
 
 It is important to save the password for your wallet in a file and keep it secure. Once the unlocked wallet has not been used for more than 15 minutes (the default timeout duration) _cleos_ is locks your wallet as a safety measure.
 

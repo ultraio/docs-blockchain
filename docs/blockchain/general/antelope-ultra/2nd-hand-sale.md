@@ -39,8 +39,8 @@ The above information cannot be updated once the token factory is created, no ma
 
 -   The seller can specify the share for a promoter when reselling an NFT
 
-| Resell Configs | Meaning                                                                                                                                                                               |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Resell Configs | Meaning                                                                                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | promoter share | How much share for a promoter, it must be between 2% and 10%. If given value is less than 2%, it will use 2%. If given value is more than 10%, it will fail to list for resale. |
 
 The buyer can specify the name of the promoter when buying an NFT. In Ultra marketplace, Ultra can set it to an Ultra’s account, but buyer could edit it with some effort.
@@ -78,12 +78,12 @@ When a user buys token A specify the promoter opensea.
 
 ## Relevant actions
 
--   [create](../../contracts/NFT%20Contract/NFT%20Actions/create.html): A token factory manager can configure the trading window when creating a token factory
+-   [create](../../contracts/nft-contract/nft-actions/create.html): A token factory manager can configure the trading window when creating a token factory
 
--   [resell](../../contracts/NFT%20Contract/NFT%20Actions/resell.html): An owner of the NFT can use this action to resell an NFT when allowed by the trading window
+-   [resell](../../contracts/nft-contract/nft-actions/resell.html): An owner of the NFT can use this action to resell an NFT when allowed by the trading window
 
 ## Relevant tables
 
--   [factory.a](../../contracts/NFT%20Contract/nft-tables.html#factory-a): stores factory resale shares.
+-   [factory.a](../../contracts/nft-contract/nft-tables.html#factory-a): stores factory resale shares.
 
--   [resale.a](../../contracts/NFT%20Contract/nft-tables.html#resale-a): stores promoter share.
+-   [resale.a](../../contracts/nft-contract/nft-tables.html#resale-a): stores promoter share.

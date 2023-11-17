@@ -34,8 +34,8 @@ You will need a test network account on a supported blockchain to deploy a contr
 
 ::: details Local Environment
 
-1. Generate new key using Smart Contract Toolkit or <a href="../../tools/protocol/cleos.html#create-a-key-pair">cleos</a>
-2. Start ultratest in detached mode using <a href="../../guides/Docker/docker-image-usage.html">development docker image</a>
+1. Generate new key using Smart Contract Toolkit or [cleos](../../blockchain/general/tools/cleos.md)
+2. Start ultratest in detached mode using [docker image usage](../../tutorials/general/docker/docker-image-usage.md)
 
 ```
 ultratest -Dsn
@@ -99,7 +99,7 @@ Environments are specific locations where you can perform tests against your sma
 
 There are three environments; local, testnet, and mainnet.
 
-[See this API section](../../api/index.md) for information on block producer endpoints that are publicly available.
+[See this API section](../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
 
 ## Local
 
@@ -128,7 +128,7 @@ This should be the first place you will want to deploy your smart contract for o
 * Begin writing frontend for your decentralized application.
 * Need a way for others to easily interact and test your smart contract.
 
-Go to the [faucet documentation page](../Ultra%20Specific/faucet.md) to start working with testnet.
+Go to the [faucet documentation page]() to start working with testnet.
 
 ## Main Network
 

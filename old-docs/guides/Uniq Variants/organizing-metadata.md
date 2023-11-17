@@ -35,11 +35,11 @@ The following diagram displays potential use cases when setting factory URIs:
 
 ![](/images/bbea7125-931a-4f98-b99e-d91ac8c8fe48.png)
 
-Token factory metadata can be specified during creation - [create.b](/docs/contracts/NFT%20Contract/NFT%20Actions/create.b.md)
+Token factory metadata can be specified during creation - [create.b](/docs/contracts/nft-contract/nft-actions/create.b.md)
 
 Following actions are used to change factory metadata URIs and hashes after creation:
-[setmeta.b](../../contracts/NFT%20Contract/NFT%20Actions/setmeta.b.md)
-[setdflttkn](../../contracts/NFT%20Contract/NFT%20Actions/setdflttkn.md)
+[setmeta.b](../../contracts/nft-contract/nft-actions/setmeta.b.md)
+[setdflttkn](../../contracts/nft-contract/nft-actions/setdflttkn.md)
 
 ## How to set token metadata
 
@@ -47,13 +47,13 @@ You have an option to provide a metadata URI and hash for each token individuall
 
 Both the URI and hash are optional. You may want to provide either of them or both of them at the same time depending on your use case. Refer to this page for details: [use cases](./Examples/variant-example-use-cases.md)
 
-Token metadata can be specified when minting a token - [issue.b](../../contracts/NFT%20Contract/NFT%20Actions/issue.b.md)
+Token metadata can be specified when minting a token - [issue.b](../../contracts/nft-contract/nft-actions/issue.b.md)
 
-Alternatively URI and hash can be changed after the token is minted using the following action - [settknmeta](../../contracts/NFT%20Contract/NFT%20Actions/settknmeta.md)
+Alternatively URI and hash can be changed after the token is minted using the following action - [settknmeta](../../contracts/nft-contract/nft-actions/settknmeta.md)
 
 ## How to find metadata for a given Uniq
 
-For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../contracts/NFT%20Contract/nft-tables.md#token.b).
+For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../contracts/nft-contract/nft-tables.md#token.b).
 
 The first step is to check if there is a URI specified on the token itself by checking the `uri` field of the token. If it is specified then you are done - go to `uri` and fetch the metadata.
 

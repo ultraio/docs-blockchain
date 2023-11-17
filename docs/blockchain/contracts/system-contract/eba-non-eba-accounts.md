@@ -22,9 +22,9 @@ A non-EBA account is a typical blockchain account controlled by private keys you
 
 ## Relevant actions
 
-[newnonebact - create a non-EBA account](./System%20Actions/newnonebact.html)
+[newnonebact - create a non-EBA account](./system-actions/newnonebact.html)
 
-[newebact - create a EBA account](./System%20Actions/newebact.html)
+[newebact - create a EBA account](./system-actions/newebact.html)
 
 ### Relevant tables
 

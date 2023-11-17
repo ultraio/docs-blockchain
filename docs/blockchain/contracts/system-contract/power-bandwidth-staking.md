@@ -16,9 +16,9 @@ Both CPU and NET bandwidth usage for the accounts that submitted the transaction
 
 ## Relevant actions
 
-[delegatebw - stake tokens for POWER](./System%20Actions/delegatebw.html)
+[delegatebw - stake tokens for POWER](./system-actions/delegatebw.html)
 
-[undelegatebw - unstake tokens for POWER](./System%20Actions/undelegatebw.html)
+[undelegatebw - unstake tokens for POWER](./system-actions/undelegatebw.html)
 
 ## Relevant tables
 

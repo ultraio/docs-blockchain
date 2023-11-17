@@ -15,7 +15,7 @@ We have created a Docker image that has pre-created scripts, tools, and pre-pack
 
 Individual binaries are not currently available for download.
 
-[Docker Image Usage](../../guides/Docker/docker-image-usage.md)
+[Docker Image Usage](../../tutorials/general/docker/docker-image-usage.md)
 
 ## Usage
 

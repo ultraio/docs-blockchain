@@ -43,9 +43,9 @@ namespace mycontract {
 
 There are 3 options to build a contract at the moment:
 
-* Via [cdt-cpp](../Docker/getting-started.md) with docker
-* Via [contract-builder](../../tools/contract-builder/index.md) tool
-* Via vscode [extension](./3.compile.md)
+* Via [cdt-cpp](../../tutorials/general/docker/getting-started.md) with docker
+* Via [contract-builder](../../products/contract-builder/index.md) tool
+* Via [vscode extension](./compile.md)
 
 Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
 it's better to use the docker option.

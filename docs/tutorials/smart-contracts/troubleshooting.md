@@ -15,7 +15,7 @@ Error Details:
 assertion failure with message: must buy ram with core token
 ```
 
-Make sure UOS is specified with **exactly** 8 decimals as in [buyram](https://developers.ultra.io/experimental/contracts/System%20Contract/System%20Actions/buyram.html#buyram-buy-ram-with-uos) page.
+Make sure UOS is specified with **exactly** 8 decimals as in [buyram](https://developers.ultra.io/experimental/contracts/System%20Contract/system-actions/buyram.html#buyram-buy-ram-with-uos) page.
 
 ## Docker container start issues
 

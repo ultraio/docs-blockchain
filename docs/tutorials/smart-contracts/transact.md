@@ -7,7 +7,7 @@ order: -95
 
 # Create a Transaction
 
-After you have deployed your smart contract you can use [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or use the [Ultra Wallet Extension](../Wallet%20Extension/index.md) to transact.
+After you have deployed your smart contract you can use [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or use the [Ultra Wallet Extension](../../products/ultra-wallet/index.md) to transact.
 
 In this guide we'll use the toolkit to keep it brief.
 

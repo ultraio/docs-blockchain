@@ -8,7 +8,7 @@ order: -99998
 
 When you are looking for information about the Ultra blockchain and its individual uers there are a few tables in particular that are very handy to lookup.
 
-See [get table rows](./REST/get-table-rows.md) for more information.
+See [get table rows](./get-table-rows.md) for more information.
 
 ## Latest USD/UOS Price
 

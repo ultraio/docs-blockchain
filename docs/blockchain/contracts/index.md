@@ -3,8 +3,6 @@ title: 'Smart Contracts'
 deploy: ['staging', 'mainnet']
 ---
 
-# Smart Contracts Overview
+# System Smart Contracts
 
-If you are looking to learn about the Smart Contracts deployed by Ultra.io, this is it.
-
-If you are looking for information about [writing your own smart contract, follow this link.](../guides/Smart%20Contracts/1.index.md)
+These smart contracts are already deployed on our network and are available to interface with.

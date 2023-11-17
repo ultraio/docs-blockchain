@@ -11,7 +11,7 @@ order: -96
 
 Each Block Producer must provide Ultra with a public key that they will generate locally.
 
-It is highly recommended that when you generate these keys that the private key is stored in a safe location. Please formulate a plan to keep this private key a secret. We refer you to [Account administration](../Maintenance/account-administration.md) for more details.
+It is highly recommended that when you generate these keys that the private key is stored in a safe location. Please formulate a plan to keep this private key a secret. We refer you to [Account administration](../maintenance/account-administration.md) for more details.
 
 ### To output the key pair to the console.
 

@@ -9,7 +9,7 @@ order: 4
 
 To connect the Ultra client to your Unity-based game, you must use our Ultra Unreal Subsystem. The subsystem passes the user's wallet id and an auth token into Unreal from Ultra's client. This is used to connect to Braincloud's SDK and authenticate.
 
-Before you get started, please make sure to get your [client_id](./requesting-a-client_id.md), as you'll need this to be able to use the Ultra Unity Plugin.
+Before you get started, please make sure to get your [client_id](../web/get-client-id.md), as you'll need this to be able to use the Ultra Unity Plugin.
 
 ## Getting the Ultra Unreal Subsystem
 

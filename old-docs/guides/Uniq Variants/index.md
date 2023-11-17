@@ -75,9 +75,9 @@ Uniqs have their own schema that is shared with the default token, but there are
 
 Below you can find some relevant blockchain actions for the `eosio.nft.ft` account for managing uniqs, uniq factories, and their status.
 
-* [Set Factory Meta](../../contracts/NFT%20Contract/NFT%20Actions/setmeta.b.md)
-* [Set Default Uniq Meta](../../contracts/NFT%20Contract/NFT%20Actions/setdflttkn.md)
-* [Set Uniq Meta](../../contracts/NFT%20Contract/NFT%20Actions/settknmeta.md)
-* [Lock Factory](../../contracts/NFT%20Contract/NFT%20Actions/lckfactory.md)
-* [Create Uniq Factory](../../contracts/NFT%20Contract/NFT%20Actions/create.b.md)
-* [Issue Uniq](../../contracts/NFT%20Contract/NFT%20Actions/issue.b.md)
+* [Set Factory Meta](../../contracts/nft-contract/nft-actions/setmeta.b.md)
+* [Set Default Uniq Meta](../../contracts/nft-contract/nft-actions/setdflttkn.md)
+* [Set Uniq Meta](../../contracts/nft-contract/nft-actions/settknmeta.md)
+* [Lock Factory](../../contracts/nft-contract/nft-actions/lckfactory.md)
+* [Create Uniq Factory](../../contracts/nft-contract/nft-actions/create.b.md)
+* [Issue Uniq](../../contracts/nft-contract/nft-actions/issue.b.md)

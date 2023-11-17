@@ -15,7 +15,7 @@ As an enterprise blockchain network, Ultra carefully selects and elects Block Pr
 
 Block producers are given a specific order based on their geographical location and the distance between each producer. The goal is to reduce the distance between producers and the overall latency.
 
-See [Proof of Authority](../Blockchains/consensus.md#proof-of-authority-poa)
+See [Proof of Authority](./antelope-ultra/consensus.md#proof-of-authority-poa)
 
 ## Block Producer Schedule
 
@@ -42,13 +42,13 @@ On the Ultra blockchain, the ranking mechanism for the queuing of transactions h
 
 Extensive changes have been made by Ultra to the core concept of **CPU/NET**. On Ultra these have been combined into a simplified, single resource called POWER. User accounts stake **UOS** to gain **POWER**. Dapp user can pay for their users' transaction **POWER** usage.
 
-Read more in the [Power Policy](./power-resource.md) section as well as the <Experimental>[Rate Limiting](./rate-limiting.md)</Experimental><Staging>[Transaction Queue](./transaction-limits-queues.md)</Staging><Mainnet>[Transaction Queue](./transaction-limits-queues.md)</Mainnet>.
+Read more in the [Power Policy](./antelope-ultra/power-resource.md) section as well as the [Rate Limiting](./antelope-ultra/rate-limiting.md)
 
 **RAM**
 
 The most common or important usage of RAM is free, account creation for example. Users don’t need to purchase RAM for simple blockchain usage. Developers have the option to buy more for deployment of smart contracts that require it.
 
-Read more in the [RAM Policy](./ram-policy.md) section.
+Read more in the [RAM Policy](./antelope-ultra/ram-policy.md) section.
 
 ## Accounts
 

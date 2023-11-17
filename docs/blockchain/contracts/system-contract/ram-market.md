@@ -30,11 +30,11 @@ There can be multiple blockchain accounts associated with one ultra platform acc
 
 ##  Relevant actions
 
-[buyram - buy RAM with UOS](./System%20Actions/buyram.html)
+[buyram - buy RAM with UOS](./system-actions/buyram.html)
 
-[buyrambytes - buy RAM with UOS](./System%20Actions/buyrambytes.html)
+[buyrambytes - buy RAM with UOS](./system-actions/buyrambytes.html)
 
-[refundram - buy RAM with UOS](./System%20Actions/refundram.html)
+[refundram - buy RAM with UOS](./system-actions/refundram.html)
 
 ## Relevant tables
 

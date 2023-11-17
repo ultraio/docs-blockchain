@@ -11,7 +11,7 @@ outline: [0, 4]
 
 ![](/images/token-factories/intro.png)
 
-In this guide, we will be walking you through how you can build your own Token Factory on Ultra's networks using our very own [Uniq NFT Standard](../../contracts/NFT%20Contract/overview.md). For your first go at it, we'll be using the Testnet.
+In this guide, we will be walking you through how you can build your own Token Factory on Ultra's networks using our very own [Uniq NFT Standard](../../contracts/nft-contract/overview.md). For your first go at it, we'll be using the Testnet.
 
 There are a few discrete steps to get things up and running, and we will walk you through each of them. At the end of the guide, you'll have published your very own Token Factory, and issued your first Uniqs on the Testnet.
 

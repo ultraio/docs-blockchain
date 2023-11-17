@@ -28,8 +28,8 @@ This also corresponds with the factories that belong to this group.
 
 ## Actions
 
--   [creategrp](./NFT%20Actions/creategrp.md)
--   [updategrp](./NFT%20Actions/updategrp.md)
--   [deletegrp](./NFT%20Actions/deletegrp.md)
--   [addgrpfcts](./NFT%20Actions/addgrpfcts.md)
--   [rmgrpfcts](./NFT%20Actions/rmgrpfcts.md)
+-   [creategrp](./nft-actions/creategrp.md)
+-   [updategrp](./nft-actions/updategrp.md)
+-   [deletegrp](./nft-actions/deletegrp.md)
+-   [addgrpfcts](./nft-actions/addgrpfcts.md)
+-   [rmgrpfcts](./nft-actions/rmgrpfcts.md)

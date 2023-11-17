@@ -11,7 +11,7 @@ If you're a developer working on Unreal, have an established game, and would lik
 
 You'll be using OpenID to connect via Epic's Online Service.
 
-To have access to Ultra's OpenID, each development partner must [request a client_id](./requesting-a-client_id.md) from Ultra.
+To have access to Ultra's OpenID, each development partner must [request a client_id](../web/get-client-id.md) from Ultra.
 
 ## 1. Select Product Settings
 

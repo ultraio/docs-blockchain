@@ -13,7 +13,7 @@ This chapter explains how to upgrade the infrastructure, nodeos software, and th
 
 As the UOS Mainnet grows and scales, the minimum infrastructure configuration is likely to change over time and require upgrades.
 
-If your BP is running the [Minimum Infrastructure](../Infrastructure/minimum-recommended-infrastructure.md) specified by Ultra, the first thing that a Block Producer should do is to split their nodes into separate instances. There will then be dedicated instances for each kind of node. Ex.: Create a new instance for seed node, and 2 other instances for the API nodes.
+If your BP is running the [Minimum Infrastructure](../infrastructure/minimum-recommended-infrastructure.md) specified by Ultra, the first thing that a Block Producer should do is to split their nodes into separate instances. There will then be dedicated instances for each kind of node. Ex.: Create a new instance for seed node, and 2 other instances for the API nodes.
 
 Creating a powerful instance and keeping the same architecture, running all nodes in the same instance, is also a possibility. IO operations and not processor speed is the most critical component in maintaining a healthy cluster of API nodes as well as producer node. Moving to a bare-metal infrastructure or a hybrid infrastructure model across bare-metal and cloud services should be a good option to improve a Block Producer’s performance.
 
@@ -25,7 +25,7 @@ Regardless of specific infrastructure strategies, the upgrade process is the sam
     
 3.  Sync it to the network
     
-4.  Perform connectivity and performance tests (please refer to the [Finishing up](../Launch%20Procedures/finishing-up.md) section)
+4.  Perform connectivity and performance tests (please refer to the [Finishing up](../launch-procedures/finishing-up.md) section)
     
 5.  Switch to the new instance
     

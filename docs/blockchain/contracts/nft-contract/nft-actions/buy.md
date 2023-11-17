@@ -38,7 +38,7 @@ If promoter_id is set, the account will be added to resale shares list and will 
 
 Resale shares in the global resale table will be initialized if un-available.
 
-Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../learn/Ultra%20Blockchain/2nd-hand-sale.html).
+Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../general/antelope-ultra/2nd-hand-sale.md).
 
 After the shares are distributed and no additional transfers need to occur the token will be emplaced into the receiver’s account and the original token owner will have the token erased from their account.
 

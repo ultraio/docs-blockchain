@@ -27,7 +27,7 @@ Ultratest comes with a `default` wallet which you can display with the command
 more ~/ultratest/wallet.txt
 ```
 
-To learn more about wallets and how to use them from the command line, we recommend that you [read through our section on Wallets](../../learn/Blockchains/wallets.md).
+To learn more about wallets and how to use them from the command line, we recommend that you [read through our section on Wallets](../../../blockchain/general/antelope-ultra/wallets.md).
 
 The basic process is simply:
 
@@ -40,7 +40,7 @@ Then you'll be able to use it to do things like creating accounts or signing tra
 
 ## Account Creation
 
-Ultra has a [few different types of accounts](../../learn/Blockchains/accounts-and-permissions.md) that are available for creation. In short, there are:
+Ultra has a [few different types of accounts](../../../blockchain/general/antelope-ultra/accounts-and-permissions.md) that are available for creation. In short, there are:
 
 -   EBA accounts - These are created by the Ultra client on Mainnet and Testnet. They are non-custodial, recoverable accounts.
 -   Non-EBA accounts - These are created by users and developers who wish to self-manage their keys.

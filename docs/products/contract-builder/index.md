@@ -1,5 +1,5 @@
 ---
-title: 'About Contract Builder'
+title: 'Introduction'
 deploy: ['staging', 'mainnet']
 order: -99999999
 ---
@@ -24,7 +24,6 @@ Usage as a library can be viewed inside of the README in the official repository
 
 ## Supports
 
-* eosio-cpp
 * cdt-cpp
 * cmake
 

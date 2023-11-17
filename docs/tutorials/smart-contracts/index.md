@@ -43,7 +43,7 @@ namespace mycontract {
 
 There are 3 options to build a contract at the moment:
 
-* Via [eosio-cpp](../Docker/getting-started.md) with docker
+* Via [cdt-cpp](../Docker/getting-started.md) with docker
 * Via [contract-builder](../../tools/contract-builder/index.md) tool
 * Via vscode [extension](./3.compile.md)
 

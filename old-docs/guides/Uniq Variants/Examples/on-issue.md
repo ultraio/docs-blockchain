@@ -59,31 +59,11 @@ This contract assumes no one will be issuing tokens to `onissue` contract so if 
 
 First step after writing the `onissue.hpp` and `onissue.cpp` will be to build the contract. Follow [this](../../Smart%20Contracts/3.compile.md) for instructions of the build process.
 
-As an alternative the build command using <Mainnet>`eosio-cpp`</Mainnet><Staging>`eosio-cpp`</Staging><Experimental>`cdt-cpp`</Experimental>:
-<Mainnet>
-
-```bash
-eosio-cpp ./src/onissue.cpp -abigen
-```
-
-</Mainnet>
-
-<Staging>
-
-```bash
-eosio-cpp ./src/onissue.cpp -abigen
-```
-
-</Staging>
-
-<Experimental>
+As an alternative the build command using `cdt-cpp`:
 
 ```bash
 cdt-cpp ./src/onissue.cpp -abigen
 ```
-
-</Experimental>
-
 
 After you successfully compile the contract you will have two files: `onissue.abi` and `onissue.wasm` both of them are needed for proper functionality of your contract on-chain.
 

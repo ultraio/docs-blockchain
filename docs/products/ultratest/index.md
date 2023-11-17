@@ -1,5 +1,5 @@
 ---
-title: 'Ultratest Usage'
+title: 'Introduction'
 deploy: ['staging', 'mainnet']
 order: 0
 outline: [0,4]

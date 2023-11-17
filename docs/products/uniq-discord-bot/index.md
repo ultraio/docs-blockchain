@@ -1,5 +1,5 @@
 ---
-title: 'Introducing our Discord Bot'
+title: 'Introduction'
 deploy: ['staging', 'mainnet']
 outline: [0, 4]
 order: 1

@@ -32,7 +32,7 @@ Check out some of the various libraries, code examples and products we have avai
         <td>Ultratest</td>
         <td>A testing framework built by Ultra to test smart contracts. Only available inside the docker image.</td>
         <td>N/A</td>
-        <td>N/A</td>
+        <td><a href="./ultratest/index">Tutorial</a></td>
     </tr>
     <tr>
         <td>Chain API</td>

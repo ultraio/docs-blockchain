@@ -86,6 +86,21 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Contract Builder',
+            items: getMarkdownFiles('/products/contract-builder'),
+            collapsed: true,
+        },
+        {
+            text: 'Smart Contract Toolkit',
+            items: getMarkdownFiles('/products/smart-contract-toolkit'),
+            collapsed: true,
+        },
+        {
+            text: 'Ultratest',
+            items: getMarkdownFiles('/products/ultratest'),
+            collapsed: true,
+        },
+        {
             text: 'Uniq Discord Bot',
             items: getMarkdownFiles('/products/uniq-discord-bot'),
             collapsed: true,
@@ -102,12 +117,21 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
                     text: 'What is Ultra?',
                     link: '/blockchain/general/index',
                 },
+                {
+                    text: 'Useful Links',
+                    link: '/blockchain/general/links',
+                },
             ],
         },
         {
             text: 'Ultra Blockchain',
             items: getMarkdownFiles('/blockchain/general/antelope-ultra'),
-            collapsed: false,
+            collapsed: true,
+        },
+        {
+            text: 'Tools',
+            items: getMarkdownFiles('/blockchain/general/tools'),
+            collapsed: true,
         },
     ],
     // ################

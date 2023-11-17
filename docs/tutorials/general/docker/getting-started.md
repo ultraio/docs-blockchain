@@ -104,29 +104,10 @@ Inside of the docker image (using the terminal that is attached to the `ultra` c
 ```
 mkdir -p /opt/ultra_workdir/contracts && cd /opt/ultra_workdir/contracts
 ```
-<Mainnet>
-
-```
-eosio-cpp -abigen -o hello.wasm hello.cpp
-```
-
-</Mainnet>
-
-<Staging>
-
-```
-eosio-cpp -abigen -o hello.wasm hello.cpp
-```
-
-</Staging>
-
-<Experimental>
 
 ```
 cdt-cpp -abigen -o hello.wasm hello.cpp
 ```
-
-</Experimental>
 
 ## Writing your first test
 

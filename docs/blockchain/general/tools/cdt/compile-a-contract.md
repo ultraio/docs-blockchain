@@ -28,7 +28,7 @@ Run the following commands
 ```shell script
 $ mkdir build
 $ cd build
-$ eosio-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+$ cdt-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
 ```
 
 </Staging>
@@ -38,7 +38,7 @@ $ eosio-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
 ```shell script
 $ mkdir build
 $ cd build
-$ eosio-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+$ cdt-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
 ```
 
 </Mainnet>

@@ -54,6 +54,5 @@ export function getMarkdownFiles(folderPath: string, basePath = '/docs'): Defaul
         return a.order - b.order;
     });
 
-    console.log(parsedFiles);
     return parsedFiles;
 }

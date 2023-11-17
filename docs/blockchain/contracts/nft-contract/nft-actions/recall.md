@@ -8,6 +8,10 @@ deploy: ['staging', 'mainnet']
 
 The token factory manager can use it to recall a token.
 
+::: warning
+This action is deprecated.
+:::
+
 ## Technical Behavior
 
 Upon the usage of the **recall action** the action will verify that the parameters supplied in the action have values. This includes **owner, token_ids.** The memo specifically has a 256 byte limitation. The required authorization is the **token factory manager** of the **token_ids** specified. This can be done entirely without the token owner’s permission.

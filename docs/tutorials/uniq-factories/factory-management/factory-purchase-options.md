@@ -16,7 +16,7 @@ First-hand factory purchase options allow users to receive Uniqs from the factor
 
 The first-hand purchase options provide following benefits to you
 - No need for factory manager input to issue a token to the user
-- Flexible pricing and conditions: can utilize other factories as a condition and can interact with [user groups contract](../../contracts/User%20Group%20Contract/overview.md)
+- Flexible pricing and conditions: can utilize other factories as a condition and can interact with [user groups contract](../../../blockchain/contracts/user-group-contract/index.md)
 - Configurable accessibility time window which does not require you to manually disable ability to purchase Uniqs
 
 ## Purchase option use cases

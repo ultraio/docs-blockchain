@@ -8,7 +8,7 @@ deploy: ['staging', 'mainnet']
 
 Allows a token manager to set metadata uri and hash for default token of an existing token factory.
 
-Refer to [uniq-default-metadata](../../../guides/Uniq%20Variants/uniq-default-metadata.md) for explanation on possible uses for default token metadata
+Refer to [uniq-default-metadata](../../../../tutorials/uniq-factories/uniq-variants/uniq-default-metadata.md) for explanation on possible uses for default token metadata
 
 ## Technical Behavior
 
@@ -24,7 +24,7 @@ If factory has `lock_hash` set to `true`:
 
 -   Can change the `uri`, but `hash` must remain unchanged.
 
--   Cannot switch between `static` and `dynamic` default token URI (more details [here](../../../guides/Uniq%20Variants/uniq-default-metadata.md))
+-   Cannot switch between `static` and `dynamic` default token URI (more details [here](../../../../tutorials/uniq-factories/uniq-variants/uniq-default-metadata.md))
 
 ## RAM usage
 

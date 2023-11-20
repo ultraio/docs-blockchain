@@ -15,7 +15,7 @@ However, Ultra still allows developers to create their own FT on our network if 
 
 ## Requirements
 
--   You need to own a developer account before making a request. Please refer to this [process](../../tools/protocol/cleos.md#creating-an-account).
+-   You need to own a developer account before making a request. Please refer to this [process](../../blockchain/general/tools/cleos.md#creating-an-account).
 -   Token you want to create must meet our standards. Please refer below for more info.
 
 ## Make a request

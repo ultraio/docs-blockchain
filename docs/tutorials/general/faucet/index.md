@@ -11,7 +11,7 @@ Keys can be created in a variety of ways and through many different websites.
 
 _We would never recommend using an external website for a Main Network keypair_
 
-Anyway, here's a few websites you can do it on, or you can use [cleos](..)
+Anyway, here's a few websites you can do it on, or you can use [cleos](../../../blockchain/general/tools/cleos.md)
 
 * [EOS Authority](https://eosauthority.com/generate_eos_private_key)
 * [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)

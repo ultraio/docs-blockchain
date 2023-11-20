@@ -20,4 +20,4 @@ try {
 }
 ```
 
-For more information visit the [List of official Ultra blockchain networks](../../api/index.md)
+For more information visit the [List of official Ultra blockchain networks](../../products/chain-api/index.md)

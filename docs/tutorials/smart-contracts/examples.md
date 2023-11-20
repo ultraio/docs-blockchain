@@ -92,7 +92,7 @@ _You must add the `eosio.code` permission to your account to use this._
 
 ## Listening for Uniq Transfers
 
-If you want to listen for transfers from `eosio.nft.ft` see [onIssue Example](../../guides/Uniq%20Variants/Examples/on-issue.md).
+If you want to listen for transfers from `eosio.nft.ft` see [onIssue Example](../../tutorials/uniq-factories/uniq-variants/Examples/on-issue.md).
 
 
 

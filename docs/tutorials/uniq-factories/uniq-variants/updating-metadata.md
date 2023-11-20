@@ -10,7 +10,7 @@ An important aspect of the Ultra NFT standard is metadata updates. Game publishe
 
 ## Creating a factory & Issuing tokens
 
-Let's [`create`](/docs/contracts/nft-contract/nft-actions/create.b.md) a factory first and [`issue`](/docs/contracts/nft-contract/nft-actions/issue.b.md) a token:
+Let's [`create`](../../../blockchain/contracts/nft-contract/nft-actions/create.b.md) a factory first and [`issue`](../../../blockchain/contracts/nft-contract/nft-actions/issue.b.md) a token:
 ```sh
 # Create
 cleos push action eosio.nft.ft create.b '[
@@ -76,7 +76,7 @@ After a factory and token is minted we can look up their ids from `factory.b` an
 
 ## Updating factory metadata
 
-If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](/docs/contract-nft/nft-actions/091_setmeta.b.md) to change the corresponding data:
+If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](../../../blockchain/contracts/nft-contract/nft-actions/091_setmeta.b.md) to change the corresponding data:
 
 ```sh
 cleos push action eosio.nft.ft setmeta.b '[
@@ -89,7 +89,7 @@ cleos push action eosio.nft.ft setmeta.b '[
 
 ## Updating a default token
 
-Default token metadata is used as a fallback mechanism whenever there's no uri for a token. Here's how one updates on-chain data for it using [setdflttkn](../../contracts/nft-contract/nft-actions/setdflttkn.md) action:
+Default token metadata is used as a fallback mechanism whenever there's no uri for a token. Here's how one updates on-chain data for it using [setdflttkn](../../../blockchain/contracts/nft-contract/nft-actions/setdflttkn.md) action:
 
 ```sh
 cleos push action eosio.nft.ft setdflttkn '[
@@ -102,7 +102,7 @@ cleos push action eosio.nft.ft setdflttkn '[
 
 ## Update a uniq
 
-Updating uniq's is done with [`settknmeta`](../../contracts/nft-contract/nft-actions/settknmeta.md) action:
+Updating uniq's is done with [`settknmeta`](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md) action:
 
 ```sh
 cleos push action eosio.nft.ft settknmeta '[
@@ -118,7 +118,7 @@ It's important to reiterate that whenever you make any changes to metadata (incl
 
 ## Locking changes
 
-For certain usecases it might make sense to make a factory immutable. Luckily there's a [`lckfactory`](../../contracts/nft-contract/nft-actions/lckfactory.md) action which enables a manager to disable any content updates. This might be useful for an nft art gallery as it allows the users to be sure theirupdating_metadata.md artwork will never change.
+For certain usecases it might make sense to make a factory immutable. Luckily there's a [`lckfactory`](../../../blockchain/contracts/nft-contract/nft-actions/lckfactory.md) action which enables a manager to disable any content updates. This might be useful for an nft art gallery as it allows the users to be sure theirupdating_metadata.md artwork will never change.
 
 **THE CHANGE IS IRREVERSIBLE:**
 

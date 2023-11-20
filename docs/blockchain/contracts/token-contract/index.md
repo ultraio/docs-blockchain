@@ -38,4 +38,4 @@ For Ultra, core token `UOS` are issued under account `eosio.token` using this co
 
 ### 5 - Other Fungible Token
 
--   We currently accept request for creating new Fungible Token on out Public Testnet. Please follow this [guide](../../guides/Ultra%20Specific/request-fungible-token.md).
+-   We currently accept request for creating new Fungible Token on out Public Testnet. Please follow this [guide](../../../products/fungible-tokens/index.md).

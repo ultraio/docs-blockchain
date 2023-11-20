@@ -43,7 +43,7 @@ To make the contract below work based on your needs, you will need to do some ad
 - Depending on the permission structure and where you put the contract, you may want to add `smart_contract_name@eosio.code` permission under the `factory_manager@active` so that the contract will be able to issue tokens in the name of the factory manager
 
 ::: info
-Note that in the later versions of NFT standard the specific names of the actions and their interface may change so be sure to reference the pages under *[NFT contract actions](../../contracts/nft-contract/nft-actions/)*
+Note that in the later versions of NFT standard the specific names of the actions and their interface may change so be sure to reference the pages under *[NFT contract actions](../../../blockchain/contracts/nft-contract/nft-actions/activers.md)*
 :::
 
 Source code for Uniq swap contract is provided below

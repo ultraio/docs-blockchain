@@ -25,7 +25,7 @@ If you are simply looking for a way to swap from ERC-20 to native UOS use the fo
 
 ## API Nodes
 
-See the [API Section](../../api/index.md) for a list of available nodes to transact with.
+See the [API Section](../../products/chain-api/index.md) for a list of available nodes to transact with.
 
 ## Block Explorers
 

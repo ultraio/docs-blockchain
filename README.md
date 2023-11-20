@@ -2,9 +2,9 @@
 
 ## Installation
 
-**Node V16+ is required.**
+**Node V18+ is required.**
 
-If you are using `nvm` use `nvm use 16`.
+If you are using `nvm` use `nvm use 18`.
 
 ```
 npm i
@@ -27,17 +27,23 @@ Always use `experimental` for general document writing. The files update instant
 
 ### Experimental
 
+**This Has Live Updates**
+
 ```
 npm run dev
 ```
 
 ### Staging
 
+**This does not update live**
+
 ```
 npm run dev:staging
 ```
 
 ### Mainnet
+
+**This does not update live**
 
 ```
 npm run dev:mainnet
@@ -53,21 +59,11 @@ npm run build:all
 
 ## File Deployment Guide
 
-Each file has a `deploy` property in the front matter tag at the top of the file. 
+Deployments are based on the name.
 
-If you wish to deploy to other environments do the following:
+Any file without the extension `.mainnet.md` or `.staging.md` will be available in all versions.
 
-```md
----
-title: 'Example Markdown File'
-order: 0
-deploy: ['staging', 'mainnet']
----
-
-# Example Markdown File
-
-Placeholder
-```
+If you want to only deploy a specific file version on mainnet, append `.mainnet.md` to the file name.
 
 ## File Order Guide
 
@@ -85,7 +81,7 @@ ie.
 ```md
 ---
 title: 'Example Markdown File'
-order: 0
+order: -999
 deploy: ['staging', 'mainnet']
 ---
 

@@ -5,17 +5,26 @@
     ],
     "type": "module",
     "scripts": {
+        "[-] Main Script for Realtime Updates": "",
         "dev": "vitepress dev docs",
-        "dev:staging": "npm run update:files && vitepress dev ./packages/staging/docs",
-        "dev:mainnet": "npm run update:files && vitepress dev ./packages/mainnet/docs",
-        "build:experimental": "vitepress build docs",
-        "build:staging": "vitepress build ./packages/staging/docs",
-        "build:mainnet": "vitepress build ./packages/mainnet/docs",
-        "build:together": "npm run build:mainnet & npm run build:staging & npm run build:experimental",
-        "build:all": "npm run update:files && npm run build:together && npx ts-node --esm ./scripts/reorganize.ts && npx ts-node --esm ./scripts/sitemap.ts"
+        "[-] Run Development Versions": "",
+        "dev:experimental": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-experimental",
+        "dev:staging": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-staging",
+        "dev:mainnet": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-mainnet",
+        "[-] Build Distributable Files": "",
+        "build:experimental": "vitepress build ./docs-experimental",
+        "build:staging": "vitepress build ./docs-staging",
+        "build:mainnet": "vitepress build ./docs-mainnet",
+        "build:together": "npx tsx ./scripts/scaffold.ts && npm run build:mainnet & npm run build:staging & npm run build:experimental",
+        "build:all": "npm run build:together && npx tsx ./scripts/reorganize.ts && npx tsx ./scripts/sitemap.ts",
+        "[-] Preview Scaffolded Files ": "",
+        "preview:experimental": "tsx ./scripts/scaffold.ts && npm run build:experimental && vitepress preview ./docs-experimental",
+        "preview:staging": "tsx ./scripts/scaffold.ts && npm run build:staging && vitepress preview ./docs-staging",
+        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet"
     },
     "devDependencies": {
         "@types/node": "^20.9.0",
+        "tsx": "^4.1.4",
         "vitepress": "^1.0.0-rc.26",
         "vitepress-plugin-google-analytics": "^1.0.2",
         "vue": "^3.3.8"

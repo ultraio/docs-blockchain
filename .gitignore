@@ -18,12 +18,6 @@ dist
 
 # Experimental Environment
 docs/.vitepress/cache
-
-# Staging Environment
-packages/staging/docs/*
-!packages/staging/docs/.vitepress
-
-# Mainnet Environment
-packages/mainnet/docs/*
-!packages/mainnet/docs/.vitepress
-
+docs-mainnet/
+docs-staging/
+docs-experimental/

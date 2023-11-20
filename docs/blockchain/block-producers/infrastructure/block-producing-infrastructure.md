@@ -31,4 +31,4 @@ API layer where Proxy Servers (web firewalls) filter requests using [Patroneos](
 
 Through the Load Balancer incoming API calls are routed to Layer 3 web firewalls.
 
-It is important to note that EOSIO software is not good at handling multiple connections. That is why it's important to use API nodes on layers 1 and 2 to communicate with other Block Producers. You should also consider using a load balancer like a [HaProxy](http://www.haproxy.org/) to better handle the connection between your API nodes and other Block Producers.
+It is important to note that Antelope software is not good at handling multiple connections. That is why it's important to use API nodes on layers 1 and 2 to communicate with other Block Producers. You should also consider using a load balancer like a [HaProxy](http://www.haproxy.org/) to better handle the connection between your API nodes and other Block Producers.

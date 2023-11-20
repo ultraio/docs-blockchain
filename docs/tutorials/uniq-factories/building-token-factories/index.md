@@ -21,5 +21,3 @@ There are a few discrete steps to get things up and running, and we will walk yo
 2. [Creating Metadata](./creatingmetadata.md)
 3. [Your First Token Factory](./firsttokenfactory.md)
 4. [Minting Your First Uniq](./mintingyourfirstuniq.md)
-
-Let's goooooo!

@@ -70,6 +70,12 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="https://www.npmjs.com/package/@ultraos/contract-builder">NPM</a></td>
         <td>N/A</td>
     </tr>
+     <tr>
+        <td>Fungible Tokens</td>
+        <td>Request to create a fungible token alternative to UOS on our chain.</td>
+        <td>N/A</td>
+        <td><a href="./fungible-tokens/index">Tutorial</a></td>
+    </tr>
     <tr>
         <td>Smart Contract Toolkit for VSCode</td>
         <td>An all inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to our blockchain for VSCode.</td>

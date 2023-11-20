@@ -7,6 +7,8 @@ const navbar: DefaultTheme.NavItem[] = [
             //
             { text: 'Basics', link: '/tutorials/general/basics/index' },
             { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
+            { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
+            { text: 'Token Swap', link: '/tutorials/token-swap/index' },
         ],
     },
     {

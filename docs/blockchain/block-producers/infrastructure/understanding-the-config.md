@@ -45,7 +45,7 @@ p2p-peer-address = PEER_NODE_IP_ADDRESS:PORT
 
 ## New WASM Runtime
 
-After EOS v1.9 there were major performance increases for EOSIO in general. We’ll be utilizing those performance increases in our chain and we can directly enable some of those performance increases with the following two parameters. [Read more about EOS-VM performance increases.](https://eos.io/news/eos-virtual-machine-a-high-performance-blockchain-webassembly-interpreter/)
+After Antelope v1.9 there were major performance increases for Antelope in general. We’ll be utilizing those performance increases in our chain and we can directly enable some of those performance increases with the following two parameters. [Read more about EOS-VM performance increases.](https://eos.io/news/eos-virtual-machine-a-high-performance-blockchain-webassembly-interpreter/)
 
 ```typescript
 wasm-runtime=eos-vm-jit

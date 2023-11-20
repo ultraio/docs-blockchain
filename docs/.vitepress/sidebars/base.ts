@@ -12,6 +12,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: false,
         },
         {
+            text: 'Testnet Faucet',
+            items: getMarkdownFiles('/tutorials/general/faucet'),
+            collapsed: false,
+        },
+        {
             text: 'Docker',
             items: getMarkdownFiles('/tutorials/general/docker'),
             collapsed: false,
@@ -21,6 +26,43 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Smart Contracts',
             items: getMarkdownFiles('/tutorials/smart-contracts'),
+        },
+    ],
+    '/tutorials/uniq-factories': [
+        {
+            text: 'Token Factories',
+            items: [
+                {
+                    text: 'Overview',
+                    link: '/tutorials/uniq-factories/index',
+                },
+            ],
+        },
+        {
+            text: 'Build a Token Factory',
+            items: getMarkdownFiles('/tutorials/uniq-factories/building-token-factories'),
+            collapsed: false,
+        },
+        {
+            text: 'Factory Management',
+            items: getMarkdownFiles('/tutorials/uniq-factories/factory-management'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq Variants',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-variants'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq Avatar',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-avatar'),
+            collapsed: true,
+        },
+    ],
+    '/tutorials/token-swap': [
+        {
+            text: 'Smart Contracts',
+            items: getMarkdownFiles('/tutorials/token-swap'),
         },
     ],
     // ################
@@ -96,6 +138,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Fungible Tokens',
+            items: getMarkdownFiles('/products/fungible-tokens'),
+            collapsed: true,
+        },
+        {
             text: 'Ultratest',
             items: getMarkdownFiles('/products/ultratest'),
             collapsed: true,
@@ -130,7 +177,10 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         },
         {
             text: 'Tools',
-            items: getMarkdownFiles('/blockchain/general/tools'),
+            items: [
+                ...getMarkdownFiles('/blockchain/general/tools'),
+                { text: 'CDT', items: getMarkdownFiles('/blockchain/general/tools/cdt'), collapsed: true },
+            ],
             collapsed: true,
         },
     ],

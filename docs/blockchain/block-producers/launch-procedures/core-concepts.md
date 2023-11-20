@@ -9,7 +9,7 @@ order: -99
 
 ## What is a genesis node?
 
-The genesis node, on an EOSIO network, is the first node that sets up the network and produces the first blocks. It is responsible for setting up the system contracts, registering the first batch of Block Producers on the network, and passing the block production on to them.
+The genesis node, on an Antelope network, is the first node that sets up the network and produces the first blocks. It is responsible for setting up the system contracts, registering the first batch of Block Producers on the network, and passing the block production on to them.
 
 In short, the genesis node starts the network and then passes off responsibility to the Block Producers. The genesis will eventually shut itself down after the responsibility is passed off to the Block Producers to keep the network running.
 
@@ -25,7 +25,7 @@ This contract will provide the creation of user-owned accounts, distribution of 
 
 #### eosio.token
 
-This contract will provide the ability for users and ultra alike to create fungible tokens such as **UOS** which will be the chain’s main currency. Unlike other chains, Ultra makes it much easier to deploy a currency without having to redeploy the entire eosio.token contract.
+This contract will provide the ability for users and ultra alike to create fungible tokens such as **UOS** which will be the chain’s main currency. Unlike other chains, Ultra makes it much easier to deploy a currency without having to redeploy the entire `eosio.token` contract.
 
 #### eosio.msig
 
@@ -39,7 +39,7 @@ There will initially be five Block Producers on the Ultra Blockchain.
 
 ### Who defines the Block Producer schedule?
 
-During the initial Testnets and Mainnet, it will be Ultra who is defining the Block Producer schedule. There is not an ordered, elected ranking like on other EOSIO chains. There is no voting for Block Producers.
+During the initial Testnets and Mainnet, it will be Ultra who is defining the Block Producer schedule. There is not an ordered, elected ranking like on other Antelope chains. There is no voting for Block Producers.
 
 ### What will be the procedure for changes to the block producer schedule?
 

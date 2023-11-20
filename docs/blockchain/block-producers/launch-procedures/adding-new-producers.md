@@ -7,7 +7,7 @@ order: -92
 
 # Adding Producers
 
-Our system contract modifications prevent any form of voting after the chain has been activated. This modification precludes the standard procedure on EOSIO for adding additional Block Producers to our network.
+Our system contract modifications prevent any form of voting after the chain has been activated. This modification precludes the standard procedure on Antelope for adding additional Block Producers to our network.
 
 Ultra handpicks the Block Producers and adds them manually through **regprod** and **unregprod** actions. Once these actions are performed, the modifications to the block production schedule are handled automatically.
 

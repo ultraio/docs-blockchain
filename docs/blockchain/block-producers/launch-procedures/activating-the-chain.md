@@ -7,9 +7,9 @@ order: -94
 
 # Activating the Chain
 
-## Difference from EOSIO
+## Difference from Antelope
 
-Ultra is responsible for activating the chain and the `ultra` account is the only account that can activate the chain. It is important to understand that instead of having `eosio` relieve its permissions we opted instead for the `ultra` account to complete this task.
+Ultra is responsible for activating the chain and the `ultra` account is the only account that can activate the chain. It is important to understand that instead of having `eosio` account relieve its permissions we opted instead for the `ultra` account to complete this task.
 
 ## How to Activate
 

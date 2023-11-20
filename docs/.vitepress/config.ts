@@ -68,6 +68,11 @@ export default defineConfig({
                 src: 'https://www.googletagmanager.com/gtag/js?id=GTM-WVKHHPB',
             },
         ],
+        [
+            'script',
+            {},
+            "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-BJ90L1VZC3');",
+        ],
     ],
     vue: {
         template: {

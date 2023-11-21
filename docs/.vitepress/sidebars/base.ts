@@ -5,7 +5,72 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     // ################
     // Tutorials
     // ################
+    '/tutorials/index': [
+        {
+            text: 'All Tutorials',
+            items: [
+                {
+                    text: 'Overview',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Basics',
+            items: getMarkdownFiles('/tutorials/general/basics'),
+            collapsed: true,
+        },
+        {
+            text: 'Testnet Faucet',
+            items: getMarkdownFiles('/tutorials/general/faucet'),
+            collapsed: true,
+        },
+        {
+            text: 'Docker',
+            items: getMarkdownFiles('/tutorials/docker'),
+            collapsed: true,
+        },
+        {
+            text: 'Smart Contracts',
+            items: getMarkdownFiles('/tutorials/smart-contracts'),
+            collapsed: true,
+        },
+        {
+            text: 'Build a Uniq Factory',
+            items: getMarkdownFiles('/tutorials/uniq-factories/building-uniq-factories'),
+            collapsed: true,
+        },
+        {
+            text: 'Factory Management',
+            items: getMarkdownFiles('/tutorials/uniq-factories/factory-management'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq Variants',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-variants'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq Avatar',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-avatar'),
+            collapsed: true,
+        },
+        {
+            text: 'Smart Contracts',
+            items: getMarkdownFiles('/tutorials/token-swap'),
+            collapsed: true,
+        },
+    ],
     '/tutorials/general': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
         {
             text: 'Basics',
             items: getMarkdownFiles('/tutorials/general/basics'),
@@ -19,6 +84,15 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/docker': [
         {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
             text: 'Docker',
             items: getMarkdownFiles('/tutorials/docker'),
             collapsed: false,
@@ -26,11 +100,29 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/smart-contracts': [
         {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
             text: 'Smart Contracts',
             items: getMarkdownFiles('/tutorials/smart-contracts'),
         },
     ],
     '/tutorials/uniq-factories': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
         {
             text: 'Uniq Factories',
             items: [
@@ -62,6 +154,15 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         },
     ],
     '/tutorials/token-swap': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
         {
             text: 'Smart Contracts',
             items: getMarkdownFiles('/tutorials/token-swap'),

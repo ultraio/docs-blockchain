@@ -5,11 +5,17 @@ const navbar: DefaultTheme.NavItem[] = [
         text: 'Tutorials',
         items: [
             //
-            { text: 'Basics', link: '/tutorials/general/basics/index' },
-            { text: 'Docker', link: '/tutorials/docker/index' },
-            { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
-            { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
-            { text: 'Token Swap', link: '/tutorials/token-swap/index' },
+            { text: 'All Tutorials', link: '/tutorials/index/index' },
+            {
+                text: 'Featured',
+                items: [
+                    { text: 'Basics', link: '/tutorials/general/basics/index' },
+                    { text: 'Docker', link: '/tutorials/docker/index' },
+                    { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
+                    { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
+                    { text: 'Token Swap', link: '/tutorials/token-swap/index' },
+                ],
+            },
         ],
     },
     {

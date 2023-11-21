@@ -19,70 +19,76 @@ const links = ref([
 
 const popularresources = [
     {
-        href: 'guides/',
-        title: 'Guides',
-        desc: 'A set of guides that can get you started building on our technology.',
+        href: 'tutorials/index/index.html',
+        title: 'Tutorials',
+        desc: 'A set of tutorials that can get you started building on our technology.',
         icon: '/images/links/guides.svg',
     },
     {
-        href: 'learn/',
-        title: 'Learn',
+        href: 'blockchain/general/index.html',
+        title: 'Blockchain',
         desc: 'In-depth documentation on our blockchain network and the block producers that run it.',
         icon: '/images/links/learn.svg',
     },
     {
-        href: 'contracts/',
-        title: 'Contracts',
-        desc: 'In-depth documentation on our advanced smart contract system and the network that it runs on.',
+        href: 'tutorials/smart-contracts/index.html',
+        title: 'Build Smart Contracts',
+        desc: 'Documentation on our smart contract system and how to build them.',
         icon: '/images/links/contracts.svg',
     },
     {
-        href: 'api/',
-        title: 'API',
-        desc: 'About Ultra’s API, it’s available nodes, and the REST endpoints available to developers.',
+        href: 'products/chain-api/index.html',
+        title: 'Chain API',
+        desc: 'All about available REST API endpoints available through our block producers.',
         icon: '/images/links/api.svg',
     },
     {
-        href: 'tools/',
-        title: 'Tools',
-        desc: 'Ultra’s ecosystem is full of useful tools that every developer should know about.',
+        href: 'products/nft-api/index.html',
+        title: 'NFT API',
+        desc: 'Read data from Uniqs and Uniq Factories using our NFT API.',
+        icon: '/images/links/api.svg',
+    },
+    {
+        href: 'products/index',
+        title: 'Products',
+        desc: 'Ultras ecosystem is full of useful tools that every developer should know about.',
         icon: '/images/links/tools.svg',
     },
 ];
 
 const gamelinks = [
     {
-        href: 'guides/Integrating%20Ultra/get-ultra-unity.html',
+        href: 'game-developers/unity/index.html',
         title: 'Build with Unity',
         desc: '',
         icon: '/images/links/unity.svg',
     },
     {
-        href: 'guides/Integrating%20Ultra/get-ultra-unreal.html',
+        href: 'game-developers/unreal/index.html',
         title: 'Build with Unreal',
         desc: '',
         icon: '/images/links/unreal.svg',
     },
     {
-        href: 'guides/Wallet Extension/',
+        href: 'products/ultra-wallet/index.html',
         title: 'Build with Chrome Extension',
         desc: '',
         icon: '/images/links/chrome.svg',
     },
     {
-        href: 'guides/Game Dev Center/1. introduction.html',
+        href: 'game-developers/game-dev-center/index.html',
         title: 'Game Developer Center',
         desc: '',
         icon: '/images/links/gdc.svg',
     },
     {
-        href: 'guides/Uniq Avatar/introduction.html',
+        href: 'tutorials/uniq-factories/uniq-avatar/index.html',
         title: 'About Uniq Avatars',
         desc: '',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'guides/Integrating Ultra/getting-started.html',
+        href: 'game-developers/index.html',
         title: 'Integrating Ultra',
         desc: '',
         icon: '/images/links/ultra.svg',
@@ -91,27 +97,27 @@ const gamelinks = [
 
 const creatorlinks = [
     {
-        href: 'guides/Building Token Factories/firsttokenfactory.html',
+        href: 'tutorials/uniq-factories/building-uniq-factories/firsttokenfactory.html',
         title: 'Create a Token Factory',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'guides/Building Token Factories/creatingmetadata.html',
+        href: 'tutorials/uniq-factories/building-uniq-factories/creatingmetadata.html',
         title: 'Create Metadata',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'guides/Building Token Factories/mintingyourfirstuniq.html',
+        href: 'tutorials/uniq-factories/building-uniq-factories/mintingyourfirstuniq.html',
         title: 'Minting your first Uniq',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'guides/Ultra Uniq Discord Bot/introduction.html',
+        href: 'products/uniq-discord-bot/index.html',
         title: 'Set up the Ultra Discord Bot',
         icon: '/images/links/discord.svg',
     },
     {
-        href: 'guides/Uniq Variants/',
+        href: 'tutorials/uniq-factories/uniq-variants/index.html',
         title: 'Learn about Variants',
         icon: '/images/links/uniq.svg',
     },
@@ -119,12 +125,12 @@ const creatorlinks = [
 
 const marketplacelinks = [
     {
-        href: 'contracts/NFT Contract/overview.html',
+        href: 'blockchain/contracts/nft-contract/index.html',
         title: 'Ultra NFT Standard',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'guides/NFTAPI/introduction.html',
+        href: 'products/nft-api/index.html',
         title: 'Using Our NFTAPI',
         icon: '/images/links/uniq.svg',
     },
@@ -132,12 +138,12 @@ const marketplacelinks = [
 
 const enterpriselinks = [
     {
-        href: 'contracts/NFT Contract/overview.html',
+        href: 'blockchain/contracts/nft-contract/index.html',
         title: 'Ultra NFT Standard',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'contracts/NFT Contract/overview.html#authorizing-another-minter',
+        href: 'blockchain/contracts/nft-contract/index.html#authorizing-another-minter',
         title: 'Authorized Minters',
         icon: '/images/links/lock.svg',
     },

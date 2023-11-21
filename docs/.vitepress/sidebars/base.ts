@@ -89,6 +89,15 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/fundamentals': [
         {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
             text: 'Fundamentals',
             items: getMarkdownFiles('/tutorials/fundamentals'),
             collapsed: true,

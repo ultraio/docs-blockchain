@@ -7,43 +7,86 @@ oultine: [0,5]
 # How to read the Block Explorer
 
 A block explorer is a web tool that allows users to view information about cryptocurrency transactions and blockchain data. It provides details such as transaction history, wallet balances, and block information, enhancing transparency and accountability.
-## Setup
 
-1. Download Chrome, Brave, or Chromium Equivalent
-2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+## Our Explorers
 
-## Open Ultra Wallet
+* [Main Network](https://explorer.mainnet.ultra.io/)
+* [Test Network (You probably want this one)](https://explorer.testnet.ultra.io/)
 
-Open your `Ultra Wallet` by clicking it inside of the extensions panel.
+## Usage
 
-![](./images/ultra-wallet-extension-panel.png)
+In most cases the search bar at the top takes any of the following:
 
-## Set the Network
+* Account Name
+* Transaction ID
+* Block Number
 
-Set your network to `Testnet` if you are developing applications. This may need to be done for other applications.
+### Example Queries
 
-![](./images/set-network-testnet.png)
+::: details Examples
 
-## Import Private Key
+```
+account:eosio.token 
 
-::: info
+receiver:eosio.token (data.from:eoscanadacom OR data.to:eoscanadacom)
 
-This tutorial is meant for developers, if you are using a non-development account login normally.
+(auth:eoscanadacom OR receiver:eoscanadacom)
 
+account:eosio.token action:transfer
+
+(ram.consumed:eoscanadacom OR ram.released:eoscanadacom)
+
+receiver:eosio.token 
+
+db.table:global
+```
+
+Examples pulled from [dFuse Docs](https://docs.dfuse.eosnation.io/eosio/public-apis/reference/search/terms/)
 :::
 
-Click on `Use Private Key & Password` to import your private key from the [How to Generate a Keypair Tutorial](./how-to-generate-a-keypair.md)
+## Account Page
 
-![](./images/use-private-key-wallet.png)
 
-Set a password.
+### Account Balance
 
-Paste your private key.
+Account balance is available at the top.
 
-![](./images/import-private-key-wallet.png)
+![](./images/block-explorer/explorer-balance.png)
 
-![](./images/wallet-import-done.png)
+### RAM & Power
 
-## Success!
+Both of these are available on the account page as well.
 
-You have successfully imported your private key into your wallet!
+`∞` means the account has no limitations. Otherwise, most accounts have a limitation.
+
+Storing data on-chain costs `RAM`.
+
+Executing transactions utilizes `POWER`.
+
+![](./images/block-explorer/explorer-costs.png)
+
+### Permissions
+
+You can see who owns an account, or what key has control over an account under the `permissions` section.
+
+The +1/1 shows how many signatures are necessary to act on behalf of a `permission`. Permission being `active` or `owner` in the example below.
+
+![](./images/block-explorer/explorer-permissions.png)
+
+In the example below the `tech` `permission` requires two users to a transaction to act on behalf of the `ultra@tech` account.
+
+![](./images/block-explorer/explorer-permissions-advanced.png)
+
+### Contracts
+
+When you are on an account page such as `eosio.token` you can see that it has a contract deployed because it has the `tables` and `ABI` tabs.
+
+![](./images/block-explorer/explorer-abi.png)
+
+### Tables
+
+Tables can be browsed for additional information if you're aware of how the table is structured. In the case of `eosio.nft.ft` I can view the `factory.b` table to see available Uniqs. Tables available can be gathered from the `abi` tab.
+
+It's highly recommended to use `curl` requests against [REST API Endpoints](./how-to-make-a-rest-request.md) when reading data, or write a small script in one of your favorite programming languages.
+
+![](./images/block-explorer/explorer-tables.png)

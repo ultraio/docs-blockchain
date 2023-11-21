@@ -11,7 +11,7 @@ In many cases when working with smart contracts, or on-chain actions you will ne
 
 ## Cleos Usage
 
-Cleos has a section on using [external endpoints](../../../products/chain-api/index.md#external-apis).
+Cleos has a section on using [external endpoints](../../products/chain-api/index.md#external-apis).
 
 In short append the `-u` flag with a url. If you are using local environment then this flag can be skipped. The default value of `http://127.0.0.1:8888` will be used
 
@@ -37,7 +37,7 @@ wget -qO- /dev/stdout <endpoint>/v1/chain/get_info | json_pp
 
 ## Available Endpoints
 
-[See this API section](../../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
+[See this API section](../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
 
 ## Limitations and Availability
 

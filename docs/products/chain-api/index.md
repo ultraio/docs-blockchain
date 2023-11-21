@@ -10,7 +10,7 @@ Ultra's blockchain REST API uses HTTP methods to communicate with network.
 
 Endpoints are available for retrieving data, submitting transactions, and executing smart contracts.
 
-_It is recommended to use a package such as [enf-eosjs](https://github.com/eosnetworkfoundation/mandel-eosjs) for handling transactions or more complex API calls._
+_It is recommended to use a package such as [@ultraos/ultra-api-lib](https://www.npmjs.com/package/@ultraos/ultra-api-lib) for handling transactions or more complex API calls._
 
 ## Producer Endpoints
 

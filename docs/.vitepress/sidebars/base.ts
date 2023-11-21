@@ -21,6 +21,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Fundamentals',
+            items: getMarkdownFiles('/tutorials/fundamentals'),
+            collapsed: true,
+        },
+        {
             text: 'Testnet Faucet',
             items: getMarkdownFiles('/tutorials/general/faucet'),
             collapsed: true,
@@ -80,6 +85,13 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             text: 'Testnet Faucet',
             items: getMarkdownFiles('/tutorials/general/faucet'),
             collapsed: false,
+        },
+    ],
+    '/tutorials/fundamentals': [
+        {
+            text: 'Fundamentals',
+            items: getMarkdownFiles('/tutorials/fundamentals'),
+            collapsed: true,
         },
     ],
     '/tutorials/docker': [

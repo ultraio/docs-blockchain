@@ -8,7 +8,7 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
     const path = `docs-${environment}/.vitepress/dist`;
 
     if (fs.existsSync(path)) {
-        if (environment === 'experimental') {
+        if (environment === 'mainnet') {
             fs.cpSync(path, 'dist', { recursive: true });
         } else {
             fs.cpSync(path, `dist/${environment}`, { recursive: true });

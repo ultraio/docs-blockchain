@@ -15,9 +15,26 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
     }
 
     // Copy All Files
-    fs.cpSync('docs', docsFolder, { recursive: true });
+    fs.cpSync('docs', docsFolder, { recursive: true, force: true });
+
+    console.log(docsFolder);
+
+    let configData = fs.readFileSync(`${docsFolder}/.vitepress/config.ts`, 'utf-8');
+    if (docsFolder.includes('staging')) {
+        configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/staging/'");
+        fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
+        console.log(`Updated Base Path for Staging`);
+    }
+
+    if (docsFolder.includes('experimental')) {
+        configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/experimental/'");
+        fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
+        console.log(`Updated Base Path for Experimental`);
+    }
 
     const files = fg.globSync(`${docsFolder}/**/*`);
+    files.sort();
+
     const regexr = new RegExp(/.*\.(mainnet|staging)\./g);
 
     // Overwrite environment specific files

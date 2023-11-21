@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import nav from './navbar';
 import { getSidebar } from './sidebar';
 
-const BASE_URL = '/';
+let BASE_URL = '/';
 
 const description =
     'Documentation for the Ultra.io Blockchain and various other APIs. Learn about our blockchain, uniqs, technology, and much more.';

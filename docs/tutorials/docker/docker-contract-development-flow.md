@@ -90,8 +90,8 @@ Three files should be created in the `hello` directory.
 
 After compiling the smart contract there are two options for deployment in the local development environment.
 
-- [Deploy with 'ultratest' framework](../../../products/ultratest/index.md)
-- ['cleos' based contract deployment](../../../blockchain/general/tools/cleos.md#deploying-a-smart-contract)
+- [Deploy with 'ultratest' framework](../../products/ultratest/index.md)
+- ['cleos' based contract deployment](../../blockchain/general/tools/cleos.md#deploying-a-smart-contract)
 
 ## CMake
 

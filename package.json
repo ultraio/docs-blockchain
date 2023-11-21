@@ -14,13 +14,11 @@
         "build:staging": "vitepress build ./docs-staging",
         "build:mainnet": "vitepress build ./docs-mainnet",
         "build:together": "npx tsx ./scripts/scaffold.ts && npm run build:mainnet && npm run build:staging && npm run build:experimental",
-        "build:all": "npm run build:together && npx tsx ./scripts/reorganize.ts && npx tsx ./scripts/sitemap.ts",
+        "build:all": "npm run build:together && npx tsx ./scripts/reorganize.ts && npx tsx ./scripts/sitemap.ts && npx tsx ./scripts/merge-markdown.ts",
         "[-] Preview Scaffolded Files ": "",
         "preview:experimental": "tsx ./scripts/scaffold.ts && npm run build:experimental && vitepress preview ./docs-experimental",
         "preview:staging": "tsx ./scripts/scaffold.ts && npm run build:staging && vitepress preview ./docs-staging",
-        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet",
-        "[-] Export to PDF": "",
-        "export-pdf": "press-export-pdf export ./docs"
+        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet"
     },
     "devDependencies": {
         "@types/node": "^20.9.0",

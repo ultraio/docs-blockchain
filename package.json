@@ -1,40 +1,38 @@
 {
     "name": "docs-blockchain",
-    "workspaces": [
-        "packages/*"
-    ],
+    "type": "module",
     "scripts": {
-        "cleanup": "npx ts-node ./scripts/cleanup.ts",
-        "update:files": "npx ts-node ./scripts/cascadeFiles.ts",
+        "[-] Main Script for Realtime Updates": "",
         "dev": "vitepress dev docs",
-        "dev:staging": "npm run update:files && vitepress dev ./packages/staging/docs",
-        "dev:mainnet": "npm run update:files && vitepress dev ./packages/mainnet/docs",
-        "build:experimental": "vitepress build docs",
-        "build:staging": "vitepress build ./packages/staging/docs",
-        "build:mainnet": "vitepress build ./packages/mainnet/docs",
-        "build:together": "npm run build:mainnet & npm run build:staging & npm run build:experimental",
-        "build:all": "npm run update:files && npm run build:together && npx ts-node ./scripts/reorganize.ts && npx ts-node ./scripts/sitemap.ts"
+        "[-] Run Development Versions": "",
+        "dev:experimental": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-experimental",
+        "dev:staging": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-staging",
+        "dev:mainnet": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-mainnet",
+        "[-] Build Distributable Files - Make sure to scaffold files first if ran individually": "",
+        "build:experimental": "vitepress build ./docs-experimental",
+        "build:staging": "vitepress build ./docs-staging",
+        "build:mainnet": "vitepress build ./docs-mainnet",
+        "build:together": "npx tsx ./scripts/scaffold.ts && npm run build:mainnet & npm run build:staging & npm run build:experimental",
+        "build:all": "npm run build:together && npx tsx ./scripts/reorganize.ts && npx tsx ./scripts/sitemap.ts",
+        "[-] Preview Scaffolded Files ": "",
+        "preview:experimental": "tsx ./scripts/scaffold.ts && npm run build:experimental && vitepress preview ./docs-experimental",
+        "preview:staging": "tsx ./scripts/scaffold.ts && npm run build:staging && vitepress preview ./docs-staging",
+        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet"
     },
     "devDependencies": {
-        "@types/fs-extra": "^11.0.1",
-        "@types/node": "^18.15.12",
-        "vitepress": "^1.0.0-beta.7",
+        "@types/node": "^20.9.0",
+        "tsx": "^4.1.4",
+        "vitepress": "^1.0.0-rc.26",
         "vitepress-plugin-google-analytics": "^1.0.2",
-        "vue": "^3.2.47"
+        "vue": "^3.3.8"
     },
     "dependencies": {
-        "@stuyk/vitepress-sidebar-builder": "^1.0.2",
-        "fast-glob": "^3.2.12",
-        "fs-extra": "^11.1.1",
-        "giscus": "^1.2.8",
-        "glob": "^10.2.2",
+        "fast-glob": "^3.3.2",
         "gray-matter": "^4.0.3",
-        "sitemap": "^7.1.1",
-        "ts-node": "^10.9.1",
-        "vitepress-plugin-comment-with-giscus": "^1.1.7"
+        "sitemap": "^7.1.1"
     },
     "engines": {
-        "node": ">=16"
+        "node": ">=18"
     },
     "prettier": {
         "tabWidth": 4,

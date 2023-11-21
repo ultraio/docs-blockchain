@@ -1,14 +1,14 @@
 import Theme from 'vitepress/theme';
 import { defineAsyncComponent } from 'vue';
-import { useData, useRoute } from 'vitepress';
-import giscusTalk from 'vitepress-plugin-comment-with-giscus';
+
 import './style.css';
 
-import CustomLayout from '../../layout/CustomLayout.vue';
-import DemoApiVue from '../../layout/widgets/DemoApi.vue';
-import ButtonVue from '../../layout/widgets/Button.vue';
-import TabsVue from '../../layout/widgets/Tabs.vue';
 import googleAnalytics from 'vitepress-plugin-google-analytics';
+
+import CustomLayout from '../../components/CustomLayout.vue';
+import DemoApiVue from '../../components/widgets/DemoApi.vue';
+import ButtonVue from '../../components/widgets/Button.vue';
+import TabsVue from '../../components/widgets/Tabs.vue';
 
 export default {
     ...Theme,
@@ -19,35 +19,15 @@ export default {
         app.component('Tabs', TabsVue);
 
         // Uses window, document, etc. in component
-        app.component('Mainnet', await defineAsyncComponent(() => import('../../layout/environments/Mainnet.vue')));
-        app.component('Staging', await defineAsyncComponent(() => import('../../layout/environments/Staging.vue')));
+        app.component('Mainnet', await defineAsyncComponent(() => import('../../components/environments/Mainnet.vue')));
+        app.component('Staging', await defineAsyncComponent(() => import('../../components/environments/Staging.vue')));
         app.component(
             'Experimental',
-            await defineAsyncComponent(() => import('../../layout/environments/Experimental.vue'))
+            await defineAsyncComponent(() => import('../../components/environments/Experimental.vue'))
         );
 
         googleAnalytics({
             id: 'G-904T1HX43E', // Replace with your GoogleAnalytics ID, which should start with the 'G-'
         });
-    },
-    setup() {
-        const { frontmatter } = useData();
-        const route = useRoute();
-        giscusTalk(
-            {
-                repo: 'ultraio/docs-blockchain',
-                repoId: 'R_kgDOJZVdMQ',
-                category: 'Comments',
-                categoryId: 'DIC_kwDOJZVdMc4CV7Lb',
-                mapping: 'pathname',
-                term: 'Leave a comment!',
-                reactionsEnabled: '1',
-                lang: 'en',
-            },
-            {
-                frontmatter,
-                route,
-            }
-        );
     },
 };

@@ -3,7 +3,7 @@
         "authmint.b": {
             "friendlyName": "Authorize minter",
             "description": "Authorize an account to be able to mint tokens",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/authmint.b.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/authmint.b.html",
             "fields": {
                 "authorizer": {
                     "friendlyName": "Authorizer",
@@ -34,7 +34,7 @@
         "clrmintst": {
             "friendlyName": "Clear minting status",
             "description": "Clears (i.e., deletes the rows of) minting status table of a token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/clrmintst.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/clrmintst.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -53,7 +53,7 @@
         "create.b": {
             "friendlyName": "Create token factory",
             "description": "Create a new token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/create.b.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/create.b.html",
             "fields": {
                 "create": {
                     "friendlyName": "create wrapper",
@@ -169,8 +169,8 @@
                             "description": "Optional, the starting date for transfer window"
                         },
                         "transfer_window_end": {
-                            "friendlyName": "Transfer window start",
-                            "description": "Optional, the starting date for transfer window"
+                            "friendlyName": "Transfer window end",
+                            "description": "Optional, the ending date for transfer window"
                         },
                         "default_token_uri": {
                             "friendlyName": "Default token URI",
@@ -195,7 +195,7 @@
         "issue.b": {
             "friendlyName": "Issue tokens",
             "description": "Issue tokens from the factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/issue.b.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/issue.b.html",
             "fields": {
                 "issue": {
                     "friendlyName": "Issue wrapper",
@@ -255,7 +255,7 @@
         "lckfactory": {
             "friendlyName": "Lock factory",
             "description": "Allows a factory manager to lock hashes for the factory, default token and all minted tokens as well as any token minted afterwards",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/lckfactory.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/lckfactory.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -266,7 +266,7 @@
         "limitmint": {
             "friendlyName": "Set minting limit",
             "description": "Sets/Resets the minting limit per account of a token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/limitmint.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/limitmint.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -285,7 +285,7 @@
         "setconrecv": {
             "friendlyName": "Set conditionless receivers",
             "description": "Set accounts that can receive tokens without meeting transfer conditions",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setconrecv.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/setconrecv.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -310,7 +310,7 @@
         "setdflttkn": {
             "friendlyName": "Set default token metadata",
             "description": "Set metadata URI and hash for default token of a token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setdflttkn.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/setdflttkn.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -333,7 +333,7 @@
         "setmeta.b": {
             "friendlyName": "Set factory metadata",
             "description": "Set metadata uri and hash for a token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setmeta.b.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/setmeta.b.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -356,7 +356,7 @@
         "setstatus": {
             "friendlyName": "Set factory state",
             "description": "Set token factory state",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/setstatus.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/setstatus.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -375,7 +375,7 @@
         "settknmeta": {
             "friendlyName": "Set token metadata",
             "description": "Set metadata uri and hash for a uniq",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/settknmeta.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/settknmeta.html",
             "fields": {
                 "token_id": {
                     "friendlyName": "Token ID",
@@ -402,7 +402,7 @@
         "settrdwin.a": {
             "friendlyName": "Set trading window",
             "description": "Set the trading window for a token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/settrdwin.a.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/settrdwin.a.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -421,7 +421,7 @@
         "settrnfwin.a": {
             "friendlyName": "Set transfer window",
             "description": "Set the transfer window for a token factory",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/settrnfwin.a.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/settrnfwin.a.html",
             "fields": {
                 "token_factory_id": {
                     "friendlyName": "Token factory ID",
@@ -440,7 +440,7 @@
         "burn": {
             "friendlyName": "Burn a token",
             "description": "Burns token(s)",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/burn.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/burn.html",
             "fields": {
                 "burn": {
                     "friendlyName": "Burn wrapper",
@@ -470,7 +470,7 @@
         "buy": {
             "friendlyName": "Purchase a token",
             "description": "Purchase a token from the resale marketplace",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/buy.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/buy.html",
             "fields": {
                 "buy": {
                     "friendlyName": "buy wrapper",
@@ -506,7 +506,7 @@
         "cancelresell": {
             "friendlyName": "Cancel token resale",
             "description": "Cancel the resale of a token",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/cancelresell.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/cancelresell.html",
             "fields": {
                 "cancelresell": {
                     "friendlyName": "cancelresell wrapper",
@@ -526,7 +526,7 @@
         "transfer": {
             "friendlyName": "Transfer token",
             "description": "Transfer tokens to another user",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/transfer.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/transfer.html",
             "fields": {
                 "transfer": {
                     "friendlyName": "transfer wrapper",
@@ -560,7 +560,7 @@
         "resell": {
             "friendlyName": "Resell token",
             "description": "Place tokens for sale on the resell marketplace",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/resell.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/resell.html",
             "fields": {
                 "resell": {
                     "friendlyName": "resell wrapper",
@@ -592,7 +592,7 @@
         "addgrpfcts": {
             "friendlyName": "Add factory to factory group",
             "description": "Adds factory IDs to a factory group",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/addgrpfcts.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/addgrpfcts.html",
             "fields": {
                 "id": {
                     "friendlyName": "Factory Group ID",
@@ -613,7 +613,7 @@
         "creategrp": {
             "friendlyName": "Create factory group",
             "description": "Creates a factory group",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/creategrp.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/creategrp.html",
             "fields": {
                 "manager": {
                     "friendlyName": "Manager",
@@ -646,7 +646,7 @@
         "deletegrp": {
             "friendlyName": "Delete factory group",
             "description": "Deletes a factory group with specified id",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/deletegrp.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/deletegrp.html",
             "fields": {
                 "id": {
                     "friendlyName": "Factory Group ID",
@@ -657,7 +657,7 @@
         "rmgrpfcts": {
             "friendlyName": "Remove factories from factory group",
             "description": "Remove factories from a factory group",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/rmgrpfcts.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/rmgrpfcts.html",
             "fields": {
                 "id": {
                     "friendlyName": "Factory Group ID",
@@ -678,7 +678,7 @@
         "updategrp": {
             "friendlyName": "Update factory group",
             "description": "Updates factory group parameters: uri, hash and factory list",
-            "documentation": "https://docs.ultra.io/contracts/NFT%20Contract/NFT%20Actions/updategrp.html",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/updategrp.html",
             "fields": {
                 "id": {
                     "friendlyName": "Factory Group ID",

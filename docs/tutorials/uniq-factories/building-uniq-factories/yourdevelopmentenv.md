@@ -13,7 +13,7 @@ This means that you do not have to compile any software to get your system into 
 
 ## 1. Docker
 
-You'll be using docker to run the necessary commands. We already have a great guide for how to set this up [that you can refer to](../../../tutorials/general/docker/getting-started.md).
+You'll be using docker to run the necessary commands. We already have a great guide for how to set this up [that you can refer to](../../../tutorials/docker/getting-started.md).
 
 Once you have Docker installed, the Ultra image downloaded, and you've run the script to enter it, you can continue.
 

@@ -35,7 +35,7 @@ You will need a test network account on a supported blockchain to deploy a contr
 ::: details Local Environment
 
 1. Generate new key using Smart Contract Toolkit or [cleos](../../blockchain/general/tools/cleos.md)
-2. Start ultratest in detached mode using [docker image usage](../../tutorials/general/docker/docker-image-usage.md)
+2. Start ultratest in detached mode using [docker image usage](../../tutorials/docker/docker-image-usage.md)
 
 ```
 ultratest -Dsn

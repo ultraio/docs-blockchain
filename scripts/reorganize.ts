@@ -13,5 +13,7 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
         } else {
             fs.cpSync(path, `dist/${environment}`, { recursive: true });
         }
+
+        console.log(`Copied Environment: ${environment}`);
     }
 }

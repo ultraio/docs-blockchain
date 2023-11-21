@@ -1,0 +1,23038 @@
+
+---
+title: "Block Producers"
+outline: [0,3]
+---
+
+# Block Producers
+
+Block producers play a crucial role Antelope networks. Ultra is an Antelope based network that runs with its own protocol changes and differences. Here's an overview of what Block Producers are expected to do.
+
+### Block Production
+
+Block producers are responsible for creating new blocks in the Antelope blockchain.
+They take turns producing blocks in a round-robin fashion, with each producer having a chance to create a block in a designated time slot.
+
+### Transaction Validation
+
+Block producers validate transactions and include them in the blocks they produce.
+They ensure that transactions adhere to the consensus rules of the Antelope network and that they are valid.
+
+### Network Maintenance
+
+Block producers contribute to the overall health and security of the Antelope network.
+They maintain a node that participates in the consensus algorithm and communicates with other nodes to propagate transactions and blocks across the network.
+
+### Security Measures
+
+Block producers implement security measures to protect the network from potential attacks.
+This includes measures such as ensuring the integrity of the blocks, preventing double-spending, and safeguarding against other types of malicious activities.
+
+### Governance Participation
+
+In some blockchain networks, including Antelope-based ones, block producers may also be involved in the governance of the network.
+They may participate in voting on protocol upgrades, changes to network parameters, and other important decisions that impact the Antelope ecosystem.
+
+### Performance Optimization
+
+Block producers are expected to maintain reliable and performant infrastructure to ensure the smooth operation of the blockchain.
+
+This includes optimizing server performance, maintaining high-speed internet connections, and promptly addressing any technical issues.
+---
+title: 'Overview'
+
+outline: [0,4]
+order: -99
+---
+
+# Infrastructure Overview
+
+## Introduction
+
+This section will guide you through the setup of the infrastructure of your Block Producer. Here you should find the most relevant information on how to set up, configure, and run your Block Producer nodes. Pay close attention to the security tips below and make sure to always exchange information with other Block Producers using the private Slack channel that Ultra provides.
+
+**The infrastructure proposal that we expect Block Producers to follow**
+
+![](/images/secure-infrastructure.png)
+
+## Layer 1: Producing Nodes
+
+These nodes communicate using Wireguard. These nodes should be protected from other Block Producers using API nodes. The Producer Control Switch is a device (normally a PC) that has exclusive access to the Producers. It's function is to access the Producer's plugins like net\_api\_plugin, in order to do operations like stop or pause a producer, switch to the fail-over producer, check the producer status, check the peers status, and other very important actions related to the producer management.
+
+## Layer 2: Relay Nodes
+
+Full nodes to relay blocks, connected to the producing nodes and to other Block Producers via Wireguard. They should also be protected by API nodes.
+
+## Layer 3: API Layer
+
+API layer where Proxy Servers (web firewalls) filter requests using [Patroneos](https://github.com/EOSIO/patroneos). These add an extra layer of protection against malicious or malformed data, as well as against volumetric attacks.
+
+## Layer 4: Load Balancer
+
+Through the Load Balancer incoming API calls are routed to Layer 3 web firewalls.
+
+It is important to note that Antelope software is not good at handling multiple connections. That is why it's important to use API nodes on layers 1 and 2 to communicate with other Block Producers. You should also consider using a load balancer like a [HaProxy](http://www.haproxy.org/) to better handle the connection between your API nodes and other Block Producers.
+---
+title: 'Configuration'
+
+outline: [0,4]
+order: -95
+---
+
+# Configuration for Block Production
+
+Each Block Producer instance should use this document to configure their networking and to ensure a secure connection between all other Block Producers. We use a service called [Wireguard](https://www.wireguard.com/), a private VPN.
+
+## Setting up Wireguard VPN
+
+Wireguard software will be used to connect the nodes (instances) to each other in a secure, stable, and reliable way. 
+
+**Install Wireguard**
+
+```typescript
+sudo apt-get install software-properties-common
+sudo apt-get update
+
+sudo add-apt-repository ppa:wireguard/wireguard
+sudo apt update
+sudo apt install wireguard
+```
+
+**Install resolvconf**
+
+```typescript
+sudo apt install resolvconf
+```
+
+Create a directory for your producer data and cd into it.
+
+**Generate Keys** 
+
+```typescript
+wg genkey | tee wg-private.key | wg pubkey > wg-public.key
+
+
+Run the following to print the data to the console.
+cat wg-public.key
+cat wg-private.key
+```
+
+**Setup wireguard interface**
+
+```typescript
+sudo vim /etc/wireguard/ultra_nodes.conf
+OR
+sudo nano /etc/wireguard/ultra_nodes.conf
+```
+
+Ultra will provide an example of this configuration.
+
+```typescript
+[interface]
+Address = 192.168.1.1/32
+ListenPort = 45888
+DNS = 1.1.1.1
+PrivateKey = YOUR WIREGUARD PRIVATE KEY
+
+# Producer
+[Peer]
+PublicKey = YOUR WIREGUARD PUBLIC KEY
+AllowedIPs = 192.168.1.1/32
+# YOUR PUBLIC IP FOR LINUX
+# RUN:
+# curl icanhazip.com
+Endpoint = ip:45888
+PersistentKeepalive = 20
+
+# API-SEED-1
+[Peer]
+PublicKey = 1vBm7TyQl2KHgU/pG...
+AllowedIPs = 192.168.1.2/32
+Endpoint = 35.224.180.12:45888
+PersistentKeepalive = 20
+
+# API-SEED-2
+[Peer]
+PublicKey = jOYj5L97khV10o0zHzv2...
+AllowedIPs = 192.168.1.3/32
+Endpoint = 35.189.216.255:4
+```
+
+**Start the VPN**
+
+```typescript
+wg-quick up {yourpath/interface_name}
+```
+
+If you ever find yourself **needing to stop** wireguard; this can be done by running:
+
+```typescript
+wg-quick down {yourpath/interface_name}
+```
+
+**Check the connection**
+
+```typescript
+sudo wg show
+```
+
+Respectively you should see the following or similar if you have a peer added other than yourself.
+
+![](/images/example-peering.png)
+
+Add the path of the nodeos binaries to your PATH environment variable, if you haven’t already.
+
+1.  Create a new folder for the network (eg.: ultranet)
+    
+2.  Create a folder for the kind of node (Eg.: producer, api...)
+    
+3.  Create logs folder
+    
+4.  Create a config.ini provided by Ultra
+    
+5.  Copy startup.sh and stop.sh scripts provided by Ultra
+    
+6.  Get the genesis.json file
+    
+
+**Note**
+
+*   Always use the startup.sh / stop.sh or nodeos-launcher scripts to manipulate nodeos.
+    
+*   For every instance (producers, APIs), you must run nodeos for the first time with --genesis-json option.
+    
+
+**Only if running an API/Seed instance**
+
+Install nginx
+
+```typescript
+sudo apt install nginx
+```
+
+Configure server to run at port 80
+
+```typescript
+sudo vim /etc/nginx/sites-available/default
+OR
+sudo nano /etc/nginx/sites-available/default
+```
+
+**Example Configuration**
+
+```typescript
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name { external_server_ip };
+
+        location /v1/ {
+                proxy_pass http://127.0.0.1:8888/v1/;
+        }
+
+        location / {
+                root /home/ubuntu/ultra_testnet/www;
+               # return 200 "ultra testnet";
+        }
+}
+```
+
+Enable the nginx service
+
+```typescript
+sudo systemctl enable nginx
+```
+
+Start the service
+
+```typescript
+sudo systemctl start nginx
+**sudo nginx -s reload -> reload service in case of any config change** 
+```
+
+_sudo nginx -s reload -> reload service in case of any config change_
+
+Install certbot for nginx (only for API instance)
+
+Run bot to generate ssl certificates (https - port 443)
+
+```typescript
+sudo certbot --nginx -d {server_address_or_domain_including_www_if_necessary}
+```
+
+Check if the nginx config file (default -> /etc/nginx/sites-available/default) was edited by the bot
+
+## Configure the Firewall 
+
+**WARNING!**
+
+*   Do not activate the firewall before certifying that the ssh port is open, as you could lose access to the server and you'll have to recreate your instance.
+    
+
+```typescript
+sudo ufw app list
+sudo ufw allow "Nginx Full"
+sudo ufw allow 45888/udp
+sudo ufw allow 9876/tcp
+sudo ufw allow 22
+sudo ufw allow in on {server_name_any_name} proto tcp to any port 19876
+sudo ufw enable
+
+# Useful commands
+sudo ufw status numbered -> status
+sudo ufw delete [id] -> delete a rule
+```
+
+Configure a load balancer for the APIs. [Refer to the NGINX documentation for more details.](https://docs.nginx.com/nginx/admin-guide/load-balancer/http-load-balancer/)
+
+## Producer Control Switch
+
+The Producer Control Switch is a device (normally a PC) that has exclusive access to all the Producers. Its function is to access the producer plugin in order to do operations like stop/pause some producer, switch to the fail over producer, check the producer status, check the peer status and other very important actions related to the producer management. 
+
+The main idea is to have all Block Producer's producer nodes able to produce (with the producer plugin enabled, signature, etc), but the backup producer will be in pause mode. If something happens to the main producer or some maintenance procedures needs to be done, the Block Producer can switch to the backup producer until the main one is stabilized. This management can be done automatically, using a NodeJS script to handle the main and the backup producer or manually.
+---
+title: 'Infrastructure and Network'
+
+outline: [0,4]
+order: -94
+---
+
+# Infrastructure and Network Overview
+
+## Network Schema
+
+The diagrams below show how a network should be set up based on the architectural guidelines.
+
+### Connection Types Legend
+
+These are the connection types used in the following diagrams.
+
+![](/images/network-infrastructure.png)
+
+### Overall Network Topology
+
+The following overall network topology hides some details to give a focus on the big picture.
+
+![](/images/nodeos-infrastructure.png)
+
+### A single cluster of producing infrastructure from a block producer
+
+Here is a more detailed view of a single cluster, which has its API machines connected to a load balancer via an HTTP connection and its producing machines connected via a Wireguard/VPN connection.
+
+![](/images/vpn-network.png)
+
+### A link to the miro board with more details
+
+[https://miro.com/app/board/o9J\_koVWOmk=/](https://miro.com/app/board/o9J_koVWOmk=/)
+
+## Summary
+
+A cluster in the diagram above corresponds to the infrastructure that each partner Block Producer is expected to set up on their side. This document aims to walk you through the steps required to achieve this. A Block Producer can use the [Minimum recommended infrastructure](./minimum-recommended-infrastructure.md) as a guide for what kind of hardware Ultra currently requires. As the Mainnet grows and scales, this configuration is likely to change over time and require an infrastructure upgrade.
+
+### Connection type
+
+Some connections are **block-only** to prevent unnecessary transaction propagation and reduce the chance of send duplicate transactions. e.g. connections between the API nodeos.
+
+### API nodeos configuration
+
+API nodeos doesn't accept p2p transactions, that is **p2p-accept-transactions = false**, to prevent a transaction is sent from a producing nodeos to its own API nodeos.
+
+## Guide for adding more BPs into the schema
+
+### Peer numbers
+
+The maximum peer limits for any producing nodeos is 10 for performance reasons. Normally, it connects to 5 other nodeos in the following priority.
+
+1.  Previous and next producer nodeos in the production schedule
+    
+2.  Connect to other 3 producer nodeos from the rest producers, based on lower latency first rule.
+    
+### Hop numbers
+
+Basically, one hop means from one nodeos to another nodeos. The network schema should minimize the hops between the producing nodeos. Ideally, all producing nodeos should connect to each other directly, so a block can be sent to other Block Producers with the smallest delay. However, since there's the recommended maximum 10 peers limit, it’s impossible to do that. Instead, the network schema should try to limit the hops between the producing nodeos to the smallest number of hops possible. With 5 Block Producers, we can connect each producing nodeos directly, i.e one hop. With 8 Block Producers, we can limit it to 2 hops between the producing nodeos.
+
+## Adding more API nodeos
+
+Conditions on adding more API nodeos
+
+*   There is a high number of HTTP requests that transactions can’t get a response in time, e.g. 2 seconds
+    
+*   There is a high number of public peers that would break the maximum peer limit.  
+    
+## Load Balancer
+
+It’s recommended to use HAProxy for both HTTP and TPC load balancer.
+---
+title: 'Minimum Infrastructure'
+
+outline: [0,4]
+order: -98
+---
+
+# Miniumum Infrastructure
+
+It is the Block Producer’s prerogative whether to run their servers on their own hardware or through a bare-metal service like Amazon AWS or Google Cloud.
+
+**Minimum required nodes**
+
+-   1 producer node    
+-   2 seed / API nodes
+-   1 producer node as a backup
+    
+
+**A note on RAM**
+
+If you spawn too many API nodes you can potentially crash the environment by simply running out of **RAM**. Please account for RAM usage when you spawn additional API nodes under the same environment.
+
+### Intel Platform Machines
+
+| Node Type             | Number of Nodes | Server Info                                                                                                                                                             |
+| --------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API / Seed Node       | 2               | Intel Xeon-E 2288G / 16t 3.7GHz - 5Ghz, 64GB DDR4 ECC 2666MHz RAM, 2 x 960GB SSD NVMe Soft RAID, Public Network 500Mbps unmetered (burst 1Gbs), Private Network 500Mbps |
+| Producing Node        | 1               | Intel Xeon-E 2274G / 8t 4GHz - 4.7Ghz, 64GB DDR4 ECC 2666MHz RAM, 2 x 960GB SSD NVMe Soft RAID, Public Network 500Mbps unmetered (burst 1Gbs), Private Network 500Mbps  |
+| Backup Producing Node | 1               | Intel Xeon-E 2274G / 8t 4GHz - 4.7Ghz, 64GB DDR4 ECC 2666MHz RAM, 2 x 960GB SSD NVMe Soft RAID, Public Network 500Mbps unmetered (burst 1Gbs), Private Network 500Mbps  |
+
+## Networking details
+
+Certain ports need to be opened on your instance’s firewall.
+
+-  SSH 22
+    
+-  HTTP 80
+    
+-  HTTPS 443
+    
+-  NODEOS 9876
+    
+-  WIREGUARD 45888
+    
+
+Only your API / Seed Node should have an exposed endpoint to the outside world. This is to ensure your producing nodes will continue producing regardless of network load.
+
+**A note on IP addresses**
+
+Ultra recommends requires all Block Producers use static external IPs for all instances.
+---
+title: 'Templates for Config'
+
+outline: [0,4]
+order: -96
+---
+
+# Templates for Config
+
+## Benchmarking Config - Producer / API
+
+This is the configuration file that we used doing our benchmarking tests. This should not be used in production and should only be used for benchmarking local chains, or stress testing the network. The configurations for Producer and APIs need to target all available endpoints for pushing transactions through.
+
+```typescript
+chain-state-db-size-mb = 4096
+chain-state-db-guard-size-mb = 256
+
+agent-name = "Producer"
+
+max-clients = 0
+p2p-max-nodes-per-host = 10
+
+chain-threads = 4
+producer-threads = 4
+
+http-server-address = 127.0.0.1:8888
+p2p-listen-endpoint = bhs-infra-1:9876
+
+# peers
+# producers
+p2p-peer-address = <host>:<port>
+p2p-peer-address = <host>:<port>
+
+# api
+p2p-peer-address = <host>:<port>
+p2p-peer-address = <host>:<port>
+p2p-peer-address = <host>:<port>
+p2p-peer-address = <host>:<port>
+p2p-peer-address = <host>:<port>
+p2p-peer-address = <host>:<port>
+
+enable-stale-production  = true
+pause-on-startup = false
+
+max-transaction-time = 5000
+http-max-response-time-ms = 30000
+
+producer-name = <BLOCKCHAIN_NAME_ID_ETC>
+signature-provider = <public>=KEY:<private_key>
+
+plugin = eosio::chain_api_plugin
+plugin = eosio::net_api_plugin
+plugin = eosio::producer_api_plugin
+
+wasm-runtime=eos-vm-jit
+eos-vm-oc-enable=true
+```
+
+## API Node Template
+
+This is a general template you should be running for your producing node. Keep in mind that it should be connected solely to your producer node and all other APIs.
+
+```typescript
+chain-state-db-size-mb = 4096
+chain-state-db-guard-size-mb = 256
+
+agent-name = "API"
+max-clients = 0
+p2p-max-nodes-per-host = 10
+
+http-threads = 6
+chain-threads = 4
+# http not listening on localhost because of nginx HA setup
+http-server-address = <YOUR_HOST:YOUR_PORT>
+p2p-listen-endpoint = <YOUR_HOST:YOUR_PORT>
+
+# OTHER APIs
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+
+# YOUR PRODUCER
+p2p-peer-address = <HOST:PORT>
+
+http-validate-host = false
+
+access-control-allow-origin = *
+access-control-allow-headers = *
+access-control-allow-credentials = true
+
+plugin = eosio::history_api_plugin
+plugin = eosio::chain_api_plugin
+
+wasm-runtime=eos-vm-jit
+eos-vm-oc-enable=true
+```
+
+## Producer Node Template
+
+This is the general template you should be running for your producer node. This node should only be connected to other producers and your own API nodes.
+
+```typescript
+chain-state-db-size-mb = 4096
+chain-state-db-guard-size-mb = 256
+
+agent-name = "Producer"
+max-clients = 0
+p2p-max-nodes-per-host = 10
+
+chain-threads = 4
+producer-threads = 4
+
+http-server-address = 127.0.0.1:<YOUR_PORT>
+p2p-listen-endpoint = <YOUR_HOST:YOUR_PORT>
+
+# YOUR API Endpoints
+p2p-peer-address = <HOST:PORT>
+p2p-peer-address = <HOST:PORT>
+
+enable-stale-production  = true
+pause-on-startup = false
+
+max-transaction-time = 5000
+http-max-response-time-ms = 30000
+
+producer-name = <BLOCKCHAIN_NAME_ID_ETC>
+signature-provider= <public>=KEY:<private_key>
+
+plugin = eosio::chain_api_plugin
+plugin = eosio::net_api_plugin
+plugin = eosio::producer_api_plugin
+
+wasm-runtime=eos-vm-jit
+eos-vm-oc-enable=true
+```
+
+## Parameters Explained
+
+### wasm-runtime
+
+Override the default runtime.
+
+```typescript
+eos-vm | eos-vm-jit 
+```
+
+### eos-vm-oc-enable
+
+Enable optimized runtime for WASM.
+
+```typescript
+0 | 1
+```
+
+### signature-provider
+
+This should only be present in your producer node. This should be your private key and public key for your producer account. This allows you to properly produce blocks.
+
+```typescript
+<public>=KEY:<private_key>
+```
+
+### producer-name
+
+The account name of the producer that is controlled by this node.
+
+```typescript
+producer-name = <BLOCKCHAIN_NAME_ID_ETC>
+```
+
+### p2p-peer-address
+
+A public endpoint of a peer node to connect to.
+
+```typescript
+p2p-peer-address = <ip>:<port>
+```
+
+### p2p-listen-endpoint
+
+The actual host/port used to listen for incoming p2p connections.
+
+```typescript
+p2p-listen-endpoint = <ip>:<port>
+```
+
+### max-clients
+
+The maximum number of clients that can connect to this node. Use **0** for unlimited.
+
+```typescript
+max-clients = 0
+```
+
+### p2p-max-nodes-per-host
+
+The maximum number of nodes allowed to connect to this node from a single IP address.
+
+```typescript
+p2p-max-nodes-per-host = 1
+```
+---
+title: 'Understanding the Config'
+
+outline: [0,4]
+order: -97
+---
+
+# Understanding the Config
+
+Ultra provides [Templates for config.ini](./templates-for-config.md), but a good way for you to better understand _nodeos_ software is to look into its help options or scroll through the _config.ini_ file and search for configurations that may fit your needs. Below you will find listed only the basic configurations needed for your operation.
+
+## Set Block Producer's name
+
+Set the producer-name option to your blockchain account.
+
+The blockchain account will be provided to Block Producers by Ultra
+
+```typescript
+producer-name = BP_EOS_ACCOUNT
+```
+
+## Set Block Producer's signature provider
+
+You will need to set the signature keys for your Block Producer. By now you should have created a key pair specifically for this using cleos. For further details, please refer to the [Account Administration](../maintenance/account-administration.md) section.
+
+```typescript
+signature-provider = PUBLIC_SIGNING_KEY=KEY:PRIVATE_SIGNING_KEY
+```
+
+## Set Block Producer's server address
+
+Here you should set your node IP address.
+
+```typescript
+p2p-server-address = YOUR_NODE_IP_ADDRESS:PORT
+```
+
+## Define peers list
+
+Here you should define all peers that your nodeos instance is in communication with. Ideally, you want to keep your Producer node IP secret. Most Block Producers have several API/seed nodes that hide their producer node as described before. The producer-only peers with the API/seed node.
+
+```typescript
+p2p-peer-address = PEER_NODE_IP_ADDRESS:PORT
+```
+
+## New WASM Runtime
+
+After Antelope v1.9 there were major performance increases for Antelope in general. We’ll be utilizing those performance increases in our chain and we can directly enable some of those performance increases with the following two parameters. [Read more about EOS-VM performance increases.](https://eos.io/news/eos-virtual-machine-a-high-performance-blockchain-webassembly-interpreter/)
+
+```typescript
+wasm-runtime=eos-vm-jit
+eos-vm-oc-enable=true
+```
+
+## Load the required plugins
+
+Here the configuration changes according to the node type. For your Producer nodes, you need to enable at least the Producer and the Producer API plugins. For the Full and API nodes, enable Chain API and State History plugins as well in addition to the aforementioned. See the listing below as a reference for the Full and API nodes: 
+
+```typescript
+plugin = eosio::producer_plugin
+plugin = eosio::producer_api_plugin
+plugin = eosio::chain_api_plugin
+plugin = eosio::http_plugin
+plugin = eosio::history_plugin
+plugin = eosio::history_api_plugin
+```
+---
+title: 'Activating the Chain'
+
+outline: [0,4]
+order: -94
+---
+
+# Activating the Chain
+
+## Difference from Antelope
+
+Ultra is responsible for activating the chain and the `ultra` account is the only account that can activate the chain. It is important to understand that instead of having `eosio` account relieve its permissions we opted instead for the `ultra` account to complete this task.
+
+## How to Activate
+
+Once everything is verified for the resignation of accounts; we can do a final step to activate the chain.
+
+This is the final step before the producers begin **PRODUCING** blocks.
+
+```typescript
+cleos push action eosio activatechn '[]' -p ultra
+```
+---
+title: 'Adding Producers'
+
+outline: [0,4]
+order: -92
+---
+
+# Adding Producers
+
+Our system contract modifications prevent any form of voting after the chain has been activated. This modification precludes the standard procedure on Antelope for adding additional Block Producers to our network.
+
+Ultra handpicks the Block Producers and adds them manually through **regprod** and **unregprod** actions. Once these actions are performed, the modifications to the block production schedule are handled automatically.
+
+## How Producers are Activated
+
+When a producer is registered and they have registered themselves Ultra can add them through an action. Ultra is responsible for creating the production schedule, which is done through the `setprods` action.
+---
+title: 'Launch Procedure Concepts'
+
+outline: [0,4]
+order: -99
+---
+
+# Launch Procedure Concepts
+
+## What is a genesis node?
+
+The genesis node, on an Antelope network, is the first node that sets up the network and produces the first blocks. It is responsible for setting up the system contracts, registering the first batch of Block Producers on the network, and passing the block production on to them.
+
+In short, the genesis node starts the network and then passes off responsibility to the Block Producers. The genesis will eventually shut itself down after the responsibility is passed off to the Block Producers to keep the network running.
+
+## How will Ultra set up their genesis node?
+
+Ultra will be responsible for setting up their genesis node with a handful of contracts. Ultra will also be responsible for ensuring the genesis node is synchronized to our block producers through their wire-guard configurations. We will also be provided a modified version of the `genesis.json` file for our block producers to utilize when they are booting up their individual nodes.  
+  
+Here’s a list of smart contracts that will be deployed by Ultra’s genesis node and what their general functionality will provide. Additional contracts that Ultra will utilize will be launched by Ultra at future dates once the chain’s responsibility has been passed on.
+
+#### eosio.system
+
+This contract will provide the creation of user-owned accounts, distribution of chain resources such as RAM, CPU, and NET, and maintain the block producer schedule. Which you can find more about below.
+
+#### eosio.token
+
+This contract will provide the ability for users and ultra alike to create fungible tokens such as **UOS** which will be the chain’s main currency. Unlike other chains, Ultra makes it much easier to deploy a currency without having to redeploy the entire `eosio.token` contract.
+
+#### eosio.msig
+
+This contract provides a way for multiple users to sign single or multiple transactions that need approval from multiple users. This multi-signature contract is great for handling permissions between a single account that needs approval from multiple accounts before an action may be executed.
+
+## The Block Producer Schedule
+
+### How many Block Producers will there be on the Ultra Blockchain?
+
+There will initially be five Block Producers on the Ultra Blockchain.
+
+### Who defines the Block Producer schedule?
+
+During the initial Testnets and Mainnet, it will be Ultra who is defining the Block Producer schedule. There is not an ordered, elected ranking like on other Antelope chains. There is no voting for Block Producers.
+
+### What will be the procedure for changes to the block producer schedule?
+
+Changes to the block producer schedule will be announced on-chain and Block Producers will need to approve the change. This will happen when a Block Producer leaves the chain, or a new one is added.
+---
+title: 'Finishing Up'
+
+outline: [0,4]
+order: -93
+---
+
+# Finishing Up
+
+After activating the chain state, it is important to speak with the other Block Producers and ensure they are producing blocks on their end. Screenshots and other forms of data sharing should be used to validate that the network is running as intended.
+
+Follow-ups via the provided private Slack channel are also very important to ensure everything is running smoothly and communication lines are open both between the Block Producers and Ultra.
+
+Once everything is running smoothly, Block Producers may expose their api endpoints as necessary.
+---
+title: 'Registering Block Producers'
+
+outline: [0,4]
+order: -96
+---
+
+# Registering Block Producers
+
+## Obtaining a Private and Public Key Pair
+
+Each Block Producer must provide Ultra with a public key that they will generate locally.
+
+It is highly recommended that when you generate these keys that the private key is stored in a safe location. Please formulate a plan to keep this private key a secret. We refer you to [Account administration](../maintenance/account-administration.md) for more details.
+
+### To output the key pair to the console.
+
+```typescript
+cleos create key --to-console
+```
+
+### To save the key pair to file
+
+```typescript
+cleos create key --file FILE_TO_SAVEKEY
+```
+
+Ultra will then create the Block Producers' accounts with the Block Producer’s public key.
+
+Once this is done; Ultra can use the following command to create an account for them.
+
+```typescript
+cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.0000 UOS" --stake-cpu "0.0000 UOS" --gift-ram-kbytes <determine_kbytes_to_buy> -p ultra --ultra-id <ultra_id>
+```
+
+Block Producers must be registered through Ultra and will need to synchronize their chains up with the genesis nodeos. Once synchronized and the Block Producer is receiving blocks successfully, they can request for Ultra to register them on the network.
+
+## Block Producer Checklist
+
+Here are some things that block producers will be providing to Ultra for their genesis node.
+
+*   Wireguard IP / Port
+    
+*   Endpoint Address
+    
+*   Public Key for Producer
+    
+
+Once they are provided; Ultra can easily register them. This can be done through the following command.
+
+```typescript
+cleos push action eosio regproducer '["<account_name>","<public_key>","<url>",<location>]' -p ultra 
+```
+
+Once this is done, Ultra can verify the current producers by checking the following table.
+
+```typescript
+cleos get table eosio eosio producers
+```
+---
+title: 'Resigning System Accounts'
+
+outline: [0,4]
+order: -95
+---
+
+# Resigning EOSIO and System Accounts
+
+Once the network has 3 producers actively producing blocks for the chain; Ultra can move on to resigning the `eosio` account permissions to the producers.
+
+Ultra will also need to go through and only let `eosio` control the system accounts. This is a precaution to ensure that all system accounts are only controlled by `eosio`.
+
+## Resigning System Accounts
+
+The first thing we’ll do is resign `eosio` and give privileges to `eosio.wrap` and `eosio.msig`.
+
+```typescript
+cleos push action eosio setpriv '["eosio.msig", 1]' -p eosio@active
+cleos push action eosio setpriv '["eosio.wrap", 1]' -p eosio@active
+```
+
+## Resigning EOSIO Account
+
+After we can do the final update of authorization on `eosio` by resigning all permissions to the `eosio.prods` account.
+
+```typescript
+cleos push action eosio updateauth '{"account": "eosio", "permission": "owner", "parent": "", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio.prods", "permission": "active"}}]}}' -p eosio@owner
+
+cleos push action eosio updateauth '{"account": "eosio", "permission": "active", "parent": "owner", "auth": {"threshold": 1, "keys": [], "waits": [], "accounts": [{"weight": 1, "permission": {"actor": "eosio.prods", "permission": "active"}}]}}' -p eosio@active
+```
+---
+title: 'Genesis Node'
+
+outline: [0,4]
+order: -98
+---
+
+# Setting Up Genesis Node
+
+While you are reading this article keep in mind that these are steps that Ultra will be performing on their Genesis Node. These are not steps that are going to be taken by the Block Producers.
+
+The Ultra system token is **UOS** and has a decimal count of **4**. This will be used to launch the system contract and ensure everything is synchronized between the eosio.token contract and eosio.system contract.
+
+Ultra will be providing pre-compiled contract ABIs and WASMs.
+
+**Important:** Before launch, any default chain parameters inside of the source files need to be **DISCUSSED** and **ADJUSTED** before the system contract is used.
+
+## Creating System Accounts
+
+The first thing that we’re going to do is create the system accounts. Here’s a full list of the system accounts.
+
+*   eosio
+    
+*   eosio.token
+    
+*   eosio.system
+    
+*   eosio.msig
+    
+*   eosio.ram: store ram payment
+    
+*   eosio.ramfee: store ram fee
+    
+*   eosio.stake: store staked token
+    
+*   eosio.wrap: for the wrap contract
+    
+*   ultra: ultra root account
+    
+
+**Note:** All of the accounts should be placed under the same genesis key **except** for **ULTRA**. As these accounts will eventually forfeit their permissions to the producers. The creation of these accounts can be done through the following action.
+
+```typescript
+cleos create account eosio <account_name>
+```
+
+We will ensure that all accounts are created by checking them manually.
+
+```typescript
+cleos get account <account_name>
+```
+
+**Accounts which EOS mainnet use whereas ultra doesn't**
+
+*   eosio.rex, as we don't have res
+    
+*   eosio.names, as we don't have premium name policy yet, no name bidding
+    
+*   eosio.saving, as we don't have extra inflation, so we don't need the saving account
+    
+*   eosio.bpay: producers' block reward, as we inflate token when doing reward for each BP, we don't need the cache
+    
+*   eosio.vpay
+    
+
+## Setting Up for Chain Feature Activation
+
+The chain features must be manually activated before launch; here’s how we can do that.
+
+```bash
+curl -X POST http://127.0.0.1:8888/v1/producer/schedule_protocol_feature_activations -d '{"protocol_features_to_activate": ["0ec7e080177b2c02b278d5088611686b49d739925a92d9bfcacd7fc6b74053bd"]}' | jq
+```
+
+## Initializing the BIOS Contract
+
+The BIOS contract must be deployed on eosio before we continue any further.
+
+Ultra provides a compiled version of this contract.
+
+```typescript
+cleos set contract eosio ./eosio.contracts/contracts/eosio.bios.x.x.x eosio.bios.wasm eosio.bios.abi -p eosio
+```
+
+## Activating the Chain Features
+
+These chain features must be activated manually. In order, the following features are going to be activated.
+
+*   GET\_SENDER
+    
+*   FORWARD\_SETCODE
+    
+*   ONLY\_BILL\_FIRST\_AUTHORIZER
+    
+*   RESTRICT\_ACTION\_TO\_SELF
+    
+*   DISALLOW\_EMPTY\_PRODUCER\_SCHEDULE
+    
+*   FIX\_LINKAUTH\_RESTRICTION
+    
+*   REPLACE\_DEFERRED
+    
+*   NO\_DUPLICATE\_DEFERRED\_ID
+    
+*   ONLY\_LINK\_TO\_EXISTING\_PERMISSION
+    
+*   RAM\_RESTRICTIONS
+    
+*   WEBAUTHN\_KEYS
+    
+*   WTMSIG\_BLOCK\_SIGNATURES
+    
+
+```typescript
+cleos push action eosio activate '["f0af56d2c5a48d60a4a5b5c903edfb7db3a736a94ed589d0b797df33ff9d3e1d"]' -p eosio
+
+cleos push action eosio activate '["2652f5f96006294109b3dd0bbde63693f55324af452b799ee137a81a905eed25"]' -p eosio
+
+cleos push action eosio activate '["8ba52fe7a3956c5cd3a656a3174b931d3bb2abb45578befc59f283ecd816a405"]' -p eosio
+
+cleos push action eosio activate '["ad9e3d8f650687709fd68f4b90b41f7d825a365b02c23a636cef88ac2ac00c43"]' -p eosio
+
+cleos push action eosio activate '["68dcaa34c0517d19666e6b33add67351d8c5f69e999ca1e37931bc410a297428"]' -p eosio
+
+cleos push action eosio activate '["e0fb64b1085cc5538970158d05a009c24e276fb94e1a0bf6a528b48fbc4ff526"]' -p eosio
+
+cleos push action eosio activate '["ef43112c6543b88db2283a2e077278c315ae2c84719a8b25f25cc88565fbea99"]' -p eosio
+
+cleos push action eosio activate '["4a90c00d55454dc5b059055ca213579c6ea856967712a56017487886a4d4cc0f"]' -p eosio
+
+cleos push action eosio activate '["1a99a59d87e06e09ec5b028a9cbb7749b4a5ad8819004365d02dc4379a8b7241"]' -p eosio
+
+cleos push action eosio activate '["4e7bf348da00a945489b2a681749eb56f5de00b900014e137ddae39f48f69d67"]' -p eosio
+
+cleos push action eosio activate '["4fca8bd82bbd181e714e283f83e1b45d95ca5af40fb89ad3977b653c448f78c2"]' -p eosio
+
+cleos push action eosio activate '["299dcb6af692324b899b39f16d5a530a33062804e41f09dc97e9f156b4476707"]' -p eosio
+```
+
+We will verify all of these are activated by running the following command.
+
+```bash
+curl -X POST http://127.0.0.1:8888/v1/producer/get_supported_protocol_features -d '{}' | jq
+```
+
+## Initialize Base Contracts
+
+We’re first going to initialize the **eosio.token** and **eosio.msig** contracts. This is entirely dependent on the directory you are in, but it should be a similar process. Ensure the keys for the accounts are inside of your wallet at this time.
+
+After we’ll start with setting both the eosio.token and eosio.msig contracts. We’ll be using the ‘eosio.contracts/contracts’ the folder in this reference.
+
+```typescript
+cleos set contract eosio.token ./eosio.token
+
+cleos set contract eosio.msig ./eosio.msig
+```
+
+After that, we'll be adding some permissions to the token account.
+
+```typescript
+cleos set account permission eosio.token active --add-code eosio.token owner -p eosio.token
+cleos set account permission ultra active --add-code eosio.token owner -p ultra
+```
+
+Then we’ll initialize the actual eosio.token contract immediately after; putting reserved symbols into the eosio.token table.
+
+```typescript
+cleos push action eosio.token init '[]' -p ultra
+```
+
+Then we’ll initialize the system currency. Please replace **MAX\_SUPPLY** with the maximum tokens agreed upon in the IEO, which was 1,000,000,000 tokens.
+
+```typescript
+cleos push action eosio.token create '["ultra","1000000000.0000 UOS"]' -p ultra
+```
+
+Ultra needs to take into consideration their token pre-sale. This should match the pre-sale numbers and will be distributed after launch.
+
+```typescript
+cleos push action eosio.token issue '["ultra","AMOUNT.0000 UOS", "Init"]' -p ultra
+```
+
+## Initialize the System Contract
+
+We’ll start off by setting the contract for the account **eosio**.
+
+```typescript
+cleos set contract eosio ./eosio.system
+```
+
+After setting this contract we need to initialize the system contract with our currency. Remember that we’re using `8` for the precision of our system currency.
+
+```typescript
+cleos push action eosio init '[0,"8,UOS"]' -f -p eosio
+```
+
+We also cannot forget to reserve some RAM for ultra.
+
+```typescript
+cleos push action eosio resvrambytes '["1073741824"]' -p ultra
+```
+
+## Registering New Accounts
+
+At this point, we will need to register accounts for our Block Producer partners. Our Block Producer partners will need to provide their account names as well as their public key. We will use the system contract to make new accounts from this point forward.
+
+```typescript
+cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.0000 UOS" --stake-cpu "0.0000 UOS" --gift-ram-kbytes 4k -p ultra
+```
+
+## Resigning Genesis Account to Block Producers
+
+At this stage we will be resigning our genesis account and removing all of the associated permissions. The **eosio.system** contract will be distributing its permissions to our Block Producers from here on in. After this step Ultra will no longer be responsible for anything that the system contract does and it will be fully automated by the block production schedule.
+
+There are additional details on how this is done in the following article: [Resigning eosio and system accounts](./resigning-eosio-and-system-accounts.md)
+---
+title: 'Genesis Node Sync'
+
+outline: [0,4]
+order: -97
+---
+
+# Synchronizing with Genesis Node
+
+## Connecting to the Genesis Node
+
+Ultra will provide a configuration with all Wireguard IPs that will allow our Block Producers to synchronize with each other and the Genesis node. This will help smooth out the process of getting all of our Block Producers connected and streamlining our network launch.
+
+## Retrieving the Genesis Configuration
+
+The `genesis.json` is used as a starting point for the chain and is used to ensure that our Block Producers are synchronizing properly with Ultra’s genesis node. Ultra will be providing the `genesis.json` to utilize at the time of launch.
+
+Here’s an example configuration. Ensure that **max\_inline\_action\_depth** is set to the value that is decided upon before launch.
+
+**Important:** The following **genesis.json** needs to take into account the **‘ultra\_veto\_enabled’** configuration. This is incredibly important for the chain launch as it is required functionality for our enterprise solution.
+
+```json
+{
+    "initial_timestamp": "2018-09-01T12:00:00.000",
+    "initial_key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+    "initial_configuration": {
+      	"max_block_net_usage": 1048576,
+		"target_block_net_usage_pct": 1000,
+		"max_transaction_net_usage": 524288,
+		"base_per_transaction_net_usage": 12,
+		"net_usage_leeway": 500,
+		"context_free_discount_net_usage_num": 20,
+		"context_free_discount_net_usage_den": 100,
+		"max_block_cpu_usage": 200000,
+		"target_block_cpu_usage_pct": 1000,
+		"max_transaction_cpu_usage": 150000,
+		"min_transaction_cpu_usage": 100,
+		"free_cpu_basis_point": 6000,
+		"free_net_basis_point": 6000,
+		"ultra_veto_enabled": 1,
+		"max_transaction_lifetime": 3600,
+		"deferred_trx_expiration_window": 600,
+		"max_transaction_delay": 3888000,
+		"max_inline_action_size": 4096,
+		"max_inline_action_depth": 4,
+		"max_authority_depth": 6
+    }
+}.
+```
+
+## Initial Key Pair
+
+**initial\_key** should be unique, and will be used to launch the genesis nodeos; only **Ultra** should be aware of the private initial key. You will be sent a public key by Ultra to put in place of the **initial\_key**.
+
+## Initial Chain ID
+
+The Chain ID is now derived by the configuration after starting the network. This Chain ID will be passed to the Block Producers to ensure that they all are connecting to the same network.
+---
+title: 'Account Administration'
+
+outline: [0,4]
+order: -99
+---
+
+# Account Administration
+
+Every Block Producer needs to be able to manage his keys in a secure and efficient manner for the sake of his own security and security of the Ultra Blockchain. As a best practice every BP account must at least use 4 key pairs:
+
+1.  **Owner keys:** This is the root permission, proving ownership of your account. These keys can be used to replace keys on any other permission. Owner keys should be stored securely and only used in emergencies.
+    
+2.  **Active keys:** Used for signing and executing transactions and also for pushing actions. Should be kept secure and used with caution.
+    
+3.  **Signature keys:** A key pair that is used only for signing blocks. It must not be used to perform any other operation.
+    
+4.  **Claim keys:** A key pair that is used only for claiming rewards.
+    
+
+Make sure to create these four key pairs and store them securely.
+
+**Recommended storage of keypairs**
+
+For the Owner and Active keypairs, we recommend storing these on a hardware wallet like a Ledger which requires a second physical step for authorization.
+
+The Signature and Claim keys can be stored securely according to the internal security policies of the Block Producers. The Signature keypair can not be stored on a hardware wallet as it needs to be input into nodeos.
+
+When you finish this setup, you should update the signature provider record in your config.ini file with your new signature keys.
+
+You should also create a new permission called claim using your claim keys. Don't forget to link the _claimrewards_ action to this new permission. This way, your claim keys can only be used to claim rewards. This process is described below:
+
+### Create the custom claim permission as a child of the active permission
+
+```typescript
+cleos set account permission YOURACCOUNT claim CLAIM_PUBLIC_KEY active -p YOURACCOUNT@active​
+```
+
+### Link claimrewards action to the claim permission
+
+```typescript
+cleos set action permission YOURACCOUNT eosio claimrewards claim -p YOURACCOUNT@active
+```
+
+### Claiming the rewards with claim permission
+
+```typescript
+cleos system claimrewards YOURACCOUNT -p YOURACCOUNT@claim
+```
+
+### Removing the claim permission
+
+```typescript
+cleos set account permission YOURACCOUNT claim NULL active -p YOURACCOUNT@active
+cleos set action permission YOURACCOUNT eosio claimrewards NULL -p YOURACCOUNT@active
+```
+---
+title: 'Backup and Recovery'
+
+outline: [0,4]
+order: -97
+---
+
+# Backup and Recovery
+
+Nodeos provides various options for replaying blockchain blocks. This can be very useful to recover a node instance from some failure as it can quickly catch up with the network instead of having to synchronize from the p2p network.
+
+Replaying data can be done in two ways:
+
+*   **From a blocks.log file**  
+    The blocks log file contains all irreversible transactions on the blockchain. All instances of nodeos write irreversible blocks to the blocks.log file, which is located data/blocks directory relative to the nodeos data directory. Using a blocks.log file to replay will allow you to start a nodeos instance which recreates the entire history of the blockchain locally, without adding unnecessary load to the network.
+    
+*   **From a snapshot file**  
+    Snapshot files can be created from a running nodeos instance. The snapshot contains the chain state for the current head block. Snapshot files should only be used if the head block they represent is irreversible. Using a snapshot file to replay allows you to quickly start a nodeos instance which has a full and correct chain state at a specified block number, but not a full history of transactions up to that block number. From that point on the nodeos instance will operate in the configured manner.
+    
+
+**Ultra provides two scripts:** 
+
+*   **Nodeos-launcher script:** start your node and do automatically recovering from failures. 
+    
+*   **Snapshot-creator script:** responsible for making regular snapshots. 
+    
+
+It is important for you to understand how the process works so we will go over these two ways in detail.
+
+## Getting a blocks.log file
+
+The blocks.log file is used by nodeos to persist irreversible blocks. The default location for this file is in the data/blocks directory. However, the data directory can be specified using the -d \[ --data-dir \] option on the nodeos command line
+
+You can also download a block.log file from other Block Producers over the network.
+
+## Replay from blocks log
+
+Once you have a copy of the blocks.log file which you wish to replay the blockchain from, copy it to your data/blocks directory. You should back up any existing contents of this directory if you wish to keep them. After that, start nodeos with one of the following replay-blockchain options:
+
+```typescript
+--replay-blockchain
+```
+
+This option tells nodeos to replay from the blocks.log file located in the data/blocks directory. Nodeos will clear the chain state and replay all blocks.
+
+```typescript
+--hard-replay-blockchain
+```
+
+This option tells nodeos to replay from the blocks.log file located in the data/blocks directory. Nodeos makes a backup of the existing blocks.log file and will then clear the chain state and replay all blocks. This option assumes that the backup blocks.log file may contain corrupted blocks, so nodeos replays as many blocks as possible from the backup block log. Nodeos will then synchronize the rest of the blockchain from the p2p network.
+
+| location               | name               | action                                                   |
+| ---------------------- | ------------------ | -------------------------------------------------------- |
+| data/blocks            | blocks.index       | remove                                                   |
+| data/blocks            | blocks.log         | replace this file with the blocks.log you want to replay |
+| data/blocks/reversible | forkdb.dat         | remove                                                   |
+| data/blocks/reversible | shared_memory.bin  | remove                                                   |
+| data/blocks/reversible | shared_memory.meta | remove                                                   |
+
+
+You can use blocks-dir = "blocks" in the configuration file or using the
+
+```typescript
+--blocks-dir
+```
+
+command-line option, to specify where to find the blocks.log to replay.
+
+## Triggering the creation of a snapshot
+
+Snapshots can be created at runtime using the RPC available through the Producer API plugin. For example:
+
+```typescript
+http://you_server:your_http_port/v1/producer/create_snapshot
+```
+
+Will create a snapshot of the data/snapshots directory.
+
+Replay from snapshot
+
+Once you have a copy of a valid snapshot file from which you wish to create a valid chain state, copy it to your data/snapshots directory, backing up (if you wish to keep them), and removing any existing contents of the data directory. After that, start nodeos with the
+
+```typescript
+-snapshot
+```
+
+option to specify the name of the snapshot to replay.
+
+When replaying from a snapshot file it is recommended that all existing data is removed, however, if a blocks.log is provided it must at least contain blocks up to the snapshotted block and may contain additional blocks that will be applied as part of the startup. If a blocks.log file exists, but does not contain blocks up to and/or after the snapshotted block then replaying from a snapshot will create an exception. Any available reversible blocks will also be applied.
+
+| blocks.log               | snapshot                    | action                                                 |
+| ------------------------ | --------------------------- | ------------------------------------------------------ |
+| no blocks.log            | for irreversible block 2000 | ok                                                     |
+| contains blocks 1 - 1999 | for irreversible block 2000 | exception                                              |
+| contains blocks 1 - 2001 | for irreversible block 2000 | ok - will recreate from snapshot and 'play' block 2001 |
+
+When instantiating a node from a snapshot, it is illegal to pass in any _genesis_ arguments as that information is loaded from a snapshot. If a blocks.log exists, the genesis information it contains will be validated against the genesis data in the snapshot will throw an error if they are not consistent.
+
+**Note**  
+Instantiating a node from a snapshot without a blocks.log file is valid but it will create a partial blocks.log which will affect the ability to service any requests for block data as it will not be available.
+
+## Calculating an integrity hash
+
+Integrity hashes are a way of comparing the contents of the blockchain state database. They consist of a sha256 hash of a deterministic binary representation of all consensus affecting state and can be retrieved at runtime using the RPC available through the Producer API plugin. For example:
+
+```typescript
+http://you_server:your_http_port/v1/producer/get_integrity_hash
+```
+---
+title: 'Launching an Instance'
+
+outline: [0,4]
+order: -98
+---
+
+# Launching an Instance
+
+Before the nodeos launcher script is executed, it is important to create a wallet using _cleos_. The wallet will import and maintain all the keys that shall be required by the Block Producer. It is important that all the private keys generated in the [Account Administration](./account-administration.md) section are imported to this wallet. The commands for creating a wallet and importing the keys are given below.
+
+```typescript
+cleos wallet create --name YOUR_WALLET_NAME --file WALLET_PASSWD_FILE
+cleos wallet import --name YOUR_WALLET_NAME --private-key YOUR_PRIVATE_KEY
+```
+
+**Please note** that it is not a requirement to run _cleos_ and have a wallet on all of the node instances, however, this is a _requirement_ for [Synchronizing with Genesis Node](../launch-procedures/synchronizing-with-genesis-node.md) .
+
+It is important to save the password for your wallet in a file and keep it secure. Once the unlocked wallet has not been used for more than 15 minutes (the default timeout duration) _cleos_ is locks your wallet as a safety measure.
+
+If you attempt to run a command using the wallet, it will be required to unlock it first by providing the password. 
+
+In addition to the aforementioned, you are also required to create a genesis.json file for being able to launch your block producer in the genesis mode.
+
+Finally, it is time to run your node. To run nodeos, all you will need to do is to run the start script provided by Ultra. Nodeos will replay the blockchain and after some time will start the block production process.
+
+Once that process is running, you will be able to interact with the blockchain.
+---
+title: 'MSIG Proposals'
+
+outline: [0,4]
+order: -96
+---
+
+# MSIG Proposals
+
+Making proposals on-chain requires both Ultra and Block Producers to approve a proposal. A proposal is a series of actions and/or changes that are meant to be executed at the time of approval. Once Ultra and Block Producers approve of these changes then the code gets executed.
+
+### Important steps before resignation to eosio.msigs
+
+We need to do **setpriv** on the **eosio.msig** contract to allow it to be handled by other Block Producers. The following line will solve the issue, and allow other Block Producers to control the **eosio.prods** account properly.
+
+```typescript
+cleos push action eosio setpriv '["eosio.msig", 1]' -p eosio@active
+```
+
+## Creating a Proposal
+
+Proposals use the multisig option inside of the built-in cleos interface. It can be done through the following action.
+
+```typescript
+cleos multisig propose <proposal_name> <requested_permissions> <trx_permissions> <contract> <action> <data> <proposer> <proposal_exp_in_hours>
+```
+
+*   **Proposal\_Name**
+    
+    *   The name of the proposal.
+        
+    *   Needs to be less than or equal to 12 characters.
+        
+    *   Needs to follow standard EOS name rules.
+        
+*   **Requested\_Permissions**
+    
+    *   A JSON String or filename defining requested permissions.
+        
+*   **Trx\_Permission**
+    
+    *   A JSON string or filename defining transaction permissions.
+        
+*   **Contract**
+    
+    *   The contract in which the deferred transaction should go to.
+        
+*   **Action**
+    
+    *   The action for the deferred transaction.
+        
+*   **Data**
+    
+    *   A JSON string or filename defining the action to propose.
+        
+*   **Proposer**
+    
+    *   An account proposing the transaction.
+        
+*   **Proposal\_Expiration**
+    
+    *   The time in hours until this transaction becomes expired.
+        
+    *   Optional
+        
+
+**Example:**
+
+```typescript
+cleos multisig propose proposalname '[{"actor": "producacnt11", "permission": "active"}, {"actor": "producacnt12", "permission": "active"}, {"actor": "producacnt13", "permission": "active"}, {"actor": "ultra", "permission": "active"}]' '[{"actor": "eosio.prods", "permission": "active"}]' eosio setacctram '{"account":"producacnt11", "ram_bytes":"5000"}' -p ultra
+```
+
+An alternative to the above proposal is **propose\_trx** which is a more flexible version of the above code.
+
+```typescript
+cleos multisig propose_trx <name> <requested_perms> <json string or file> <proposer>
+```
+
+## Reviewing a Proposal
+
+You can always review the current proposal by reviewing who originally published it and then seeing what permissions are required under
+
+```typescript
+cleos multisig review <proposer_name> <proposal_name>
+```
+
+**Example:**
+
+```typescript
+cleos multisig review ultra setacctrm
+```
+
+## Approving a Proposal
+
+Proposals must be approved by both Ultra and a handful of producers on the chain. This can be done with the following action. Note that Ultra is required for EVERY proposal. Otherwise, it will not be approved.
+
+```typescript
+cleos multisig approve <proposer> <proposal_name> <permissions> <proposal_hash>
+```
+
+## Canceling a Proposal
+
+Proposals can only be canceled by the original owner or Ultra. Ultra reserves special veto rights over proposals.
+
+```typescript
+cleos multisig cancel <proposer> <proposal_name>
+```
+
+**Example:**
+
+```typescript
+cleos multisig cancel ultra setacctram
+```
+
+## Invalidate
+
+When a proposal is changed then it is often appropriate to invalidate all signatures on the contract. This can be done through the invalidate action.
+
+```typescript
+cleos multisig invalidate <invalidator_name>
+```
+
+**Example:**
+
+```typescript
+cleos multisig cancel ultra setacctram
+```
+---
+title: 'System Contract Upgrade'
+
+outline: [0,4]
+order: -94
+---
+
+# System Contract Upgrade
+
+The system contract upgrade needs to go through a packed transaction action; that will get the transaction ready. Once the transaction is ready we send it up to eosio.msig contract and get it ready for all of the active BPs to vote upon. 
+
+First, we need to pack the transaction and get it ready. This will output the transaction to a file. However, this step implies that the system contract is already compiled, and you’ve copied this data to a new folder and opened it up with a terminal.
+
+```typescript
+cleos set contract eosio ./ eosio.system.wasm eosio.system.abi -p eosio.prods -x 60000 -d -s |& tee upgrade.json
+```
+
+Here’s an example of **before**:
+
+```typescript
+"expiration": "2019-08-15T22:07:41"
+```
+
+Here’s an example of **after**:
+
+```typescript
+"expiration": "2019-08-17T22:07:41"
+```
+
+After completing this step; you’ll want to get a list of the current producers and set up a file of ‘potential’ permissions that will be necessary to get this contract upgraded with Ultra’s permission. The way that we can do this is to run a simple command and then paste the following line of code; copy the below code first and modify it where necessary.
+
+**Template**:
+
+```typescript
+[{"actor": "producer1", "permission": "active"}, {"actor": "ultra", "permission": "active"}]
+```
+
+**Example:**
+
+```typescript
+[{"actor": "producacnt11", "permission": "active"}, {"actor": "producacnt12", "permission": "active"},{"actor": "ultra", "permission": "active"}]
+```
+
+Once your template is ready to type the following and paste your modified permissions JSON.
+
+```typescript
+cat > perms.json
+```
+
+After it is pasted inside; press ctrl+c and that’ll cancel the editing and save the file. You can always re-open to ensure the permissions made it inside.
+
+Now we’re ready to push up the proposal for the upgrade.
+
+## Deploying the Multi-Signature Transaction
+
+Instead of using ‘propose’ from eosio.msig we’re going to use a different version. Inside the folder with your ‘.wasm’, ‘.abi’, and two ‘.json’ files we’ll use the following to deploy it.
+
+```typescript
+cleos multisig propose_trx upgradesys perms.json upgrade.json ultra -p ultra
+```
+
+Great! We can review this on-chain after it has been deployed.
+
+```typescript
+cleos multisig review ultra upgradesys
+```
+
+## Gather Signatures
+
+One of the final steps is to gather signatures for this upgrade. We can do this by having our block producers approve of the upgrade. Here’s an example template for the cleos command they can run.
+
+```typescript
+cleos multisig approve ultra upgradesys '{"actor":"producacnt11","permission":"active"}' -p producacnt11
+
+cleos multisig approve ultra upgradesys '{"actor":"producacnt12","permission":"active"}' -p producacnt12
+```
+
+Very easy to get an upgrade going.
+
+## Final Step
+
+After enough signatures are gathered and Ultra has also signed on to this proposal; we can execute the code.
+
+```typescript
+cleos multisig exec ultra upgrade -p ultra
+```
+
+The transaction is complete. Celebrate by checking the system tables or running some of the new system contract actions that may or may not have been included.
+---
+title: 'Upgrade Procedures'
+
+outline: [0,4]
+order: -95
+---
+
+# Upgrade Procedures
+
+This chapter explains how to upgrade the infrastructure, nodeos software, and the consensus protocol (hard fork).
+
+## Infrastructure upgrade
+
+As the UOS Mainnet grows and scales, the minimum infrastructure configuration is likely to change over time and require upgrades.
+
+If your BP is running the [Minimum Infrastructure](../infrastructure/minimum-recommended-infrastructure.md) specified by Ultra, the first thing that a Block Producer should do is to split their nodes into separate instances. There will then be dedicated instances for each kind of node. Ex.: Create a new instance for seed node, and 2 other instances for the API nodes.
+
+Creating a powerful instance and keeping the same architecture, running all nodes in the same instance, is also a possibility. IO operations and not processor speed is the most critical component in maintaining a healthy cluster of API nodes as well as producer node. Moving to a bare-metal infrastructure or a hybrid infrastructure model across bare-metal and cloud services should be a good option to improve a Block Producer’s performance.
+
+Regardless of specific infrastructure strategies, the upgrade process is the same. Here are the steps:
+
+1.  Create a new instance based on the Block Producer needs. Eg: with more RAM, more CPU, or more storage.
+    
+2.  Set up the instance for the kind of node that is supposed to run (API, Seed, or Producer).
+    
+3.  Sync it to the network
+    
+4.  Perform connectivity and performance tests (please refer to the [Finishing up](../launch-procedures/finishing-up.md) section)
+    
+5.  Switch to the new instance
+    
+6.  Turn off the old instance
+    
+
+## Nodeos upgrade
+
+Nodeos software is in constant development, so upgrading it is a regular activity that Block Producers will have to do. It's very important to stay updated and running the latest nodeos software version to provide the best services for Ultra users.
+
+If it is a major update that requires a hard fork, please refer to the **Consensus protocol upgrade** section below. The steps for moving to a new version of nodeos software released are: 
+
+1.  It is indicated to first build, install, and run it in a local machine to check if everything is working properly. 
+    
+2.  Build it in the node's instance or transfer the binaries built on step 1.
+    
+3.  Create a new folder for the binaries. It's very important to keep the running version of nodeos, to play it back in case of errors switching to the new one.
+    
+4.  The process of upgrading nodeos is quite simple, just edit the start.sh script and point the nodeos path to the new folder.
+    
+
+A good practice is to first upgrade the seed node because it's easier and faster to restore in case of any problems and you don't compromise the producer and your API service. After, you should upgrade the APIs, each at once, and finally, the producer. If the Block Producer has a producer node as a backup, switch to the backup producer, do the upgrade and switch back to the upgraded node. If not, producer nodes can do upgrade during a time window after they finished the last block and wait for the next turn. Block Producers make several blocks at a time, so they mostly wait until all other Block Producers complete their work. It should be enough time to stop and switch to the new version.
+
+## Consensus protocol upgrade
+
+If a release has major enhancements and a new consensus protocol feature has been introduced which requires changes to the protocol rules and alignment by block producing nodes for the upgrade to be successfully deployed, Ultra will provide detailed instructions on how to proceed to all Block Producers for each case. 
+
+It's important to remember that before deploying these upgrades to the official network, each protocol upgrade feature should be deployed and verified on the Testnet. This test upgrade process can give Block Producers the practice by carrying out the steps necessary to successfully coordinate the activation of each feature.
+
+For more information about it, click [here](https://developers.eos.io/eosio-nodeos/docs/consensus-protocol-upgrade-process).
+---
+title: 'Smart Contracts'
+
+---
+
+# System Smart Contracts
+
+These smart contracts are already deployed on our network and are available to interface with.
+
+---
+title: 'registerkyc'
+
+---
+
+# registerkyc
+
+Register KYC info from user with requirement signature and provider signature.
+
+-   Parameters
+
+| Fields          | Type               | Description                                  |
+| --------------- | ------------------ | -------------------------------------------- |
+| `owner`         | eosio::name        | KYC User                                     |
+| `provider`      | eosio::name        | KYC Provider who user wants to register with |
+| `cert_id`       | eosio::checksum256 | User KYC data                                |
+| `req_signature` | eosio::signature   | User signature                               |
+| `pro_signature` | eosio::signature   | Provider signature                           |
+
+Required Permissions: `ultra.kyc`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.kyc registerkyc '["<OWNER>", "<PROVIDER>", "<CERTIFICATE_ID>", "<REQUIRED_SIGNATURE>", "<PROVIDER_SIGNATURE>"]' -p ultra.kyc
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.kyc',
+                    name: 'registerkyc',
+                    authorization: [
+                        {
+                            actor: 'ultra.kyc',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        owner: '<OWNER>',
+                        provider: '<PROVIDER>',
+                        cert_id: '<CERTIFICATE_ID>',
+                        req_signature: '<REQUIRED_SIGNATURE>',
+                        pro_signature: '<PROVIDER_SIGNATURE>',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'removekyc'
+
+---
+
+# removekyc
+
+Remove all KYC info of user.
+
+-   Parameters
+
+| Fields  | Type        | Description                          |
+| ------- | ----------- | ------------------------------------ |
+| `owner` | eosio::name | KYC User who want to remove KYC info |
+
+Required Permissions: `ultra.kyc`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.kyc removekyc '["<OWNER>"]' -p ultra.kyc
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.kyc',
+                    name: 'removekyc',
+                    authorization: [
+                        {
+                            actor: 'ultra.kyc',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        owner: '<OWNER>',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'removekycpro'
+
+---
+
+# removekycpro
+
+Remove certain KYC provider info of user
+
+-   Parameters
+
+| Fields      | Type                | Description                                  |
+| ----------- | ------------------- | -------------------------------------------- |
+| `owner`     | eosio::name         | KYC User                                     |
+| `providers` | vector<eosio::name> | List of KYC Provider who user want to remove |
+
+Required Permissions: `ultra.kyc`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.kyc removekcypro '["<OWNER>", ["<PROVIDER_1>", "<PROVIDER_2>"]]' -p ultra.kyc
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.kyc',
+                    name: 'removekycpro',
+                    authorization: [
+                        {
+                            actor: 'ultra.kyc',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        owner: '<OWNER>',
+                        providers: ['<PROVIDER_1>', '<PROVIDER_2>'],
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'togglekyc'
+
+---
+
+# togglekyc
+
+Enable/Disable KYC check
+
+-   Parameters - None
+
+Required Permissions: `ultra.kyc`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.kyc togglekyc '[]' -p ultra.kyc
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.kyc',
+                    name: 'togglekyc',
+                    authorization: [
+                        {
+                            actor: 'ultra.kyc',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {},
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'updatekyc'
+
+---
+
+# updatekyc
+
+Update user KYC info of provider.
+
+-   Parameters
+
+| Fields          | Type               | Description                           |
+| --------------- | ------------------ | ------------------------------------- |
+| `owner`         | eosio::name        | KYC User who wants to update info     |
+| `provider`      | eosio::name        | KYC Provider who user wants to update |
+| `cert_id`       | eosio::checksum256 | User KYC data                         |
+| `req_signature` | eosio::signature   | User signature                        |
+| `pro_signature` | eosio::signature   | Provider signature                    |
+
+Required Permissions: `ultra.kyc`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.kyc updatekyc '["<OWNER>", "<PROVIDER>", "<CERTIFICATE_ID>", "<REQUIRED_SIGNATURE>", "<PROVIDER_SIGNATURE>"]' -p ultra.kyc
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.kyc',
+                    name: 'updatekyc',
+                    authorization: [
+                        {
+                            actor: 'ultra.kyc',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        owner: '<OWNER>',
+                        provider: '<PROVIDER>',
+                        cert_id: '<CERTIFICATE_ID>',
+                        req_signature: '<REQUIRED_SIGNATURE>',
+                        pro_signature: '<PROVIDER_SIGNATURE>',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'KYC Policy'
+order: -99
+
+---
+
+# KYC Policy
+
+## Overview
+
+KYC also known as Know Your Customer/Client is a way to bind verifiable information to a user such as an Identification Card, Driver’s License, or a Passport.
+
+For Ultra's platform, KYC is required if a user wants to access more advanced blockchain features.
+
+## Features for KYC accounts
+
+### 1 - Deploy smart contract
+
+As a security measure for Ultra's network, any 3rd party who wants to deploy a new contract to Ultra will be required to provide their KYC info. This will ensure that Ultra can identify the deployer and we can respond against the party if they are trying to do any harm to our network.
+
+As only one single smart contract can only be deployed to a blockchain account, you will be required to register KYC for all of your contract accounts.
+
+### 2 - Purchase more RAM
+
+When storing data or deploying a contract on Ultra blockchain, it will consume the user's RAM. The more data you store, the more RAM you will consume.
+
+Although Ultra platform already provides all users a free tier of RAM, however, as a developer, you might need to store more data than normal users do. You can refer to RAM calculation in our dedicated page for more info.
+
+By registering KYC, you will be able purchase as much RAM as you need.
+
+## KYC request for smart contract deployment
+
+If you want to deploy a contract or register KYC for your account, please contact us at [developers@ultra.io](developers@ultra.io).
+
+---
+title: 'KYC Tables'
+order: 1
+
+---
+
+# KYC Tables
+
+## kyc
+
+-   Code: `eosio.kyc`
+-   Table: `kyc`
+-   Scope: `user`
+-   Key: `provider`
+-   Data
+
+| Fields          | Type               | Description                      |
+| --------------- | ------------------ | -------------------------------- |
+| `provider`      | eosio::name        | KYC Provider who user registered |
+| `cert_id`       | eosio::checksum256 | User KYC data                    |
+| `req_signature` | eosio::signature   | User signature                   |
+| `pro_signature` | eosio::signature   | Provider signature               |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table eosio.kyc <USER> kyc
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<USER>", "code":"eosio.kyc", "table":"kyc", "json": true}'
+```
+
+## kyc.state
+
+-   Code: `eosio.kyc`
+-   Table: `kyc.state`
+-   Scope: `eosio.kyc`
+-   Data
+
+| Fields       | Type | Description |
+| ------------ | ---- | ----------- |
+| `is_enabled` | bool | KYC state   |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table eosio.kyc eosio.kyc kyc.state
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.kyc", "code":"eosio.kyc", "table":"kyc.state", "json": true}'
+```
+
+---
+title: 'NFT Contract Overview'
+order: -99
+
+---
+
+# NFT Overview
+
+The abbreviation ‘NFT’ stands for Non-Fungible Token which means that NFT is a unit of data stored on a blockchain that can be sold or traded like other tokens. Unlike other tokens all NFTs are unique and one NFT cannot be replaced with another. That is why NFTs are often called `Uniqs`. In this document the NFTs can also be referred to as tokens.
+
+The Ultra's `eosio.nft.ft` smart contract defines a set of data structures (multi index tables, singletons) and a set of blockchain actions to manipulate the data structures. Both the data structures and the actions implement the supported set of NFT Use cases.
+
+## Info
+
+NFT use cases describe what different users can do with NFTs. The text in **bold** represents actions, the text in _italic_ represents blockchain accounts and the `highlighted` text represents the related data structures or data structure elements. Please refer to the action description or data structure overview to obtain more information.
+
+## Token Factory Creation
+
+**PLEASE NOTE:** _Recall and Lockup feature will be disabled by default which means when creating new token factory, action will fail if you put any value for recall window or lockup time. This note will be removed when these features are enabled again._
+
+The _Asset Creator_ and the _Asset Manager_ can **create.b** a token factory.
+
+To issue a token, a token factory should be created first. For this version of `eosio.nft.ft` only _Ultra_ can be the _Asset Creator_ and the _Asset Manager_. A token factory is a set of blockchain data which provides settings for the NFTs issued with the factory. During the creation process it is required to set up several token parameters which control the NFTs parameters and the lifecycle - the NFTs off-chain metadata, minimum prices, reselling timeframes etc. All these data is stored in the `factory.b` table.
+
+-   [create.b - create token factory](./nft-actions/create.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Issuing
+
+The _Asset Manager_ can **issue.b** a token either to the _Asset Manager_ or to another _Account_.
+
+The NFT issuance requires setting several parameters like the receiving _Account_ and the amount of tokens. The issued NFTs receive a global unique ID and a token factory recorded serial (ordinal) number. The issued token is recorded into the _Account_'s `token.b` table. The **issue.b** action reads and updates the data in the `factory.b` table.
+
+-   [issue.b - issue tokens with token factory](./nft-actions/issue.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+
+## Transferring
+
+The token _Owner_ can **transfer** tokens to another _Account_.
+
+An NFT _Owner_ can **transfer** their tokens to another _Account_. If the _Account_ is listed on the `conditionless_receivers` array of the token factory, no transfer checks are done. Otherwise the action is checked against the trading window and lock time limitations. The tables affected are `token.b` scoped to the sender and receiver accounts. The `factory.b` is read to obtain limitations.
+
+-   [transfer - hand tokens over to another user](./nft-actions/transfer.md)
+-   [token.b](./nft-tables.md#token-b)
+
+## Selling
+
+The token _Owner_ can **resell** tokens.
+
+An NFT _Owner_ can **resell** their tokens on the resale marketplace specifying the desirable price. A resale promoter fee can be specified, the resale promoter will receive a fraction of the received funds. This action is a subject to the trading window, minimal resale price and the lockup checks. The token ownership is verified using the `token.b` table. The resale marketplace table is `resale.a`.
+
+-   [resell - place tokens for sale on resell marketplace](./nft-actions/resell.md)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.b](./nft-tables.md#resale-a)
+
+## Buying
+
+An _Account_ can **buy** a token ownership.
+
+A blockchain _Account_ can **buy** a token from the resale marketplace. This action is a subject to the trading window checks. The global and the token factory specific resale shares as well as the resale promoter are dealt with when the paid funds are transferred from the buer to the seller. The token is deduced from the _Seller_'s `token.b` and added to the _Buyer_'s `token.b`. The `factory.b` and `resale.a` are read to obtain the tradeable window, promoter and the shares info.
+
+-   [buy - purchase token on resale marketplace](./nft-actions/buy.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Cancelling resell
+
+The token _Owner_ can **cancelresell** tokens.
+
+This action is only removes the token from the resale marketplace. The resale marketplace table is `resale.a`.
+
+-   [cancelresell - cancel token resell](./nft-actions/cancelresell.md)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Burning
+
+The token _Owner_ can **burn** tokens.
+
+An NFT _Owner_ can execute the **burn** action which removes the token from the resale marketplace (`resale.a`), removes the token from the _Owner_ account (`token.b`) and updates the token factory `existing_tokens_no` field (`factory.b`).
+
+-   [burn - erase tokens from owners and uniq factories](./nft-actions/burn.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## NFT Service Use Cases
+
+## Recalling
+
+The _Asset Manager_ can **recall** tokens from an _Account_ in case of fraudulent action or erroneous issue.
+
+During the recall time window the _Asset Manager_ can recall tokens from an _Account_ in case of fraudulent action or erroneous issue or other cases that require tokens ownership be returned to the _Asset Manager_. If the token being recalled has entered the resell marketplace, the reselling of such token is canceled. The **recall** action affects `factory.b`, `resale.a` and `token.b` tables.
+
+-   [recall - cancel resell, return tokens to factory manager](./nft-actions/recall.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Authorizing Another Minter
+
+The _Asset Manager_ or an _Authorized Minter_ can authorize another _Minter_ to issue tokens with a token factory with the **authminter** action.
+
+Initially the _Asset Manager_ can delegate their ability to issue NFTs to some other account _Authorized Minter_ limited to issue up to the quantity of tokens. An _Authorized Minter_ can re-delegate a part of their quantity to another _Authorized Minter_. The `factory.a` table is read and `authmintr.a` table is modified during this action.
+
+-   [authmint.b - authorize an account to be able to mint tokens](./nft-actions/authmint.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [authmintr.a](./nft-tables.md#authmintrs-a)
+
+## Controlling Token Factory Lifecycle
+
+The _Asset Manager_ can stop issuing with or decommission a token factory.
+
+The **setstatus** action lets the _Asset Manager_ to control the lifecycle of the token factory. Only the `factory.b` table is involved.
+
+-   [setstatus - set token factory state](./nft-actions/setstatus.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Updating the Token Factory Metadata
+
+The _Asset Manager_ can update the token factory metadata.
+
+The **setmeta.b** action lets the _Asset Manager_ to set the token factory metadata updating the `factory.b` table.
+
+-   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Setting the conditionless receivers
+
+The _Asset Manager_ can set the token factory conditionless receivers.
+
+The **setconrecv** action allows the _Asset Manager_ to set the token factory conditional receivers - the accounts that can receive NFTs without checking for mintable window, lockup and other limitations. The action updats the `factory.b` table.
+
+-   [setconrecv - set conditionless receivers](./nft-actions/setconrecv.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Adding factory purchase options
+
+The _Asset Manager_ can add the factory first-hand purchase requirements
+
+The **setprchsreq.a** action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
+
+Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
+
+-   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
+-   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
+-   [purchase.a - purchase a token](./nft-actions/purchase.a.md)
+-   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)
+
+---
+title: 'activers'
+order: 1
+
+---
+
+# activers
+
+When the current active version is N, and the next major version to work on is N+1, this action can be used to activate version N+1.
+
+## Technical Behavior
+
+It works with the migration singleton table and stores the current active version, and migration status to this version. Only ultra.nft.ft account can call this action.
+
+## Action Parameters
+
+There is no action parameter for this action.
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft activers '{}' -p ultra.nft.ft@active
+
+# to view the migration status:
+cleos get table eosio.nft.ft eosio.nft.ft migration
+
+# example output right after v1 is activated
+{
+      "active_nft_version": 1,
+      "table_migration_stats": 0
+}
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'activers',
+            authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+            data: {},
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'addgrpfcts'
+order: 2
+
+---
+
+# addgrpfcts
+
+Adds factory ids to a factory group.
+
+## Technical Behavior
+
+ID should be valid and transaction signed by the manager of the corresponding group.
+
+Factories argument should not contain any existing ids. Factory group pack size should be within the limit of 960 bytes after modification.
+
+## Action Parameters
+
+| field name | c++ type          | js type        |
+| ---------- | ----------------- | -------------- |
+| id         | uint64_t          | number         |
+| factories  | vector\<uint64_t> | Array\<number> |
+
+## CLI
+
+```bash
+cleos push action eosio.nft.ft addgrpfcts '[33, ["7", "11", "22"]]' -p ubisoft
+```
+
+## JS
+
+```ts
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'addgrpfcts',
+            authorization: [{ actor: 'ubisoft', permission: 'active' }],
+            data: {
+                id: 33,
+                factories: [7, 11, 22],
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'authmint.b'
+order: 4
+
+---
+
+# authmint.b
+
+Authorize an account to be able to mint tokens.
+
+## Behavior
+
+This action can be used to delegate minting power to other accounts.
+
+## Technical Behavior
+
+**Parameter validation**
+
+The action requires authorization of authorizer which can be either the token_factory’s asset_manager or another authorized minter. The account being authorized - authorized_minter should exist. token_factory_id is required and must exist. quantity should be a non-zero value. The optional maximum_uos_payment specifies the maximum amount of UOS that the authorizer want to pay. memo value has a 256 byte limitation.
+
+**On-the-fly migration**
+
+After v1 is activated by activers action, token factory exists either in v0 factory table, factory.a, or v1 factory table, factory.b. If the token factory exists in factory.a, then the token factory is moved to factory.b.
+
+**Main operations**
+
+This action allows a factory asset manager to be able to authorize (delegate) minting of factory tokens to another account called authorized minter. The following rules apply for this action:
+
+-   If max_mintable_tokens is specified in the token factory, the asset manager can authorize equal to or less than the totally available tokens, which is max_mintable_tokens - minted_tokens_no - sum of delegated tokens.
+
+-   An asset manager cannot authorize themselves, an authorized minter cannot return tokens to the asset manager.
+
+-   An authorized minter can authorize (re-delegate) yet another authorized minter from their available amount of tokens.
+
+-   An authorized minter can mint their authorized quantity of tokens.
+
+-   Authorized minter info is stored into the authmintrs.a table of eosio.nft.ft contract with the token factory ID scope.
+
+**RAM usage/cost calculation and payment/refund**
+
+-   RAM usage used to store authorized minter info is covered by `eosio.nftram` account. If the unused RAM of eosio.nftram is less than or equal to 200MB, the action can’t be executed.
+
+-   The cost of a authorized minter entry is paid to `eosio.nftram` and it will be locked up in the authorized minter entry. The funds are released back to the orinigal payer after the authorized tokens are minted
+
+        -   First, the cost in USD is (Authorized Minter RAM payment size) \* (RAM price), where
+
+            -   Authorized Minter RAM payment size: **124 bytes**
+
+            -   RAM price: **0.15 USD/KB**
+
+        -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
+            (124B/1024B \* 0.15USD/KB) / (conversion rate) = `0.01816406` **USD**/(conversion rate)
+
+-   When a manager (i.e., factory’s asset manager)/authorized minter add a new authorized minter
+
+    -   RAM usage will be charged according to RAM pricing rules, and its payment is sent from the manager/authorized minter to eosio.nftram in UOS.
+
+    -   The payment and RAM usage are accumulated and book-kept in the manager's RAM vault as a record in RAM vault table, ramvault.a. Update the existing authorized minter’s quota (i.e., the amount of tokens that an authorized minter can mint) doesn't cost anything.
+
+    -   If maximum_uos_payment is specified, the amount of payment will be checked to confirm whether payment is no more than maximum_uos_payment.
+
+-   When an authorized minter’s quota becomes zero (by minting their quota or by delegating their quota to another authorized minter)
+
+    -   The authorized minter’s info is removed from authmintrs.a table.
+
+    -   The factory’s manager will get the refund proportional to the amount of RAM released from the RAM vault, i.e.
+        refund = (accumulated RAM payment) \* (released amount of RAM)/(accumulated amount of RAM usage).
+
+**Notifications**
+
+`require_recipient` is done for `authorizer`, `authorized_minter` and for  of a token under resell and for asset manager of the token factory.
+
+## Action Parameters
+
+The action parameters as an **JSON Array of Objects.** The Object description is listed in the table below.
+
+### V0
+
+| Fields            | Type                     | Description                           |
+| ----------------- | ------------------------ | ------------------------------------- |
+| authorizer        | eosio::name              | The account that authorizes           |
+| authorized_minter | eosio::name              | The account being authorized          |
+| quantity          | uint32_t                 | The number of tokens being authorized |
+| token_factory_id  | std::optional\<uint64_t> | The issuing token factory ID          |
+| memo              | std::string              | A short operation description.        |
+
+### V1
+
+| Fields              | Type                     | Description                                          |
+| ------------------- | ------------------------ | ---------------------------------------------------- |
+| authorizer          | eosio::name              | The account that authorizes                          |
+| authorized_minter   | eosio::name              | The account being authorized                         |
+| token_factory_id    | uint64_t                 | The issuing token factory ID                         |
+| quantity            | uint32_t                 | The number of tokens being authorized                |
+| maximum_uos_payment | std::optional\<uint64_t> | Maximum UOS payment the authorizer is willing to pay |
+| memo                | std::string              | A short operation description.                       |
+
+## CLI - cleos
+
+### V0
+
+```bash
+cleos push action eosio.nft.ft authminter '{"authorizer": "carol", "authorized_minter": "diane", "token_factory_id": "4503599627370496", "quantity": "1", "memo": ""}' - carol@active
+# to view the authorization records (alice is the Asset Manager):
+cleos get table eosio.nft.ft alice authmintrs.a
+```
+
+### V1
+
+```bash
+cleos push action eosio.nft.ft authmint.b '{"authorizer": "carol", "authorized_minter": "diane", "token_factory_id": 0, "quantity": 1, "maximum_uos_payment": "1.00000000 UOS", memo": ""}' -p carol@active
+# to view the authorization records (alice is the autorhize minter):
+cleos get table eosio.nft.ft alice authmintrs.a
+```
+
+## JavaScript - eosjs
+
+### V0
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'authminter',
+            authorization: [{ actor: 'carol', permission: 'active' }],
+            data: {
+                authorizer: 'carol',
+                authorized_minter: 'diane',
+                token_factory_id: '4503599627370496',
+                quantity: 1,
+                memo: '',
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+### V1
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'authmint.b',
+            authorization: [{ actor: 'carol', permission: 'active' }],
+            data: {
+                authorizer: 'carol',
+                authorized_minter: 'diane',
+                token_factory_id: 1,
+                quantity: 1,
+                maximum_uos_payment: '1.00000000 UOS',
+                memo: '',
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'authminter'
+order: 3
+
+---
+
+# authminter
+
+Authorize an account to be able to mint tokens.
+
+::: warning
+Deprecated. Use `authmint.b` instead
+:::
+
+## Behavior
+
+This action allows a factory Asset Manager to be able to authorize (delegate) minting of factory tokens to another account called Authorized Minter (further - AuthMinter). The following rules apply for this action:
+
+-   The Asset Manager can authorize less than the totally available tokens, Total = `max_mintable_tokens` - `minted_tokens_no` - `sum of delegated tokens`.
+-   Asset Manager cannot authorize themselves, an AuthMinter cannot return tokens to the Asset Manager.
+-   An AuthMinter can authorize (re-delegate) yet another AuthMinter from their available amount of tokens.
+-   An AuthMinter can mint their authorized `quantity` of tokens.
+-   The RAM cost of storing new authorized minter info is covered by the authorizer’s (i.e., Asset Manager’s or AuthMinter’s) RAM quota. Modifying existing authorized minter info doesn’t change RAM payer.
+
+## Technical Behavior
+
+**Parameter validation**
+
+The action requires authorization of authorizer which can be either the token_factory::asset_manager or another authorized minter. The account being authorized - authorized_minter should exist. token_factory_id is required and must exist. quantity should be a positive value. memo value has a 256 byte limitation
+
+**On-the-fly migration**
+
+After v1 is activated by activers action, token factory exists either in v0 factory table, factory.a, or v1 factory table, factory.b.
+If the token factory exists in factory.a, then the token factory is moved to factory.b.
+In the following descriptions, token factory is either v0 or v1 data structures.
+
+**Main operations**
+
+This action allows a factory Asset Manager to be able to authorize (delegate) minting of factory tokens to another account called Authorized Minter (further - AuthMinter). The following rules apply for this action:
+
+-   The Asset Manager can authorize less than the totally available tokens, Total = max_mintable_tokens - minted_tokens_no - sum of delegated tokens.
+
+-   Asset Manager cannot authorize themselves, an AuthMinter cannot return tokens to the Asset Manager.
+
+-   An AuthMinter can authorize (re-delegate) yet another AuthMinter from their available amount of tokens.
+
+-   An AuthMinter can mint their authorized quantity of tokens.
+
+-   The RAM cost of storing new authorized minter info is covered by the authorizer’s (i.e., Asset Manager’s or AuthMinter’s) RAM quota. Modifying existing authorized minter info doesn’t change RAM payer.
+
+The authorization data is stored into the authmintrs.a table of eosio.nft.ft contract within the token factory ID scope.
+
+## Action Parameters
+
+The action parameters as an **JSON Array of Objects.** The Object description is listed in the table below.
+
+| Property Name     | C++ Type                  | JavaScript Type  | Definition                            |
+| ----------------- | ------------------------- | ---------------- | ------------------------------------- |
+| authorizer        | eosio::name               | string           | The account that authorizes           |
+| authorized_minter | eosio::name               | string           | The account being authorized          |
+| quantity          | uint32_t                  | number or string | The number of tokens being authorized |
+| token_factory_id  | std::optional`<uint64_t>` | number           | The issuing token factory ID          |
+| memo              | std::string               | string           | A short operation description.        |
+
+### V1
+
+| Property Name       | C++ Type                  | JavaScript Type  | Definition                                 |
+| ------------------- | ------------------------- | ---------------- | ------------------------------------------ |
+| authorizer          | eosio::name               | string           | The account that authorizes                |
+| authorized_minter   | eosio::name               | string           | The account being authorized               |
+| token_factory_id    | std::optional`<uint64_t>` | number           | The issuing token factory ID               |
+| quantity            | uint32_t                  | number or string | The number of tokens being authorized      |
+| maximum_UOS_payment | `optional<asset>`         | string           | The maximum amount the authorizer will pay |
+| memo                | std::string               | string           | A short operation description.             |
+
+## CLI - cleos
+
+### V0
+
+```bash
+cleos push action eosio.nft.ft authminter '{"authorizer": "carol", "authorized_minter": "diane", "token_factory_id": "4503599627370496", "quantity": "1", "memo": ""}' - carol@active
+# to view the authorization records (alice is the Asset Manager):
+cleos get table eosio.nft.ft alice authmintrs.a
+```
+
+### V1
+
+```bash
+cleos push action eosio.nft.ft authminter '{"authorizer":"someone","authorized_minter":"someoneelse","token_factory_id":0,"quantity":5,"maximum_uos_payment":null,"memo":"hello world"}' - carol@active
+# to view the authorization records (alice is the Asset Manager):
+cleos get table eosio.nft.ft alice authmintrs.a
+```
+
+## JavaScript - eosjs
+
+### V0
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'authminter',
+            authorization: [{ actor: 'carol', permission: 'active' }],
+            data: {
+                authorizer: 'carol',
+                authorized_minter: 'diane',
+                token_factory_id: '4503599627370496',
+                quantity: 1,
+                memo: '',
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+### V1
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'authminter',
+            authorization: [{ actor: 'carol', permission: 'active' }],
+            data: {
+                authorizer: 'carol',
+                authorized_minter: 'someoneelse',
+                token_factory_id: 0,
+                quantity: 5,
+                maximum_uos_payment: null, // OR specify value here
+                memo: 'hello world',
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'burn'
+order: 5
+
+---
+
+# burn
+
+This action can be used to burn a token, see more details in burn.
+
+## Behavior
+
+Used to burn a non-fungible token from one user. This requires the **token_id** of a minted token in order to successfully burn the token. As well as the permission of the user who owns the token.
+
+## Technical Behavior
+
+**Parameter validation**
+
+Upon the usage of the burn action the action verifies that the parameters supplied in the action have values. This includes owner, token_ids, and memo. The memo specifically has a 256 byte limitation. The required authorization is the owner user. The token_ids vector is verified to not be empty.
+
+**On-the-fly migration**
+
+After v1 is activated by activers action, token exists either in v0 token table, token.a, or v1 token table, token.b.
+If the token exists in token.a, then the token factory from which the token was minted exists in v0 factory table, factory.a, which, in this case, is moved to factory.b.
+In the following descriptions, token factory and token are either v0 or v1 data structures.
+
+**Main operations**
+
+The token from the token table includes a token factory id and this is used to fetch the token factory data. The token factory must exist for a token to be burned. The token will not be able to be burned if the owner does not own this token. If the token is up for resale then the token is removed from the resale table.
+
+After this data is verified the token quantity in the token factory is subtracted and checked for underflow. The token is then erased from the owner. The owner ensures that the fractional parts are truncated and they go to `eosio.pool`.
+`eosio.nftram` refunds the fee to each account.
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+**Notifications**
+
+`require_recipient` is done for `owner` account and for asset managers of corresponding uniq factories
+
+### V0
+
+| Fields    | Type                    | Description                    |
+| --------- | ----------------------- | ------------------------------ |
+| owner     | eosio::name             | The token owner                |
+| token_ids | std::vector`<uint64_t>` | The array of tokens to burn    |
+| memo      | std::string             | A short operation description. |
+
+### V1
+
+No Changes
+
+## CLI - cleos
+
+### V0 / V1
+
+```bash
+cleos push action eosio.nft.ft burn '[{ "owner": "owner.user.acc", "token_ids": [1], "memo": "bye bye tokens" }]' -p owner.user.acc@active
+```
+
+## JavaScript - eosjs
+
+### V0 / V1
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'burn',
+                authorization: [{ actor: 'owner.user.acc', permission: 'active' }],
+                data: {
+                    burn: {
+                        owner: 'owner.user.acc',
+                        token_ids: [1],
+                        memo: 'bye bye tokens',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+# Behavior Changes
+
+After v1 is activated, if the token has already been migrated to token.b table, the UOS locked up for the token will be refunded from eosio.nfram to the relevant parties. The refund split is as follows:
+
+-   15% goes to the factory’s asset manager
+
+-   70% goes to the token owner
+
+-   the rest including the fractional part(about 15%) fee goes to eosio.pool
+
+See more detail in RAM rules for NFTs
+
+# Changes in tables to Read/Write
+
+it will migrate factory.a to factory.b, before reading the factory.b object.
+
+---
+title: 'buy'
+order: 6
+
+---
+
+# buy
+
+Purchase a token from the resale marketplace.
+
+This will allow the user to purchase a token from the resale marketplace where non-fungible tokens are sold. This requires the buyer’s permission and has an optional parameter that will allow the buyer to gift the token to another user. In the case the token isn't gifted, they should specify themselves as the receiver of the token. There is the optional parameter for a promoter to be tacked on to the sale of a token.
+
+## Technical Behavior
+
+**Parameter validation**
+
+Upon the usage of the buy action, the action will verify that the parameters supplied in the action have values, such as buyer, receiver, token_id, max_price, promoter_id. The memo specifically has a 256-byte limitation. The required authorization is the buyer. The buyer will always need to specify who the receiver of a token is.
+
+Currently max_price is not being used with v0.
+
+**On-the-fly migration**
+
+After v1 is activated by activers action, token exists either in v0 token table, token.a, or v1 token table, token.b.
+If the token exists in token.a, then the token factory from which the token was minted exists in v0 factory table, factory.a, which, in this case, is moved to factory.b.
+In the following descriptions, token factory and token should be read as v1 data structures.
+
+**Main operations**
+
+The function will look into the resale table and attempt to find a token that matches the token_id specified by the user during their buy action. The transaction will fail if the token is not found or the token is not for sale. This also prevents the buyer from buying their own resale tokens.
+
+Once the token is found it will retrieve the token factory from the token factory table. This value can then be used to ensure that the trading window is valid for the token that is being bought.
+
+If min_resell_price for a token factory is in USD the final price is calculated as max of resell_price and
+min_resell_price converted to UOS using 1 min moving average. If max_price is less than final price
+transaction is reverted.
+
+If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If not promoter is specified then default promoter will be used specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `default_promoter`.
+
+Resale shares in the global resale table will be initialized if un-available.
+
+Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../general/antelope-ultra/2nd-hand-sale.md).
+
+After the shares are distributed and no additional transfers need to occur the token will be emplaced into the receiver’s account and the original token owner will have the token erased from their account.
+
+The resale table will have the token erased as well.
+
+**Notifications**
+
+`require_recipient` is done for `buyer`, `receiver`, `owner` of a token under resell and for asset manager of the token factory.
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+### V0
+
+| Fields      | Type         | Description                                  |
+| ----------- | ------------ | -------------------------------------------- |
+| buyer       | eosio::name  | The account that pays for the NFT            |
+| receiver    | eosio::name  | The account that receives the NFT            |
+| memo        | std::string  | Memo                                         |
+| token_id    | uint64_t     | The NFT ID                                   |
+| max_price   | eosio::asset | The maximal NFT price                        |
+| promoter_id | eosio::name  | The promoter account that receives comission |
+
+### V1
+
+No Changes
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft buy '[{ "buyer": "buyer.user.acc", "receiver": "buyer.user.acc", "token_id": 1, "memo": "buying", "max_price": "4.00000000 UOS", "promoter_id": "shroud" }]' -p buyer.user.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'buy',
+                authorization: [{ actor: 'buyer.user.acc', permission: 'active' }],
+                data: {
+                    buy: {
+                        buyer: 'buyer.user.acc',
+                        receiver: 'buyer.user.acc',
+                        token_id: 1,
+                        memo: 'buying',
+                        max_price: '4.00000000 UOS',
+                        promoter_id: 'shroud',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'cancelresell'
+order: 7
+
+---
+
+# cancelresell
+
+This action can be used to cancel the resell of a token.
+
+## Technical Behavior
+
+After using **cancel resell action** the action will verify that the parameters supplied in the action have values. This includes **token_id and memo.**
+
+The memo specifically has a 256 byte limitation. The required authorization is the **seller** as the seller is the one who is meant to own the token that is being sold. The token has its version looked up and then proceeds with the following resale behavior.
+
+Once a version is determined and the **token** has determined its route for resale it will retrieve the **token** from the token table. It will validate that the **resale** entry existing meaning that the token is currently set up for sale.
+
+Once the **resale** entry is found and authorization of the token owner is verified then this **resale** entry is erased and it is no longer possible to buy this token.
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+### V0
+
+| Fields   | Type     | Description                    |
+| -------- | -------- | ------------------------------ |
+| token_id | uint64_t | The NFT ID                     |
+| memo     | string   | A short operation description. |
+
+### V1
+
+No Changes
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft cancelresell '[{ "token_id": 25, "memo": "Sale is closed!" }]' -p seller.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'cancelresell',
+                authorization: [{ actor: 'seller.acc', permission: 'active' }],
+                data: {
+                    cancelresell: {
+                        token_id: 25,
+                        memo: 'Sale is closed!',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'clrmintst'
+order: 8
+
+---
+
+# clrmintst
+
+Clears (i.e., deletes the rows of) minting status table of a token factory.
+
+## Behavior
+
+Allow an asset owner to clear the minting status table.
+
+## Technical Behavior
+
+**Parameter validation**
+
+token_factory_id is the token factory ID that should exist. memo string to accompany the transaction should be no more than 256 bytes. The required authorization is the token_factory::asset_manager.
+
+**On-the-fly migration**
+
+After v1 is activated by activers action, token factory exists either in v0 factory table, factory.a, or v1 factory table, factory.b.
+If the token factory exists in factory.a, then the token factory is moved to factory.b.
+In the following descriptions, token factory is either v0 or v1 data structures.
+
+**Main operations**
+
+The action deletes the specified no_of_entries from the token_factory’s mintstat (mintstat.a) table. If all rows are deleted, the table itself is deleted as well. If no_of_entries is not specified (i.e., null), all entries are deleted.
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+### V0
+
+| Fields           | Type               | Description                    |
+| ---------------- | ------------------ | ------------------------------ |
+| token_factory_id | uint64_t           | The token factory identifier   |
+| no_of_entries    | optional<uint64_t> | A short operation description. |
+| memo             | string             | Whatever you want              |
+
+### V1
+
+No Changes
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft clrmintst '{"token_factory_id": 5, "no_of_entries": 100, "memo": "clrmintst time"}' -p factory.manager@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'clrmintst',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    token_factory_id: 5,
+                    no_of_entries: 100,
+                    memo: 'clrmintst time',
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'create.b'
+order: 10
+
+---
+
+# create.b
+
+Create a token factory.
+
+## Behavior
+
+Used to create a token factory for the asset_creator and will be managed by the asset_manager.
+
+The asset_manager and the asset_creator need to agree on the token factory configuration according to their specific business strategy, like resale share, etc. The agreement is done via the co-signing of the transaction.
+
+By creating the token factory together, the asset_creator agrees to all the terms, including letting the asset_manager manage the factory and its tokens.
+
+If the stat parameter is not specified, a new token factory is created in inactive state which may be changed with the setstatus action.
+
+RAM usage of a factory creation is covered by eosio.nftram.
+
+If asset_manager is other than ultra.nft.ft, the cost of a factory creation is paid in UOS to eosio.pool.
+
+## Technical Behavior
+
+Upon creation, a token factory id will be automatically assigned to the new token factory. This id is incremental.
+
+**Token factory ID**
+
+-   64-bit number
+
+-   Factory counter is stored in a singleton table, which will be automatically increased each time a token factory is created.
+
+**Factory creation**
+
+-   RAM usage of a factory creation is covered by eosio.nftram. 4GB will be gifted to eosio.nfrram to start with. The action fails If the unused RAM of eosio.nftram is less than or equal to 200MB.
+
+-   factory data is stored to factory.b table. Each factory.b entry’s pack size should be less than or equal to 1920 bytes.
+
+-   if asset_manager is other than ultra.nft.ft, The cost of a factory creation is paid to eosio.pool and it is non-refundable.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   factory RAM payment size: 2KB
+
+        -   RAM price: 0.15USD/KB
+
+    -   The cost is paid in UOS. The action gets 1 MINUTE conversion rate in USD/UOS from eosio.oracle contract. and calculates the cost by
+        (2KB \* 0.15USD/KB) / (conversion rate) = 0.3USD/(conversion rate)
+
+**Authorized minters registration**
+
+-   Authorized minters can be registered at the same time, by being specified as authorized_minters (an array of minter_authorization_info) parameter.
+
+-   Registration cost is calculated and charged to asset_manager. For the details, see authorized minters info RAM usage/cost calculation and payment/refund.
+
+Minting limit per account of a token factory
+Minting limit can also be set at the same time, by being specified as account_minting_limit parameter.
+
+**Notifications**
+
+`require_recipient` is done for `asset_manager` and `asset_creator`
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Property Name           | C++ Type                    | JavaScript Type | Required | Default (null input) | Remarks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ----------------------- | --------------------------- | --------------- | -------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| memo                    | string                      | string          | yes      | no default           | memo cannot have more than 256 bytes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| asset_creator           | name                        | string          | yes      | no default           | asset_manager and asset_creator are required to sign this actionasset_manager will be the one who pays the RAM for the token factory storageasset_manager and asset_creator can be same accountasset_manager will be any valid account including ultra.nft.ft                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| asset_manager           | name                        | string          | yes      | no default           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| minimum_resell_price    | asset                       | string          | no       | null                 | Should be specified in UOS or USD.If set to null or 0, tokens can be transferred to other accounts with the transfer action, as long as token still in trading window and outside of lockup time. If set to > 0, the token can only be sold to others through the buy action. `conditionless_receivers` will ignore these restrictions when transferred                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| resale_shares           | vector::\<resale_share>     | Array           | no       | null                 | Each resale share has a `receiver` (C++ type: `name`, JS type: `string`) and `basis_point` (C++ type: uint16_t, JS type: `number`). `1` in `basis_point` mean `0.0001`, which means 0.01%. Total limit of resale shares: specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `max_factory_share_bp` (otherwise default of 7000 basis_point or 70%). Receiver can be duplicated                                                                                                                                                                                                                                                                                                                                                                                        |
+| mintable_window_start   | time_point_sec              | string          | no       | null                 | Input will be in UTC date up to seconds. For example: `'2021-06-01T00:00:00'`. Combination: `[no start, no end]` - forever mintable; `[no start, end]` - can only be minted before the ending date; `[start, no end]` - can only be minted after the starting date; `[start, end]` - can only be minted between the start and end dates. Conditions: If end date is set, it must be after the current block time; if start and end are both set, the end date must be after the start date                                                                                                                                                                                                                                                                                           |
+| mintable_window_end     | time_point_sec              | string          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| trading_window_start    | time_point_sec              | string          | no       | null                 | There are 2 types of inputs available: `null`: will ignore this property. `UTC_date_string` exact date in UTC, up to seconds. For example: `'2021-06-01T00:00:00'`. Combination: `[no start, no end]` - forever tradable; `[no start, end]` - can only be traded before ending date; `[start, no end]` - can only be traded after starting date; `[start, end]` - can only be traded in between start and end date. Conditions: If both input is the same type a `time_point_sec`, end date must be larger than the start date.Where this is being checked: `buy`, `resell`, `transfer`. `conditionless_receivers` will ignore this when transferring tokens                                                                                                                         |
+| trading_window_end      | time_point_sec              | string          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| recall_window_start     | time_since_mint             | number          | no       | null                 | There are 2 types of inputs available: `null`: will ignore this property; time from the token mint time. For example: `5`. In this example exactly 5 seconds after the mint time. Combination: `[no start, no end]` - not recallable; `[no start, end]` - can only be recalled before ending date `[start, no end]` - can only be recalled after starting date; `[start, end]` - can only be recalled in between start and end date. Conditions: If both input is the same type a `time_since_mint`, end date must be larger than the start date. Where this being checked: `recall`. NOTE: From Release 36, recall feature will be disabled by default when creating new factory, which meant create action will fail if `recall_window_start` or `recall_window_end` was inputted. |
+| recall_window_end       | time_since_mint             | number          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| max_mintable_tokens     | uint64_t                    | number          | no       | null                 | `null` means this can be minted with an unlimited capacity; > 0 means the factory can only mint as many tokens as specified                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| lockup_time             | uint32_t                    | number          | no       | 0                    | Value is in secondsCannot resell or transfer this token when it’s still in lockup time, unless the token is transferred to a conditionless_receiver. NOTE: From Release 36, lockup feature will be disabled by default when creating new factory, which meant create action will fail if lockup_time was inputted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| conditionless_receivers | vector                      | Array           | no       | null                 | if set, all accounts must existwhen transferred to an account in the list, it will bypass checks for trading window and lockup time                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| stat                    | uint8_t                     | number          | no       | 1                    | `0` - active uniq factories can do everything. `1` - inactive uniq factories can do everything, except mint. `2` - shutdown uniq factories can do everything, except mint, and activate.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| factory_uri             | string                      | string          | yes      | no default           | base URI pointing to the metadata of the token factory. e.g. Ultra.io/meta/1234, redundancy.ultra.io/meta/1234. Values cannot be an empty string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| factory_hash            | checksum256                 | string          | no       | null                 | Hash of factory meta data. Optional - simple SHA256 hash of metadata file to guarantee no external content changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| authorized_minters      | minter_authorization_vector | Array           | no       | null                 | Specifies accounts authorized to mint tokens from the token factory. minter_authorization_info is defined as a tuple of eosio::name (the account being authorized) and uint32_t (quantity that the authorized account can mint).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| account_minting_limit   | uint32_t                    | number          | no       | null                 | Must be at least 1.Limits the amount of tokens that can be minted per eos account.Set to null to allow for unlimited tokens per eos account.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| transfer_window_start   | time_point_sec              | string          | no       | null                 | There are 2 types of inputs available: `null`: will ignore this property; `UTC_date_string`: exact date in UTC, up to seconds. For example: '2021-06-01T00:00:00'. Combinations: `[no start, no end]` - forever transferrable; `[no start, end]` - can only be transferred before ending date; `[start, no end]` - can only be transferred after starting date; `[start, end]` - can only be transferred in between start and end date. Conditions: If both input is the same type a time_point_sec, end date must be larger than the start date. Where this is being checked: `transfer`                                                                                                                                                                                            |
+| transfer_window_end     | time_point_sec              | string          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| maximum_uos_payment     | asset                       | string          | no       | null                 | Specifies the maximum amount of UOS that the caller can pay.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| default_token_uri       | string                      | string          | yes      | no default           | URI pointing to the token metadata if there is no token-specific metadata. Must not be empty and can be either static or dynamic. More details [here](../../../../tutorials/uniq-factories/uniq-variants/organizing-metadata.md)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| default_token_hash      | checksum256                 | string          | no       | null                 | Hash of static default token URI. It is optional to provide this and it should be a SHA256 of the content of default token URI. If default token URI is dynamic - specify the hash per token instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| lock_hash               | bool                        | boolean         | no       | false                | Whether to prevent changes to the hashes provided during the factory creation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft create.b '[{"memo":"","asset_manager":"ultra.nft.ft","asset_creator":"ultra","minimum_resell_price":null,"resale_shares":[{"receiver":"ultra.nft.ft", "basis_point":1}],"mintable_window_start":"2021-05-01T00:00:00","mintable_window_end":null,"trading_window_start": "2021-05-01T00:00:00","trading_window_end":null,"recall_window_start": null,"recall_window_end":null,"max_mintable_tokens":10,"lockup_time":null,"conditionless_receivers":null,"stat":0,"factory_uri":"test","factory_hash":"d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523", "authorized_minters":[{"authorized_minter":"ultra.mrktng","quantity":10}],"account_minting_limit":10,"transfer_window_start":"1970-01-01T00:00:00","transfer_window_end":null, "maximum_uos_payment": null, "default_token_uri": "test2", "default_token_hash":"d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523", "lock_hash":false}]' -p ultra.nft.ft -p ultra
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+  actions: [
+    {
+      account: "eosio.nft.ft",
+      name: "create.b",
+      authorization: [{ actor: "ultra.nft.ft", permission: "active" }, { actor: "asset_creator.acc", permission: "active" }],
+      data: {
+        create: {
+          memo: "",
+          asset_manager: 'ultra.nft.ft',
+          asset_creator: 'asset_creator.acc',
+          minimum_resell_price: '1.00000000 USD',
+          resale_shares: [
+              {"receiver": "resale1", "basis_point":1},
+              {"receiver": "resale2", "basis_point":1}
+          ],
+          mintable_window_start: '2021-05-31T00:00:00',
+          mintable_window_end: null,
+          trading_window_start: '2021-05-31T00:00:00',
+          trading_window_end: null,
+          recall_window_start: null,
+          recall_window_end: null,
+          max_mintable_tokens: null,
+          lockup_time: null,
+          conditionless_receivers: ['receiver1'],
+          stat: 0,
+          factory_uri: 'test',
+          factory_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523',
+          authorized_minters : [{authorized_minter:"ultra", quantity: 1}],
+          account_minting_limit: 100,
+          transfer_window_start: "1970-01-01T00:00:00",
+          transfer_window_end: null,
+          maximum_uos_payment: null,
+          default_token_uri: 'test2',
+          default_token_hash: "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523",
+          lock_hash: false
+        },
+      },
+    },
+]}, {
+  blocksBehind: 3,
+  expireSeconds: 30,
+}),
+```
+
+---
+title: 'create'
+order: 9
+
+---
+
+# create
+
+Create a token factory.
+
+::: warning
+Deprecated. Use `create.b` instead
+:::
+
+## Behavior
+
+Used to create a token factory for the **asset_creator** and will be managed by the **asset_manager**.
+
+The **asset_manager** and the **asset_creator** need to agree on the token factory configuration according to their specific business strategy, like resale share, etc. The agreement is done via the co-signing of the transaction.
+
+By creating the token factory together, the **asset_creator** agrees to all the terms, including letting the **asset_manager** manage the factory and its tokens.
+
+If the `stat` parameter is not specified, a new token factory is created in inactive state which may be changed with the `setstatus` action.
+
+## Technical Behavior
+
+Upon creation, a token factory id will be automatically assigned to the new token factory. This id is incremental and includes information about the NFT version.
+
+## Token factory ID
+
+-   64 bit number
+-   First 12 bit will be NFT version
+-   Next 52 bit will be factory counter
+-   Factory counter is singleton table with NFT version as entry, will auto increase each time a token factory is created
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Fields                          | Type                                     | Description                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| memo                            | std::string                              | Memo, 256 bytes max.                                                                                                                                                                                                                                                                                                                                                                                       |
+| version                         | uint64_t                                 | Version, always 0.                                                                                                                                                                                                                                                                                                                                                                                         |
+| asset_creator                   | eosio::name                              | asset_manager and asset_creator are required to sign this action. asset_manager and asset_creator can be same account. For v0, asset_manager will be ultra.nft.ft                                                                                                                                                                                                                                          |
+| asset_manager                   | eosio::name                              |                                                                                                                                                                                                                                                                                                                                                                                                            |
+| conversion_rate_oracle_contract | eosio::name                              | The contract where token will query the conversion rate from. Not implemented in v0.                                                                                                                                                                                                                                                                                                                       |
+| chosen_rate                     | std::vector`<eosio::asset>`              | Array of conversion rates. Each rate describes the conversion between USD ↔︎ UOS. Not implemented in v0                                                                                                                                                                                                                                                                                                     |
+| minimum_resell_price            | eosio::asset                             | Should be specified in UOS. If set to 0, tokens can be transferred to other accounts with the transfer action, as long as token still in trading window and outside of lockup time. If set to >` 0, token can only be sold to others through the buy action. conditionless_receivers will ignore these restrictions when transferred.                                                                      |
+| resale_shares                   | std::vector`<resale_share>`              | An array of pairs of (receiver of the resale, basis point). In basis points 1 means 0.0001 = 0.01%. The total limit is 7000 basis_point or 70%. Receiver can be duplicated.                                                                                                                                                                                                                                |
+| mintable_window_start           | eosio::time_point_sec                    | Input will be in UTC date up to seconds, for example: '2021-06-01T00:00:00'. The following combinations are possible: [no start, no end] --- forever mintable, [no start, end] --- can only be minted before the ending date, [start, no end] --- can only be minted after the starting date, [start, end] --- can only be minted between the start and end dates.                                         |
+| mintable_window_end             | eosio::time_point_sec                    |                                                                                                                                                                                                                                                                                                                                                                                                            |
+| trading_window_start            | eosio::time_point_sec                    | There 2 types of inputs available: null: will ignore this property, UTC_date_string exact date in UTC, up to seconds, for example: '2021-06-01T00:00:00'. Combinations: [no start, no end] --- forever tradable, [no start, end] --- can only be traded before ending date. [start, no end] --- can only be traded after starting date, [start, end] --- can only be traded in between start and end date. |
+| trading_window_end              | eosio::time_point_sec                    |                                                                                                                                                                                                                                                                                                                                                                                                            |
+| recall_window_start             | uint32_t                                 | Recall feature is disabled. Must be set to null                                                                                                                                                                                                                                                                                                                                                            |
+| recall_window_end               | uint32_t                                 | Recall feature is disabled. Must be set to null                                                                                                                                                                                                                                                                                                                                                            |
+| max_mintable_tokens             | uint64_t                                 | Null means this can be minted with an unlimited capacity, >` 0 means the factory can only mint as many tokens as specified.                                                                                                                                                                                                                                                                                |
+| lockup_time                     | uint32_t                                 | Lockup feature is disabled. Must be set to null                                                                                                                                                                                                                                                                                                                                                            |
+| conditionless_receivers         | std::vector`<eosio::name>`               | If set, all accounts must exist when transferred to an account in the list, it will bypass checks for trading window and lockup time                                                                                                                                                                                                                                                                       |
+| stat                            | uint8_t                                  | 0 (active) -- active uniq factories can do everything, 1 (inactive) --- inactive uniq factories can do everything, except for issuing. 2 (shutdown) --- shutdown uniq factories can do everything, except issuing and activating.                                                                                                                                                                          |
+| meta_uris                       | std::vector`<std::string>`               | An array of base URIs pointing to the meta data of the token factory. e.g. Ultra.io/meta/1234, redundancy.ultra.io/meta/1234. If set, values cannot contain empty strings or duplicated values.                                                                                                                                                                                                            |
+| meta_hash                       | checksum256                              | Meta data of token. Optional - can be signed with asset_creator key as proof of being original.                                                                                                                                                                                                                                                                                                            |
+| authorized_minters              | std::vector`<minter_authorization_info>` | This binary extension specifies accounts authorized to mint tokens from the token factory. `minter_authorization_info` is defined as a tuple of eosio::name (the account being authorized) and uint32_t (quantity that the authorized account can mint).                                                                                                                                                   |
+| account_minting_limit           | uint32_t                                 | This binary extension specifies the maximum number of tokens that each account can receive from token minting (issuing).                                                                                                                                                                                                                                                                                   |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft create '[{"memo":null,"version":0,"asset_manager":"ultra.nft.ft","asset_creator":"ultra","conversion_rate_oracle_contract":"eosio.oracle","chosen_rate":["60.0000 SECONDS"],"minimum_resell_price":null,"resale_shares":[{"receiver":"ultra.nft.ft", "basis_point":1}],"mintable_window_start":"2021-05-31T00:00:00","mintable_window_end":null,"trading_window_start": "2021-05-31T00:00:00","trading_window_end":null,"recall_window_start": null,"recall_window_end":null,"max_mintable_tokens":10000,"lockup_time":null,"conditionless_receivers":null,"stat":0,"meta_uris":["test"],"meta_hash":"d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523","authorized_minters":[],"account_minting_limit":100}]' -p ultra.nft.ft -p ultra
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'create',
+                authorization: [
+                    { actor: 'ultra.nft.ft', permission: 'active' },
+                    { actor: 'asset_creator.acc', permission: 'active' },
+                ],
+                data: {
+                    create: {
+                        memo: '',
+                        version: 0,
+                        asset_manager: 'ultra.nft.ft',
+                        asset_creator: 'asset_creator.acc',
+                        conversion_rate_oracle_contract: 'oracle.rate',
+                        chosen_rate: ['60.0000 SECONDS'],
+                        minimum_resell_price: '1.00000000 UOS',
+                        resale_shares: [
+                            { receiver: 'resale1', basis_point: 1 },
+                            { receiver: 'resale2', basis_point: 1 },
+                        ],
+                        mintable_window_start: '2021-05-31T00:00:00',
+                        mintable_window_end: null,
+                        trading_window_start: '2021-05-31T00:00:00',
+                        trading_window_end: null,
+                        recall_window_start: null,
+                        recall_window_end: null,
+                        max_mintable_tokens: null,
+                        lockup_time: null,
+                        conditionless_receivers: ['receiver1'],
+                        stat: 0,
+                        meta_uris: ['test'],
+                        meta_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523',
+                        authorized_minters: [{ authorized_minter: 'ultra', quantity: 1 }],
+                        account_minting_limit: 100,
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'creategrp'
+order: 11
+
+---
+
+# creategrp
+
+Creates a factory group.
+
+## Technical Behavior
+
+* Anyone can create a factory group. RAM is charged in the beginning so a creator needs to make sure max_uos_payment is larger than charged value.
+
+* `factories` field cannot contain duplicates.
+
+**RAM usage/cost calculation and payment/refund**
+
+-   RAM usage used to store factory group info is covered by `eosio.nftram` account. If the unused RAM of eosio.nftram is less than or equal to 200MB, the action can’t be executed.
+
+-   The cost of a factory group entry is paid to `eosio.nftram` and it will be locked up in this entry. The funds are released back to the original payer after the factory group is deleted
+
+      -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+          -   NFT RAM payment size: **960 bytes**. Estimated for:
+              - `uri` with length of 256
+              - 64 entries in `factories`
+
+          -   RAM price: **0.15 USD/KB**
+
+      -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
+          (960B/1024B \* 0.15USD/KB) / (conversion rate) = `0.140625` **USD**/(conversion rate)
+
+-   When a factory group manager adds or removes a factory from the group
+
+    -   No additional RAM is charged for or released funds for
+
+## Action Parameters
+
+| field name      | c++ type         | js type |
+| --------------- | ---------------- | ------- |
+| manager         | name             | string  |
+| uri             | string           | string  |
+| hash            | checksum256      | string  |
+| factories       | vector<uint64_t> | Array   |
+| max_uos_payment | asset            | string  |
+
+## CLI
+
+```bash
+cleos push action eosio.nft.ft creategrp '["ultra", "http://localhost", "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523", ["20", "7", "44"], "1.00000000 UOS"]'
+```
+
+## JS
+
+```ts
+await transact([{
+    account: 'eosio.nft.ft',
+    name: 'creategrp',
+    authorization: [{actor: 'ubisoft', permission: 'active'}],
+    data: {
+        manager: "ubisoft",
+        uri: "https://nft.ubisoft.com/factorygroups/assasinscreed",
+        hash: "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523",
+        factories: [1, 2, 5, 10],
+        max_uos_payment: "1.00000000 UOS"
+    }
+}], {
+  blocksBehind: 3,
+  expireSeconds: 30,
+});
+```
+
+---
+title: 'deletegrp'
+order: 12
+
+---
+
+# deletegrp
+
+Deletes a factory group with specified id.
+
+## Technical Behavior
+
+ID should be valid and transaction signed by the manager of the corresponding group.
+
+**RAM usage/cost calculation and payment/refund**
+
+-   After deleting a token factory group, 85% of UOS locked in the factory group is released back to the original payer, while 15% goes to the `eosio.pool` account.
+
+## Action Parameters
+
+| field name | c++ type | js type |
+| ---------- | -------- | ------- |
+| id         | uint64_t | number  |
+
+## CLI
+
+```bash
+cleos push action eosio.nft.ft deletegrp '[33]' -p ubisoft
+```
+
+## JS
+
+```ts
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'deletegrp',
+            authorization: [{ actor: 'ubisoft', permission: 'active' }],
+            data: {
+                id: 33,
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'delprchsreq.a'
+order: 33
+
+---
+
+# delprchsreq.a
+
+This action is used to delete purchase requirements for a token factory.
+
+## Technical Behavior
+
+Deletes an existing purchase option of the factory with specified `token_factory_id` and purchase option with specified `index`. Transaction should be signed by factories asset manager otherwise it will fail.
+
+If the asset manager of the factory is an account other than `ultra.nft.ft`, 85% of the locked-up UOS payment (`uos_payment`) is refunded to the factory's asset manager. Ultra always takes a 15% non-refundable commission and it goes to the `eosio.pool` system account. This is done to prevent network abuse associated with constant RAM pricing model of NFT contract.
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name    | C++ Type    | JavaScript Type | Description                                                  |
+| ---------------- | ----------- | --------------- | ------------------------------------------------------------ |
+| token_factory_id | uint64_t    | number          | ID of the token factory to delete purchase requirement from  |
+| index            | uint64_t    | number          | Valid index of existing purchase option for provided factory |
+| memo             | std::string | string          | A short operation description                                |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft delprchsreq.a '[100, 0, "delete purchase req"]' -p factory.manager
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'delprchsreq.a',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    token_factory_id: 100,
+                    index: 0,
+                    memo: '',
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'fhglobalshr'
+order: 35
+
+---
+
+# fhglobalshr
+
+Ultra configures the protocol fee for first hand token purchases
+
+## Technical Behavior
+
+The required authorization is the `ultra.nft.ft` account
+
+`share` must not exceed the value specified in the `saleshrlmcfg` table under a scope of `0` (if it exists) or 1000 (10%) otherwise
+
+`receiver` must be an existing account if a value is provided. If no value is provided the global share receiver account will remain unchanged
+
+## Action Parameters
+
+| Property Name | C++ Type                    | Javascript Type | Example     |
+| ------------- | --------------------------- | --------------- | ----------- |
+| share         | uint16_t                    | number          | 200         |
+| receiver      | std::optional\<eosio::name> | string          | ultra.prtcl |
+
+## CLI - cleos
+
+cleos push action eosio.nft.ft fhglobalshr '[200, "ultra.prtcl"]' -p ultra.nft.ft
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'fhglobalshr',
+                authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+                data: {
+                    share: 200,
+                    receiver: "ultra.prtcl"
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'globalshare'
+order: 34
+
+---
+
+# globalshare
+
+Ultra configures protocol fee for second hand token resells
+
+## Technical Behavior
+
+The required authorization is the `ultra.nft.ft` account
+
+`share` must not exceed the value specified in `saleshrlmcfg` table under a scope of `1` (if it exists) or 1000 (10%) otherwise
+
+`receiver` must be an existing account if a value is provided. If no value is provided the global share receiver account will remain unchanged
+
+## Action Parameters
+
+| Property Name | C++ Type                    | Javascript Type | Example     |
+| ------------- | --------------------------- | --------------- | ----------- |
+| share         | uint16_t                    | number          | 200         |
+| receiver      | std::optional\<eosio::name> | string          | ultra.prtcl |
+
+## CLI - cleos
+
+cleos push action eosio.nft.ft globalshare '[200, "ultra.prtcl"]' -p ultra.nft.ft
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'globalshare',
+                authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+                data: {
+                    share: 200,
+                    receiver: "ultra.prtcl"
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'issue.b'
+order: 14
+
+---
+
+# issue.b
+
+This action can be used to issue tokens by factory managers or authorized minters
+
+## Technical Behavior
+
+**Parameter validation**
+
+Upon the usage of the **issue action,** the action verifies that the parameters supplied in the action have values, such as **to, token_configs**, and **memo.** The memo specifically has a 256-byte limitation. The required authorization is either the token factory manager or the authorized minter account for each token specified in **token_configs**. The **token_configs** vector is verified to not be empty and each **token_config** is verified to have an **amount** specified and a valid **token_factory_id** in order to begin the minting process of a token. The **token_metadata** vector is optional, but if provided, it is verified to be the same length as the number of tokens to mint. Providing the **token_metadata** parameter allows user to set the token metadata at the time of minting the token.
+
+**On-the-fly migration**
+
+If **token_factory** (**token_factory_v0**, to be exact) exists in v0 factory table, **factory.a**, the action copies it to v1 factory table, **factory.b** and removes the existing one from **factory.a**. After that, it operates on v1 **token_factory** (**token_factory_v1**, to be exact).
+
+**Main operations**
+
+The action retrieves the **token_factory** from the token factory table, **factory.b**. It validates that the **token_factory** is currently allowing tokens to be issued and checks if the token can currently be minted based on the **minting window** specified by the **token_factory.** It also checks if there is a **max_mintable_tokens** and ensure that additional token combined with existed token does not exceed that count.
+
+When **max_mintable_tokens** amount of tokens has been minted, token factory will NOT transition to `inactive` or `shutdown` state automatically, this step needs to be done manually.
+
+The token is then created and whoever the **to** user is the token is emplaced into their token list, **token.b**.
+
+**Token ID**
+
+-   Upon issue, each token will be assigned with 1 unique token ID
+
+-   A singleton is used to track the global token ID.
+
+**Minting Limit**
+
+Minting limit is a new concept that was introduced in Release 27. It allows for uniq factories to limit the amount of tokens that can be minted to an individual account. Meaning, that if the **account_minting_limit** of a token factory is set to 5, then users may not purchase more than 5 tokens under that specific account.
+
+-   **account_minting_limit** of a token factory can be set/reset by calling `limitmint` action. It is null by default, which means the minting limit function is not applied to the factory.
+
+-   If a token factory has **account_minting_limit** specified, it automatically creates entries in the **mintstat.a** table with the scope of the **token_factory_id**, where the number of minted tokens for each issued account is recorded.
+
+-   When the limit for the token factory is reached, it will prevent the user from purchasing any more tokens.
+
+-   If the **account_minting_limit** is set to null it allows users to purchase infinite tokens.
+
+**Authorized minter**
+
+-   An optional parameter, **authorizer**, can be specified to issue tokens by an authorized minter instead of token factory manager (**asset_manager**).
+    In this case:
+
+    -   **authorizer**'s permission is required instead of token factory manager's one.
+
+    -   **authorizer**'s minting quota stored in authorized minter info table is reduced by the number of minted tokens, and if it reaches zero, their authorized minter info record is removed from the table.
+
+**RAM usage**
+
+-   Creating new token
+
+    -   RAM usage of creating a token is covered by `eosio.nftram`. **4GB** will be gifted to `eosio.nfrram` to start with. The action fails If the unused RAM of `eosio.nftram` is less than or equal to **200MB**.
+
+    -   Token data is stored to `token.b` table and each entry’s pack size will be **192 bytes**.
+
+    -   If the RAM usage for token exceeds maximum pack size of **384 bytes**, action will fail.
+
+    -   If **asset_manager** or **authorizer** is other than `ultra.nft.ft`, The cost of creating a token is paid to `eosio.nftram` and it will be locked up in the token minted.
+
+        -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+            -   NFT RAM payment size: **384 bytes**
+
+                - estimated for a token with URI of size 192
+
+            -   RAM price: **0.15 USD/KB**
+
+        -   The cost is paid in UOS. The action gets `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. and calculates the cost by
+            (384B/1024B \* 0.15USD/KB) / (conversion rate) = `0.05625` **USD**/(conversion rate)
+
+-   When a mintstats.a entry is added due to first time minting to an account from a factory with minting limit, it will charge the cost for adding each mintstat.a entry. The payer is the authorizer of the minting (it’s the authorized minter if using authorizer, ortherwise the manager). It pays to eosio.nftram, and its ram usage and payment will be bookkept in the manager’s vault.
+
+-   When an authorized minter’s quota becomes zero (by minting their quota or by delegating their quota to another authorized minter)
+
+    -   The authorized minter’s info is removed from `authmintrs.a` table.
+
+    -   The factory’s manager will get the refund proportional to the amount of RAM released from the RAM vault, i.e.
+        refund = (accumulated RAM payment) \* (released amount of RAM)/(accumulated amount of RAM usage).
+
+**Notifications**
+
+`require_recipient` is done for `asset_manager` of the token factory, `to` account that recieves the token and `authorizer` (if specified in the action)
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Property Name       | C++ Type                       | JavaScript Type       |
+| ------------------- | ------------------------------ | --------------------- |
+| to                  | name                           | string                |
+| token_configs       | vector token_config            | Array                 |
+| memo                | string                         | string                |
+| authorizer          | optional name                  | string can be omitted |
+| maximum_uos_payment | optional asset                 | string can be omitted |
+| token_metadata      | optional vector token_metadata | Array                 |
+
+**Token Config Interface**
+
+| Property Name    | C++ Type | JavaScript Type |
+| ---------------- | -------- | --------------- |
+| token_factory_id | uint64_t | number          |
+| amount           | uint32_t | number          |
+| custom_data      | string   | string          |
+
+**Token Metadata Interface**
+
+| Property Name | C++ Type             | JavaScript Type |
+| ------------- | -------------------- | --------------- |
+| meta_uri      | optional string      | string          |
+| meta_hash     | optional checksum256 | string          |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft issue.b '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 5, "amount": 1, "custom_data": ""}], "token_metadata":[{"meta_uri": "some-uri", "meta_hash": "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539"}], "memo": "token time" }]' -p factory.manager@active
+```
+
+-   with **authorizer**
+
+```bash
+cleos push action eosio.nft.ft issue.b '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 2, "amount": 1, "custom_data": ""}], "token_metadata":[{"meta_uri": "some-uri", "meta_hash": "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539"}], "memo": "token time", "authorizer": "auth.minter.account" }]' -p auth.minter.account@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'issue.b',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    issue: {
+                        to: 'to.user.acc',
+                        token_configs: [
+                            {
+                                token_factory_id: 5,
+                                amount: 1,
+                                custom_data: '',
+                            },
+                        ],
+                        token_metadata: [
+                            {
+                                meta_uri: 'some-uri',
+                                meta_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539',
+                            },
+                        ],
+                        memo: 'token time',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+-   with **authorizer**
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'issue.b',
+                authorization: [{ actor: 'auth.minter.account', permission: 'active' }],
+                data: {
+                    issue: {
+                        to: 'to.user.acc',
+                        token_configs: [
+                            {
+                                token_factory_id: 5,
+                                amount: 1,
+                                custom_data: '',
+                            },
+                        ],
+                        token_metadata: [
+                            {
+                                meta_uri: 'some-uri',
+                                meta_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539',
+                            },
+                        ],
+                        memo: 'token time',
+                        authorizer: 'auth.minter.account',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'issue'
+order: 13
+
+---
+
+# issue
+
+This action can be used to issue tokens by factory managers or authorized minters
+
+::: warning
+Deprecated. Use `issue.b` instead
+:::
+
+## Technical Behavior
+
+Upon the usage of the issue action, the action will verify that the parameters supplied in the action have values, such as to, token_configs, and memo. The memo specifically has a 256-byte limitation. The required authorization is the token_factory_manager user for each token specified in token_configs. The token_configs vector is verified to not be empty and each token_config is verified to have an amount specified and a valid token_factory_id in order to begin the minting process of a token.
+
+It will retrieve the token_factory from the token factory table. It will validate that the token_factory is currently allowing tokens to be issued and will check if the token can currently be minted based on the minting window specified by the token_factory. It will also check if there is a max_mintable_tokens and ensure that additional token combined with existed token does not exceed that count.
+
+When max_mintable_tokens amount of tokens has been minted token factory will NOT transition to inactive or shutdown state automatically, this step needs to be done manually.
+
+The token_factory manager is required to authorize the minting of the tokens.
+
+The token is then created and whoever the to user is the token is emplaced into their token list.
+
+**Token Id**
+
+Upon issue, each token will be assigned with 1 unique token id
+
+A singleton is used to track the global token ID.
+
+**Minting Limit**
+
+Minting limit is a new concept that was introduced in Release 27. It allows for uniq factories to limit the amount of tokens that can be minted to an individual account. Meaning, that if the account_minting_limit of a token factory is set to 5. Then users may not purchase more than 5 Tokens under that specific account.
+
+-   account_minting_limit of a token factory can be set/reset by calling limitmint action. It is null by default, which means minting limit function is not applied to the factory.
+
+-   When a token factory has account_minting_limit specified it will automatically create entries in the mintstat.a table with the scope of the token_factory_id, where the number of minted tokens for each issued account is recorded.
+
+-   When the limit for the token factory is reached it will prevent the user from purchasing any more tokens.
+
+-   If the account_minting_limit is set to null it will automatically allow users to purchase infinite tokens.
+
+-   An optional parameter, authorizer, can be specified to issue tokens by an authorized minter instead of token factory manager (asset_manager).
+    In this case:
+
+    -   authorizer's permission is required instead of token factory manager's one.
+
+    -   authorizer's minting quota stored in authorized minter info table is reduced by the number of minted tokens, and if it reaches zero, their authorized minter info record is removed from the table.
+
+-   ram used to mint NFTs is covered by eosio.nft.ft account, will also be changed to eosio.nftram account
+
+**Redirect to issue.b (issue v1) action**
+
+After v1 is activated by activers action, calls to issue action will be redirected to issue.b (issue v1) action .
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Fields        | Type                               | Description                                     |
+| ------------- | ---------------------------------- | ----------------------------------------------- |
+| to            | eosio::name                        | The receiver Account                            |
+| token_configs | std::vector`<token_config>`        | An array of token configs described below.      |
+| memo          | std::string                        | A short operation description.                  |
+| authorizer    | std::binary_extension`<std::name>` | The account that authorizes this issue of NFTs. |
+
+**Token Config Interface**
+
+| Fields           | Type        | Description                    |
+| ---------------- | ----------- | ------------------------------ |
+| token_factory_id | uint64_t    | The issuing token factory ID   |
+| amount           | uint64_t    | The number of tokens to mint   |
+| custom_data      | std::string | A short operation description. |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft issue '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 5, "amount": 1, "custom_data": ""}], "memo": "token time" }]' -p factory.manager@active
+```
+
+-   with **authorizer**
+
+```bash
+cleos push action eosio.nft.ft issue '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 2, "amount": 1, "custom_data": ""}], "memo": "token time", "authorizer": "auth.minter.account" }]' -p auth.minter.account@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'issue',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    issue: {
+                        to: 'to.user.acc',
+                        token_configs: [
+                            {
+                                token_factory_id: 5,
+                                amount: 1,
+                                custom_data: '',
+                            },
+                        ],
+                        memo: 'token time',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+-   with **authorizer**
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'issue',
+                authorization: [{ actor: 'auth.minter.account', permission: 'active' }],
+                data: {
+                    issue: {
+                        to: 'to.user.acc',
+                        token_configs: [
+                            {
+                                token_factory_id: 5,
+                                amount: 1,
+                                custom_data: '',
+                            },
+                        ],
+                        memo: 'token time',
+                        authorizer: 'auth.minter.account',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'lckfactory'
+order: 16
+
+---
+
+# lckfactory
+
+Allows a token manager to lock hashes for the factory, default token and all minted tokens as well as any token minted afterwards.
+
+## Technical Behavior
+
+The required authorization is the token_factory_manager as the manager is responsible for updating the data.
+
+**token_factory_id** is required and must exist.
+
+## RAM usage
+
+-   Adding uri and hash will consume certain bytes depend on how many data are added.
+
+    -   RAM usage is covered by eosio.nftram. But this action will fail if the unused RAM of eosio.nftram is less than or equal to 200MB.
+
+    -   If the RAM usage is exceed token maximum pack size of 384 bytes, action will fail.
+
+-   Updating or remove meta data which result in no bytes is added, there will be no restriction.
+
+## Action Parameters
+
+| Property Name    | C++ Type | Javascript Type | Example |
+| ---------------- | -------- | --------------- | ------- |
+| token_factory_id | uint64_t | number          | 1       |
+
+## CLI - cleos
+
+cleos push action eosio.nft.ft lckfactory '[1]' -p manager.acc@active
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'lckfactory',
+                authorization: [{ actor: 'manager.acc', permission: 'active' }],
+                data: {
+                    token_factory_id: 1,
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'limitmint'
+order: 15
+
+---
+
+# limitmint
+
+Sets/Resets the minting limit per account of a token factory
+
+## Technical Behavior
+
+-   limitmint action first verifies the parameters passed to it.
+
+        * token_factory_id - the token factory ID
+
+        * account_minting_limit - the number of minting limit per account, or 0 to invalidate the setting
+
+    if not 0 and token factory has a valid max_mintable_tokens (i.e., not null), account_minting_limit should be no more than max_mintable_tokens.
+
+        * memo - the memo string to accompany the transaction, should be no more than 256 bytes
+
+        * The action should be called with the token factory manager(asset_manager)’s permission.
+
+        * The action stores account_minting_limit parameter value to the token factory’s account_minting_limit field. If account_minting_limit of 0 is specified, the action resets the token factory’s account_minting_limit field to null.
+
+        * Each time when issue action is called, if the token factory has a valid account_minting_limit, minted number of tokens is recorded for each of the token receiver's account in mintstat (mintstat.a) table. If the number of minted tokens has been already reached  account_minting_limit , issue action prevents the receiver from getting any more tokens.
+
+## RAM Usage
+
+Setting account_minting_limit will consume 4 bytes of RAM
+
+RAM usage is covered by eosio.nftram. But this action will fail if the unused RAM of eosio.nftram is less than or equal to 200MB.
+
+If the RAM usage is exceed factory maximum pack size of 1920 bytes, action will fail.
+
+When update or reset account_minting_limit, there is no restriction on RAM usage.
+
+## Action Parameters
+
+| Name                  | C++ Type  | Javascript Type  |
+| --------------------- | --------- | ---------------- |
+| token_factory_id      | unint64_t | number or string |
+| account_minting_limit | uint32_t  | number or string |
+| memo                  | string    | string           |
+
+## CLI - Cleos
+
+```
+cleos push action eosio.nft.ft limitmint '{"token_factory_id": 5, "account_minting_limit": 100, "memo": "limitmint time"}' -p factory.manager@active
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'limitmint',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    token_factory_id: 5,
+                    account_minting_limit: 100,
+                    memo: 'limitmint time',
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+## Migration from v0 to v1
+
+There is no interface change
+
+### behavior change
+
+has no changes in business logic
+
+### changes in tables to read/write
+
+it will migrate factory.a to factory.b, before updating minting limit of the factory.b object
+
+---
+title: 'mgrfactories'
+order: 17
+
+---
+
+# mgrfactories
+
+This action can be used to migrate uniq factories from v0 to v1 as continuous migration.
+
+## Parameter validation
+
+The number of factories to migrate is specified as total_no, which should not be zero.
+
+## Main operations
+
+Each v0 factory record in factory.a table is converted to v1 factory record and moved to factory.b table. This process continues for total_no times or until factory.a table becomes empty, in which case factory_a_migration_done flag (1) is set in migration table.
+
+## Action Parameters
+
+| Property Name | C++ Type | JavaScript Type |
+| ------------- | -------- | --------------- |
+| total_no      | uint64_t | number          |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft mgrfactories '{"total_no": 10}' -p ultra.nft.ft@active
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'mgrfactories',
+                authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+                data: {
+                    total_no: 10,
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'mgrnfts'
+order: 18
+
+---
+
+# mgrnfts
+
+This action can be used to migrate tokens from v0 to v1 as continuous migration.
+
+## Technical Behavior
+
+**Parameter validation**
+
+Owners should be an array of token owner accounts.
+
+The number of tokens to migrate is specified as total_no, which should not be zero.
+
+**Main operations**
+
+Each v0 token record in token.a table is converted to v1 token record and moved to token.b table. This process continues until total_no of tokens are migrated or it reaches the end of token.a table of the last owner account of owners.
+
+| Property Name | C++ Type       | JavaScript Type  |
+| ------------- | -------------- | ---------------- |
+| owners        | `vector<name>` | array of strings |
+| total_no      | uint64_t       | number           |
+
+## CLI - cleos
+
+```
+cleos push action eosio.nft.ft mgrnfts '{"owners": ["alice", "bob"], "total_no": 10}' -p ultra.nft.ft@active
+```
+
+## JavaScript - eosjs
+
+```
+
+await api.transact({
+  actions: [
+    {
+      account: "eosio.nft.ft",
+      name: "mgrnfts",
+      authorization: [{ actor: "ultra.nft.ft", permission: "active" }],
+      data: {
+        owners: ["alice", "bob"],
+        total_no: 10
+      }
+    }
+  ]
+}, {
+  blocksBehind: 3,
+  expireSeconds: 30,
+});
+```
+
+---
+title: 'Migration Behavior'
+order: -99
+
+---
+
+# Migration Behavior
+
+The NFT smart contract is written in a way to allow for **migration from our existing NFT version to our new version automatically**. The end user of the action does not have to do anything new, but it is **highly recommended to migrate** to the new action pattern as soon as possible.
+
+This is done by having a parent function that handles migration on the fly. This means that when the action is called in the future for a specific smart contract that has not migrated from a previous version to the new version, it will re-route the action through the appropriate version after making the necessary table changes to support the new version.
+
+These migration behaviors are done across the entire smart contract and exist in almost every action.
+
+## Example Behavior
+
+We will take the `create` action as an example of this behavior.
+
+We will be doing a migration from V0 to V1 to help describe the general behavior.
+
+Once migration has started inside of the smart contract a flag is enabled and will begin taking any of the existing `create` structs that are sent through the main function and automatically converting them.
+
+This is done by taking the `V0` struct and automatically creating a new `V1` struct. New values are created, defined, and even in some cases transformed to support the new tables.
+
+After performing the struct migration, it will reroute the action into the correct version of the function that can handle the new `struct` data.
+
+## Conclusion
+
+Each action has their own migration pattern and they are all complex in their own unique way.
+
+When a new version is announced it is always best to migrate your actions to match the structs which are provided.
+
+---
+title: 'purchase.a'
+order: 31
+
+---
+
+# purchase.a
+
+This action is used to purchase uniqs directly from a token factory.
+
+## Technical Behavior
+
+1. User provides information about the Uniq they wish to purchase
+
+2. Verify that the Uniq has a purchase requirement
+
+3. Obtain the price of the Uniq and convert to UOS
+
+4. Verify that if the purchase requirement requires additional uniqs that the uniqs passed are relevant to the purchase requirement
+
+5. Additional transfer, and burning actions may be used on individual uniqs during the verification process. They are kept if the transaction fails
+
+6. Distribute shares based on purchase requirements, done through inline calls
+
+7. Send protocol fee. Amount and account are configured under `global.share` table scope `0`, done through inline calls
+
+8. Send remainder of shares to the factory manager, done through inline calls
+
+9. Issue the token to the user. **Note**: minting a Uniq requires additional UOS paid by the factory manager. Refer for details to [issue.b - issue tokens with token factory](./issue.b.md)
+
+10. Increment the number of tokens purchased for the given user
+
+11. If a purchase option has been configured with `group_restriction` via the `setprchsreq.a` action, the `purchase.a` action will take these restrictions into account before allowing the purchase to proceed.
+
+> **Note**: For details on how to configure `group_restriction` through `setprchsreq.a`, please refer to [setprchsreq.a Documentation](./setprchsreq.a.md).
+
+
+If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If no promoter is specified then default promoter will be used and is specified by Ultra in `saleshrlmcfg` table under a scope of `0` in `default_promoter`.
+
+### Supplying Uniqs for Purchases
+
+In some cases a token factory may require certain uniqs to exist in the user inventory table to enable the user to purchase a uniq.
+
+Think of it like a pre-requisite or an entry ticket to purchasing other uniqs.
+
+When a uniq is being purchased it goes through our `verify_user_uniqs` function that looks into the buyer's inventory and verifies that the uniq factories required uniqs matches the user supplied uniqs. The function checks that the `user supplied uniqs` from the user matches the `factory required uniqs`. The function checks that the user is passing uniqs that have the correct token factory id, and checks that the user **is not** passing irrelavant uniqs.
+
+It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
+
+Strategy meaning: `0` just check ownership of the provided nft, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
+
+All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
+
+### Burning Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `1` it will automatically perform an inline call to the `burn` action and pass over any tokens that need to be burned.
+
+Internally we are constructing a vector of which `token_ids` to be burned.
+
+### Transferring Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `2` it will automatically perform an inline call to the `transfer` action and pass over any tokens that need to be transferred.
+
+The transferred uniqs will automatically be moved to the `transfer_tokens_receiver_account` that was setup during the purchase requirements setup.
+
+Internally we are constructing a vector of which `token_ids` to be transferred.
+
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name    | C++ Type                            | JavaScript Type | Description                                                                                                                                                                         |
+| ---------------- | ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t                            | number          | ID of a token factory to purchase from                                                                                                                                              |
+| index            | uint64_t                            | number          | Index of purchase option to use                                                                                                                                                     |
+| max_price        | asset                               | string          | Maximum amount of UOS you allow to be withdrawn from your account. If price is set in USD this will prevent transaction from overcharging you in case USD price goes down           |
+| buyer            | eosio::name                         | string          | Account that will pay UOS and/or Uniqs for this purchase                                                                                                                            |
+| receiver         | eosio::asset                        | string          | Account that will receive the Uniq from this purchase                                                                                                                               |
+| promoter_id      | std::optional\<eosio::name>         | string / null   | Optional promoter of the purchase transaction. If no promoter is provided then the default promoter specified in `saleshrlmcfg` (scope `0`) will be used if present                 |
+| user_uniqs       | std::optional\<provided_user_uniqs> | Array / null    | List of uniqs the buyer is willing to provide for this purchase option to either be taken from him or to just verify their presence. Refer to `provided_user_uniqs` breakdown below |
+| memo             | std::string                         | string          | A short operation description                                                                                                                                                       |
+
+`user_uniqs` is a vector of `provided_user_uniqs`, which has the following structure
+
+| Property Name | C++ Type | JavaScript Type | Description                                                                                                                      |
+| ------------- | -------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                                |
+| strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a) for allowed values and usage |
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "token_receiver_account",
+    "promoter_id": "",
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 77,
+        "strategy": 2
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [{
+      account: 'eosio.nft.ft',
+      name: 'purchase.a',
+      authorization: [{ actor: 'alice', permission: 'active' }],
+      data: {
+        purchase: {
+          token_factory_id: 100,
+          index: 1,
+          max_price: "100.00000000 UOS",
+          buyer: "alice",
+          receiver: "token_receiver_account",
+          promoter_id: "",
+          user_uniqs: {
+            tokens: [{
+              token_id: 77,
+              strategy: 2
+            }]
+          },
+          memo: ""
+        }
+      },
+    }],
+  }, {
+    blocksBehind: 3,
+    expireSeconds: 30,
+  }
+);
+```
+
+---
+title: 'recall'
+order: 19
+
+---
+
+# recall
+
+The token factory manager can use it to recall a token.
+
+::: warning
+This action is deprecated.
+:::
+
+## Technical Behavior
+
+Upon the usage of the **recall action** the action will verify that the parameters supplied in the action have values. This includes **owner, token_ids.** The memo specifically has a 256 byte limitation. The required authorization is the **token factory manager** of the **token_ids** specified. This can be done entirely without the token owner’s permission.
+
+After doing the initial value checks the NFT contract version is determined and routes the recall function depending on what version the NFT token is.
+
+Each token that is specified inside of **token_ids** will verify the following:
+
+-   The **owner** actually owns the **token_id**.
+-   The **token_id** has an entry in the table and a corresponding **token_factory.**
+-   The authorization of the **token_factory manager** was given.
+-   It will check if a recall window is specified.
+
+    -   It will fail the transaction if no recall window exists for the token.
+    -   At least a start or end time for recall windows must be specified for this action to work.
+
+-   It will check if the **token** is past the recall window.
+
+    -   Adds recall window time to the mint time of the token.
+    -   Adds recall window end time to the mint time of the token.
+    -   If the first bullet exceeds the end time then it cannot be recalled and the transaction will fail.
+
+After checking the above, it will remove any entries in the resale table if available. Then the manager will have the **token** assigned to them.
+
+The **owner** will have the token removed from their table.
+
+_\*This business decision was decided upon to prevent credit card fraud and revoke tokens during a grace period for token sales. After the grace period is exceeded the token cannot be recalled._
+
+## On-the-fly migration
+
+After v1 is activated by activers action, if token exists in v0 token table, token.a, it is moved to v1 token table, token.b. Also, if the token factory from which the token was minted exists in v0 factory table, factory.a, it is moved to factory.b.
+
+When done, v0 entry will be deleted so next time when interact with these data, no migration is needed.
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Fields    | Type                    | Description                    |
+| --------- | ----------------------- | ------------------------------ |
+| owner     | eosio::name             | The NFT Owner account          |
+| token_ids | std::vector`<uint64_t>` | The NFTs to recall.            |
+| memo      | std::string             | A short operation description. |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft recall '[{ "owner": "owner.user.acc", "token_ids": [1], "memo": "credit card fraud"}]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'recall',
+                authorization: [{ actor: 'manager.acc', permission: 'active' }],
+                data: {
+                    recall: {
+                        owner: 'owner.user.acc',
+                        token_ids: [1],
+                        memo: 'credit card fraud',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'resell'
+order: 20
+
+---
+
+# resell
+
+Place tokens for sale on the resell marketplace.
+
+## Behavior
+
+Allows a user to set their token for resale and to specify the expected price. Think of it like marking a token for sale in a marketplace.
+
+## Technical Behavior
+
+Upon the usage of the **resell action** the action will verify that the parameters supplied in the action have values. This includes **seller, token_id, price, promoter_basis_point, and memo.**
+
+The memo specifically has a 256 byte limitation. The required authorization is the **seller** as the seller is the one who is meant to own the token that is being sold. During this process there must be a price, and the **promoter_basis_point** has a minimum value specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `min_promoter_share_bp` (default is **200** meaning **2%**) which serves as a share of the potential promoter of the future purchase of the token being sold. Otherwise it cannot exceed the maximum resale_share_limit value for the promoter. The maximum value is specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `max_promoter_share_bp` (default is **1000 (10%)**). This means that that **promoter_basis_point** should by default be between **250 - 1000.** The token has its version looked up and then proceeds with the following resale behavior.
+
+Once a version is determined and the **token** has determined its route for resale it will retrieve the **token** from the token table. It will validate that the **token_factory** exists by using the **token_factory_id** specified inside of the token. It will fail if it cannot determine these values.
+
+During the resale verification it will determine if the price specified by the user is greater than the minimum specified by the **token_factory**. It will also check to ensure that the token can be traded and is valid for the trading window.
+
+It will also ensure that the token has exceeded the lockup time specified by the **token_factory**. Meaning that at this stage it is fully available for being resold or traded.
+
+Once this has been completed it will ensure that the **sale_shares** does not exceed the maximum **sales_share** percentage which is 10000 basis points (100%) and normally this should always be the case.
+
+The resale table will try to find the token and ensure it doesn’t already exist in the token resale table.
+
+If it doesn’t exist it gets placed and the transaction is completed.
+
+**Notifications**
+
+`require_recipient` is done for `seller` and asset manager of the token factory
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Fields               | Type         | Description                    |
+| -------------------- | ------------ | ------------------------------ |
+| seller               | eosio::name  | The current Owner account      |
+| token_id             | uint64_t     | The NFT ID                     |
+| price                | eosio::asset | The resale price               |
+| promoter_basis_point | uint16_t     | The resale promoter comission. |
+| memo                 | std::string  | A short operation description  |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft resell '[{ "seller": "seller.acc", "token_id": 25, "price": "4.00000000 UOS", "promoter_basis_point": 250, "memo": "Up for Sale!" }]' -p seller.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'resell',
+                authorization: [{ actor: 'seller.acc', permission: 'active' }],
+                data: {
+                    resell: {
+                        seller: 'seller.acc',
+                        token_id: 25,
+                        price: '4.00000000 UOS',
+                        promoter_basis_point: 250,
+                        memo: 'Up for Sale!',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'rmgrpfcts'
+order: 21
+
+---
+
+# rmgrpfcts
+
+Remove factory ids from a group.
+
+## Technical Behavior
+
+ID should be valid and transaction signed by the manager of the corresponding group.
+
+Factories argument should contain only existing ids.
+
+## Action Parameters
+
+| field name | c++ type           | js type         |
+| ---------- | ------------------ | --------------- |
+| id         | uint64_t           | number          |
+| factories  | `vector<uint64_t>` | `Array<number>` |
+
+## CLI
+
+```bash
+cleos push action eosio.nft.ft rmgrpfcts '[33, ["7", "11", "22"]' -p ubisoft
+```
+
+## JS
+
+```ts
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'rmgrpfcts',
+            authorization: [{ actor: 'ubisoft', permission: 'active' }],
+            data: {
+                id: 33,
+                factories: [7, 11, 22],
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setconrecv'
+order: 21
+
+---
+
+# setconrecv
+
+Set conditionless receivers
+
+## Behavior
+
+Allows a token manager to set conditionless receivers for an existing token factory.
+
+## Technical Behavior
+
+The required authorization is the **token_factory_manager** as the manager is responsible for updating the data.
+
+**token_factory_id** is required and must be exist.
+
+**memo** value has a 256 byte limitation
+
+**conditionless_receivers** should be non-empty and each account should be valid
+
+## Action Parameters
+
+| Fields                  | Type                      | Description                                     |
+| ----------------------- | ------------------------- | ----------------------------------------------- |
+| token_factory_id        | uint64_t                  | The token factory ID.                           |
+| memo                    | std::string               | A short operation description.                  |
+| conditionless_receivers | std::vector\<eosio::name> | The array of conditionless receivers being set. |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setconrecv '[1, "updating", ["joe"]]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setconrecv',
+                authorization: [{ actor: 'manager.acc', permission: 'active' }],
+                data: {
+                    token_factory_id: 1,
+                    memo: 'set conditional receivers',
+                    conditionless_receivers: ['joe'],
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setdflttkn'
+order: 24
+
+---
+
+# setdflttkn
+
+Allows a token manager to set metadata uri and hash for default token of an existing token factory.
+
+Refer to [uniq-default-metadata](../../../../tutorials/uniq-factories/uniq-variants/uniq-default-metadata.md) for explanation on possible uses for default token metadata
+
+## Technical Behavior
+
+The required authorization is the token_factory_manager as the manager is responsible for updating the data.
+
+-   token_factory_id is required and must exist.
+
+-   memo value has a 256 byte limitation
+
+-   uri is required to have non-zero length
+
+If factory has `lock_hash` set to `true`:
+
+-   Can change the `uri`, but `hash` must remain unchanged.
+
+-   Cannot switch between `static` and `dynamic` default token URI (more details [here](../../../../tutorials/uniq-factories/uniq-variants/uniq-default-metadata.md))
+
+## RAM usage
+
+-   Adding uri and hash will consume certain bytes depend on how many data are added.
+
+    -   RAM usage is covered by eosio.nftram. But this action will fail if the unused RAM of eosio.nftram is less than or equal to 200MB.
+
+    -   If the RAM usage is exceed factory maximum pack size of 1920 bytes, action will fail.
+
+-   Updating or remove meta data which result in no bytes is added, there will be no restriction.
+
+## Action Parameters
+
+| Property Name    | C++ Type               | JavaScript Type | Example                                                            |
+| ---------------- | ---------------------- | --------------- | ------------------------------------------------------------------ |
+| token_factory_id | uint64_t               | number          | 1                                                                  |
+| memo             | string                 | string          | "hi"                                                               |
+| uri              | string                 | string          | "uri1"                                                             |
+| hash             | optional\<checksum256> | string          | "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9" |
+
+## CLI - cleos
+
+```javascript
+cleos push action eosio.nft.ft setdflttkn '[1, "updating", "uri1", "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9"]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setdflttkn ',
+                authorization: [{ actor: 'manager.acc', permission: 'active' }],
+                data: {
+                    token_factory_id: 1,
+                    memo: 'set meta',
+                    uri: 'uri1',
+                    hash: null,
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setmeta.b'
+order: 23
+
+---
+
+# setmeta.b - set token factory metadata uri and hash v1
+
+Allows a token manager to set metadata uri and hash for an existing token factory, see more details metadata
+
+## Technical Behavior
+
+-   The required authorization is the token_factory_manager as the manager is responsible for updating the data.
+
+-   `token_factory_id` is required and must exist.
+
+-   `memo` value has a 256 byte limitation
+
+-   `factory_uri` is required to have non-zero length
+
+If factory has `lock_hash` set to `true`:
+
+-   Can change the `factory_uri`, but `factory_hash` must remain unchanged
+
+## RAM usage
+
+Adding meta_uris and meta_hash will consume certain bytes depend on how many data are added.
+
+RAM usage is covered by eosio.nftram. But this action will fail if the unused RAM of eosio.nftram is less than or equal to 200MB.
+
+If the RAM usage is exceed factory maximum pack size of 1920 bytes, action will fail.
+
+Updating or remove meta data which result in no bytes is added, there will be no restriction.
+
+## Action Parameters
+
+| Property Name    | C++ Type    | Javascript Type | Example                                                            |
+| ---------------- | ----------- | --------------- | ------------------------------------------------------------------ |
+| token_factory_id | uint64_t    | number          | 1                                                                  |
+| memo             | string      | string          | "hi"                                                               |
+| factory_uri      | string      | string          | "uri1"                                                             |
+| factory_hash     | checksum256 | string          | "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9" |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setmeta.b '[1, "updating", "uri1", "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9"]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [
+        {
+            account: 'eosio.nft.ft',
+            name: 'setmeta.b',
+            authorization: [{ actor: 'manager.acc', permission: 'active' }],
+            data: {
+                token_factory_id: 1,
+                memo: 'set meta',
+                factory_uri: 'uri1',
+                factory_hash: 'fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9',
+            },
+        },
+    ],
+});
+```
+
+---
+title: 'setmeta'
+order: 22
+
+---
+
+# setmeta
+
+Set token factory metadata uri and hash.
+
+::: warning
+Deprecated. Use `setmeta.b` instead
+:::
+
+## Behavior
+
+Allows a token manager to set metadata uri and hash for an existing token factory.
+
+## Technical Behavior
+
+The required authorization is the **token_factory_manager** as the manager is responsible for updating the data.
+
+**token_factory_id** is required and must be exist.
+
+**memo** value has a 256 byte limitation
+
+## Action Parameters
+
+| Fields           | Type                      | Description                     |
+| ---------------- | ------------------------- | ------------------------------- |
+| token_factory_id | uint64_t                  | The token factory ID.           |
+| memo             | std::string               | A short operation description.  |
+| meta_uris        | std::vector\<std::string> | The array of the metadata URIs. |
+| meta_hash        | checksum256               | The metadata hash.              |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setmeta '[1, "updating", ["uri1", "uri2"], "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9"]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setmeta',
+                authorization: [{ actor: 'manager.acc', permission: 'active' }],
+                data: {
+                    token_factory_id: 1,
+                    memo: 'set meta',
+                    meta_uris: ['uri1', 'uri2'],
+                    meta_hash: 'fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9',
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setnftmgrflg'
+order: 25
+
+---
+
+# setnftmgrflg
+
+This action can be used to set token migration done flag.
+
+## Technical Behavior
+
+The action sets token_a_migration_done flag (2) in migration table.
+
+Since there is no way to determine that token migration is finished, the flag has to be manually set. No one should be able to set the flag except ultra.
+
+## Action Parameters
+
+There is no action parameter for this action.
+
+## CLI - cleos
+
+```
+cleos push action eosio.nft.ft setnftmgrflg '{}' -p ultra.nft.ft@active
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setnftmgrflg',
+                authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+                data: {},
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setprchsreq.a'
+order: 32
+
+---
+
+# setprchsreq.a
+
+This action is used to set purchase requirements for a token factory.
+
+Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
+
+<Mainnet>
+::: warning
+This action is currently disabled.
+:::
+</Mainnet>
+
+::: warning
+Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
+:::
+
+## Technical Behavior
+
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
+
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   NFT RAM payment size: **2060 bytes**
+
+            - estimated for `purchase_option_with_uniqs` and `group_restriction` of 64
+
+        -   RAM price: **0.15 USD/KB**
+
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 2060B/1024B \* 0.15USD/KB ~ 0.3$ = 0.3 UOS
+
+`token_factory_id` - token factory managed by a factory manager.
+
+`index` - purchase requirements index. starts with 0.
+
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
+
+`purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
+
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get.
+
+`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
+
+`sale_shares` is used to set royalties.
+
+If RAM price is greater than `maximum_uos_payment` transaction reverts.
+
+If token factory is inactive transaction reverts as well.
+
+`group_restriction` is an optional parameter that accepts a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
+
+* The lower 60 bits represent the group ID.
+* The upper 4 bits are reserved for logical operators.
+
+Logical Operators
+The logical operators are defined as bitwise flags in the following manner:
+
+```scss
+#define OR        0X1000'0000'0000'0000   // 0: AND, 1: OR
+#define NEGATION  0X2000'0000'0000'0000   // 0: No negation, 1: Negation
+```
+
+* `4th Bit (OR Operator)`: If this bit is set, it indicates the OR operator. Otherwise, it defaults to the AND operator.
+* `3rd Bit (NEGATION Operator)`: If this bit is set, it indicates that the NEGATION should be applied to the group ID.
+
+The expression is evaluated from left to right, and parentheses are not used. Logical operators take into account starting from the second group ID in the sequence.
+
+For example, a `group_restriction` vector like `<OR + NOT + group1, AND + group2>` would be evaluated as `(NOT group1 AND group2)`. This means the condition will pass if the user is not a member of `group1` AND is a member of `group2`.
+
+Longer expression example for a `group_restriction` vector of `<OR + NOT + group1, AND + group2, OR + NOT + group3, OR + group4, AND + NOT + group5>`, the logical expression becomes:
+
+```css
+(NOT group1 AND group2) OR (NOT group3) OR (group4 AND NOT group5)
+```
+
+This means the condition will pass if:
+
+* The user is not a member of `group1` AND is a member of `group2`, OR
+* The user is not a member of `group3`, OR
+* The user is a member of `group4` AND not a member of `group5`.
+
+
+Formalization of Logical Expression Evaluation
+
+To formalize the evaluation process, let's consider the `group_restriction` vector as `G = [g1, g2, g3, ..., gn]`, where each `gi` is a 64-bit integer that encodes both the logical operator and the group ID.
+
+The corresponding logical expression `L` can be represented as:
+
+```scss
+L = O1(g1) OP2 O2(g2) OP3 O3(g3) ... OPn On(gn)
+
+```
+
+Where:
+
+* `Oi(gi)` checks whether a user belongs to the group `gi` if there is no NEGATION bit, otherwise, it checks whether a user **does not** belong to the group `gi`.
+* `OPi` is the logical operator (AND/OR) determined by the OR bit in `gi`, taking effect starting from `i=2` to `n`.
+
+Notes:
+
+* `Oi(gi)` will return either `group_i` or `NOT group_i` based on the presence of the NEGATION bit.
+* `OPi` will return either `AND` or `OR` depending on the presence of the OR bit.
+* While the expression `L` is evaluated from left to right, it also adheres to operator precedence rules: AND operations have higher precedence than OR operations, similar to standard Boolean logic. This means that all AND operations will be executed first, followed by the OR operations.
+
+By understanding this formalization, you can ensure a clear and standardized way to construct and evaluate the logical expression `L` based on the `group_restriction` vector `G`.
+
+`memo` - a string of no more than 256 characters. useful for parsing on a backend.
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name              | C++ Type                            | JavaScript Type | Description                                                                                                                                                                                                                                          |
+| -------------------------- | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id           | uint64_t                            | number          | ID of the factory to add (or update) purchase option to                                                                                                                                                                                              |
+| index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
+| price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
+| purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                                                                                                                                |
+| purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
+| sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
+| maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
+| group_restriction          | optional<uint64_t_vector>           | Array / null    | Vector of 64-bit integers specifying logical restrictions based on group membership. Follows specific logical operator rules as outlined above.                                                                                                      |
+| purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
+| purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
+| memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
+
+**purchase_requirement_with_uniqs option breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+**uniqs_count type breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+### Example Usage of the parameter ```"group_restriction"```
+
+The logical operators' values are defined as
+- **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
+- **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
+- **AND**: 0, This is implicit. It can be ignored since it's 0.
+- **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
+
+ Let's say we have two user groups
+ - Group1_ID = 1
+ - Group2_ID = 2
+
+#### Use cases
+1. no group requriement.
+    - parameter value ``` "group_restriction": [] ```
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
+    - parameter calculation
+        * = [Group1_ID, Group2_ID]
+        * = [1,2]
+    - parameter value:  ``` "group_restriction": [1, 2] ```
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2
+    - parameter calculation
+        * = [Group1_ID, OR + Group2_ID]
+        * = [1, 1152921504606846976 + 2]
+        * = [1, 1152921504606846978]
+    - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2
+    - parameter calculation
+        * = [NEGATION + Group1_ID, Group2_ID]
+        * = [2305843009213693952 + 1, 2]
+        * = [2305843009213693953, 2]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2
+    - parameter calculation:
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
+        * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
+        * = [2305843009213693953, 3458764513820540930]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540930] ```
+
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 1,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+      "transfer_tokens_receiver_account": null,
+      "factories": [{
+        "token_factory_id": 42,
+        "count": 3,
+        "strategy": 0
+      }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": "2.00000000 UOS",
+    "group_restriction": [2305843009213693953, 3458764513820540930],
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
+    "memo": ""
+  }
+]' -p factory.manager
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setprchsreq.a',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    purchase_option: {
+                        token_factory_id: 100,
+                        index: 1,
+                        price: '50.00000000 UOS',
+                        purchase_limit: 1,
+                        promoter_basis_point: 100,
+                        purchase_option_with_uniqs: {
+                            transfer_tokens_receiver_account: null,
+                            factories: [
+                                {
+                                    token_factory_id: 42,
+                                    count: 3,
+                                    strategy: 0,
+                                },
+                            ],
+                        },
+                        sale_shares: [],
+                        maximum_uos_payment: '2.00000000 UOS',
+                        group_restriction: [2305843009213693953, 3458764513820540930],
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
+                        memo: '',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setsharelim'
+order: 31
+
+---
+
+# setsharelim
+
+Allow ultra.nft.ft account to set maximum share limit for protocol fee, factory beneficiaries and promoter during first hand and second hand purchase
+
+## Technical Behavior
+
+The required authorization is the ultra.nft.ft account managed by admins.
+
+After the transaction execution the maximum share in basis points will be adjusted for protocol fee, factory beneficiaries and sale promoter. Additionally a default promoter may be configured
+
+## Action Parameters
+
+| Fields | Type                            | Description                                                                             |
+| ------ | ------------------------------- | --------------------------------------------------------------------------------------- |
+| type   | factory_sale_share_type         | Indicates a type of limits to change. 0 - second hand purchase, 1 - first hand purchase |
+| config | factory_sale_share_limit_config | Object detailing limits for specific types of sale shares                               |
+
+## `factory_sale_share_limit_config` definition
+
+| Fields                    | Type                        | Description                                                                 |
+| ------------------------- | --------------------------- | --------------------------------------------------------------------------- |
+| max_ultra_share_bp        | uint16_t                    | Maximum sale share for Ultra protocol in basis points                       |
+| max_factory_share_bp      | uint16_t                    | Maximum total share of all factory beneficiaries in basis points            |
+| min_promoter_share_bp     | uint16_t                    | Minimum allowed promoter share in basis points                              |
+| max_promoter_share_bp     | uint16_t                    | Maximum allowed promoter share in basis points                              |
+| default_promoter          | std::optional\<eosio::name> | Default promoter account to be used if no promoter is specified             |
+| promoter_payments_enabled | bool                        | Whether the promoter payments should be enabled for this type of sale share |
+
+## CLI - cleos
+
+```
+cleos push action eosio.nft.ft setsharelim '[0, [1000, 7000, 250, 1000, "ultra.nft.ft", true]]' -p ultra.nft.ft
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setsharelim',
+                authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+                data: {
+                    type: 0,
+                    config: {
+                        max_ultra_share_bp: 1000,
+                        max_factory_share_bp: 7000,
+                        min_promoter_share_bp: 250,
+                        max_promoter_share_bp: 1000,
+                        default_promoter: 'ultra.nft.ft',
+                        promoter_payments_enabled: true
+                    }
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setstatus'
+order: 28
+
+---
+
+# setstatus
+
+Set token factory state.
+
+## Behavior
+
+Allows a token manager to change state for an existing token factory.
+
+## Technical Behavior
+
+The required authorization is the **token_factory_manager** as the manager is responsible for updating the data.
+
+**token_factory_id** is required and must be exist.
+
+**memo** value has a 256 byte limitation
+
+## Action Parameters
+
+| Fields           | Type        | Description                            |
+| ---------------- | ----------- | -------------------------------------- |
+| token_factory_id | uint64_t    | The token factory ID.                  |
+| memo             | std::string | A short operation description.         |
+| stat             | uint8_t     | 0 = Active, 1 = Inactive, 2 = Shutdown |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setstatus '[1, "updating", 2]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setstatus',
+                authorization: [{ actor: 'manager.acc', permission: 'active' }],
+                data: {
+                    token_factory_id: 1,
+                    memo: 'set stat',
+                    status: 2,
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'settfflag'
+order: 27
+
+---
+
+# settfflag
+
+Allow ultra.nft.ft account to open the NFT standard to let any account create and manage uniq factories
+
+## Technical Behavior
+
+The required authorization is the ultra.nft.ft account managed by admins.
+
+After the transaction execution any account will be able to create factories using create.b action. Original v0 create action will still be ultra only, but will be deprecated anyway
+
+## Action Parameters
+
+N / A
+
+## CLI - cleos
+
+```
+cleos push action eosio.nft.ft settfflag '[]' -p ultra.nft.ft
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'settfflag',
+                authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+                data: {},
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'settknmeta'
+order: 26
+
+---
+
+# settknmeta
+
+Allows a token manager to set metadata uri and hash for an existing token.
+
+## Technical Behavior
+
+The required authorization is the token factory manager as the manager is responsible for updating the data.
+
+- `token_id` is required and must exist.
+
+- `owner` is required and must own the token with id `token_id`
+
+- `memo` value has a 256 byte limitation
+
+- `uri` is required to have non-zero length or be null
+
+If factory has `lock_hash` set to `true`:
+
+- Can change the `uri`, but `hash` must remain unchanged. If the token does not have a `hash` then a hash can be changed regardless of `lock_hash` state.
+
+**Notifications**
+
+`require_recipient` is done for `owner` and `asset_manager` of the token factory
+
+## RAM usage
+
+-   Adding uri and hash will consume certain bytes depend on how many data are added.
+
+    -   RAM usage is covered by eosio.nftram. But this action will fail if the unused RAM of eosio.nftram is less than or equal to 200MB.
+
+    -   If the RAM usage is exceed token maximum pack size of 384 bytes, action will fail.
+
+-   Updating or remove meta data which result in no bytes is added, there will be no restriction.
+
+## Action Parameters
+
+| Property Name | C++ Type                | JavaScript Type | Example                                                            |
+| ------------- | ----------------------- | --------------- | ------------------------------------------------------------------ |
+| token_id      | uint64_t                | number          | 1                                                                  |
+| owner         | name                    | string          | "abc123"                                                           |
+| memo          | string                  | string          | "hi"                                                               |
+| uri           | `optional<string>`      | string          | "uri1"                                                             |
+| hash          | `optional<checksum256>` | string          | "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9" |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft settknmeta '[1, "ab1bc2cd3ef4", "updating", "uri1", "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9"]' -p manager.acc@active
+```
+
+## JavaScript - eosjs
+
+```javascript
+await api.transact({
+  actions: [
+    {
+      account: "eosio.nft.ft",
+      name: "setmeta.b",
+      authorization: [{ actor: "manager.acc", permission: "active" }],
+      data: {
+        token_id: 1,
+        owner: "ab1bc2cd3ef4"
+        memo: "set meta",
+        uri: "uri1",
+        hash: null
+      },
+    },
+  ],
+}, {
+  blocksBehind: 3,
+  expireSeconds: 30,
+});
+```
+
+---
+title: 'settrdwin.a'
+order: 27
+
+---
+
+# settrdwin.a - set trading window
+
+Allows a token manager to update the `trading_window_start` and `trading_window_end` for an existing token factory.
+
+::: warning
+This action is disabled.
+
+Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md#swap-uniqs)* pages for alternative migration solutions to a new factory
+:::
+
+## Technical Behavior
+
+Required authorization is a token factory manager
+
+Tradeability can only be update from this:
+
+-   Uniq is never Tradable (`trading_window_start` = `null`, `trading_window_end` = `1970-01-01T00:00:00`)
+
+to one of these:
+
+-   Uniq is always Tradable (`trading_window_start`=null, `trading_window_end`=null)
+-   There is a start date (`trading_window_start`=X, `trading_window_end`=null)
+-   There is an end date (`trading_window_start`=null, `trading_window_end`=Y)
+-   There is a full trading window (`trading_window_start`=X, `trading_window_end`=Y)
+
+**Parameter validation**
+
+-   `token_factory_id` is required and a token factory for the provided ID must exist.
+-   If provided, `trading_window_end` should be greater than `trading_window_start`.
+
+## Action Parameters
+
+| Property Name        | C++ Type                 | Javascript Type | Example               |
+| -------------------- | ------------------------ | --------------- | --------------------- |
+| token_factory_id     | uint64_t                 | number          | 123                   |
+| trading_window_start | optional<time_point_sec> | string          | "2023-01-01T00:00:00" |
+| trading_window_end   | optional<time_point_sec> | string          | "2023-01-01T12:00:00" |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft settrdwin.a '[ 123, "2023-01-01T00:00:00", "2023-01-01T12:00:00" ]' -p manager.acc
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [
+        {
+            account: 'eosio.nft.ft',
+            name: 'settrdwin.a',
+            authorization: [{ actor: 'manager.acc', permission: 'active' }],
+            data: {
+                token_factory_id: 123,
+                trading_window_start: '2023-01-01T00:00:00',
+                trading_window_end: '2023-01-01T12:00:00',
+            },
+        },
+    ],
+});
+```
+
+---
+title: 'settrnfwin.a'
+order: 28
+
+---
+
+# settrnfwin.a - set transfer window
+
+Allows a token manager to update the `transfer_window_start` and `transfer_window_end` for an existing token factory.
+
+::: warning
+This action is disabled.
+
+Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md#swap-uniqs)* pages for alternative migration solutions to a new factory
+:::
+
+## Technical Behavior
+
+Required authorization is a token factory manager
+
+Transferability can only be update from this:
+
+-   Uniq is never transferable (`transfer_window_start` = `null`, `transfer_window_end` = `1970-01-01T00:00:00`)
+
+to one of these:
+
+-   Uniq is always transferable (`transfer_window_start`=null, `transfer_window_end`=null)
+-   There is a start date (`transfer_window_start`=X, `transfer_window_end`=null)
+-   There is an end date (`transfer_window_start`=null, `transfer_window_end`=Y)
+-   There is a full transfer window (`transfer_window_start`=X, `transfer_window_end`=Y)
+
+**Parameter validation**
+
+-   `token_factory_id` is required and a token factory for the provided ID must exist.
+-   If provided, `transfer_window_end` should be greater than `transfer_window_start`.
+
+## Action Parameters
+
+| Property Name         | C++ Type                 | Javascript Type | Example               |
+| --------------------- | ------------------------ | --------------- | --------------------- |
+| token_factory_id      | uint64_t                 | number          | 123                   |
+| transfer_window_start | optional<time_point_sec> | string          | "2023-01-01T00:00:00" |
+| transfer_window_end   | optional<time_point_sec> | string          | "2023-01-01T12:00:00" |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft settrnfwin.a '[ 123, "2023-01-01T00:00:00", "2023-01-01T12:00:00" ]' -p manager.acc
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [
+        {
+            account: 'eosio.nft.ft',
+            name: 'settrnfwin.a',
+            authorization: [{ actor: 'manager.acc', permission: 'active' }],
+            data: {
+                token_factory_id: 123,
+                transfer_window_start: '2023-01-01T00:00:00',
+                transfer_window_end: '2023-01-01T12:00:00',
+            },
+        },
+    ],
+});
+```
+---
+title: 'transfer'
+order: 29
+
+---
+
+# transfer
+
+Hand tokens over to another user.
+
+## Behavior
+
+Used to transfer a non-fungible token from one user to another. This requires the **token_id** of a minted token in order to successfully transfer a token from one user to another.
+
+## Technical Behavior
+
+Upon the usage of the **transfer action** the action will verify that the parameters supplied in the action have values. This includes **from, to, token_ids.** The memo specifically has a 256 byte limitation. The required authorization is the **from** user and will also check if the **to** account is an account that exists on the chain. The **token_ids** vector is verified to not be empty and each **token_id** is sent through a process where it retrieves the NFT contract version and routes the transfer depending on what version the NFT token is.
+
+Once a version is determined and the **token id** has determined its route for transfer it will retrieve the **token** from the token table. The **token** from the token table will include a **token factory id** and this will be used to fetch the **token factory** data. The data retrieved from the **token factory** that is used to verify a handful of criteria which is dependent on the token creator’s specifications.
+
+-   The token will not be able to be transferred if the **from** user does not own this token.
+
+-   The token will not be able to be transferred if it is not available for trading.
+
+-   The token will not be able to be transferred if there is a lockup period for the token and you’re within it.
+
+-   The token will not be able to be transferred if the trading window has not begun, or has ended.
+
+-   The token will not be able to be transferred while it is put up for resale.
+
+After this data is verified the token is erased from the **from** user and is given to the **to** user.
+
+This process is **repeated for each token**.
+
+**Notifications**
+
+`require_recipient` is done for `from` account, `to` account and for asset managers of corresponding uniq factories
+
+## Action Parameters
+
+Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
+
+| Fields    | Type                    | Description                             |
+| --------- | ----------------------- | --------------------------------------- |
+| from      | eosio::name             | The sending Account.                    |
+| to        | eosio::name             | The receiving Account.                  |
+| token_ids | std::vector`<uint64_t>` | The array of NFT IDs to be transferred. |
+| memo      | std::string             | A short operation description.          |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft transfer '[{ "from": "from.user.acc", "to": "to.user.acc", "token_ids": [1,2,3,4,5], "memo": "have some tokens!" }]' -p from.user.acc@active
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'transfer',
+                authorization: [{ actor: 'from.user.acc', permission: 'active' }],
+                data: {
+                    transfer: {
+                        from: 'from.user.acc',
+                        to: 'to.user.acc',
+                        token_ids: [1, 2, 3, 4, 5],
+                        memo: 'have some tokens!',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'updategrp'
+order: 30
+
+---
+
+# updategrp
+
+Updates factory group parameters: uri, hash and factory list.
+
+## Technical Behavior
+
+ID should be valid and signed and transaction should be signed by the manager of the group. factories cannot contain duplicates.
+
+## Action Parameters
+
+| field name | c++ type                     | js type                 |
+| ---------- | ---------------------------- | ----------------------- |
+| id         | uint64_t                     | number                  |
+| uri        | `optional<string>`           | string or null          |
+| hash       | `optional<string>`           | string or null          |
+| factories  | `optional<vector<uint64_t>>` | `Array<number>` or null |
+
+## CLI
+
+```bash
+cleos push action eosio.nft.ft updategrp '[11, "http://localhost", "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523", null]' -p ubisoft
+```
+
+## JS
+
+```ts
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'updategrp',
+            authorization: [{ actor: 'ubisoft', permission: 'active' }],
+            data: {
+                id: 14,
+                uri: 'https://nft.ubisoft.com/factorygroups/assasinscreed',
+                hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523',
+                factories: null,
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'NFT Factory Groups'
+order: 2
+
+---
+
+# NFT Factory Groups
+
+Factory groups allow token factory managers to assemble multiple owned factories into a single group.
+
+This means that any game or items that belong to the same collection can be grouped together.
+
+## Why?
+
+Finding relevant data in the same collection on-chain can be difficult but this feature allows for a simple way to group a bunch of data together to represent a collection in the marketplace.
+
+## How?
+
+This is done by creating a table on-chain.
+
+Each entry in the table represents a factory group.
+
+A factory group has a metadata uri associated with it.
+
+This metadata uri also has a hash to represent the data inside of it.
+
+This also corresponds with the factories that belong to this group.
+
+## Actions
+
+-   [creategrp](./nft-actions/creategrp.md)
+-   [updategrp](./nft-actions/updategrp.md)
+-   [deletegrp](./nft-actions/deletegrp.md)
+-   [addgrpfcts](./nft-actions/addgrpfcts.md)
+-   [rmgrpfcts](./nft-actions/rmgrpfcts.md)
+
+---
+title: 'NFT Tables'
+order: 1
+
+---
+
+# NFT Tables
+
+## factory.b
+
+-   Table: `factory.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains uniq factories settings and the operational info.
+
+| Fields                  | Type                              | Description                                                                                                                              |
+| ----------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| id                      | uint64_t                          | (primary key) The token factory ID                                                                                                       |
+| asset_manager           | eosio::name                       | Account that manages the token lifecycle - issuing, burning, reselling etc.                                                              |
+| asset_creator           | eosio::name                       | Account that ceates the token factory.                                                                                                   |
+| minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                             |
+| resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the token resale.                                      |
+| mintable_window_start   | std::optional\<uint32_t>          | The beginning of the time window when tokens can be minted.                                                                              |
+| mintable_window_end     | std::optional\<uint32_t>          | The end of the time window when tokens can be minted.                                                                                    |
+| trading_window_start    | std::optional\<uint32_t>          | The beginning of the time window when tokens can be traded.                                                                              |
+| trading_window_end      | std::optional\<uint32_t>          | The end of the time window when tokens can be traded.                                                                                    |
+| recall_window_start     | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
+| recall_window_end       | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when tokens can be recalled.                                                                |
+| lockup_time             | std::optional\<uint32_t>          | *Disabled*. The time window since token minting in which the token cannot be transferred                                                 |
+| conditionless_receivers | std::vector\<eosio::name>         | A set of token receiver account tokens can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                    | uint8_t                           | The token factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                 |
+| factory_uri             | std::string                       | The token factory metadata URI vector.                                                                                                   |
+| factory_hash            | eosio::checksum256                | The token factory metadata hash.                                                                                                         |
+| max_mintable_tokens     | std::optional\<uint32_t>          | The maximal number of tokens that can be minted with the factory.                                                                        |
+| minted_tokens_no        | uint32_t                          | The number of minted of tokens.                                                                                                          |
+| existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt tokens.                                                                                       |
+| authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of tokens that authorized minters can issue                                                                         |
+| account_minting_limit   | std::optional\<uint32_t>          | The limit of tokens that can be minted to each individual account                                                                        |
+| transfer_window_start   | std::optional\<uint32_t>          | The beginning fo the time window when tokens can be transferred                                                                          |
+| transfer_window_end     | std::optional\<uint32_t>          | The end of the time window when tokens can be transferred                                                                                |
+| default_token_uri       | std::string                       | The default token metadata URI for tokens without dedicated URI                                                                          |
+| default_token_hash      | std::optional\<checksum256>       | The default token metadata hash                                                                                                          |
+| lock_hash               | bool                              | Controls whether metadata of the factory, tokens or default tokens could be changed                                                      |
+
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus**
+
+## factory.a
+
+-   Table: `factory.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains uniq factories settings and the operational info.
+
+::: warning
+Deprecated. Refer to `factory.b` instead
+:::
+
+| Fields                          | Type                              | Description                                                                                                                              |
+| ------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| id                              | uint64_t                          | (primary key) The token factory ID                                                                                                       |
+| asset_manager                   | eosio::name                       | Account that manages the token lifecycle - issuing, burning, reselling etc.                                                              |
+| asset_creator                   | eosio::name                       | Account that creates the token factory.                                                                                                  |
+| conversion_rate_oracle_contract | eosio::name                       | *Deprecated*. Please do not use.                                                                                                         |
+| chosen_rate                     | std::vector\<eosio::asset>        | *Deprecated*. Please do not use.                                                                                                         |
+| minimum_resell_price            | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                             |
+| resale_shares                   | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the token resale.                                      |
+| mintable_window_start           | std::optional\<uint32_t>          | The beginning of the time window when tokens can be minted.                                                                              |
+| mintable_window_end             | std::optional\<uint32_t>          | The end of the time window when tokens can be minted.                                                                                    |
+| trading_window_start            | std::optional\<uint32_t>          | The beginning of the time window when tokens can be traded.                                                                              |
+| trading_window_end              | std::optional\<uint32_t>          | The end of the time window when tokens can be traded.                                                                                    |
+| recall_window_start             | std::optional\<uint32_t>          | The beginning of the time window when tokens can be recalled.                                                                            |
+| recall_window_end               | std::optional\<uint32_t>          | The beginning of the time window when tokens can be recalled.                                                                            |
+| lockup_time                     | std::optional\<uint32_t>          | The time window since token minting in which the token cannot be transferred                                                             |
+| conditionless_receivers         | std::vector\<eosio::name>         | A set of token receiver account tokens can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                            | uint8_t                           | The token factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                 |
+| meta_uris                       | std::vector\<std::string>         | The token factory metadata URI vector.                                                                                                   |
+| meta_hash                       | eosio::checksum256                | The token factory metadata hash.                                                                                                         |
+| max_mintable_tokens             | std::optional\<uint32_t>          | The maximal number of tokens that can be minted with the factory.                                                                        |
+| minted_tokens_no                | uint32_t                          | The number of minted of tokens.                                                                                                          |
+| existing_tokens_no              | uint32_t                          | The number of minted minus number of burnt tokens.                                                                                       |
+
+Most relevant actions: **create, issue, setcondrecv, setmeta, setstatus**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factory.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factory.a", "json": true}'
+```
+
+---
+
+## token.b
+
+-   Table: `token.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the tokens owned by a user.
+
+| Fields           | Type                               | Description                                              |
+| ---------------- | ---------------------------------- | -------------------------------------------------------- |
+| id               | uint64_t                           | (primary key) Global token ID                            |
+| token_factory_id | uint64_t                           | The token factory ID the token was issued with.          |
+| mint_date        | eosio::time_point_sec              | The token mint date.                                     |
+| serial_number    | uint32_t                           | The ordinal number of the token assigned during issuance |
+| uri              | std::optional\<string>             | URI pointing to the metadata of this token               |
+| hash             | std::optional\<eosio::checksum256> | hash of the metadata for this token                      |
+
+Most relevant actions: **buy**, **burn**, **issue.b**, **resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.b
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.b", "json": true}'
+```
+
+---
+
+## token.a
+
+-   Table: `token.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the tokens owned by a user.
+
+::: warning
+Deprecated. Refer to `token.b` instead
+:::
+
+| Fields           | Type                  | Description                                              |
+| ---------------- | --------------------- | -------------------------------------------------------- |
+| id               | uint64_t              | (primary key) Global token ID                            |
+| token_factory_id | uint64_t              | The token factory ID the token was issued with.          |
+| mint_date        | eosio::time_point_sec | The token mint date.                                     |
+| serial_number    | uint32_t              | The ordinal number of the token assigned during issuance |
+
+Most relevant actions: **buy, burn**, **issue, resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.a", "json": true}'
+```
+
+---
+
+## resale.a
+
+-   Table: `resale.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `token_id`
+
+The table stores tokens for resale.
+
+| Fields               | Type         | Description                             |
+| -------------------- | ------------ | --------------------------------------- |
+| token_id             | uint64_t     | (primary key) Global token ID           |
+| owner                | eosio::name  | The token owner account.                |
+| price                | eosio::asset | The token resale price.                 |
+| promoter_basis_point | uint16_t     | The token resale advertiser commission. |
+
+Most relevant actions: **resell, cancellresell**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft resale.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"resale.a", "json": true}'
+```
+
+---
+
+## authmintrs.a
+
+-   Table: `authmintrs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `token factory ID`
+-   Key: `authorized_minter`
+
+The table stores information about token minters permitted by uniq factories asset managers or other authorized minters to issue tokens.
+
+| Fields            | Type        | Description                                          |
+| ----------------- | ----------- | ---------------------------------------------------- |
+| authorized_minter | eosio::name | (primary key) The authorized minter account.         |
+| quantity          | uint32_t    | The number of tokens the authorized minter can mint. |
+
+Most relevant actions: **authminter, issue**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <TOKEN FACTORY ID> authmintrs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<TOKEN FACTORY ID>", "code":"eosio.nft.ft", "table":"authmintrs.a", "json": true}'
+```
+
+## global.share
+
+-   Table: `global.share`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft` (for second hand), `0` (for first hand)
+-   Key: N/A
+
+The table stores information about global share of each first hand purchase or second hand token sale: which account and how many basis points it receives (each basis point = 0.01%)
+
+| Fields      | Type        | Description                                     |
+| ----------- | ----------- | ----------------------------------------------- |
+| receiver    | eosio::name | Receiver of the global sale share               |
+| basis_point | uint16_t    | Share of the sale specified in the basis points |
+
+Most relevant actions: `buy`, `resell`, `globalshare`, `fhglobalshr`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft global.share
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"global.share", "json": true}'
+```
+
+## migration
+
+-   Table: `migration`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about current active NFT standard version and flags used to indicate the status of the migration
+
+| Fields                | Type     | Description                                                                                                                                                         |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| active_nft_version    | uint64_t | Version of the current active NFT standard                                                                                                                          |
+| table_migration_stats | uint16_t | Bitmask storing information about the status of the migration. `factory_a_migration_done = 0x0000'0000'0000'0001`, `token_a_migration_done = 0x0000'0000'0000'0002` |
+
+Most relevant actions: `migration`, `mgrfactories`, `mgrnfts`, `setnftmgrflg`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft migration
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"migration", "json": true}'
+```
+
+## next.factory
+
+-   Table: `next.factory`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created token factory
+
+| Fields | Type     | Description                                         |
+| ------ | -------- | --------------------------------------------------- |
+| value  | uint64_t | ID that the next created token factory will receive |
+
+Most relevant actions: `create`, `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.factory
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.factory", "json": true}'
+```
+
+## next.token
+
+-   Table: `next.token`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next issued token
+
+| Fields | Type     | Description                                |
+| ------ | -------- | ------------------------------------------ |
+| value  | uint64_t | ID that the next issued token will receive |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.token
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.token", "json": true}'
+```
+
+## next.fct.grp
+
+-   Table: `next.fct.grp`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created factory group
+
+| Fields | Type     | Description                                         |
+| ------ | -------- | --------------------------------------------------- |
+| value  | uint64_t | ID that the next created token factory will receive |
+
+Most relevant actions: `creategrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.fct.grp
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.fct.grp", "json": true}'
+```
+
+## tfcreateflag
+
+-   Table: `tfcreateflag`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about whether the creation of uniq factories by accounts other than Ultra is allowed
+
+| Fields        | Type | Description                                                                       |
+| ------------- | ---- | --------------------------------------------------------------------------------- |
+| require_ultra | bool | Whether Ultra permission is required to create a token factory. Default is `true` |
+
+Most relevant actions: `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft tfcreateflag
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"tfcreateflag", "json": true}'
+```
+
+## mintstat.a
+
+-   Table: `mintstat.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `token factory ID`
+-   Key: `user`
+
+The table stores information about how many tokens were minted to the specific user account. Utilized to check against minting limit within the token factory
+
+| Fields | Type     | Description                                                            |
+| ------ | -------- | ---------------------------------------------------------------------- |
+| user   | name     | Account name of the user                                               |
+| minted | uint32_t | Number of tokens that were minted to this user from this token factory |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 15 mintstat.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"15", "code":"eosio.nft.ft", "table":"mintstat.a", "json": true}'
+```
+
+## ramvault.a
+
+-   Table: `ramvault.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `owner`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields  | Type    | Description                         |
+| ------- | ------- | ----------------------------------- |
+| owner   | name    | Owner of this RAM vault entry       |
+| usage   | int64_t | Current RAM usage of the vault RAM  |
+| payment | int64_t | Total payment done to the RAM vault |
+
+Most relevant actions: `create.b`, `issue.b`, `clrmintst`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft ramvault.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"ramvault.a", "json": true}'
+```
+
+## factorygrp.a
+
+-   Table: `factorygrp.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields      | Type                   | Description                                                  |
+| ----------- | ---------------------- | ------------------------------------------------------------ |
+| id          | uint64_t               | ID of this token factory group                               |
+| manager     | eosio::name            | Manager of the factory group                                 |
+| uri         | std::string            | URI of the factory group metadata                            |
+| hash        | eosio::checksum256     | Hash of the factory group metadata                           |
+| factories   | std::vector\<uint64_t> | Array of factories in the token factory group                |
+| uos_payment | int64_t                | UOS payment charged during the creation of the factory group |
+
+Most relevant actions: `creategrp`, `deletegrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factorygrp.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factorygrp.a", "json": true}'
+```
+
+## saleshrlimcfg
+
+-   Table: `saleshrlmcfg`
+-   Code: `eosio.nft.ft`
+-   Scope: `0 - first hand, 1 - second hand`
+-   Key: N/A
+
+The table stores information about maximum share basis points that can be distributed during token purchase
+
+| Fields                    | Type                        | Description                                                                                         |
+| ------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------- |
+| max_ultra_share_bp        | uint16_t                    | Maximum protocol fee that can be configured with `globalshare`                                      |
+| max_factory_share_bp      | uint16_t                    | Maximum total resale shares that can be specified during token factory creation                     |
+| min_promoter_share_bp     | uint16_t                    | Minimum allowed promoter fee for first-hand or second-hand purchase (depending on scope)            |
+| max_promoter_share_bp     | uint16_t                    | Maximum allowed promoter fee for first-hand or second-hand purchase (depending on scope) metadata   |
+| default_promoter          | std::optional\<eosio::name> | Default promoter used during first-hand or second-hand purchase if none was specified in the action |
+| promoter_payments_enabled | bool                        | Whether the promoter shares are enabled globally                                                    |
+
+Most relevant actions: `setsharelim`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 saleshrlmcfg
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlmcfg", "json": true}'
+```
+
+## fctrprchs.a
+
+-   Table: `fctrprchs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `token factory ID`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields                     | Type                                            | Description                                                                                                                                        |
+| -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                         | uint64_t                                        | ID of this purchase requirement                                                                                                                    |
+| price                      | asset                                           | Price of the uniq specified in UOS or USD                                                                                                          |
+| purchase_limit             | uint32_t                                        | Total number of uniqs purchased through this option                                                                                                |
+| purchased_tokens_no        | eosio::checksum256                              | Hash of the factory group metadata                                                                                                                 |
+| promoter_basis_point       | uint16_t                                        | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                              |
+| purchase_option_with_uniqs | std::optional\<purchase_requirement_with_uniqs> | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories |
+| sale_shares                | std::vector\<sale_share>                        | A vector of [account, share] pairs setting the share each account receives during the purchase                                                     |
+| uos_payment                | int64_t                                         | UOS payment charged during the creation of the purchase option                                                                                     |
+| purchase_window_start      | std::optional\<eosio::time_point_sec>           | Optional start of the purchase window. Cannot purchase using this option until the start                                                           |
+| purchase_window_end        | std::optional\<eosio::time_point_sec>           | Optional end of the purchase window. Cannot purchase using this option after the end                                                               |
+
+Most relevant actions: `setprchsreq.a`, `delprchsreq.a`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 123 fctrprchs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"123", "code":"eosio.nft.ft", "table":"fctrprchs.a", "json": true}'
+```
+
+The tables below describe the structure and usage of each of the fields inside `purchase_option_with_uniqs` and `uniqs_count` structures that can be provided 
+
+### `purchase_option_with_uniqs` type
+
+| Field                            | Type                        | Description                                                                                                                                                |
+| -------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transfer_tokens_receiver_account | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
+| factories                        | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
+
+### `uniqs_count` type
+
+| Field            | Type     | Description                                                                                                                                                                                                                                                                                                                         |
+| ---------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t | ID of the factory that the user needs to have tokens from                                                                                                                                                                                                                                                                           |
+| count            | uint32_t | How many tokens are needed from the specified factory                                                                                                                                                                                                                                                                               |
+| strategy         | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the tokens is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
+
+
+---
+title: 'Data Structures Overview'
+order: 6
+
+---
+
+# Data Structures Overview
+
+## delband - delegated POWER bandwidth per account
+
+The table contains the information about POWER bandwidth delegation between different accounts.
+
+| Table name  | delband      |
+| ----------- | ------------ |
+| Code        | eosio.system |
+| Scope       | account      |
+| Primary key | to           |
+
+| Fields       | Type         | Description                       |
+| ------------ | ------------ | --------------------------------- |
+| from         | eosio::name  | The account that delegates POWER  |
+| to           | eosio::name  | The account it is delegated to    |
+| power_weight | eosio::asset | The amount of staked UOS to POWER |
+
+## kyc - account KYC information
+
+| Table name  | kyc          |
+| ----------- | ------------ |
+| Code        | eosio.system |
+| Scope       | account      |
+| Primary key | provider     |
+
+| Fields        | Type               | Description                     |
+| ------------- | ------------------ | ------------------------------- |
+| provider      | eosio::name        | The KYC provider account        |
+| cert_id       | eosio::checksum256 | The KYC provider certificate ID |
+| req_signature | eosio::signature   | The account signature           |
+| pro_signature | eosio::signature   | The KYC provider signature      |
+
+## paycntactid - contract action ID catalog
+
+| Table name  | paycntactid   |
+| ----------- | ------------- |
+| Code        | eosio.system  |
+| Scope       | paid contract |
+| Primary key | paid_action   |
+
+| Fields                  | Type        | Description                                 |
+| ----------------------- | ----------- | ------------------------------------------- |
+| paid_action             | eosio::name | The catalog contract action ID              |
+| paid_contract_action_id | uint64_t    | Auto incremented ID for the contract action |
+
+## payerpred - predicates for paying for 3rd parties
+
+| Table name  | payerpred               |
+| ----------- | ----------------------- |
+| Code        | eosio.system            |
+| Scope       | payer account           |
+| Primary key | paid_contract_action_id |
+
+| Fields                  | Type                         | Description                                                                     |
+| ----------------------- | ---------------------------- | ------------------------------------------------------------------------------- |
+| paid_contract_action_id | uint64_t                     | The catalog contract action ID, references paycntactid::paid_contract_action_id |
+| maximum_power_usage     | uint64_t                     | The max POWER to be paid for                                                    |
+| predicate_contract      | std::optional`<eosio::name>` | The contract to use for inline action creation                                  |
+| predicate_action        | std::optional`<eosio::name>` | The inline action to create when the predicate is executed                      |
+
+## rammarket - RAM trades settings and limitations
+
+The table contains the information about the RAM market (buys / sells) settings such as KYC/non KYC account limits, global RAM reserve and fee calculation coefficients
+
+| Table name  | rammarket         |
+| ----------- | ----------------- |
+| Code        | eosio.system      |
+| Scope       | eosio.system      |
+| Primary key | ram_supply.symbol |
+
+| Fields             | Type         | Description                                                           |
+| ------------------ | ------------ | --------------------------------------------------------------------- |
+| ram_supply         | eosio::asset | RAM available on the market                                           |
+| ram_reserved       | eosio::asset | RAM reserved for ultra and its partners                               |
+| ram_total_non_kyc  | eosio::asset | Maximum amount of RAM for non-KYC users                               |
+| ram_threshold_kyc  | eosio::asset | Unused RAM limits for KYC users                                       |
+| ram_purchase_limit | eosio::asset | RAM purchase limit in a single buy action                             |
+| core_reserve       | eosio::asset | UOS reserve that represents market state at full ram supply           |
+| connector_weight   | double       | In Bancor algorithm describes how tightly the RAM is connected to UOS |
+| ram_fee_rate       | double       | RAM fee fraction applied to each purchase                             |
+| is_trade_enabled   | bool         | enables buy and sell actions for RAM                                  |
+
+## refunds - information on refunding of the delegated POWER
+
+The table contains information about the refunds that delegating accounts can request after delegation period. For example, if Alice delegates some POWER to Bob, Alice can refund the POWER after the delegation period (3 days).
+
+| Table name  | refunds      |
+| ----------- | ------------ |
+| Code        | eosio.system |
+| Scope       | account      |
+| Primary key | owner        |
+
+| Fields       | Type                  | Description                                             |
+| ------------ | --------------------- | ------------------------------------------------------- |
+| owner        | eosio::name           | The account that delegated POWER and now being refunded |
+| request_time | eosio::time_point_sec | The time when the POWER was delegated                   |
+| power_amount | eosio::asset          | The amount of staked UOS to POWER                       |
+
+## userres - resource allocation per account
+
+The table contains the information about the resources that are allocated some account.
+
+| Table name  | userres      |
+| ----------- | ------------ |
+| Code        | eosio.system |
+| Scope       | account      |
+| Primary key | owner        |
+
+| Fields       | Type         | Description                                                                           |
+| ------------ | ------------ | ------------------------------------------------------------------------------------- |
+| owner        | eosio::name  | The account that currently owns the resources                                         |
+| power_weight | eosio::asset | The amount of staked UOS to POWER                                                     |
+| ram_bytes    | int64_t      | The amount of available RAM                                                           |
+| flags        | uint32_t     | Indicates if RAM or POWER is managed by the accountram_managed = 1, power_managed = 2 |
+
+---
+title: 'EBA and non-EBA Accounts'
+order: 1
+
+---
+
+# EBA and non-EBA Accounts
+
+## How it works
+
+For non-EBA the account name is auto generated and has a form of “1aa2aa3aa4aa” where “a” is an English alphabet letter in the range of \[a-z\]. An EBA account name has a form of “aa1aa2aa3aa4” and can be proposed by the account creator. If the proposed name exists or does not follow the format, a new name is generated automatically.
+
+Ultra sponsors the RAM needed for an EBA account creation. For non-EBA account records the RAM can be paid by another account.
+
+## Easy Blockchain Account - EBA
+
+An Easy Blockchain Account is a special type of account mainly for average users.
+
+## Non-EBA
+
+A non-EBA account is a typical blockchain account controlled by private keys you must secure yourself.
+
+## Relevant actions
+
+[newnonebact - create a non-EBA account](./system-actions/newnonebact.html)
+
+[newebact - create a EBA account](./system-actions/newebact.html)
+
+### Relevant tables
+
+[userres - resource-allocation-per-account](./data-structures-overview.html#userres-resource-allocation-per-account)
+
+---
+title: 'System Contract Overview'
+order: -99
+
+---
+
+# System Contract Overview
+
+The `eosio.system` contract inherits its functionality from the traditional EOSIO `eosio.system` contract. Below are Ultra’s additions or modification to it.
+
+## EBA and Non-EBA Accounts
+
+An Ultra account is a set of blockchain data records that establishes a permission graph for the account keys and keys belonging to other accounts. It controls the resources possessed by the account and provides a set of actions that are used to communicate with the account, and in the case that it is present, the smart contract.
+
+[EBA and non-EBA Accounts](./eba-non-eba-accounts.html)
+
+## Know Your Client
+
+Ultra requires that developers who wish to deploy smart contracts on Ultra platform perform a Know Your Client procedure.
+
+[Know Your Client](./know-your-client.html)
+
+## RAM Market
+
+RAM is used for storing various on-chain data, like token, account, or smart contract data. Ultra requires that developers pay for the RAM consumed by their users. Only developer accounts are able to purchase larger amounts of RAM and then allocate it to their user base.
+
+[RAM Market](./ram-market.html)
+
+## Paying for 3rd Parties with Predicates
+
+The predicate system allows developers to cover their users' resource costs. Developers may allow certain actions to be performed by other accounts at the cost of their own POWER resources.
+
+[Predicate System](./predicate-system.html)
+
+## POWER Staking
+
+Account owners can stake POWER for their transactions to be included in blocks in a prioritized way. The traditional EOSIO stakes for CPU and NET separately while staking for POWER combines the two resources.
+
+[POWER bandwidth staking](./power-bandwidth-staking.html)
+
+---
+title: 'KYC - Know Your Client'
+order: 2
+
+---
+
+# Know Your Client
+
+Ultra requires that developers who wish to deploy smart contracts on Ultra platform perform a Know Your Client procedure.
+
+The purpose of the KYC requirement is to allow Ultra's end users to trust the smart contracts that they interact with. For Ultra this ensures that if there is an issue, we can contact the smart contract owner directly.
+
+The KYB information ensures that there is no developer anonymity, which ensures that if there are bad actors actively taking advantage of either the network or its users, Ultra can step in.
+
+## How it works
+
+Ultra will let KYC providers to push their certificate on-chain. When a sensitive action is executed by a user (buying RAM might be one of such actions), the system checks if there is a KYC provider related to the user’s action.
+
+## Relevant actions
+
+All the KYC actions require Ultra authentication. They are listed here for general information only.
+
+## registerkyc - register KYC information
+
+Register KYC info from user with required signature and provider signature.
+
+| Field         | Type               | Description                                        |
+| ------------- | ------------------ | -------------------------------------------------- |
+| owner         | eosio::name        | The account that the KYC information is stored for |
+| provider      | eosio::name        | The KYC provider                                   |
+| cert_id       | eosio::checksum256 | The KYC provider certificate ID                    |
+| req_signature | eosio::signature   | The account signature                              |
+| pro_signature | eosio::signature   | The KYC provider signature                         |
+
+## Relevant tables
+
+[kyc - account KYC information](./data-structures-overview.html#kyc-account-kyc-information)
+
+---
+title: 'Power Bandwidth Staking'
+order: 5
+
+---
+
+# Power Bandwidth Staking
+
+## How it works
+
+A block producer includes the transactions into a block in a prioritized way so that the transactions from accounts which staked the most UOS for POWER bandwidth get into a block first. When all the transactions from the accounts that staked for POWER bandwidth get into a block, a BP starts including the “free” transactions from accounts that do not have staked POWER bandwidth.
+
+The POWER bandwidth covers both CPU bandwidth and NET bandwidth which are employed in the process of transaction handling. Let us think that for processing a block of 3 transactions a block producer CPU requires spending 40 milliseconds, 20 ms for the first 2 transactions and 20 ms for the 3rd one. If the first 2 transactions belong to Account A and the 3rd one belongs to Account B, then accounts A and B should both have staked approximately same amount of UOS for the POWER at their accounts. The network bandwidth is handled alike: the account transactions size is proportional to the fraction of the POWER bandwidth that was staked to this account.
+
+Both CPU and NET bandwidth usage for the accounts that submitted the transactions to the block are calculated and the distribution of the bandwidth usage per account should be approximately the same as the amounts of UOS staked for the POWER bandwidth per account.
+
+## Relevant actions
+
+[delegatebw - stake tokens for POWER](./system-actions/delegatebw.html)
+
+[undelegatebw - unstake tokens for POWER](./system-actions/undelegatebw.html)
+
+## Relevant tables
+
+[userres - resource-allocation-per-account](./data-structures-overview.html#userres-resource-allocation-per-account)
+
+[delband - delegated-POWER-bandwidth-per-account](./data-structures-overview.html#delband-delegated-power-bandwidth-per-account)
+
+[refunds - information-on-refunding-of-the-delegated-POWER](./data-structures-overview.html#refunds-information-on-refunding-of-the-delegated-power)
+
+---
+title: 'Predicate System'
+order: 4
+
+---
+
+# Predicate System
+
+## How it works
+
+Developers may allow certain actions to be performed by other accounts at the cost of their own POWER resources using the `allowpred` action. Resources may be revoked using the `revokepred` action. Developers may also specify a predicate action to call to verify if this action should be paid or not (e.g. check that a user is a premium user or is whitelisted).
+
+## Relevant Actions
+
+[allowpred - setup a predicate](./system-actions/allowpred.html)
+
+[revokepred - reset a predicate](./system-actions/revokepred.html)
+
+## Relevant Tables
+
+[payerpred - predicates-for-paying-for-3rd-parties](./data-structures-overview.html#payerpred-predicates-for-paying-for-3rd-parties)
+
+---
+title: 'RAM Market'
+order: 3
+
+---
+
+# RAM Market
+
+## How it works
+
+Ultra maintains a **RAM reserve** from the available system RAM. The RAM in the reserve can be distributed by Ultra and can be offered to Ultra and certain developers for free. RAM may only be reserved by Ultra and once it is reserved it is removed from the total RAM supply. Reserved RAM is not assigned to anyone, nor it can be sold to anyone.
+
+The initial 5k of RAM is free for the **account** creation which stores the basic account information such as the account name, active permission setup, and the additional RAM/POWER quota and usage which is around 3,871 bytes total. Developers pay for their users’ RAM usage, and they can authorize a contract to act on their behalf (32 bytes). They can also add one more keys to owner or active permissions (82 bytes). Beyond that account owners will need to buy more RAM themselves. One can’t purchase more RAM if they already have 10 MB or more of unused RAM.
+
+Ram is priced in USD, but paid in UOS. There is a 10% ram fee which is charged at the moment of purchase. Users may **purchase RAM** at a flat rate. It’s expensive, so that users only buy when they truly need it, and they won’t need much. There will be a cap of around 20K which should be enough for most account administration needs. To calculate the RAM price Ultra uses a price curve that allows Ultra to adjust the starting price and control how fast price increase as a user owns more RAM. The current price curve is Price = C + K \* RAM. Price unit is converted from USD/KB to UOS/KB, C is used to control the starting price, K is used to control how fast it increases. Ultra can adjust the RAM price by changing the price/cost curve parameters, or even changing the curve type itself. It will only affect the RAM purchasing policy and won't affect the RAM selling policy.
+
+The **selling RAM** policy is not changing. Total UOS paid will be stored and used for calculating refunds. When selling RAM, the total UOS paid will be proportionally refunded to the user:
+
+```
+Refund = Total_RAM_Payment * (Delta_RAM / RAM)
+```
+
+These differences between buying and selling RAM are introduces to avoid potential speculation due to price adjustment. If we use the same policy for buying and selling, it is possible for developers to make money by selling ram. With the independent selling policy, there is **no speculation**. Users always get proportional to what they have paid so far. Also, a developer cannot purchase more RAM until a full 10 MB of RAM are used up. Preventing developers from over-purchasing this scarce asset.
+
+When a **developer purchases RAM** the system is queried for a price. There is an independent price curve for an account that is registered as a developer. The RAM pricing at the beginning of this curve is very cheap but gets more expensive as they purchase more RAM. When purchased in bytes, users needs to get an invoice first. When purchased with tokens or sold there’s also no need for an invoice. User can choose to purchase without getting a quote. In this case the purchase will use real time conversion rate. If a quote is generated before purchase then the user is guaranteed to get the RAM at the quoted price.
+
+A developer can **refund** their **RAM** anytime and get back proportional to what they have paid. In case of account inactivity Ultra reserves the right to take back the unused RAM (only the portion of RAM that was gifted by Ultra) of inactive developer account, and refund in UOS will be returned to the account. An **inactive developer account** is one that submits no transactions (pushing or receiving actions) in a predefined period, like one year. Releasing user's RAM is a very sensitive process that requires due diligence. Even if the developer account is inactive, user might still want to keep their data stored there and query it from time to time. The conclusion is that used RAM can be released by the developer or DAPPs' users themselves, not by a third party. Malicious contracts’ data can be wiped out by BPs.
+
+There can be multiple blockchain accounts associated with one ultra platform account, especially for developers. Such blockchain accounts are linked together on-chain by their IDs, and such accounts can purchase RAM and will be billed as if they are a single account.
+
+##  Relevant actions
+
+[buyram - buy RAM with UOS](./system-actions/buyram.html)
+
+[buyrambytes - buy RAM with UOS](./system-actions/buyrambytes.html)
+
+[refundram - buy RAM with UOS](./system-actions/refundram.html)
+
+## Relevant tables
+
+[userres - resource-allocation-per-account](./data-structures-overview.md#userres-resource-allocation-per-account)
+
+---
+title: 'allowpred'
+
+---
+
+# allowpred - setup a predicate
+
+Allows a specific predicate which will select specific actions of 3rd party accounts to be paid by the account.
+
+| Field               | Type                         | Description                                                           |
+| ------------------- | ---------------------------- | --------------------------------------------------------------------- |
+| payer               | eosio::name                  | The account that setups a predicate                                   |
+| paid_contract       | eosio::name                  | The contract that account will allow paying for                       |
+| paid_action         | eosio::name                  | The action from the contract that account will allow paying for       |
+| maximum_power_usage | uint64_t                     | The limit for CPU usage in us for paid action                         |
+| predicate_contract  | std::optional`<eosio::name>` | The predicate contract that will be used to create inline action call |
+| predicate_action    | std::optional`<eosio::name>` | The predicate action that will be used to create inline action call   |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio allowpred '["alice", "eosio", "buyram", 2000, "bob", "buyrampred"]' -p alice
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [
+        {
+            account: 'eosio',
+            name: 'allowpred',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                payer: 'alice',
+                paid_contract: 'eosio',
+                paid_action: 'buyram',
+                maximum_power_usage: 2000,
+                predicate_contract: 'bob',
+                predicate_action: 'buyrampred',
+            },
+        },
+    ],
+});
+```
+
+---
+title: 'buyram'
+
+---
+
+# buyram - buy RAM with UOS
+
+Increases the receiver's ram quota based upon current price and quantity of tokens provided. An inline transfer from receiver to system contract of tokens will be executed.
+
+| Field    | Type         | Description                                      |
+| -------- | ------------ | ------------------------------------------------ |
+| payer    | eosio::name  | The source account name. Authentication required |
+| receiver | eosio::name  | The destination account name                     |
+| quant    | eosio::asset | The amount of UOS to spend                       |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio buyram '["bob", "alice", "5.00000000 UOS"]' -p bob
+```
+
+## JavaScript - eosjs
+
+```java
+await api.transact({
+  actions: [
+    {
+      account: "eosio",
+      name: "buyram",
+      authorization: [{ actor: "bob", permission: "active" }],
+      data: {
+        payer: "bob",
+        receiver: "alice",
+        quant: "5.00000000 UOS"
+      },
+    },
+  ],
+});
+```
+
+---
+title: 'buyrambytes'
+
+---
+
+# buyrambytes - buy an exact amount RAM
+
+Increases receiver's RAM in quantity of bytes provided. An inline transfer from receiver to system contract of tokens will be executed.
+
+| Field    | Type        | Description                                      |
+| -------- | ----------- | ------------------------------------------------ |
+| payer    | eosio::name | The source account name. Authentication required |
+| receiver | eosio::name | The destination account name                     |
+| bytes    | uint32_t    | The amount of CPU to buy                         |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio buyram '["joe", "joji", 5000]' -p joe
+```
+
+## JavaScript - eosjs
+
+```java
+await api.transact({
+  actions: [
+    {
+      account: "eosio",
+      name: "buyram",
+      authorization: [{ actor: "joe", permission: "active" }],
+      data: {
+        payer: "joe",
+        receiver: "joji",
+        bytes: 5000
+      },
+    },
+  ],
+});
+```
+
+---
+title: 'delegatebw'
+
+---
+
+# delegatebw - stake tokens for POWER
+
+Delegates bandwidth from one user to another or self through a UOS token transfer or through transferring the bandwidth.
+
+| Field              | Type         | Description                                           |
+| ------------------ | ------------ | ----------------------------------------------------- |
+| from               | eosio::name  | The source account name. Authentication required      |
+| receiver           | eosio::name  | The destination account name                          |
+| stake_net_quantity | eosio::asset | The amount of POWER to transfer                       |
+| transfer           | bool         | If true transfers UOS tokens but not the POWER itself |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio delegatebw '["from","receiver","5.00000000 UOS",true]' -p from
+```
+
+## JavaScript - eosjs
+
+```java
+await api.transact({
+  actions: [
+    {
+      account: "eosio",
+      name: "delegatebw",
+      authorization: [{ actor: "from", permission: "active" }],
+      data: {
+        from: "from",
+        receiver: "receiver",
+        stake_net_quantity: "5.00000000 UOS",
+        transfer: "true"
+      },
+    },
+  ],
+});
+```
+
+---
+title: 'newebact'
+
+---
+
+# newebact - create an EBA account
+
+| Field       | Type             | Description                                         |
+| ----------- | ---------------- | --------------------------------------------------- |
+| creator     | eosio::name      | The account that pays for the new account           |
+| owner       | eosio::authority | The owner authority of new account                  |
+| active      | eosio::authority | The active authority of new account                 |
+| max_payment | eosio::asset     | The max payment for the new account creation in UOS |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio delegatebw '["from","receiver","5.0000 UOS",true]' -p from
+```
+
+## JavaScript - eosjs
+
+```java
+await api.transact({
+  actions: [
+    {
+      account: "eosio",
+      name: "delegatebw",
+      authorization: [{ actor: "from", permission: "active" }],
+      data: {
+        from: "from",
+        receiver: "receiver",
+        stake_net_quantity: "5.00000000 UOS",
+        transfer: "true"
+      },
+    },
+  ],
+});
+```
+
+---
+title: 'newnonebact'
+
+---
+
+# newnonebact - create a non-EBA account
+
+Allows creating a new non-EBA account, with expected cost not larger than max payment. The cost calculation will be based on the config from `newactconfig` table.
+
+| Field       | Type             | Description                                                                                                   |
+| ----------- | ---------------- | ------------------------------------------------------------------------------------------------------------- |
+| creator     | eosio::name      | The account that will pay for non-EBA account creation                                                        |
+| owner       | eosio::authority | The `owner` authority for the new account                                                                     |
+| active      | eosio::authority | The `active` authority for the new account                                                                    |
+| max_payment | eosio::asset     | Maximum payment in UOS that creator is willing to pay to account for possible USD/UOS conversion fluctuations |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"50.00000000 UOS"}' -p alice
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [
+        {
+            account: 'eosio',
+            name: 'newnonebact',
+            authorization: [{ actor: 'creator', permission: 'active' }],
+            data: {
+                creator: 'creator'
+                owner: {
+                    threshold: 1,
+                    keys: [
+                        {
+                            key: 'EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9',
+                            weight: 1,
+                        },
+                    ],
+                    accounts: [],
+                    waits: [],
+                },
+                active: {
+                    threshold: 1,
+                    keys: [
+                        {
+                            key: 'EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9',
+                            weight: 1,
+                        },
+                    ],
+                    accounts: [],
+                    waits: [],
+                },
+                max_payment: "50.00000000 UOS",
+            },
+        },
+    ],
+});
+```
+
+---
+title: 'refundram'
+order: 4
+
+---
+
+# refundram - return RAM for a refund
+
+Refund bytes of unused RAM from the Account at the price which is averaged based on total UOS spent for RAM purchase and actual RAM that was purchased.
+
+| Field   | Type        | Description                                      |
+| ------- | ----------- | ------------------------------------------------ |
+| account | eosio::name | The source account name. Authentication required |
+| bytes   | uint64_t    | The amount of CPU to return                      |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio refundram '["joe", 5000]' -p joe
+```
+
+## JavaScript - eosjs
+
+```java
+await api.transact({
+  actions: [
+    {
+      account: "eosio",
+      name: "refundram",
+      authorization: [{ actor: "joe", permission: "active" }],
+      data: {
+        account: "joe",
+        bytes: 5000
+      },
+    },
+  ],
+});
+```
+
+---
+title: 'revokepred'
+order: 6
+
+---
+
+# revokepred - reset a predicate
+
+Revokes an existing predicate of payer to no longer allow this action to be paid by them.
+
+| Field         | Type        | Description                                                     |
+| ------------- | ----------- | --------------------------------------------------------------- |
+| payer         | eosio::name | The account that setups a predicate                             |
+| paid_contract | eosio::name | The contract that account will allow paying for                 |
+| paid_action   | eosio::name | The action from the contract that account will allow paying for |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio revokepred '["alice", "eosio", "buyram"]' -p alice
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [
+        {
+            account: 'eosio',
+            name: 'revokepred',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                payer: 'alice',
+                paid_contract: 'eosio',
+                paid_action: 'buyram',
+            },
+        },
+    ],
+});
+```
+
+---
+title: 'undelegatebw'
+order: 8
+
+---
+
+# undelegatebw - unstake tokens for POWER
+
+Unstake delegated bandwidth that a user staked for another user or self. If the user delegated bandwidth to the receiver without UOS transfer, they may re-obtain the bandwidth at any time.
+
+| Field              | Type         | Description                                           |
+| ------------------ | ------------ | ----------------------------------------------------- |
+| from               | eosio::name  | The source account name. Authentication required      |
+| receiver           | eosio::name  | The destination account name                          |
+| stake_net_quantity | eosio::asset | The amount of POWER to unstake                        |
+| transfer           | bool         | If true transfers UOS tokens but not the POWER itself |
+
+## CLI - cleos
+
+```sh
+cleos push action eosio undelegatebw '["from","receiver","5.0000 UOS",true]' -p from
+```
+
+## JavaScript - eosjs
+
+```java
+await api.transact({
+  actions: [
+    {
+      account: "eosio",
+      name: "undelegatebw",
+      authorization: [{ actor: "from", permission: "active" }],
+      data: {
+        from: "from",
+        receiver: "receiver",
+        stake_net_quantity: "5.00000000 UOS",
+        transfer: "true"
+      },
+    },
+  ],
+});
+```
+
+---
+title: 'Token Contract Overview'
+order: -99
+
+---
+
+# Token Contract
+
+## Overview
+
+`eosio.token` contract defines the tables and actions that allow users to create, issue and manage tokens on EOSIO based blockchains.
+
+For Ultra, core token `UOS` are issued under account `eosio.token` using this contract.
+
+## Contract features
+
+### 1 - Create and Issue token
+
+-   Only the contract owner, or the account owner where the contract is deployed, can create or issue tokens with this contract.
+-   When creating a new token, you must define the maximum supply as well as the token symbol.
+-   Once created, issuer can issue any amount to himself, however the amount of issued tokens cannot exceed maximum supply. Token balance will be opened for the issuer if it does not exist and `eosio.token` will pay for that RAM usage.
+
+### 2 - Send and Receive token
+
+-   Users can receive tokens from the account, if the user doesn't have token balance, it will be opened once transfer action from sender is successful. By default, `eosio.token` will pay the RAM usage for opening a new token balance.
+-   To transfer, you will be required to have some tokens and a target account, not your account, which you want to transfer tokens to. Your transferred tokens need to not exceed the amount of tokens you currently hold.
+
+### 3 - Retire token and close account balance
+
+-   If you are a token issuer, you can retire any amount of tokens you already issued from your available supply.
+-   For other users, once you open a token balance, you can close the balance as long as you have zero tokens in your account.
+
+### 4 - System token UOS
+
+-   UOS is the Ultra system token, it was created through the boot-up process during our network's genesis.
+-   1 Billion Ultra UOS were issued at genesis to support swapping with ERC20 UOS and we will use inflation to pay Block Producers.
+-   The UOS token is used to transfer value in the network, and as a way to gain access to required network resources like RAM or POWER.
+
+### 5 - Other Fungible Token
+
+-   We currently accept request for creating new Fungible Token on out Public Testnet. Please follow this [guide](../../../products/fungible-tokens/index.md).
+
+---
+title: 'close'
+order: -99
+
+---
+
+# close
+
+This action is the opposite for open, it closes the account `owner` for token `symbol`.
+
+-   Parameters
+
+| Fields   | Type          | Description                                             |
+| -------- | ------------- | ------------------------------------------------------- |
+| `owner`  | eosio::name   | The owner account to execute the close action for       |
+| `symbol` | eosio::symbol | The symbol of the token to execute the close action for |
+
+Required Permissions: `owner`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.token close '["ultra", "8,UOS"]' -p ultra
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'close',
+                    authorization: [
+                        {
+                            actor: 'ultra',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        owner: 'ultra',
+                        symbol: '8,UOS',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'create'
+order: 1
+
+---
+
+# create
+
+Allows `issuer` account to create a token in supply of `maximum_supply`. If validation is successful a new entry in `stat` table for token symbol scope gets created.
+
+-   Parameters
+
+| Fields           | Type         | Description                                  |
+| ---------------- | ------------ | -------------------------------------------- |
+| `issuer`         | eosio::name  | The account that creates the token           |
+| `maximum_supply` | eosio::asset | The maximum supply set for the token created |
+
+Required Permissions: `eosio.token`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.token create '["eosio", "1000000000.00000000 UOS"]' -p eosio.token
+# For unlimited supply
+cleos push action eosio.token create '["eosio", "0.00000000 UOS"]' -p eosio.token@owner
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'create',
+                    authorization: [
+                        {
+                            actor: 'eosio.token',
+                            permission: 'owner',
+                        },
+                    ],
+                    data: {
+                        issuer: 'eosio',
+                        maximum_supply: '1000000000.00000000 UOS',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'issue'
+order: 2
+
+---
+
+# issue
+
+This action issues to `to` account a `quantity` of tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+
+-   Parameters
+
+| Fields     | Type         | Description                                                       |
+| ---------- | ------------ | ----------------------------------------------------------------- |
+| `to`       | eosio::name  | The account to issue tokens to, it must be the same as the issuer |
+| `quantity` | eosio::asset | The amount of tokens to be issued                                 |
+| `memo`     | string       | The memo string to accompany the transaction                      |
+
+Required Permissions: `issuer`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p eosio
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'issue',
+                    authorization: [
+                        {
+                            actor: 'eosio',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        to: 'eosio',
+                        quantity: '100.00000000 UOS',
+                        memo: 'init',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'open'
+order: 3
+
+---
+
+# open
+
+-   Summary: Allow `ram_payer` to create an account `owner` with zero balance for token `symbol` at expense of `ram_payer`.
+
+-   Parameters
+
+| Fields      | Type          | Description                                       |
+| ----------- | ------------- | ------------------------------------------------- |
+| `owner`     | eosio::name   | The account to be created                         |
+| `symbol`    | eosio::symbol | The token to be payed with by `ram_payer`         |
+| `ram_payer` | eosio::asset  | The account that supports the cost of this action |
+
+Required Permissions: `ram_payer`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.token open '["ultra", "8,UOS", "eosio"]' -p eosio
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'open',
+                    authorization: [
+                        {
+                            actor: 'eosio',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        owner: 'ultra',
+                        symbol: '8,UOS',
+                        ram_payer: 'eosio',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'retire'
+order: 4
+
+---
+
+# retire
+
+The opposite for create action, if all validations succeed, it debits the `stat` table supply amount.
+
+-   Parameters
+
+| Fields     | Type         | Description                                  |
+| ---------- | ------------ | -------------------------------------------- |
+| `quantity` | eosio::asset | The quantity of tokens to retire             |
+| `memo`     | string       | The memo string to accompany the transaction |
+
+Required Permissions: `issuer`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.token retire '["100.00000000 UOS", "burn"]' -p eosio
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'retire',
+                    authorization: [
+                        {
+                            actor: 'eosio',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        quantity: '100.00000000 UOS',
+                        memo: 'burn',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'transfer'
+order: 5
+
+---
+
+# transfer
+
+Allows `from` account to transfer to `to` account the `quantity` tokens. One account is debited and the other is credited with quantity tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+
+-   Parameters
+
+| Fields     | Type         | Description                                  |
+| ---------- | ------------ | -------------------------------------------- |
+| `from`     | eosio::name  | The account to transfer from                 |
+| `to`       | eosio::name  | The account to transfer to                   |
+| `quantity` | eosio::asset | The quantity of tokens to be transferred     |
+| `memo`     | string       | The memo string to accompany the transaction |
+
+Required Permissions: `from`
+
+-   `cleos` Example
+
+```shell script
+cleos push action eosio.token transfer '["eosio", "ultra", "100.00000000 UOS", ""]' -p eosio
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'transfer',
+                    authorization: [
+                        {
+                            actor: 'eosio',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        from: 'eosio',
+                        to: 'ultra',
+                        quantity: '100.00000000 UOS',
+                        memo: '',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'Token Tables'
+order: 1
+
+---
+
+# Token Tables
+
+## accounts
+
+Store all account balance created by this contract
+
+-   Code: `eosio.token`
+-   Table: `accounts`
+-   Scope: `user`
+-   Key: `symbol_raw_value`
+-   Data
+
+| Fields    | Type         | Description   |
+| --------- | ------------ | ------------- |
+| `balance` | eosio::asset | Token balance |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table eosio.token <USER> accounts
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<USER>", "code":"eosio.token", "table":"accounts", "json": true}'
+```
+
+## stat
+
+Store token supply created by this contract
+
+-   Code: `eosio.token`
+-   Table: `stat`
+-   Scope: `symbol_raw_value`
+-   Key: `symbol_raw_value`
+-   Data
+
+| Fields       | Type         | Description            |
+| ------------ | ------------ | ---------------------- |
+| `supply`     | eosio::asset | Available token supply |
+| `max_supply` | eosio::asset | Maximum token supply   |
+| `issuer`     | eosio::name  | Issuer of this token   |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table eosio.token <SYMBOL_RAW_VALUE> stat
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"stat", "json": true}'s
+```
+
+---
+title: 'User Groups Overview'
+
+outline: [0, 4]
+order: -99
+---
+
+# On-Chain User Groups in Ultra
+
+This document describes the feature of on-chain user groups in Ultra. It serves as a guide for both users and developers to understand how this feature works and how it can be utilized in smart contracts.
+
+Whether you are a developer looking to integrate this system into your application, or an end-user seeking to understand how to use the CLI or JavaScript SDK, this guide has got you covered. The documentation is divided into several key sections, each focusing on different aspects of the system.
+
+### What Will You Learn?
+
+- **Smart Contract Actions**: Understand how to create and manage groups through actions like `create.a`, `setmeta.a`, `adduser.a`, `rmuser.a`, and `clear.a`.
+- **CLI Commands**: Get a hands-on guide on how to use `cleos` commands for performing various actions.
+- **JavaScript SDK (eosjs)**: Learn how to make transactions using JavaScript via eosjs.
+- **Table Descriptions**: Get acquainted with the blockchain tables like `groupid`, `groups.a`, and `users.a` that store state information for the group management system.
+
+## Rules
+
+### Group Creation
+
+- Any account can create a group.
+- The creator pays for the RAM usage.
+- Optionally, a URI and hash for off-chain metadata can be specified during creation.
+
+### Group Scope
+
+- All groups reside in a global scope, not under the creator's scope.
+
+### Group Information
+
+For each group, the following information is stored on-chain:
+
+- **ID**: Globally unique identifier that auto-increases.
+- **Creator**: The EOSIO account that created the group.
+- **User Number**: Number of users in the group.
+- **Meta_URI**: URI for metadata (e.g., `https://ultra/group/meta/germany` or `IPFS://23LSDJFLSKJFL…`)
+- **Meta_Hash**: Hash of the metadata.
+
+#### Metadata Rules
+
+1. Both `meta_uri` and `meta_hash` can have values.
+2. Both can be empty.
+3. `meta_uri` not empty, `meta_hash` is empty.
+4. Cannot have an empty `meta_uri` while `meta_hash` is not empty.
+
+### Group Updates
+
+- Only the creator can update `meta_uri` and `meta_hash`.
+- The creator pays for the additional RAM usage or receives a RAM refund.
+
+### User Management
+
+- Only the creator can add new users to or remove existing users from the group.
+- The creator pays for RAM when adding users and receives a RAM refund when removing users.
+
+## Use Cases
+
+- Any smart contract can utilize groups for various functionalities.
+- A user needs to belong to a group to mint tokens.
+- Issue an NFT to a user if the user belongs to a specific group.
+- Ownership rules can be group-dependent.
+
+
+---
+title: 'adduser'
+order: 3
+
+---
+
+## `adduser.a`
+
+The `adduser.a` action is the first version of the adduser action in the Ultra blockchain. This action allows the creator of a group to add one or more users to a specified group. The user account names will be added to the `users.a` table and the `nr_users` field in the `groups.a` table will be updated accordingly.
+
+### Behavior
+
+- The creator of the group can add new users to it.
+- The `nr_users` field in `groups.a` table is incremented by the number of users added.
+- The action will fail if any of the user names have already been added to the group.
+
+### Action Parameters
+
+| Name       | C++ Type       | JavaScript Type   | Remarks                                                             |
+| ---------- | -------------- | ----------------- | ------------------------------------------------------------------- |
+| `creator`  | `name`         | `String`          | The account that originally created the group.                      |
+| `group_id` | `uint64_t`     | `Number/String`   | The ID used to identify the group to which the users will be added. |
+| `users`    | `vector<name>` | `Array of String` | The user names to be added to the group.                            |
+| `memo`     | `string`       | `String`          | A memo string.                                                      |
+
+**Note**:
+- The `creator` should be the original creator of the group specified by `group_id`.
+- The `users` array should not be empty.
+
+### CLI - cleos
+
+To add users to a group, use the following `cleos` command:
+
+```bash
+cleos push action eosio.group adduser.a '{"creator": "alice", "group_id": 0, "users" : ["carol", "daniel"], "memo": "add two new users"}' -p alice@active
+```
+
+### JavaScript - eosjs
+
+You can also use the following eosjs code snippet to add users to a group:
+
+```javascript
+await api.transact({
+  actions: [
+    {
+      "account": "eosio.group",
+      "name": "adduser.a",
+      "authorization": [{ "actor": "alice", "permission": "active" }],
+      "data": {
+        "creator": "alice",
+        "group_id": 0,
+        "users": ["carol", "daniel"],
+        "memo": "add two new users"
+      }
+    }
+  ]
+});
+```
+
+---
+title: 'clear'
+order: 5
+
+---
+
+## `clear.a`
+
+The `clear.a` action is the first version of the `clear` action in the Ultra blockchain. This action allows the creator of a group to remove all or a specified number of users from a group. The number of users removed is controlled by the `nr_removals` parameter.
+
+### Behavior
+
+- The creator of the group can remove all or a specified number of users from the group.
+- The `nr_users` field in the `groups.a` table will be decremented by the number of users removed.
+- The action will fail if there are no users in the group.
+
+### Action Parameters
+
+| Name          | C++ Type             | JavaScript Type | Remarks                                                                                                |
+| ------------- | -------------------- | --------------- | ------------------------------------------------------------------------------------------------------ |
+| `creator`     | `name`               | `String`        | The account that originally created the group.                                                         |
+| `group_id`    | `uint64_t`           | `Number/String` | The ID used to identify the group to clear the users from.                                             |
+| `nr_removals` | `optional<uint64_t>` | `Number/null`   | If not specified, all users will be removed. Otherwise, the number of users specified will be removed. |
+| `memo`        | `string`             | `String`        | A memo string.                                                                                         |
+
+**Note**:
+- The `creator` should be the original creator of the group specified by `group_id`.
+
+### CLI - cleos
+
+To clear users from a group, use the following `cleos` command:
+
+```bash
+cleos push action eosio.group clear.a '{"creator": "alice", "group_id": 0, "nr_removals" : 1, "memo": "remove one user"}' -p alice@active
+```
+
+### JavaScript - eosjs
+
+You can also use the following eosjs code snippet to clear users from a group:
+
+```javascript
+await api.transact({
+  actions: [
+    {
+      "account": "eosio.group",
+      "name": "clear.a",
+      "authorization": [{ "actor": "alice", "permission": "active" }],
+      "data": {
+        "creator": "alice",
+        "group_id": 0,
+        "nr_removals": 1,
+        "memo": "remove one user"
+      }
+    }
+  ]
+});
+```
+
+---
+title: 'create'
+order: 1
+
+---
+
+## `create.a`
+
+The `create.a` action is the first version of the create action for the Ultra blockchain. It registers a new group in the `groups.a` table using the parameters specified by the creator.
+
+### Behavior
+
+- This action reads the new group ID from the `groupid` table and then increments the `id` field.
+- The `eosio.group` account pays for the RAM usage for the `groupid` table.
+- Any account can create a group, and the creator account pays the RAM usage to store the group info in the `groups.a` table.
+
+### Action Parameters
+
+| Name        | C++ Type                | JavaScript Type | Remarks                                         |
+| ----------- | ----------------------- | --------------- | ----------------------------------------------- |
+| `creator`   | `name`                  | `String`        | The account that creates the group.             |
+| `meta_uri`  | `optional<string>`      | `String/Null`   | URI pointing to the group's off-chain metadata. |
+| `meta_hash` | `optional<checksum256>` | `String/Null`   | Hash of the group's metadata.                   |
+| `memo`      | `string`                | `String`        | A memo string.                                  |
+
+**Note**: The `meta_uri` and `meta_hash` can be null or an empty string, except that the combination of a null/empty `meta_uri` and a non-null/non-empty `meta_hash` is not allowed.
+
+### CLI - cleos
+
+You can use the following `cleos` command to create a new group:
+
+```bash
+cleos push action eosio.group create.a '{"creator": "alice", "meta_uri": "https://ultra/group/meta/germany", "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", "memo": "new group"}' -p alice@active
+```
+
+### JavaScript - eosjs
+
+To interact with this action using eosjs, you can use the following JavaScript code:
+
+```javascript
+await api.transact({
+  actions: [
+    {
+      "account": "eosio.group",
+      "name": "create.a",
+      "authorization": [{ "actor": "alice", "permission": "active" }],
+      "data": {
+        "creator": "alice",
+        "meta_uri": "https://ultra/group/meta/germany",
+        "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "memo": "new group"
+      }
+    }
+  ]
+});
+```
+
+---
+title: 'rmuser'
+order: 4
+
+---
+
+## `rmuser.a`
+
+The `rmuser.a` action is the first version of the `rmuser` action in the Ultra blockchain. This action allows the creator of a group to remove one or more users from a specified group. The user account names will be removed from the `users.a` table and the `nr_users` field in the `groups.a` table will be updated accordingly.
+
+### Behavior
+
+- The creator of the group can remove users from it.
+- The `nr_users` field in `groups.a` table is decremented by the number of users removed.
+- The action will fail if any of the user names are not in the group.
+
+### Action Parameters
+
+| Name       | C++ Type       | JavaScript Type   | Remarks                                                    |
+| ---------- | -------------- | ----------------- | ---------------------------------------------------------- |
+| `creator`  | `name`         | `String`          | The account that originally created the group.             |
+| `group_id` | `uint64_t`     | `Number/String`   | The ID used to identify the group to remove the user from. |
+| `users`    | `vector<name>` | `Array of String` | The names of the users to be removed from the group.       |
+| `memo`     | `string`       | `String`          | A memo string.                                             |
+
+**Note**:
+- The `creator` should be the original creator of the group specified by `group_id`.
+- The `users` array should not be empty.
+
+### CLI - cleos
+
+To remove users from a group, use the following `cleos` command:
+
+```bash
+cleos push action eosio.group rmuser.a '{"creator": "bob", "group_id": 1, "users" : ["carol", "daniel"], "memo": "remove two users"}' -p bob@active
+```
+
+### JavaScript - eosjs
+
+You can also use the following eosjs code snippet to remove users from a group:
+
+```javascript
+await api.transact({
+  actions: [
+    {
+      "account": "eosio.group",
+      "name": "rmuser.a",
+      "authorization": [{ "actor": "bob", "permission": "active" }],
+      "data": {
+        "creator": "bob",
+        "group_id": 1,
+        "users": ["carol", "daniel"],
+        "memo": "remove two users"
+      }
+    }
+  ]
+});
+```
+
+---
+title: 'setmeta'
+order: 2
+
+---
+
+## `setmeta.a`
+
+The `setmeta.a` action is the first version of the setmeta action for the Ultra blockchain. It allows users to set or update the `meta_uri` and `meta_hash` for an existing group in the `groups.a` table.
+
+### Behavior
+
+- Only the creator of the group can update the group meta.
+- The creator pays for the RAM usage for the update.
+
+### Action Parameters
+
+| Name        | C++ Type                | JavaScript Type | Remarks                                         |
+| ----------- | ----------------------- | --------------- | ----------------------------------------------- |
+| `creator`   | `name`                  | `String`        | The account that originally created the group.  |
+| `group_id`  | `uint64_t`              | `Number/String` | The ID of the group to be modified.             |
+| `meta_uri`  | `optional<string>`      | `String/Null`   | URI pointing to the group's off-chain metadata. |
+| `meta_hash` | `optional<checksum256>` | `String/Null`   | Hash of the group's metadata.                   |
+| `memo`      | `string`                | `String`        | A memo string.                                  |
+
+**Note**: 
+- The `meta_uri` and `meta_hash` can be null or an empty string, except that the combination of a null/empty `meta_uri` and a non-null/non-empty `meta_hash` is not allowed.
+- The same pair of `meta_uri` and `meta_hash` cannot be set again if they already exist for the group.
+
+### CLI - cleos
+
+To set or update the metadata of a group, use the following `cleos` command:
+
+```bash
+cleos push action eosio.group setmeta.a '{"creator": "alice", "group_id": 1, "meta_uri": "https://ultra/group/meta/germany", "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", "memo": "set group meta"}' -p alice@active
+```
+
+
+### JavaScript - eosjs
+
+You can also use the following eosjs code to interact with this action:
+
+```javascript
+await api.transact({
+  actions: [
+    {
+      "account": "eosio.group",
+      "name": "setmeta.a",
+      "authorization": [{ "actor": "alice", "permission": "active" }],
+      "data": {
+        "creator": "alice",
+        "group_id": 1,
+        "meta_uri": "https://ultra/group/meta/germany",
+        "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "memo": "set group meta"
+      }
+    }
+  ]
+});
+```
+
+---
+title: 'On-Chain User Groups Tables'
+
+outline: [0, 4]
+order: -98
+---
+
+## Table Descriptions
+
+The Ultra blockchain employs various tables to store information about groups and their users. This chapter outlines the structure, properties, and example states of these tables.
+
+### `groupid` Table
+
+
+#### Description
+The `groupid` table keeps track of the next group ID to be issued during the creation of a new group.
+
+- **Owner**: `eosio.group`
+- **Scope**: `eosio.group`
+- **Type**: Singleton
+
+#### Fields
+
+- `id`: The next ID to be issued when creating a new group.
+
+#### Example State
+
+```bash
+$ cleos get table eosio.group eosio.group groupid
+{
+  "rows": [{
+      "id": 3
+    }
+  ],
+  "more": false,
+  "next_key": ""
+}
+```
+
+
+### `groups.a` Table
+
+
+#### Description
+The `groups.a` table serves as the first version of the group information table. Each row within the table holds key details about a group, including its unique ID, the account that created the group, optional metadata URI and hash, as well as the count of users within the group.
+
+- **Owner**: `eosio.group`
+- **Scope**: `eosio.group`
+- **Type**: Multi-index
+- **Primary Index**: `id`
+
+#### Fields
+
+- `id`: A unique identifier assigned to the group.
+- `creator`: The EOSIO account responsible for creating the group.
+- `meta_uri`: An optional URI pointing to metadata stored off-chain.
+- `meta_hash`: An optional hash string of the metadata for validation.
+- `nr_users`: A count of the number of users currently within the group.
+
+#### Example State
+
+```bash
+$ cleos get table eosio.group eosio.group groups.a
+{
+  "rows": [
+    {
+      "id": 0,
+      "creator": "alice",
+      "meta_uri": null,
+      "meta_hash": null,
+      "nr_users": 0
+    },
+    {
+      "id": 1,
+      "creator": "alice",
+      "meta_uri": "meta_uri",
+      "meta_hash": null,
+      "nr_users": 0
+    },
+    {
+      "id": 2,
+      "creator": "bob",
+      "meta_uri": "meta_uri",
+      "meta_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+      "nr_users": 0
+    }
+  ],
+  "more": false,
+  "next_key": ""
+}
+```
+
+### `users.a` Table
+
+
+#### Description
+The `users.a` table is the first version of the group users table. It holds records of user accounts that belong to each group. Each row contains the EOSIO account name of a user that is part of a specific group.
+
+- **Owner**: `eosio.group`
+- **Scope**: Group ID
+- **Type**: Multi-index
+- **Primary Index**: `user.value` (uint64_t representation of the user account)
+
+#### Fields
+
+- `user`: The EOSIO account name of a user in the group.
+
+#### Example State
+
+```bash
+$ cleos get table eosio.group 0 users.a
+{
+  "rows": [
+    {
+      "user": "carol"
+    },
+    {
+      "user": "daniel"
+    }
+  ],
+  "more": false,
+  "next_key": ""
+}
+```
+
+---
+title: '2nd Hand Sale (Uniqs)'
+
+outline: [0, 4]
+order: -92
+---
+
+# 2nd Hand Sale
+
+2nd hand sales include resell (in version a), auction (in a future version), and potentially other forms. Different parties can set up certain settings relevant to reselling a token in any form.
+
+There is a global share for Ultra.
+
+When a token factory allows NFT trading, the token factory manager can configure certain resale settings, e.g., minimum resale price, resale shares
+
+An owner can also set up promoter share in the direct resell feature.
+
+## How it works
+
+### Global Share set by Ultra
+
+-   Ultra can set up a global resale share that applies to any resale.
+
+    -   By default it is 2%.
+    -   It can be updated to any value between 0% to 10%, **which will be applied to all existing uniq factories and new uniq factories**.
+
+### Resale Shares(beneficiaries) set by creator and manager
+
+-   A token factory manager can set up the following information when creating a token factory.
+
+| Resell Configs       | Meaning                                                                                                                                                                                                                                               |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| minimum resale price | All NFTs from this token factory must be listed at a price larger than or equal to this price for resale.                                                                                                                                             |
+| resale shares        | resale shares in percentages for all beneficiaries set up by the creator and the manager. The sum of all resale shares must be between 0% and 70% ( configurable at factory creation, Ultra use Ultra.royal as Ultra’s beneficiary account at moment) |
+
+The above information cannot be updated once the token factory is created, no matter whether it’s active or inactive.
+
+### Promoter shares set by seller and buyers
+
+-   The seller can specify the share for a promoter when reselling an NFT
+
+| Resell Configs | Meaning                                                                                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| promoter share | How much share for a promoter, it must be between 2% and 10%. If given value is less than 2%, it will use 2%. If given value is more than 10%, it will fail to list for resale. |
+
+The buyer can specify the name of the promoter when buying an NFT. In Ultra marketplace, Ultra can set it to an Ultra’s account, but buyer could edit it with some effort.
+
+### Overall 2nd hand Shares distribution in a buy event
+
+-   Once an NFT is sold at X amount of UOS. The shares are as follows:
+
+| Shares                                                                                     | Meaning                                                                                                      |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| X \* Ultra global share percentage [0-10%]                                                 | The amount of UOS goes to Ultra.nft.ft account (configurable)                                                |
+| X \* resale share percentages [0-70%]                                                      | Resale shares go to all beneficiaries                                                                        |
+| X \* promoter share percentage [0-10%]                                                     | The promoter share goes to the promoter that is confrimed by the buyer. If no promoter, then this share is 0 |
+| X \* (1 - global share percentage - sum of resale percentages - promoter share percentage) | After given shares to Ultra, token factory beneficiaries, promoter, the rest goes to the owner of the NFT    |
+
+For example; Token A from token Factory F is on resell at the price of 100 UOS.
+
+-   Ultra global share is 2%
+
+-   Resale shares of token factory F are (dev1, 10%), (dev2,20%)
+
+-   promoter share for token A is 5%
+
+When a user buys token A specify the promoter opensea.
+
+-   Ultra receives 2% \* 100 UOS = 2 UOS
+
+-   dev1 receives 10% \* 100 UOS = 10 UOS
+
+-   dev2 receives 20% \*100 UOS = 20 UOs
+
+-   Promoter opensea receives 5% \* 100 UOS = 5 UOS
+
+-   Seller A got 100 UOS - 2UOS - 10 UOS - 20 UOS - 5UOS = 62UOS
+
+## Relevant actions
+
+-   [create](../../contracts/nft-contract/nft-actions/create.html): A token factory manager can configure the trading window when creating a token factory
+
+-   [resell](../../contracts/nft-contract/nft-actions/resell.html): An owner of the NFT can use this action to resell an NFT when allowed by the trading window
+
+## Relevant tables
+
+-   [factory.a](../../contracts/nft-contract/nft-tables.html#factory-a): stores factory resale shares.
+
+-   [resale.a](../../contracts/nft-contract/nft-tables.html#resale-a): stores promoter share.
+
+---
+title: 'Transaction Queues, Rate-limit, and Billing'
+
+outline: [0, 4]
+order: -94
+---
+
+# Transaction Queues, Rate-limit, and Billing
+
+## Failed Transactions in Antelope Blockchains
+
+Antelope-based blockchains have historically faced challenges with failed transactions. These failed transactions aren't billed, but they still consume valuable CPU resources.
+
+In summary:
+
+1. A user pushes a transaction to an API nodeos.
+2. API nodeos validates this transaction and forwards it via P2P.
+3. The transaction reaches the block producer nodeos, gets executed, and is included in a block.
+
+However, many transactions sent to API nodeos and block producer nodeos pass signature validation but fail internal execution checks, like assert failure. This overflow of failed transactions puts strain on block producers and API nodeos, affecting the CPU time usage for regular transactions.
+
+## Subjective Billing
+
+To address this, subjective billing was introduced. It aims to bill failed transactions and reject any accounts that go subjectively negative. Successful transactions replace their temporary subjective billing with objective billing upon blockchain recording. While this approach significantly reduced CPU waste, it can result in inconsistent billing across nodeos. Consequently, transactions might be lost at any point, potentially causing an account to encounter recurring resource errors and subsequent subjective billings. For a deeper dive, refer to ['An Introduction to Subjective Billing and Lost Transactions'](https://eosnetwork.com/blog/api-plus-an-introduction-to-subjective-billing-and-lost-transactions/ 'An Introduction to Subjective Billing and Lost Transactions').
+
+## Staking and the Ranked Transaction Queue
+
+Antelope-based blockchain users need to stake UOS for CPU and NET resources before transacting. The staking amount required, relative to transaction demands, varies with the total staked number. The "ranked transaction queue" was implemented to allow end users free transactions without staking. However, abundant transactions from high-ranking users might delay those of lower-ranking users. Such high-ranking users aren't billed for failed transactions and subjective billing doesn't completely address this issue, especially since it lets users transact without staking.
+
+## Two Transaction Queues
+
+To balance free network usage for end users and to ensure that staked users have access to their resources, two transaction queues have been introduced:
+
+1. **Staked User Queue**: For users with staking (primarily developers). This queue can use up to a set CPU time percentage per block (e.g., 80%).
+
+2. **Free User Queue**: For users without staking. This queue can use the remaining CPU time (e.g., 20%). If one queue is vacant, the other can use more CPU time.
+
+To counter spamming from non-staking users, there is a rate limit. Exceeding a set CPU usage threshold results in users getting rate-limited. Higher transaction demands necessitate more staking. See more details in ['Transaction Queue and Rate Limiting'](./rate-limiting.html).
+
+## Addressing Failed Transactions
+
+A "failed transaction billing" system has been added to minimize the impact of failed transactions on both user types.
+
+In this system, failed transactions are added to blocks. Other nodeos validate and apply the provided block billing. Failed transactions only modify billing, not the blockchain state. If a transaction fails at the API nodeos level, it's added to a speculative block but isn't broadcast to the wider network. This is distinct from subjective billing, which bills on all nodes and doesn't add billed transactions to blocks. Furthermore, subjective billing tracks billing locally per nodeos, while failed transaction billing operates only on the active BP node.
+
+Failures are treated differently. A transaction with an invalid signature or insufficient authority will always be rejected immediately, instead of included in a block and getting billed. Some failures will also be given a second chance to run, like transactions that hit the block deadline.
+
+## Current Status
+
+::: info
+While the rate limit queue, failed transaction billing, and subjective billing can operate concurrently, subjective billing is currently deactivated.
+:::
+
+It remains an option for future activation. Chain usage will also be collected and leveraged by BPs for greylisting/blacklisting any account with malicious behavior via a decentralized and automatic mechanism in the future.
+
+---
+title: 'Account Types'
+
+outline: [0,4]
+order: -98
+---
+
+# Account Types
+
+Accounts have a resource cost as RAM is a limited resource on the network. To generate a new account, the RAM must be paid for. In some cases Ultra might cover the costs for account creation and sponsoring RAM for development purposes, in all other cases the user or developer will have to purchase RAM from the on-chain market.
+
+Ultra has deployed a platform-specific feature called the `Easy Blockchain Account`, more commonly referred to internally as EBA. We have yet to release public information about how these work.
+
+In traditional EOSIO accounts, the OWNER permission may change the ACTIVE permission’s keys, and the ACTIVE permission may also change its own keys. In Ultra, the ACTIVE permission may not change its own keys. This applies to both non-EBA accounts and to EBA accounts.
+
+Non-EBA accounts are equivalent to traditional EOSIO blockchain accounts, in that they are fully managed by the end user. These accounts are used internally by Ultra, and are recommended for developers to deploy their smart contracts to.
+
+## Okay, how do I make an account?
+
+We currently allow **EBA accounts** to be created through the official ultra.io client which can be found at [https://ultra.io](https://ultra.io).
+
+Using our docker image you can create local accounts for testing.
+
+- [Read more in the cleos section](../../../blockchain/general/tools/cleos.md#creating-an-account)
+
+
+
+---
+title: 'Account & Permissions'
+
+outline: [0,4]
+order: -97
+---
+
+# Accounts, Permissions, & Keys
+
+Unlike Bitcoin and Ethereum, Ultra necessitates an account on the network for participation. This account employs keypairs linked to permissions, controlling access to specific network actions.
+
+A keypair, generated through elliptic curve cryptography, involves associating private and public keys. The private key proves ownership of an account, which, in turn, has a public key assigned to one of its permissions.
+
+Ultra accounts come with default permissions called OWNER and ACTIVE. OWNER functions as a superuser, capable of updating keys for all permissions as the root permission. ACTIVE, another default permission, can execute all actions on the account except updating keys to the OWNER permission.
+
+Smart contracts are deployed to an account, and each action within a smart contract can have keys assigned to it. This feature allows for specific limitations on which entity, along with which keypair, can call that action.
+
+## Account Structure Output
+
+```
+permissions:
+    owner 1: 1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+        active 1: 1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+memory:
+    quota:       unlimited  used:      3.758 KiB
+
+net bandwidth:
+    used:               unlimited
+    available:          unlimited
+    limit:              unlimited
+
+cpu bandwidth:
+    used:               unlimited
+    available:          unlimited
+    limit:              unlimited
+```
+
+## Account Structure Diagram
+
+![](/images/basic-account-structure.jpg)
+
+---
+title: 'Actions & Transactions'
+
+outline: [0,4]
+order: -98
+---
+
+# Actions & Transactions
+
+Actions and transactions constitute the core elements of the Ultra network. The former refers to functions invoked from deployed smart contracts, while the latter encompasses single or combined actions submitted to a Block Producer for evaluation by the chain.
+
+In a standard Antelope-based network, transactions are processed in the order they are received, following a first-come, first-served approach.
+
+![](/images/transaction-entering-api-node.jpg)
+---
+title: 'Block Explorers'
+
+outline: [0,4]
+order: -95
+---
+
+# Block Explorer
+
+A block explorer is a frontend that allows a user to traverse data on the network. Typically, a block explorer will expose data such as transactions, blocks, accounts, smart contracts, and associated actions, keys, permissions, etc.
+
+Ultra provides a block explorer, which Ultra has deployed for each of the networks that a developer may need.
+
+- [Mainnet Block Explorer](https://explorer.mainnet.ultra.io/)
+
+- [Testnet Block Explorer](https://explorer.testnet.ultra.io/)
+
+---
+title: 'Block Production'
+
+outline: [0,4]
+order: -99
+---
+
+# Block Production
+
+Block production is the base function for the network. 
+
+Each Block Producer is either producing or is on standby, waiting in the wings in case a producing team needs to be swapped out.
+
+The production schedule decides in which order that the network sends transactions to a BP’s node. In a traditional Antelope network, this order is decided by the token holders voting the Block Producers up and down the ranks. In Ultra’s network, we tightly control the production schedule and optimize it to increase the network’s throughput.
+
+Typically, Antelope-based networks have 21 producing BPs and many more in standby. Ultra currently has 7 producing BPs, and none in standby. 
+
+The default block time is 500ms, meaning that a new block is produced by the network twice a second.
+
+**Ultra Block Production Strategy**
+
+![](/images/ultra-bp-production.jpg)
+---
+title: 'Consensus'
+
+outline: [0,4]
+order: -94
+---
+
+# Consensus
+
+A blockchain is a decentralized peer-to-peer state machine. It has no centralized authority. While this creates a system that is devoid of corruption from a single source, it still creates a major problem.
+
+How are any decisions made that determine the future of the network?
+
+How do you ensure that the network stays decentralized?
+
+In a centralized organization like a company, decisions are taken at the executive level. This isn’t possible in a blockchain because a blockchain has no such functionality. Necessary decisions must be made using “consensus mechanisms”.
+
+## Common Consensus Mechanisms
+
+Some of the most common consensus models used in blockchains are Proof of Work and Proof of Stake. 
+
+### Proof of Work (PoW)
+
+In Proof of Work, miner nodes compete to find a nonce added to the header of a block which causes the block to have some desired property (typically a certain number of zeros in the most significant bits of the cryptographic hash of the block header). By making it computationally expensive to find such nonces that make the blocks valid, it becomes difficult for attackers to create an alternative fork of the blockchain that would be accepted by the rest of the network as the best chain. The main disadvantage of Proof of Work is that the security of the network depends on spending a lot of resources on computing power to find the nonces.
+
+### Proof of Stake (PoS)
+
+In Proof-of-Stake, nodes that own the largest stake or percentage of some asset have equivalent decision power. In other words, voting power is proportional to the stake held. One interesting variant is Delegated Proof-of-Stake (DPoS) in which a large number of participants or stakeholders elect a smaller number of delegates, which in turn make decisions for them.
+
+### Proof of Authority (PoA)
+
+**Proof of Authority is what Ultra is currently based on.**
+
+Proof of Authority (PoA) is a reputation-based consensus algorithm that introduces a practical and efficient solution for blockchain networks (especially the private ones). The term was proposed in 2017 by Ethereum co-founder and former CTO Gavin Wood. 
+
+The PoA consensus algorithm leverages the value of identities, which means that block validators are not staking coins but their own reputation instead. Therefore, PoA blockchains are secured by the validating nodes that are arbitrarily selected as trustworthy entities.
+
+The Proof of Authority model relies on a limited number of block validators and this is what makes it a highly scalable system. Blocks and transactions are verified by pre-approved participants, who act as moderators of the system.
+---
+title: 'POWER'
+
+outline: [0,4]
+order: -97
+---
+
+# POWER Resource
+
+## What is POWER?
+
+POWER is required for sending transactions to the network, it represents the share of total resources that an account has to transact. You can transact without any POWER, but if enough people with more POWER are transacting, your transactions might be delayed or rejected.
+
+## What is it used for?
+
+To make sure that vendors and other important businesses on the network have the ability to run operations without being interrupted. For example if a game company has a big release coming out, they want to prioritize their transactions going through over the rest of the network for the duration of their event. Without POWER it may be possible encounter rate limiting which will prevent any additional transactions to be pushed
+
+Read more on the [rate limiting system...](./rate-limiting.md)
+---
+title: 'Predicate System'
+
+outline: [0,4]
+order: -96
+---
+
+# Predicate System
+
+As part of Ultra’s larger strategy to enable friction-less transactions on the network, we provide a predicate system that allows developers to cover their user’s resource costs.
+
+Developers may now allow certain actions to be performed by other accounts at the cost of their own POWER resources using the allowpred action. Resources may be revoked using the revokepred action. Developers may also specify a predicate action to call to verify if this action should be paid or not (e.g. check that a user is a premium user or is whitelisted).
+
+## Predicate API
+
+| Optional | Type     | Name               | Description                                                     |
+| -------- | -------- | ------------------ | --------------------------------------------------------------- |
+| No       | name     | payer              | The account that adds a predicate.                              |
+| No       | name     | paid_contract      | The contract that account will allow paying for                 |
+| No       | name     | paid_action        | The action from the contract that account will allow paying for |
+| No       | uint64_t | max power usage    | The limit for POWER usage in UOS for paid action                |
+| Yes      | name     | predicate_contract | The predicate contract that will be used for inline action call |
+| Yes      | name     | predicate_action   | The action that will be used to create inline action call       |
+
+
+**Example**
+
+```ts
+cleos push action eosio allowpred '["<payer_account>", "<paid_contract>", "<paid_action>", <max_allowed_cpu_usage>, <predicate_contract (optional)>, <predicate_action (optional)>]' -p <payer_account>@active
+```
+
+```ts
+cleos push action eosio allowpred '["alice", "eosio", "buyram", 2000, "ubisoft", "buyrampred"]' -p alice
+```
+
+A unique @payer permission of the developer account must be specified to utilize this system. An account with the @payer permission provided will be the one to pay for the whole transaction but only if all actions in the transaction are allowed by the payer, and all predicate actions are successfully executed. If @payer is present in the transaction then he will be ranked in the transaction queue described above instead of the first authorizer.
+---
+title: 'RAM Policy'
+
+outline: [0,4]
+order: -95
+---
+
+# RAM Policy
+
+The RAM pricing curve utilizes a Bancor algorithm which leads the RAM prices to go up when the RAM supply goes down. Ultra ensures that all blockchain users share the same RAM market and thus the price is the same for every account wishing to utilize it.
+
+Ultra can adjust RAM prices by reserving or releasing some of the RAM from the market and by changing the parameter called connector weight which steepens the curve.
+
+## RAM purchase rules
+
+Any account can purchase RAM using buyram or buyrambytes action. RAM is purchased with UOS tokens.
+
+By default new accounts can only purchase and have in use up to 10 KB of RAM. Ultra can change this limit with setramthresh action.
+
+Once the account provides the KYB information the maximum RAM purchase limit is removed. Ultra requires that an account not have more than 10 MB of RAM that is not in use. If an account has more than 10 MB of RAM purchased but unused then this account will be unable to purchase more RAM. This limit can be changed with setramthrkyc.
+
+For developers, a special whitelist is maintained which allows Ultra to set any desired unused RAM limit for specified accounts. Accounts are whitelisted with whitelistact and removed from whitelist with unwhtlistact actions.
+
+Only up to 10 MB can be purchased by any account in a single buy operation. Ultra can change this limit with setramprchlm.
+
+## RAM gifting
+
+Ultra can gift RAM using giftram action to any account bypassing any RAM limitations from the section above. Gifting RAM requires that some of the RAM is still reserved by Ultra and not available on the market.
+
+## RAM fees
+
+Each RAM purchase has a UOS token fee based on the percent of tokens used for the purchase. By default 5% fee is applied to each RAM purchase. Ultra can alter this fee with setramfee action.
+
+## RAM refund policy
+
+Accounts may decide to refund the RAM they have purchased using refundram action and in this case the refund price is calculated based on the amount of token spent by this account for RAM purchases and the amount of RAM gifted to this account by Ultra. This allows Ultra to fairly refund the RAM purchase and avoid RAM price speculation since the refund amount does not depend on the current RAM price. Subtracted fees are not refunded.
+
+## RAM reservation and supply increase
+
+The default eosio.system contract setting specifies that 32 GB are available on the RAM market from the start and 32 GB are reserved by Ultra. Any additional RAM added to the system using setram action will go to Ultra first. Ultra may decide to gift ram to an account with giftram or release RAM into the market by returning it using the rtnrambytes action. Ultra can manually reserve some RAM with resvrambytes action. Additionally the setramrate action can be used by Ultra to add a specified amount of bytes to the RAM market with each block.
+
+## Sponsored objects
+
+Each non-system blockchain account has a sponsored tier assigned to it. This tier specifies the amount of account information objects (permissions, keys) that can be stored by this account for free (Ultra uses its RAM for storage). Ultra can specify a default tier for new accounts with setdeftier action, can create new tiers using createtier, and update existing tiers with updatetier. Only Ultra can change the accounts tier using the settier action and can disable this sponsored system for specific users with the settiereligb action.
+
+The goal of this system is to allow regular users to have some necessary account information stored free of charge and to encourage users to utilize the blockchain without spending UOS tokens.
+---
+title: 'Transaction Queue and Rate Limiting'
+
+outline: [0,4]
+order: -93
+---
+
+# Introduction
+The Ultra Blockchain employs two main concepts to enhance performance and security: **Resource Allocation** and **Rate Limiting**. This document aims to explain these concepts and how users can effectively interact with the Ultra Blockchain.
+
+# Resource Allocation
+When a user stakes UOS (Ultra Blockchain's native currency), they're eligible to use a portion of our CPU resources. The ratio of resource allocation is determined by the stake amount of an account relative to the total amount staked in the system. This is, however, not a strict ratio due to the resource allocation mechanism.
+
+# Positive and Negative Accounts
+Accounts that use less CPU than is available to them are considered "positive accounts", while those that exceed their CPU allocation are "negative accounts". In the protocol level, there are two transaction queues, the positive queue for positive accounts and the negative queue for negative accounts.
+
+To ensure fair resource usage, Ultra Blockchain reserves 20% of all CPU resources for negative accounts. This results in a 80-20% processing time ratio where block producers process transactions from the positive queue for 320ms and from the negative queue for 80ms, if the block producing time is 400ms.
+
+# Queue Processing
+The normal processing order adheres to the 80-20% ratio. However, if there aren't enough transactions in the positive queue, the block producer can pick transactions from the negative queue and vice versa. This dynamic reallocation ensures efficient use of resources.
+
+# Rate Limiting
+Rate limiting is the second core concept, providing safeguards for the network. Transactions from positive accounts are added to the positive queue, while those from negative accounts go into the negative queue. Furthermore, negative accounts are categorized based on whether they fall above or below the rate limit threshold.
+
+# Rate Limit Classification for Negative Accounts
+Negative accounts are categorized based on whether they fall below or above a configurable rate limit threshold (currently set at 50ms). If an account's properties fulfill the following inequality:
+```
+used cpu >= available cpu + rate_limit_threshold
+```
+then it is considered "above the rate limit threshold" (or briefly, "above the threshold"). Conversely, if the inequality is not satisfied, the account is "below the rate limit threshold".
+
+Transactions from accounts below the threshold face no restrictions. However, if an account is categorized as above the threshold, it is subject to both "incoming rate limiting" and "execution rate limiting".
+
+# Incoming Rate Limiting
+This applies before a transaction from an "above the threshold" account is added to the negative queue. The system checks if the incoming rate limiting timestamp is less than the current timestamp. If true, the transaction is **added** to the queue and the incoming rate limiting timestamp is updated to:
+```
+now + abs(used CPU - available CPU) * 100
+```
+ If not, the transaction is **rejected** with an incoming rate limiting exception.
+
+# Execution Rate Limiting
+This mechanism activates just before a transaction from an "above the threshold" account is executed. The system checks if the execution rate limiting timestamp is less than the current time. If true, the transaction is **executed**, and the execution rate limiting timestamp is updated to
+```
+now + abs(used CPU - available CPU) * 100
+```
+If not, the transaction is **rejected** before execution with an execution rate limiting exception.
+
+![Transaction processing chart](/images/transaction_queue.png)
+*Transaction processing chart*
+
+# Switching Queues
+In case an account becomes negative while its transaction is in the positive queue, the transaction is moved to the negative queue, applying the rules specified for the negative queue.
+
+With these mechanisms, Ultra Blockchain ensures efficient resource allocation and transaction processing while preventing resource abuse. Always remember to monitor your CPU usage and stake enough UOS to maintain a positive account status.
+
+---
+title: 'Transaction Failure Trace'
+
+outline: [0, 4]
+order: -91
+---
+
+# Transaction Failure Trace
+
+When transaction is locally accepted by the API node there is still a potential for it to fail once it reaches the producer node. In such cases the transaction error will be recorded on the blockchain and you will be able to find the error trace in the block explorer
+
+## Are all failed transactions get recorded on the chain?
+
+Failed transactions are not guaranteed to be added to the block so it is still necessary to wait for it's expiration date and blocks irreversibility status to identify it the transaction failed or not. But if you do manage to find your transaction in an irreversible block (either executed or failed) then you can be sure about it's status
+
+## How to see a failed transaction in block explorer
+
+If you know the transaction ID then by simply searching the transaction ID in block explorer you would be able to find if it executed successfully or failed
+
+::: details Example of transaction error trace
+```JSON
+{
+ "code": 10500009,
+ "name": "eosio.nft.ft.cpp",
+ "message": "to account does not exist",
+ "stack": [
+  {
+   "context": {
+    "level": "error",
+    "file": "wasm_interface.cpp",
+    "line": 1205,
+    "method": "eosio_assert_code_name_what_message",
+    "hostname": "",
+    "thread_name": "nodeos",
+    "timestamp": "2023-06-21T10:37:12"
+   },
+   "format": "assertion failure with message: ${s}",
+   "data": {
+    "s": "to account does not exist"
+   }
+  },
+  {
+   "context": {
+    "level": "warn",
+    "file": "apply_context.cpp",
+    "line": 117,
+    "method": "exec_one",
+    "hostname": "",
+    "thread_name": "nodeos",
+    "timestamp": "2023-06-21T10:37:12"
+   },
+   "format": "pending console output: ${console}",
+   "data": {
+    "console": ""
+   }
+  }
+ ]
+}
+```
+:::
+
+![](/images/block_explorer_2023-06-21-08-19-30.png)
+---
+title: 'Wallets'
+
+outline: [0,4]
+order: -96
+---
+
+# Wallets
+
+A wallet is a piece of software that securely holds a user’s keys so that they may interact with an open network without risk.
+
+The wallet does this by holding the user’s keys in a locally encrypted vault. When the user wishes to sign a transaction on an open network, the client sends a request to the user’s wallet, which asks the user to decrypt the keys and compares them to the public key in the requesting transaction. If they match, the wallet confirms and allows the user to sign the transaction.
+
+![](/images/wallet-signing-transaction.jpg)
+
+There are many different types of wallets available for EOSIO-based networks. The most basic is Keosd, which comes as part of the developer kit provided. Additionally, there are custodial, non-custodial, and hardware wallets. Each of these have their upsides and downsides.
+
+Keosd runs in the command-line and is generally used by developers for interacting directly with the open network.
+
+Custodial wallets allow a third party to hold your keys.
+
+Non-custodial wallets are self-managed.
+
+A hardware wallet is a physical device that keeps an account’s keys secure within the device, and asks a user for a confirmation on the device to complete the transaction.
+---
+title: 'Key Differences'
+
+outline: [0,4]
+order: -99
+---
+
+# Key Differences
+
+Ultra is based on [Antelope Blockchain technology](https://github.com/AntelopeIO/leap) and is maintained at feature parity with the standard releases, there are many key changes that have been implemented by our blockchain team. These changes alter the way that Ultra allocates resources, assigns permissions, and runs the blockchain and its schedule.
+
+## Choosing Block Producers
+
+As an enterprise blockchain network, Ultra carefully selects and elects Block Producers manually. There is no voting process. Block Producers' accounts are created by Ultra, with the keys being generated by the Block Producer themselves.
+
+Block producers are given a specific order based on their geographical location and the distance between each producer. The goal is to reduce the distance between producers and the overall latency.
+
+See [Proof of Authority](./antelope-ultra/consensus.md#proof-of-authority-poa)
+
+## Block Producer Schedule
+
+During the initial Testnets and Mainnet, it will be Ultra who is defining the Block Producer schedule. There is not an ordered, elected ranking like on other Antelope chains. There is no voting for Block Producers.
+
+All block producers are given an equal opportunity to produce blocks for the chain.
+
+## Block Producer Rewards
+
+Ultra’s block production rewards are divided up according to how many blocks they produce. A Block Producer that successfully produces all blocks will be able to claim the full Block Producer reward.
+
+The compensation that a Block Producer receives is paid out in **UOS tokens**. The reward is always calculated as the equivalent of a set USD sum that is agreed upon when the Block Producer signs the contract with Ultra.
+
+## Transactions Ranking
+
+On the Ultra blockchain, the ranking mechanism for the queuing of transactions has been substantially altered to ensure that
+
+*   Transactions critical to the Ultra network get processed with priority
+    
+*   Transactions from users who do not have enough resources can still access the network
+    
+
+## CPU/NET Resources
+
+Extensive changes have been made by Ultra to the core concept of **CPU/NET**. On Ultra these have been combined into a simplified, single resource called POWER. User accounts stake **UOS** to gain **POWER**. Dapp user can pay for their users' transaction **POWER** usage.
+
+Read more in the [Power Policy](./antelope-ultra/power-resource.md) section as well as the [Rate Limiting](./antelope-ultra/rate-limiting.md)
+
+**RAM**
+
+The most common or important usage of RAM is free, account creation for example. Users don’t need to purchase RAM for simple blockchain usage. Developers have the option to buy more for deployment of smart contracts that require it.
+
+Read more in the [RAM Policy](./antelope-ultra/ram-policy.md) section.
+
+## Accounts
+
+Blockchain accounts on the Ultra network are free (up to a certain number of accounts per user) since it is Ultra who assumes the cost of the **RAM** required to create a new account. For users who require additional accounts, they can purchase extra RAM as required. To begin with, ultra will be the only one that can create a new account.
+
+## Permissions
+
+The Ultra blockchain has also made alterations at the protocol level to how permissions are applied. In a traditional Antelope blockchain, permission may change itself. On Ultra, only a parent authority may change a child’s permission. This means that, for example, **ACTIVE** permission must be changed by the **OWNER** permission, and can not be changed by the **ACTIVE** permission.
+
+**Veto Power**
+
+As an enterprise-focused blockchain solution, Ultra retains veto power over proposals that it deems improper or malicious. For example, a proposal to upgrade to an undesired system contract implementation which could potentially undermine the Ultra blockchain.
+
+**Premium Names**
+
+Premium names are not currently supported.
+
+**Chain activation**
+
+Only Ultra can activate the chain.
+---
+title: 'Useful Links'
+
+---
+
+# Useful Links
+
+## Useful Resources
+
+This is a compilation of useful external resources that the Blockchain Team at Ultra has used over the years. 
+
+These include anything from best security practices, tools, and even other communities.
+
+### Block Explorers
+
+* [Mainnet Explorer](https://explorer.mainnet.ultra.io/)
+* [Testnet Explorer](https://explorer.testnet.ultra.io/)
+* [Local Block Explorer from Bloks.io](https://local.bloks.io/)
+
+### Community
+
+* [Antelope Developer Community](https://t.me/antelopedevs)
+
+### IDEs
+
+* [VSCode](https://code.visualstudio.com/download)
+* [CLion](https://www.jetbrains.com/clion/)
+
+### Examples
+
+* [Smart Contract Examples](https://github.com/blockmatic/antelope-contracts-list)
+* [Wallet Test App](https://stackblitz.com/edit/ultra-wallet-test?file=index.js)
+* [Vite Example Wallet App](https://github.com/Stuyk/ultra-wallet-app-template)
+
+
+### Snapshots
+
+* [EOSNation Snapshots](https://snapshots.eosnation.io/)
+
+### Security
+
+* [Slow Mist Security Best Practices](https://github.com/slowmist/eos-smart-contract-security-best-practices/blob/master/README_EN.md)
+* [cc32d9s Developer Handbook](https://cc32d9.gitbook.io/antelope-smart-contract-developers-handbook/)
+* [Sentnl Security Audits](https://sentnl.io/)
+
+### Tools
+
+* [Ultra Wallet Chrome Extension](https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+
+### Tutorials
+
+* [EOSNetwork Getting Started Guides](https://learn.eosnetwork.com/course/getting-started-with-eos)
+* [Blockchain Basics](https://docs.eosnetwork.com/docs/latest/blockchain-basics/)
+* [EOSIO Developer Portal](https://developers.eos.io/)
+
+### VSCode Extensions
+
+* [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+---
+title: 'Compile a Contract'
+
+order: -99997
+oultine: [0, 4]
+---
+
+# Compile a Contract
+
+You can follow [Create A Contract](./create-a-contract.md) to create a simple Hello World contract.
+
+Or example contract can found at this https://github.com/ultraio/eosio.cdt/tree/master/examples/hello
+
+## Compile via CLI
+
+Follow these steps to compile your contract
+
+### Step 1
+
+Navigate to the hello folder in examples (./examples/hello), you should then see the `./src/hello.cpp` file
+
+### Step 2
+
+Run the following commands
+
+<Staging>
+
+```shell script
+$ mkdir build
+$ cd build
+$ cdt-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+```
+
+</Staging>
+
+<Mainnet>
+
+```shell script
+$ mkdir build
+$ cd build
+$ cdt-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+```
+
+</Mainnet>
+
+<Experimental>
+
+```shell script
+$ mkdir build
+$ cd build
+$ cdt-cpp -abigen ../src/hello.cpp -o hello.wasm -I ../include/
+```
+
+</Experimental>
+
+This will generate 2 files
+
+- The compiled binary wasm, `hello.wasm`
+- The generated ABI file, `hello.abi`
+
+## Compile via Cmake
+
+You can have a look at `CMakeLists.txt` in `./examples/hello/src` as an example on how to configure a Cmake file.
+
+```typescript
+project(hello)
+
+set(EOSIO_WASM_OLD_BEHAVIOR "Off")
+find_package(eosio.cdt)
+
+add_contract( hello hello hello.cpp )
+target_include_directories( hello PUBLIC ${CMAKE_SOURCE_DIR}/../include )
+target_ricardian_directory( hello ${CMAKE_SOURCE_DIR}/../ricardian )
+```
+
+Follow these steps to compile your contract
+
+### Step 1
+
+Navigate to the hello folder in examples (./examples/hello), you should then see the `./src/hello.cpp` file
+
+### Step 2
+
+Run the following commands
+
+```shell script
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+
+This will generate 2 files under `./build/hello` directory
+
+- The compiled binary wasm, `hello.wasm`
+- The generated ABI file, `hello.abi`
+---
+title: 'Create a Contract'
+
+order: -99998
+oultine: [0, 4]
+---
+
+# Create a Contract
+
+Let's start with a simple smart contract that produces the traditional `Hello World`.
+
+This tutorial introduces the following key concepts:
+
+- EOSIO Contract Development Toolkit: The toolchain and libraries used to build smart contracts
+- Webassembly (WASM): The virtual machine used to execute a portable binary-code format, hosted in nodeos
+- Application Binary Interfaces (ABI): The interface that defines how data is marshalled to and from the webassembly virtual machine
+- Smart Contracts: The code that defines actions and transactions which may be executed on a blockchain
+
+This tutorial shows how to:
+
+- Create a simple smart contract with a hi action
+- Compile and deploy the smart contract to an EOSIO blockchain
+- Use the command line to call the hi action of the smart contract
+
+## Before you Begin
+
+This tutorial requires the following:
+
+- Knowledge of the C++ programming language
+- A code editor or IDE
+- A fully configured local development environment
+
+Once you complete the tutorial, you should have created a Hello World smart contract and deployed the smart contract on a blockchain.
+
+## Procedure to create hello.cpp
+
+Follow this procedure to create the Hello World smart contract. Normally you create two files - the header or `.hpp` file which contains the declarations for the smart contract class and the `.cpp` file, which contains the implementation of the smart contract actions. In this simple example, you only use a `.cpp` file.
+
+### 1. Create a new directory called hello to store your smart contract file
+
+```sh
+mkdir hello
+```
+
+Go to the new directory
+
+```sh
+cd hello
+```
+
+### 2. Create a new file, `hello.cpp`, and open it in your preferred text editor
+
+```sh
+touch hello.cpp
+```
+
+### 3. Write the smart contract
+
+Follow these four steps and add this code to the `hello.cpp` file.
+
+#### Step 1. Import the eosio base library with the include directive.
+
+Add the line:
+
+```cpp
+#include <eosio/eosio.hpp>
+```
+
+#### Step 2. The `eosio.hpp` contains classes required to write a smart contract, including `eosio::contract`. Create a standard C++11 class and inherit from the `eosio::contract` class. Use the `[[eosio::contract]]` attribute to inform the `EOSIO.CDT` compiler this is a smart contract.
+
+Add the line:
+
+```cpp
+class [[eosio::contract]] hello : public eosio::contract {};
+```
+
+The `EOSIO.CDT` compiler automatically generates the main dispatcher and the `ABI file`. The dispatcher routes action calls to the correct smart contract action. The compiler will create one when using the `eosio::contract` attribute. Advanced programmers can customize this behavior by defining their own dispatcher.
+
+#### Step 3. Add a public access specifier and a using-declaration to introduce base class members from `eosio::contract`. You can now use the default base class constructor.
+
+Add these lines:
+
+```cpp
+public:
+	using eosio::contract::contract;
+```
+
+#### Step 4. Add a `hi` public action. This action accepts an `eosio::name` parameter, and prints **Hello** concatenated with the `eosio::name` parameter.
+
+Add these line:
+
+```cpp
+	[[eosio::action]] void hi( eosio::name user ) {
+		print( "Hello, ", user);
+	}
+```
+
+The `[[eosio::action]]` attribute lets the compiler know this is an action.
+
+The `hello.cpp` file should now look like this:
+
+```cpp
+#include <eosio/eosio.hpp>
+class [[eosio::contract]] hello : public eosio::contract {
+  public:
+      using eosio::contract::contract;
+      [[eosio::action]] void hi( eosio::name user ) {
+         print( "Hello, ", user);
+      }
+};
+```
+---
+title: 'CDT Overview'
+
+order: -99999
+oultine: [0, 4]
+prev: false
+---
+
+# Contract Development Kit (CDT)
+
+All information about Contract Development Kit on how to develop a smart contract.
+
+EOSIO.CDT (Contract Development Toolkit) is a toolchain for WebAssembly (WASM) and a set of tools to facilitate smart contract development for the EOSIO platform. In addition to being a general purpose WebAssembly toolchain, EOSIO specific optimizations are available to support building EOSIO smart contracts. 
+
+This toolchain is built around Clang 9, which means that EOSIO.CDT has the most currently available optimizations and analyses from LLVM, but as the WASM target is still considered experimental, some optimizations are incomplete or not available.
+
+## cdt-cpp
+
+cdt-cpp is a tool for compiling smart contracts.
+
+It will compile c++ source code to corresponding compiled binary wasm and generated ABI file.
+
+### Common Command Reference
+
+```shell script
+USAGE: cdt-cpp [options] <input file> ...
+
+OPTIONS:
+
+Generic Options:
+
+  -help                    - Display available options (-help-hidden for more)
+  -help-list               - Display list of available options (-help-list-hidden for more)
+  -version                 - Display the version of this program
+
+compiler options:
+
+  -I=<string>              - Add directory to include search path
+  -L=<string>              - Add directory to library search path
+  -abigen                  - Generate ABI
+  -abigen_output=<string>  - ABIGEN output
+  -c                       - Only run preprocess, compile, and assemble steps
+  -contract=<string>       - Contract name
+  -include=<string>        - Include file before parsing
+  -l=<string>              - Root name of library to link
+  -no-abigen               - Disable ABI file generation
+  -o=<string>              - Write output to <file>
+  -v                       - Show commands to run and use verbose output
+  -w                       - Suppress all warnings
+```
+
+## Useful Links
+
+-   [Docker Image Usage](../../../../tutorials/docker/index.md)
+-   [Create A Contract](./create-a-contract.md)
+-   [Compile A Contract](./compile-a-contract.md)
+---
+title: 'Cleos Usage'
+
+order: 0
+outline: [0,4]
+---
+
+# Cleos Usage
+
+Cleos is a command line tool that will allow you to interface with various HTTP APIs provided from nodeos instances. Cleos can be used to lookup accounts, deploy contracts, interface with contracts, and much more.
+
+## Who is it for?
+
+* Developers
+* Advanced Users
+
+## Obtaining Cleos
+
+We have created a Docker image that has pre-created scripts, tools, and pre-packaged binaries. Cleos is already included inside of the Docker image.
+
+Individual binaries are not currently available for download.
+
+[Docker Image Usage](../../../tutorials/docker/docker-image-usage.md)
+
+## Usage
+
+Inside the Docker Container the following can be executed for general usage.
+
+```sh
+cleos --help
+```
+
+Additional help is supported for all individual options inside of cleos.
+
+```sh
+cleos wallet --help
+cleos wallet create --help
+cleos get --help
+cleos get table --help
+```
+
+### External APIs
+
+If you are using cleos you may find yourself needing to interface with an external API. This can be done with the `-u` option.
+
+[See this API section](../../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
+
+**Example**
+
+```sh
+cleos -u https://someurl.com/xyz/ get table eosio eosio global
+```
+
+## Wallets
+
+A wallet can be defined as a secure place where private keys can be stored. 
+
+Cleos has its own wallet software called `keosd` that will assist you with securely storing your private key. This additional piece of software that is packaged with `cleos` can be used through `cleos` itself.
+
+* Developers are responsible for backing up their own private keys
+* Remember to store your wallet password
+* Do not share private keys in public spaces / channels
+
+_A wallet may not be stored between sessions while using a Docker Image, ensure you backup any private keys you create if they need to be used again._
+
+### Basic Usage
+
+```sh
+cleos wallet --help
+```
+
+### Wallet Rules
+
+* Multiple wallets can exist
+* Multiple wallets can be unlocked at the same time
+* Any transaction will automatically scan unlocked wallets for a key with permission to the account
+* Accessing a specific wallet requires --name
+  * This only applies to wallet based commands with cleos
+
+### Create a Wallet
+
+Below is the command used to create a wallet and print out a `password` which you should store somewhere to eventually unlock a wallet. By default a wallet will eventually lock itself over time.
+
+```sh
+cleos wallet create --to-console
+```
+
+A successful creation of the wallet will respond with:
+
+```sh
+Creating wallet: default
+Save password to use in the future to unlock this wallet.
+Without password imported keys will not be retrievable.
+"SomeReallyLongPassword"
+```
+
+### Creating a Named Wallet
+
+There are times a developer may need a specifically named wallet to interface with. You can easily name a wallet with the following command.
+
+```sh
+cleos wallet create --name=CustomName --to-console
+```
+
+The name chosen will be used for the file name, and the wallet itself. 
+
+### Unlocking a Wallet
+
+When a wallet is locked it will not allow any cleos based commands that require transacting, setting contracts, etc. to be called. Below is a command that can be used to unlock the wallet.
+
+```sh
+cleos wallet unlock
+```
+
+After running the command it will prompt you for a password. It may appear like nothing is being written when you type or paste your password (right-click) but actually something is being written.
+
+A successful unlock will respond with:
+
+```sh
+Unlocked: default
+```
+
+### Importing a Private Key
+
+There are two ways to import a private key to your wallet.
+
+This first version will prompt for a private key to import
+
+```sh
+cleos wallet import
+```
+
+This second version will not prompt the user and will retain the private key in the `history` command. 
+
+It is **not recommended** to use it, but it could be used for development purposes.
+
+```sh
+cleos wallet import --private-key SomePrivateKey
+```
+
+### List Keys
+
+No, this does not reveal private keys. Instead, it lists all of your public keys.
+
+```sh
+cleos wallet keys
+```
+
+If you do want to list private keys from unlocked wallets the following command can be used.
+
+```sh
+cleos wallet private_keys
+```
+
+### Create a Key Pair
+
+The following command will print a private and public key to console without importing it into the wallet.
+
+```sh
+cleos create key --to-console
+```
+
+To import a key on creation, then the following command will suffice.
+
+```sh
+cleos wallet create_key
+```
+
+### Wallet Infinite Unlock
+
+If you find a need for a wallet that almost never locks itself then seek the following page:
+
+[keosd - Infinite Unlock](./keosd.md#wallet-infinite-unlock)
+
+## Accounts
+
+Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a non-eba account is necessary to deploy smart contracts. 
+
+Meaning, developers who wish **to deploy a smart contract** on the production network must contact Ultra and **obtain a non-eba account.**
+
+### Account Rules
+
+Account names are automatically generated sequentially based on previous name. Developers are not required to provide a name for an account, developers are given one.
+
+_Requires system contracts to be deployed, and applies on staging and production networks._
+
+### Name Type Rules
+
+There are rules with using the `eosio::name` type and account names.
+
+* Can be up to 12 character(s)
+* Must only contain digits 1-5
+* Must only contains letters a-z
+* Must be lowercase only
+
+_Developers are unable to choose their name on staging and production networks._
+
+### Resource Information
+
+You do not need to have UOS in the account to deploy smart contracts, or do general transactions. This is all shared through Ultra's POWER system which splits resources amongst multiple accounts as they are created.
+
+This being said, you will need RAM in order to deploy a smart contract. You may acquire RAM during the account creation process, from the RAM market, or by creating an unlimited account which has no RAM limitations.
+
+### Accounts for Staging Network & Production Network
+
+However, **a non-eba account is necessary for deploying smart contracts.** This can only be obtained by going through Ultra. 
+
+In a local network a developer has full control over how accounts are created, and when they can be created. Refer to the instructions below to use `cleos` to create accounts.
+
+### Creating an Account
+
+This applies when you have a system contract deployed to the chain, and need to create an account.
+
+```sh
+cleos system newaccount ultra.eosio accountname SomePublicKey --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
+```
+
+This permission is inaccessible on staging and production networks.
+
+_Note: Using the `ultra.eosio` permission should be possible when launching the chain with the javascript framework included in the image._
+
+### Creating a Non-EBA Account
+
+Allow user to create new non-EBA account when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
+
+```sh
+cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p alice
+```
+
+### Accessing Account Info
+
+Once an account is created you can check if it exists on chain by performing a `get` against the account.
+
+```
+cleos get account accountname
+```
+
+### Updating Account Permissions
+
+Account permissions can be incredibly complex at times depending on the needs of the permission structure.
+
+Please keep in mind that the `eosio` account must have the `eosio.system` contract deployed to to the account in order to use this functionality.
+
+**Basic Permission Hierarchy**
+
+Almost all accounts that are created always have the same permission structure by default.
+
+* owner
+  * The highest permission
+* active
+  * The lowest permission
+
+_To change active permission we need permission of the owner permission_
+
+**Permission Structure**
+
+```json
+{
+  "threshold": 1,
+  "accounts": [
+    {
+      "permission": {
+        "actor": "anotheracc1",
+        "permission": "active"
+      },
+      "weight": 1
+    }
+  ],
+  "keys": [
+    {
+      "key": "SomePublicKey",
+      "weight": 1
+    }
+  ],
+  "waits": []
+}
+```
+
+**Explanation of Permission Structure**
+
+The above structure may look quite complex, but this can be broken down.
+
+* threshold
+  * Threshold determines how many signatures are needed from both the keys, and accounts section to fulfill this permission we are creating.
+  * If we set threshold to 2 and we have 2 keys listed, then we need to use the multi-signature protocol to fulfill any actions using this permission.
+* accounts
+  * This is a list of accounts that can be used to fulfill the permission we are creating.
+  * This means that multiple accounts can be chained together.
+  * There is no limit to the amount of accounts we can add to this array.
+  * weight
+    * This determines how much is given to the threshold when this specific account signs a transaction. If we set the weight to 2 and we need a threshold of 2, this one account can completely fulfill the threshold necessary to sign a transaction.
+* keys
+  * This is a list of keys that can be used to fulfill the permission we are creating.
+  * This means that maybe you and a friend, or a bunch of other people can all put their keys under this one specific permission. You can then have any of the keys sign on behalf of this permission to meet the threshold.
+  * There is no limit to the amount of keys we add to this array.
+  * weight
+    * Same as the 'weight' written above in the accounts section.
+
+When all adjustments are made to the above structure we can `stringify` the json structure to pass it through cleos.
+
+**Pushing the Update Auth**
+
+Keep in mind that updating authorization will require the permission above the permission we are modifying. Example being if we are modifying the `active` permission we need the `owner` permission to do so.
+
+```sh
+cleos set account permission account1 active '{"threshold":1,"accounts":[{"permission":{"actor":"anotheracc1","permission":"active"},"weight":1}],"keys":[{"key":"SomePublicKey","weight":1}],"waits":[]}' -p account1@owner
+```
+
+### Updating Account Link Authorization
+
+Preface, `linkauth` allows a specific `account permission` to be linked to a specific smart contract's `action`. This will allow only that specific permission under the account to interface with a smart contract `action`.
+
+In short, if a permission is created for an account that has a public key that is used inside of an application it is better to only have that permission interface with very specific actions. This prevents potential vulnerabilities when creating applications that interface with the blockchain.
+
+```sh
+cleos push action eosio linkauth '["someaccount","eosio.token","transfer", "somepermission"]' -p someaccount
+```
+
+### Code Based Permissions
+
+The `eosio.code` permission will allow a smart contract to call other smart contracts to invoke other actions. 
+
+The best example of this is creating a smart contract that requires funds to be transfered from the contract account to the user account without the contract account's direct permission.
+
+```sh
+cleos set account permission contractaccount active --add-code
+```
+
+## Contract Deployment
+
+Smart contracts allow accounts to interact with an `action` inside of a compiled smart contract that runs specific code to create a result.
+
+Deploying a compiled smart contract is how developers, and users alike will interface with the blockchain. 
+
+An example of a smart contract would be the `eosio.token` contract that also has the `transfer` action. This allows users to transfer the native token between accounts.
+
+### Restrictions
+
+**This does not apply to local networks, you can bypass this through other scripts**.
+
+By default `ultra` requires KYB (Know Your Business) before any business or individual user can deploy smart contracts to their test network or the main network. 
+
+This is a manual process and the following following must be done:
+
+1. Generate two key pairs, one each for your OWNER and ACTIVE permissions.
+
+2. These key pairs must be securely saved locally.
+
+3. Send the public keys to Ultra
+
+4. Ultra will generate a non-EBA account and revert with the account name
+
+Contact an Ultra representative through Telegram for more information.
+
+### Deploying a Smart Contract
+
+At this stage it is assumed that a `wasm` and `abi` file have been created to deploy the smart contract.
+
+Assume the following file structure:
+
+```
+contractA\
+  |- contractA.wasm
+  |- contractA.abi
+```
+
+_Note: The folder, and files must have the same name._
+
+```sh
+cleos set contract someaccount ./contractA -p someaccount@active
+```
+
+The chain should reply that you have deployed your contract successfully.
+
+## Transactions
+
+A transaction can be defined as a way to call a specific function in a smart contract that will run some code on-chain and create a result on-chain.
+
+### Pushing a Transaction
+
+If all permissions are correct, and you are interacting with a smart contract the following example should be sufficient for interacting with most smart contracts.
+
+Assume the following action in `C++`.
+
+```cpp
+// Notice how usera is parameter 1, and userb is parameter 2 in the array in the example below. This is how all actions are interfaced with.
+[[eosio::action]] void test( eosio::name usera, eosio::name userb ) {
+  print( "Hello to, ", usera);
+  print( "Hello to, ", userb);
+}
+```
+
+We have to pass two parameters to our action: `usera`, and `userb`. Both of which are account names.
+
+Assume the account the contract is deployed under is `hello`.
+
+```sh
+cleos push action hello test '["acc1", "acc2"]' -p someaccount
+```
+
+This will push the action, and we should recieve some output back from the action.
+
+Here is another example with the `eosio.token` account and `transfer` action.
+
+```sh
+cleos push action eosio.token transfer '["acc1", "someaccount", "4.00000000 UOS", "some transfer"]' -p someaccount
+```
+
+Upon successful transaction it will return a unique identifier which can be used to fetch that transaction with `cleos get transaction`.
+
+## Get Data
+
+Cleos allows for a lot of utility as far as getting data from the chain. Anything from token balances, tables, and even account information is fair game with this tool.
+
+### Usage
+
+See the full capabilities of `get` with the command below.
+
+```sh
+cleos get --help
+```
+
+### Accounts
+
+Get all account information, and permissions.
+
+```sh
+cleos get account someaccount
+```
+
+### Tables
+
+Tables are defined inside of smart contracts. This section will cover how to fetch data from a table, and not how to write to a table. Smart contract actions often write to tables automatically, and the scope of writing to a table will not be covered in this section.
+
+Tables are based on a specific format which revolves around `contract`, `scope (account_name)` and `table_name`. 
+
+Example of retrieving data from the global eosio table.
+
+```sh
+cleos get table eosio eosio global
+```
+
+### Understanding Scope
+
+A scope for a table serves as an indexing key. It may be a variation of types ranging from `uint8` to `checksum256` (sha256 hash). It is most commonly a `name` type, as 
+quite often tables are scoped to an account name. 
+
+A good example of how scope may be used for easy retrieval of stored information would be for a chess contract.
+
+```
+cleos get table chess <GAME_ID> turns
+```
+
+Or even a way to get the games a user is participating in
+
+```
+cleos get table chess <USER_ID> games
+```
+
+The definition of how a scope is used is decided at the smart contract level but it is important to understand that this is an option for tables when fetching their individual data.
+
+### Transaction
+
+Transactions can be fetched through their unique identifier.
+
+```sh
+cleos get transaction someuid
+```
+
+### Block
+
+Blocks can be fetched through their individual block number.
+
+```sh
+cleos get block 25
+```
+
+## Closing Remarks
+
+Cleos is a powerful command line tool that has near infinite use cases for developers and advanced users alike. It is worth exploring every option through `--help` and above we have covered some of the most used command line options that the blockchain team at Ultra uses on a near daily basis.
+
+---
+title: 'Keosd Usage'
+
+order: 1
+outline: [0,4]
+---
+
+# Keosd Usage
+
+Keosd is a program that runs in the background to help store priate keys, and sign transactions. It's a secure and encrypted key storage program.
+
+## Who is it for?
+
+* Developers
+* Advanced Users
+
+## Obtaining Keosd
+
+We have created a Docker image that has pre-created scripts, tools, and pre-packaged binaries. Keosd is already included inside of the Docker image.
+
+Individual binaries are not currently available for download.
+
+[Docker Image Usage](../../../tutorials/docker/docker-image-usage.md)
+
+## Usage
+
+Inside the Docker Container the following can be executed for general usage.
+
+```sh
+keosd --help
+```
+
+### Basic Usage
+
+Keosd can be ran by itself without even specifying `help`. It by default creates all wallet files in the `~/eosio-wallet` directory.
+
+It is highly suggested to use `cleos` in tandem with `keosd`, or let `cleos` run `keosd` by itself. Using any `cleos wallet` functions will automatically perform all `keosd` actions.
+
+
+### Wallet Infinite Unlock
+
+If you find a need for a wallet that almost never locks itself you will need to stop the keosd service first.
+
+```sh
+pkill -f keosd
+```
+
+keosd can be ran by itself with a specific timeout for the unlock, and the command below will also run it in the background.
+
+```sh
+nohup keosd --http-server-address=localhost:8899 --http-max-response-time-ms=30000 --unlock-timeout=999999 &
+```
+---
+title: 'Nodeos Usage'
+
+order: 2
+outline: [0,4]
+---
+
+# Nodeos Usage
+
+Nodeos is the core blockchain component used to sync blocks and provide consensus and state management. It's a tool that allows you to develop smart contracts on the ultra blockchain network.
+
+## Who is it for?
+
+* Smart contract developers
+* Producing blocks, and being a Block Producer
+* Replicating Staging and Production networks locally
+
+## Obtaining Nodeos
+
+We have created a Docker image that has pre-created scripts, tools, and pre-packaged binaries. Nodeos is already included inside of the Docker image.
+
+Individual binaries are not currently available for download.
+
+[Docker Image Usage](../../../tutorials/docker/docker-image-usage.md)
+
+## Usage
+
+Inside the Docker Container the following can be executed for general usage.
+
+```sh
+nodeos --help
+```
+
+![](/images/nodeos-help-output.png)
+
+### Starting a Chain
+
+Starting a chain straight from the binaries can be a daunting task; but just getting the basic startup without any additional `smart contract` deployment.
+
+Assume the following file structure:
+
+```sh
+| eosio/
+|    ├── config/
+|    │   ├── config.ini
+|    │   └── genesis.json
+|    └── data/
+|        └── blocks/
+```
+
+A fresh chain can be started by running the following command.
+
+```sh
+nodeos --genesis-json eosio/config/genesis.json \
+    --config-dir eosio/config \
+    --data-dir eosio/data \
+    --blocks-dir eosio/data/blocks \
+    --producer-name eosio
+```
+
+Once the above command is ran, it will use the directories `config`, `blocks`, and `data` to store the various chain data and you should see `eosio` as the producer who is producing blocks.
+
+### Restarting the Chain
+
+If the chain has already started you can simply use the **above command** once again to completely restart the chain. Restarting with the same command will use the same blocks from the previous session.
+
+### Wiping the Chain
+
+When stopping the chain, you may wish to restart the chain again with new blocks. Simply run the command below to the wipe the chain. Adjust the command as needed for your folder structure.
+
+**Terminal Commands in Docker Container**
+
+```sh
+rm -rf /opt/eosio/data/blocks && \
+  rm -rf /opt/eosio/data/snapshots && \
+  rm -rf /opt/eosio/data/state && \
+  rm -rf /opt/eosio/data/config/protocol_features && \
+  rm -rf /opt/eosio/data/eosio
+```
+
+_After next startup your blocks should start at #1_
+
+### Before Synchronizing Nodeos
+
+There are a few standard rules you should be aware of...
+
+* You should all be using the same `genesis.json`
+* Synchronizing Nodes CAN take a long time...
+  * You should probably get a snapshot, and load from snapshot
+  * You should probably get a blocks.log, and load from blocks.log
+  * Both of these will speed up synchronization time but are not required
+* APIs can connect to block producers and other APIs
+* Block producers should only connect to other block producers but allow only their own APIs in to expose them to the outside world.
+
+_This is a format that almost all block producers today currently use._
+
+
+## Configuration Files
+
+**genesis.json**
+
+This file is necessary to set the intitial chain parameters that can be found inside of the `eosio` `global` table for a fully launched chain. Its entire purpose is to tell the protocol how it should be producing blocks, and the restrictions for producers.
+
+```json
+{
+  "initial_timestamp": "2018-09-01T12:00:00.000",
+  "initial_key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+  "initial_configuration": {
+    "max_block_net_usage": 1048576,
+    "target_block_net_usage_pct": 1000,
+    "max_transaction_net_usage": 524288,
+    "base_per_transaction_net_usage": 12,
+    "net_usage_leeway": 500,
+    "context_free_discount_net_usage_num": 20,
+    "context_free_discount_net_usage_den": 100,
+    "max_block_cpu_usage": 20000000,
+    "target_block_cpu_usage_pct": 1000,
+    "max_transaction_cpu_usage": 15000000,
+    "min_transaction_cpu_usage": 100,
+    "free_cpu_basis_point": 6000,
+    "free_net_basis_point": 6000,
+    "ultra_veto_enabled": 1,
+    "max_transaction_lifetime": 3600,
+    "deferred_trx_expiration_window": 600,
+    "max_transaction_delay": 3888000,
+    "max_inline_action_size": 524287,
+    "max_inline_action_depth": 10,
+    "max_authority_depth": 10
+  }
+}
+```
+
+The `EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV` public key is a **PUBLICLY KNOWN KEY. THIS SHOULD NOT BE USED IN PRODUCTION.**
+
+Private Key: `5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3`
+
+**config.ini**
+
+Defines various configurations required by `nodeos`.
+
+The standard configuration that Ultra uses in its test environments is the following:
+
+```ini
+# Required Configurations for Ultra
+agent-name = "Producer"
+enable-stale-production = true
+pause-on-startup = false
+http-max-response-time-ms = 30000
+max-transaction-time = 300000
+http-validate-host = false
+chain-state-db-size-mb = 4096
+chain-state-db-guard-size-mb = 256
+max-clients = 50
+
+# Print contract debugging to console
+contracts-console = true
+
+# What other peers should use to connect to you
+# Ideally leave these addresses as 0.0.0.0, and only change ports.
+http-server-address = 0.0.0.0:8888
+p2p-listen-endpoint = 0.0.0.0:9876
+
+# What other peers you want to connect to
+# This is only required if you have another peer to connect to
+#p2p-peer-address = 0.0.0.0:9877
+
+# Allow access from browser
+access-control-allow-origin=*
+
+# Plugins that nodeos should be using
+plugin = eosio::net_api_plugin
+plugin = eosio::http_plugin
+plugin = eosio::producer_plugin
+plugin = eosio::producer_api_plugin
+plugin = eosio::chain_api_plugin
+```
+
+### Synchronizing Nodeos as an API
+
+Connecting to an existing API can be done with the following configurations.
+
+**Custom Configuration**
+
+The configuration to use for the API is a bit different than a `producer` configuration. Here's an example API configuration.
+
+Save this under a folder called `config/api/config.ini`
+
+```ini
+chain-state-db-size-mb = 4096
+chain-state-db-guard-size-mb = 256
+
+agent-name = "API"
+
+max-clients = 50
+p2p-max-nodes-per-host = 10
+
+# Your HTTP Endpoint for the API
+http-server-address = 0.0.0.0:8888
+
+# Your p2p Endpoint for Others to Connect To
+p2p-listen-endpoint = 0.0.0.0:9876
+
+# Nodes to Connect To - Adjust This
+p2p-peer-address = 1.2.3.4:9876
+p2p-peer-address = 5.6.7.8:9876
+
+# All the Plugins Needed for an API
+plugin = eosio::history_api_plugin
+plugin = eosio::chain_api_plugin
+
+http-validate-host = false
+
+access-control-allow-origin = *
+access-control-allow-headers = *
+access-control-allow-credentials = true
+```
+
+**Starting the API Node**
+
+Depending on the directories, and folders you will want to adjust the following command accordingly.
+
+```sh
+nodeos --disable-replay-opts && \
+  --data-dir /opt/eosio/data && \
+  --config-dir /opt/eosio/data/config/api && \
+  -c /opt/eosio/data/config/api/config.ini
+```
+
+### Synchronizing Nodeos as a Producer
+
+The above `genesis` node or `existing nodes` need to have ports exposed to the outside world. We assume that a producing node has already exposed their ports.
+
+**Custom Configuration**
+
+The configuration you will want to use for the API is a bit different than a `genesis` configuration. Here's an example API configuration.
+
+Save this under a folder called `config/producer/config.ini`
+
+```ini
+agent-name = "Producer"
+max-clients = 50
+p2p-max-nodes-per-host = 10
+chain-state-db-size-mb = 4096
+chain-state-db-guard-size-mb = 256
+
+# What ports you are exposing to the outside world...
+http-server-address = 0.0.0.0:8888
+p2p-listen-endpoint = 0.0.0.0:9876
+
+# Who you are peering with
+p2p-peer-address = 10.20.1.1:9876
+p2p-peer-address = 10.20.2.1:9876
+
+enable-stale-production  = true
+pause-on-startup = false
+
+max-transaction-time = 5000
+http-max-response-time-ms = 30000
+
+# This is your producer name, you should change this and register it if you are not a genesis node.
+producer-name = someproducer1
+
+# Ensure you replace SOME_PUBLIC_KEY_HERE & SOME_PRIVATE_KEY_HERE
+signature-provider=SOME_PUBLIC_KEY_HERE=KEY:SOME_PRIVATE_KEY_HERE
+
+# All the Plugins Needed for a Producer
+plugin = eosio::chain_api_plugin
+plugin = eosio::net_api_plugin
+plugin = eosio::producer_api_plugin
+plugin = eosio::chain_plugin
+plugin = eosio::producer_plugin
+```
+
+**Starting the Producing Node**
+
+Depending on the directories, and folders you will want to adjust the following command accordingly.
+
+```sh
+nodeos --disable-replay-opts && \
+  --data-dir /opt/eosio/data && \
+  --config-dir /opt/eosio/data/config/producer && \
+  -c /opt/eosio/data/config/producer/config.ini
+```
+
+## Closing Remarks
+
+It's good to get familiar with working with nodeos and for most development purposes you will only need to start / stop the `nodeos` process to set / clear contracts. Otherwise, nodeos is a powerful tool used for synchronizing block producers and quickly setting up your very own test network.
+
+---
+title: 'eosio.token example contract'
+
+outline: [0,4]
+---
+
+# Token Contract
+
+## src/eosio.token.cpp
+```cpp
+#include <eosio.token/eosio.token.hpp>
+
+namespace eosio {
+
+void token::create( const name&   issuer,
+                    const asset&  maximum_supply )
+{
+    require_auth( get_self() );
+
+    auto sym = maximum_supply.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( maximum_supply.is_valid(), "invalid supply");
+    check( maximum_supply.amount >= 0, "max-supply must not be negative"); // ultra-duncan --- support for unlimitted max supply
+
+    stats statstable( get_self(), sym.code().raw() );
+    auto existing = statstable.find( sym.code().raw() );
+    check( existing == statstable.end(), "token with symbol already exists" );
+
+    statstable.emplace( get_self(), [&]( auto& s ) {
+       s.supply.symbol = maximum_supply.symbol;
+       s.max_supply    = maximum_supply;
+       s.issuer        = issuer;
+    });
+}
+
+
+void token::issue( const name& to, const asset& quantity, const string& memo )
+{
+    auto sym = quantity.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( memo.size() <= 256, "memo has more than 256 bytes" );
+
+    stats statstable( get_self(), sym.code().raw() );
+    auto existing = statstable.find( sym.code().raw() );
+    check( existing != statstable.end(), "token with symbol does not exist, create token before issue" );
+    const auto& st = *existing;
+
+    check( to == st.issuer, "tokens can only be issued to issuer account" );
+
+    require_auth( st.issuer );
+    check( quantity.is_valid(), "invalid quantity" );
+    check( quantity.amount > 0, "must issue positive quantity" );
+
+    check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
+    // ultra-duncan --- support for unlimitted max supply
+    if (st.max_supply.amount > 0)
+      check( quantity.amount <= st.max_supply.amount - st.supply.amount, "quantity exceeds available supply");
+
+    statstable.modify( st, same_payer, [&]( auto& s ) {
+       s.supply += quantity;
+    });
+
+    add_balance( st.issuer, quantity );
+}
+
+void token::retire( const asset& quantity, const string& memo )
+{
+    auto sym = quantity.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( memo.size() <= 256, "memo has more than 256 bytes" );
+
+    stats statstable( get_self(), sym.code().raw() );
+    auto existing = statstable.find( sym.code().raw() );
+    check( existing != statstable.end(), "token with symbol does not exist" );
+    const auto& st = *existing;
+
+    require_auth( st.issuer );
+    check( quantity.is_valid(), "invalid quantity" );
+    check( quantity.amount > 0, "must retire positive quantity" );
+
+    check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
+
+    statstable.modify( st, same_payer, [&]( auto& s ) {
+       s.supply -= quantity;
+    });
+
+    sub_balance( st.issuer, quantity );
+}
+
+void token::transfer( const name&    from,
+                      const name&    to,
+                      const asset&   quantity,
+                      const string&  memo )
+{
+    check( from != to, "cannot transfer to self" );
+    require_auth( from );
+    check( is_account( to ), "to account does not exist");
+    auto sym = quantity.symbol.code();
+    stats statstable( get_self(), sym.raw() );
+    const auto& st = statstable.get( sym.raw() );
+
+    require_recipient( from );
+    require_recipient( to );
+
+    check( quantity.is_valid(), "invalid quantity" );
+    check( quantity.amount > 0, "must transfer positive quantity" );
+    check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
+    check( memo.size() <= 256, "memo has more than 256 bytes" );
+
+    sub_balance( from, quantity );
+    add_balance( to, quantity ); // ultra-duncan --- UB-474: support new eosio.token standard
+}
+
+void token::sub_balance( const name& owner, const asset& value ) {
+   accounts from_acnts( get_self(), owner.value );
+
+   const auto& from = from_acnts.get( value.symbol.code().raw(), "no balance object found" );
+   check( from.balance.amount >= value.amount, "overdrawn balance" );
+
+   from_acnts.modify( from, same_payer, [&]( auto& a ) {
+         a.balance -= value;
+      });
+}
+
+// ultra-duncan --- UB-474: support new eosio.token standard
+void token::add_balance( const name& owner, const asset& value )
+{
+   accounts to_acnts( get_self(), owner.value );
+   auto to = to_acnts.find( value.symbol.code().raw() );
+   check( to != to_acnts.end(), owner.to_string() + " to account balance does not exist" );
+
+   to_acnts.modify( to, same_payer, [&]( auto& a ) {
+      a.balance += value;
+   });
+}
+
+void token::open( const name& owner, const symbol& symbol, const name& ram_payer )
+{
+   require_auth( ram_payer );
+
+   check( is_account( owner ), "owner account does not exist" );
+
+   auto sym_code_raw = symbol.code().raw();
+   stats statstable( get_self(), sym_code_raw );
+   const auto& st = statstable.get( sym_code_raw, "symbol does not exist" );
+   check( st.supply.symbol == symbol, "symbol precision mismatch" );
+
+   accounts acnts( get_self(), owner.value );
+   auto it = acnts.find( sym_code_raw );
+   if( it == acnts.end() ) {
+      acnts.emplace( ram_payer, [&]( auto& a ){
+        a.balance = asset{0, symbol};
+      });
+   }
+}
+
+void token::close( const name& owner, const symbol& symbol )
+{
+   require_auth( owner );
+   accounts acnts( get_self(), owner.value );
+   auto it = acnts.find( symbol.code().raw() );
+   check( it != acnts.end(), "Balance row already deleted or never existed. Action won't have any effect." );
+   check( it->balance.amount == 0, "Cannot close because the balance is not zero." );
+   acnts.erase( it );
+}
+
+} /// namespace eosio
+```
+
+## include/eosio.token/eosio.token.hpp
+
+```cpp
+#pragma once
+
+#include <eosio/asset.hpp>
+#include <eosio/eosio.hpp>
+
+#include <string>
+
+namespace eosiosystem {
+   class system_contract;
+}
+
+namespace eosio {
+
+   using std::string;
+
+   /**
+    * eosio.token contract defines the structures and actions that allow users to create, issue, and manage
+    * tokens on EOSIO based blockchains.
+    */
+   class [[eosio::contract("eosio.token")]] token : public contract {
+      public:
+         using contract::contract;
+
+         /**
+          * Allows `issuer` account to create a token in supply of `maximum_supply`. If validation is successful a new entry in statstable for token symbol scope gets created.
+          *
+          * @param issuer - the account that creates the token,
+          * @param maximum_supply - the maximum supply set for the token created.
+          *
+          * @pre Token symbol has to be valid,
+          * @pre Token symbol must not be already created,
+          * @pre maximum_supply has to be smaller than the maximum supply allowed by the system: 1^62 - 1.
+          * @pre Maximum supply must be positive;
+          */
+         [[eosio::action]]
+         void create( const name&   issuer,
+                      const asset&  maximum_supply);
+         /**
+          *  This action issues to `to` account a `quantity` of tokens.
+          *
+          * @param to - the account to issue tokens to, it must be the same as the issuer,
+          * @param quntity - the amount of tokens to be issued,
+          * @memo - the memo string that accompanies the token issue transaction.
+          */
+         [[eosio::action]]
+         void issue( const name& to, const asset& quantity, const string& memo );
+
+         /**
+          * The opposite for create action, if all validations succeed,
+          * it debits the statstable.supply amount.
+          *
+          * @param quantity - the quantity of tokens to retire,
+          * @param memo - the memo string to accompany the transaction.
+          */
+         [[eosio::action]]
+         void retire( const asset& quantity, const string& memo );
+
+         /**
+          * Allows `from` account to transfer to `to` account the `quantity` tokens.
+          * One account is debited and the other is credited with quantity tokens.
+          *
+          * @param from - the account to transfer from,
+          * @param to - the account to be transferred to,
+          * @param quantity - the quantity of tokens to be transferred,
+          * @param memo - the memo string to accompany the transaction.
+          */
+         [[eosio::action]]
+         void transfer( const name&    from,
+                        const name&    to,
+                        const asset&   quantity,
+                        const string&  memo );
+         /**
+          * Allows `ram_payer` to create an account `owner` with zero balance for
+          * token `symbol` at the expense of `ram_payer`.
+          *
+          * @param owner - the account to be created,
+          * @param symbol - the token to be payed with by `ram_payer`,
+          * @param ram_payer - the account that supports the cost of this action.
+          *
+          * More information can be read [here](https://github.com/EOSIO/eosio.contracts/issues/62)
+          * and [here](https://github.com/EOSIO/eosio.contracts/issues/61).
+          */
+         [[eosio::action]]
+         void open( const name& owner, const symbol& symbol, const name& ram_payer );
+
+         /**
+          * This action is the opposite for open, it closes the account `owner`
+          * for token `symbol`.
+          *
+          * @param owner - the owner account to execute the close action for,
+          * @param symbol - the symbol of the token to execute the close action for.
+          *
+          * @pre The pair of owner plus symbol has to exist otherwise no action is executed,
+          * @pre If the pair of owner plus symbol exists, the balance has to be zero.
+          */
+         [[eosio::action]]
+         void close( const name& owner, const symbol& symbol );
+
+         static asset get_supply( const name& token_contract_account, const symbol_code& sym_code )
+         {
+            stats statstable( token_contract_account, sym_code.raw() );
+            const auto& st = statstable.get( sym_code.raw() );
+            return st.supply;
+         }
+
+         static asset get_balance( const name& token_contract_account, const name& owner, const symbol_code& sym_code )
+         {
+            accounts accountstable( token_contract_account, owner.value );
+            const auto& ac = accountstable.get( sym_code.raw() );
+            return ac.balance;
+         }
+
+         using create_action = eosio::action_wrapper<"create"_n, &token::create>;
+         using issue_action = eosio::action_wrapper<"issue"_n, &token::issue>;
+         using retire_action = eosio::action_wrapper<"retire"_n, &token::retire>;
+         using transfer_action = eosio::action_wrapper<"transfer"_n, &token::transfer>;
+         using open_action = eosio::action_wrapper<"open"_n, &token::open>;
+         using close_action = eosio::action_wrapper<"close"_n, &token::close>;
+      private:
+         struct [[eosio::table]] account {
+            asset    balance;
+
+            uint64_t primary_key() const { return balance.symbol.code().raw(); }
+         };
+
+         struct [[eosio::table]] currency_stats {
+            asset    supply;
+            asset    max_supply;
+            name     issuer;
+
+            uint64_t primary_key() const { return supply.symbol.code().raw(); }
+         };
+
+         typedef eosio::multi_index< "accounts"_n, account > accounts;
+         typedef eosio::multi_index< "stat"_n, currency_stats > stats;
+
+         void sub_balance( const name& owner, const asset& value );
+         void add_balance( const name& owner, const asset& value );
+   };
+}
+```
+
+## CMakeLists.txt
+
+```cmake
+cmake_minimum_required(VERSION 3.5)
+project(eosio.token)
+set(EOSIO_WASM_OLD_BEHAVIOR "Off")
+find_package(eosio.cdt)
+include(EosioWasmToolchain)
+
+add_contract(eosio.token eosio.token ${CMAKE_CURRENT_SOURCE_DIR}/src/eosio.token.cpp)
+
+target_include_directories(eosio.token
+   PUBLIC
+   ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+set_target_properties(eosio.token
+   PROPERTIES
+   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
+```
+---
+title: 'Creating Uniq Factories'
+
+order: 10
+---
+
+# Creating Uniq Factories
+
+## Overview
+
+The Token factory is the place where you will mint your game as an item (token) in the Ultra ecosystem. You will be able to set all your commercial requirements and token rules into the Store token factory. Set a game for internal usage or to organize a restricted close beta (both planned). Every token factory and token will be represented in our platform through a token ID card, which will contain all token functionalities and is contextualized all over the platform.
+
+Additionally, this is where you will set all the rules for your game lifecycle. Once done, everyone who buys from this factory will receive a token bound by these rules. Currently, our uniq factories are only able to create an atomic token.
+
+What are tokens? A token is an immutable unit of your content, it follows the rules set of the emitting token factory. Which will give access to the content that it contains. Uniq factories have a real numeric version of your retail game, which provides you more features and more control on your side. There are different types of uniq factories such as Game, Demo, DLC, etc… This will help you to create, search for them. Token factory status helps you to keep track of them along their lifecycle.
+
+The following is the lifecycle statuses of a token factory Draft, ready to publish, publish, expired (not available yet), unpublish (not available yet)
+
+An atomic token: is a type of token that will give specific content access defined by the selected branch to a player. This is only the first type of token but we are planning to add more in the future to give you more flexibility and open new business opportunities through
+
+Game package: is a single token that gives access to a game several different contents to a user(Example: Game with DLC on a single token). Such as bundles and packs that can be sold together as tokens
+
+## Creating Uniq Factories
+
+This type of token factory is dedicated to content you will sell in the ultra store. You are currently able to create games, demos, and DLC tokens that have their own preset rules.
+
+-   Games: You can freely configure your game without restriction.
+-   DLC: You can freely configure your game without restriction.
+-   DEMO: A Demo is a Free content and non-tradable.
+-   Language pack: Not available yet
+-   Dedicated server: Not available yet
+
+Reminder: To create a token factory you should have published an assembly build. You will only be able to see published content in the store token factory.
+
+### Create a Store token factory
+
+Click on “Create a new token factory”
+
+![tf-1](/images/gdc/tf-1.png)
+
+### Set your factory name
+
+Note:
+
+-   this name will be visible by your customer
+-   You can start your factory from scratch or you can create a factory from an existing one to keep the same settings, you can edit this after.
+
+![tf-2](/images/gdc/tf-2.png)
+
+-   If you are starting from scratch then you need to choose the type of token you want to use.
+-   Click on Create to start the creation of your token
+-   Congratulations, at this point your token is now created, you can come back to finish it later.
+
+![tf-3](/images/gdc/tf-3.png)
+
+### Set Store token factory
+
+-   If you left you token factory in an incomplete state then you can retrieve it from the list
+
+![tf-4](/images/gdc/tf-4.png)
+
+-   To access the editing section and continue setting your token, drag your token in the list and click on “Edit Factory”
+-   The starting page is the main information page you will be able to set the following information:
+
+-   Token name, that should represent the uniqueness of your token, example: standard/gold… edition
+-   A short description (only one language localization is available)
+-   A small picture which will be the representation of the content in the platform
+-   The image used in the background of your token id card
+-   The default language contained in this token
+
+Note: On the side, you will find a card which contains a summary of your factory settings, this info will evolve as your setup progresses.
+
+![tf-5](/images/gdc/tf-5.png)
+
+-   Then type the content description then you will be able to set the content you want to put inside the token factory or change the type of token factory.
+
+Note: Only the published assemble build content is displayed here.
+
+![tf-6](/images/gdc/tf-6.png)
+
+-   The Geofencing section allows you to set what region your token factory and token will be available, based on the user location. This allows you to select the entire world, regions, countries that you want your content to be available for users to view, buy and play. Selecting countries is fully customizable. Users that are not within the available area will not be able to view the content in the store.
+
+Note:
+
+-   There is a search field to find countries.
+-   Be careful once a token factory is published geofencing is not editable
+
+![tf-7](/images/gdc/tf-7.png)
+
+-   Then set the Price of the content and the Revenue share distribution
+
+    You have two choices: Free or Paid content.
+
+    If you set a price then you need to select the revenue share distribution. Ultra always takes a 15% commission. It is up to you to distribute the remaining 85%. Currently you can only distribute between you and promoters. More options will be available in the future.
+
+    If you select free there are no other settings on this page.
+
+Note:
+
+-   If you select free this implies that your token is not tradable (In other words your user will not be able to resell this free token)
+-   Promoter will be rewarded after a purchase
+-   Currently you can’t set a promoter
+
+![tf-8](/images/gdc/tf-8.png)
+
+### Tradability and resellability
+
+You have two choices: Tradable and nontradable
+
+**Non tradable** will prevent your token from appearing in the second hand market. More settings are required for this page.
+
+**Tradable** will unlock the settings to set the tradability rules. This will open your token to be used in the second hand market but following the rules you set. Caution once published the rules are immutable so choose them carefully.
+
+-   You can set a minimum resale price to prevent your game from being sold under a certain price.
+-   You can set the revenue share to be earned from the second hand market, you can either set a fixed price or a % of the selling price set by the customer. Note: To set a fixed amount you need to choose a minimum resale price
+-   Setting a time restriction is optional. Time restrictions define when the content is tradable. You can select a start date and the end date is optional.
+
+![tf-9](/images/gdc/tf-9.png)
+
+![tf-10](/images/gdc/tf-10.png)
+
+-   **Availability and quantity restrictions are not available yet** In this section, you can set when your game will become playable after a pre-sale or limited time beta.
+-   **Media** In this section, you can put up to 8 pictures to advertise your token(product) so your content will be more appealing in the store and across the whole ultra platform. These pictures are associated with your token in order to make the content more personalized and unique.
+
+![tf-11](/images/gdc/tf-11.png)
+
+![tf-12](/images/gdc/tf-12.png)
+
+Congratulations! your token is now ready to be published. You can view the token on the side menu section, which is continuously updated through the creation process from an empty token to a published token.
+
+![tf-14](/images/gdc/tf-14.png)
+
+-   Preview is now available with your token, to view what it will look like in Ultra. In addition now you can publish your token on the store page.
+
+![tf-15](/images/gdc/tf-15.png)
+
+![tf-16](/images/gdc/tf-16.png)
+
+![tf-17](/images/gdc/tf-17.png)
+
+---
+title: 'Note to Editors'
+
+order: 2
+---
+
+# Note to Editors
+
+## File Manager
+
+The File Manager section in the Game Developer Center (GDC) allows you to package files from your games into separate products which can then be associate to tokens gamers can purchase or get for free such as:
+
+-   YourGame Standard Edition
+-   YourGame DLC Mission Pack1
+-   YourGame French Language Pack
+-   YourGame Demo
+-   YourGame Dedicated Server
+
+The File Manager works hand in hand with FileBeam, Ultra’s file uploading application, which, by means of a configuration file, allows you to upload your game files in different file repositories on Ultra’s servers.
+
+## Uploading your Game
+
+Uploading your game in different file repositories is useful for various use cases such as:
+
+-   You might want to separately sell DLCs which are not part of your original product file collection such as new maps, new game modes or new skins.
+-   By splitting language related files, Ultra is able to serve only relevant voice, texture and video files to your customers, reducing their downloading time considerably. For example, Russian gamers are only interested in Russian language files, downloading Chinese or French voices, videos or textures is likely unnecessary. **(coming soon)**
+
+-   NOTE: Ultra Game’s library will allow gamers to manually choose to download any language you provide in the product they purchased **(coming soon)**
+
+The File Manager is composed of the following two sections:
+
+-   **Files Repositories:** It is where you will create file repositories who will contain your game files. You can create different types of file repositories in which you can upload different types of files from your game such as Core game files, DLC files and Language pack files. Every time a file repository is created, a unique Repository ID is automatically assigned to it. Repository IDs are used to let you tell FileBeam in what repositories different files should be uploaded.
+-   **Assemble Game Builds:** It is where you will select different repositories containing files you uploaded to assemble a version of a product build.
+
+-   A version of a Product build is what you will promote to a branch of a Product. For example you can promote YourGame build V3 to the Beta Branch Of the Game Standard Edition product.
+
+To sell a product on Ultra games, you will at least need one product build assigned to a branch.
+
+---
+title: 'Getting Access'
+
+order: 3
+---
+
+# Getting Access
+
+You need to be a registered developer to get access to Ultra’s Game Developer Center.
+
+1.  Download the ultra web installer
+2.  Register your Ultra account.
+3.  Submit your Ultra Developer application:
+4.  Required docs and info: Email address, Company information
+5.  Send it all by email to [privacy@ultra.io](mailto:privacy@ultra.io) [gdc@ultra.io](mailto:gdc@ultra.io)
+
+Once we validate your application you will receive a confirmation email.
+
+Close Ultra if it was open and restart it.
+
+A new dimension should now be displayed, which will contain a series of apps including Ultra’s “Game Developer Center” (GDC)
+
+![gdc-1](/images/gdc/gdc-1.webp) A View of the developer dimension containing the Game dev center app
+
+It’s possible to provide access to the GDC to other company members by:
+
+1.  Ask your friend to download Ultra and register one account
+2.  Open the GDC app
+3.  Go to
+
+![gdc-2](/images/gdc/gdc-2.webp) A View of the company member section of the Game Developer Center (GDC)
+
+1.  Add your friend’s email address
+
+---
+title: 'About Game Builds'
+
+order: 4
+---
+
+# Overview
+
+Game builds are actually a combination of one or more repositories containing files. In other words Create repositories => Upload files in repositories => Assemble different repositories to create a build
+
+Ultra lets you create different types of file repositories in which you’ll upload different parts of your game files:
+
+-   **Core game files:** Contains the game executable and most of the game files.
+-   **Game DLC:** additional content you want to distribute separately such as new maps, skins, music, ...
+-   **Core demo game files:** Contains all the files necessary to download and play a demo of your game.
+-   **Game language packs:** files related to a specific language such as sounds, movies and textures you believe is unnecessary to send to users who don’t talk the language **(Coming soon).**
+-   **Game dedicated server:** Files necessary to run a dedicated server of your game. This allows anyone, even if they don’t own the game, to download and run a dedicated server **(Coming soon).**
+
+Every time you create a repository, Ultra will automatically assign it a repository ID.
+
+A repository ID looks like this: WINCOREG91a7f553-5dd7-4078-813d-b5064629d527
+
+Repository IDs are used to let you tell File Beam in what repositories different files should be uploaded.
+
+Every time you upload files with File Beam to a repository, Ultra will create a new version of that repository while keeping the old one.
+
+Ultra’s versioned repositories is what will enable you to:
+
+1.  Easily apply updates to your customers files.
+2.  Roll back to a previous version if there are issues with your latest build
+3.  Operate multiple builds simultaneously through branching. For example, operate a Beta branch and a Master Branch of the same product simultaneously.
+4.  Automate a CI/CD pipeline ([https://en.wikipedia.org/wiki/CI/CD](https://en.wikipedia.org/wiki/CI/CD))
+
+Important to know:
+
+Including a DLC repository in a build doesn’t mean the buyer of the game will receive this DLC! It only means the files contained in the DLC repository version you associated with this build are compatible with this build. In other words, the buyer will still have to separately buy the DLC to get it, and when he buys it, Ultra’s file distribution system will know what DLC repository version to download for this particular game build version.
+
+In the future you’ll be able to “bundle” DLCs tokens with your Game tokens. In the meantime, if you want gamers to get DLCs as part of the game they buy, upload them in your game’s core game files repository.
+
+When you include a Language pack version in a build, the buyer of this build will have the ability to download it if he wants it. If you want to separately sell a language pack you need to upload the language pack in a DLC repository and sell it as a DLC.
+
+Ultra’s distribution technology has been built for cross platform publishing. While at this point, we only support the Windows platform, future updates will include MacOS and Linux support
+
+---
+
+## Creating Files Repositories
+
+1.  Go to the Game dev center of your game,
+2.  In the left menu go in File Management → File Repository section
+3.  Click on **“CREATE NEW WINDOWS FILES REPOSITORY”**
+
+![fr-1](/images/gdc/fr-1.png) A View of the Files Repository section of the File Manager
+
+Pro Tip:
+
+Ultra’s distribution technology has been built to support cross platform publishing. Future updates will include MacOS and Linux support. In the meantime you can already use cross platform repositories. Cross platform repositories can be used to store platform-independent files such as mp3, PNGs, etc. They are convenient for Language packs or DLCs you’d upload only one time and are usable on all platforms. For the sake of simplicity, in this tutorial we will assume your game only works on windows and will only create windows repositories as a result.
+
+1.  After Clicking on “CREATE NEW WINDOWS FILES REPOSITORY” , a modal will show up:
+
+![fr-2](/images/gdc/fr-2.png) The Create new windows Files Repository Modal
+
+![fr-3](/images/gdc/fr-3.png) Opened dropdown menu showing various types of repositories
+
+A drop down menu allows you to choose what type of repository you want to create.
+
+1.  Select Game: Game core game Files
+
+Pro Tip:
+
+You at least need one Core Game Files to assemble and publish a game build.
+
+1.  Fill in the field to give this repository an internal repository name.
+2.  Press the **“Create Files Repository”**
+
+Pro Tip:
+
+Internal repository names are for internal use only, they will never be visible to the public. We recommend you to choose distinct names to help you later remember what kind of files it contains. Examples:
+
+-   Standard files
+-   Standard with mods
+-   Censored files
+-   Chinese version
+-   Compiling server 2 output
+-   Light build
+-   Paris office
+-   ...
+
+1.  Repeat this but this time let’s make 1 DLC repositories and 2 language packs repositories. When you are done, it should look similar to this:
+
+![fr-4](/images/gdc/fr-4.png) A list of repositories of a game. Notice at this point there are 0 versions everywhere because we’ve haven’t uploaded anything in them.
+
+We are now ready to upload your game files!
+
+---
+title: 'Declaring a Game'
+
+order: 5
+---
+
+# Declaring a Game
+
+Game developers have often more than 1 game under their belt and for that reason, we organised Ultra’s GDC in such a way that each game has its own “publishing environment” where you conveniently can set everything related to that particular game such as:
+
+-   The game store page
+-   Manage the game files
+-   Set the game uniq factories
+-   Manage the game’s SDK functionalities
+
+![gdc-3](/images/gdc/gdc-3.webp) A View of the Game dev center
+
+Declaring a new game is as easy as pressing the Create new game button and giving it a name. Note: Don’t worry, your game won’t be visible to the public unless you publish your game store page.
+
+---
+title: 'Filebeam'
+
+order: 6
+---
+
+# Overview
+
+FileBeam is a Python application that lets you upload your games files in appropriate repositories.
+
+New repositories are only created when one or more new files you uploaded in them have changed. In other words if your language pack or if your DLC files haven’t changed, no new repository versions will be created.
+
+## Uploading files with FileBeam
+
+![fb-1](/images/gdc/fb-1.png)
+
+-   Copy it, by clicking on the copy icon you will need it later on.
+-   Then open this file in a text editor: C:\\Users\\duclo\\AppData\\Local\\UltraOS\\Application\\2.10.3.144\\sdk-direct6\\DIRECT6\\ultra_auth.json
+-   Then set your GDC account password and then save the file.
+
+![fb-2](/images/gdc/fb-2.png)
+
+-   Next, paste the file repository ID to name the repository in the script. We use here “WINDLCa8df6455-1c24-4b71-82c6-9d0c4ceb98bd” but it needs to correspond to the real ID of your file repository, otherwise, the end-users will be unable to download the content.
+-   Then set the local repository path where the game files are stored. It is named the source in the script. Here we use C:\\Users\\”username”\\Desktop\\”Game file”\\
+-   Then navigate to: UltraOS\\Application\\x.xx.x.xxx\\sdk-direct6\\DIRECT6\\deploy\\, example:
+
+```sh
+cd UltraOS\Application\x.xx.x.xxx\sdk-direct6\DIRECT6\deploy\
+```
+
+Then with all those parameters set, run the script (NOTE: Source Directory doesn’t support space in the path)
+
+```sh
+\python.exe ./release_upload.py --email="yourGDCAccount@ultra.io" --sourceDirectory=C:\\Users\\Arnaud\\Desktop\\WarcraftIII\\ --repositoryName="WINCOREG58dc2209-0cfa-492a-8777-a35fc99802f4"
+```
+
+Then add your password in the console:
+
+![fb-4](/images/gdc/fb-4.png)
+
+Once the upload is finished, a message will be displayed in the console.
+
+![fb-5](/images/gdc/fb-5.png)
+
+Then refresh the page in the GDC, a new version of the repository should be available. You can do this by verifying that the IDs are identical.
+
+![fb-6](/images/gdc/fb-6.png)
+
+Congratulations, your first file has been uploaded on Ultra
+
+---
+title: 'Assemble Game Builds'
+
+order: 7
+---
+
+# Overview
+
+Every time you run FileBeam and upload files, the repositories receiving files will have their repository version number incremented.
+
+Many game developers release a game and later add additional DLCs, this will make the new DLC version number diverge from other repositories versions.
+
+For example Core Game Files v4 and DLC MissionPack1 V1 have different version numbers even though the files contained in them actually are meant to work together.
+
+In some cases, you will find translation errors in your game which you might want to fix in one particular language pack. Updating your language pack will cause its repository version to have a different version number than your other repositories.
+
+For these types of reasons, in Ultra, a game build is a collection of various repositories who often have different version numbers and that’s perfectly fine.
+
+The “Assembling game builds” section in the File manager, is where you create game builds by assembling different repositories versions into a working build ready to be distributed to gamers.
+
+![agb-1](/images/gdc/agb-1.png) Different game build versions are actually made out of different repositories versions
+
+Once you have a “game build version” you can assign it a Branch.
+
+For example: MyGame Standard Edition promotes Game Build V3 as its Beta branch.
+
+![agb-2](/images/gdc/agb-2.png) On the left, the build V1 is promoted as master branch of My Game Standard Edition, on the right the build V2 is promoted to the master branch
+
+In the picture above the build V1 is promoted as master branch of “My Game : Standard Edition” As soon as you promote build V2 as master branch, all gamers who had V1 installed will have their game updated to V2 automatically. Also, from here on, anyone who purchases the game will directly get V2.
+
+In short the workflow looks like this:
+
+Upload file update in a repository => A new repository version is automatically created => Assemble a new build selecting the new repository version => A new build version is created => Promote the new build version to a desired branch (beta or Master branch) => gamers receive update.
+
+### Pro Tip
+
+To own a game’s beta or master branch, you need to own a game token that grants you the beta or master branch of that game. The process of linking ownership of a game build’s branch to a token people can own is done by setting up a token factory in the token factory section of the GDC.
+
+It is possible to sell games cheaper in markets with lower purchasing powers by creating a specific build that only includes the country’s language pack. For example, create a “My Game Chinese build” then assemble the core game files, DLCs and only the chinese language pack. This will ensure non chinese players won’t buy this cheaper Chinese game version because it won’t include English or other languages they need.
+
+### Important to know
+
+Including a DLC repository in a build doesn’t mean the buyer of the game will receive this DLC! It only means the files contained in the DLC repository version you associated with this build are compatible with this build. In other words, the buyer will still have to separately buy the DLC to get it, and when he buys it, Ultra’s file distribution system will know what DLC repository version to download for this particular game build version.
+
+In the future you’ll be able to “bundle” DLCs tokens with Game tokens, allowing you to sell your game containing DLCs. In the meantime, if you want gamers to get DLCs as part of the game they buy, upload DLC files in your core game files repository.
+
+When you include a Language pack version in a build, the buyer of this build will have the ability to download it if he wants it. If you want to separately sell a language pack you need to upload the language pack in a DLC repository and sell it as a DLC.
+
+## Assembling a Game Build
+
+Before we can assemble a game build version, we first need to create one game build.
+
+Click on Create new game build
+
+![agb-3](/images/gdc/agb-3.png)
+
+1.  Select the OS you want your game build on (Support for MacOS and Linux coming soon)
+2.  Set the Internal Game build name.
+3.  Then select a core game file repository version
+
+![agb-4](/images/gdc/agb-4.png)
+
+Note: If you can’t select a core game file you made it's because you haven’t uploaded anything in it yet.
+
+Click on create a build.
+
+![agb-5](/images/gdc/agb-5.png)
+
+Congratulations your build is now created!
+
+---
+
+---
+title: 'Create a Compatibility Matrix'
+
+order: 8
+---
+
+# Create a Compatibility Matrix
+
+Click on Assemble compatibility matrix
+
+![agb-6](/images/gdc/agb-6.png)
+
+Then select a core game file version
+
+![agb-7](/images/gdc/agb-7.png)
+
+1.  Click on next to go on the next step.
+2.  Then put your exe path on at least one version 32/64 bits
+3.  Click on next to go on to the final step
+
+![agb-8](/images/gdc/agb-8.png)
+
+Then you can finally set your compatible content on the compatibility matrix. If you do not have compatible content you can skip this step by clicking on create..
+
+Note:
+
+-   You can't have a duplicate of an Assemble build.
+-   If you remove compatible content from your previous assembled build compatibility matrix we will gently inform you that you perhaps made a mistake, no worries you still have the option to save in this case to set a new assembled build.
+-   Once created an assembled assembly can not be deleted.
+
+![agb-9](/images/gdc/agb-9.png)
+
+Congratulations! You have created your first Assembled compatibility matrix
+
+---
+title: 'Set a Branch and Publish'
+
+order: 9
+---
+
+# Set a Branch and Publish
+
+Click on Add, to see the available branches
+
+Note:
+
+-   You can have multiple branches on the same assemble version
+-   You can’t have the same branch on multiple assemble build versions
+-   When you publish a branch, you must select one of your assemble versions
+
+If the branch was never published you can remove it by passing it over the button and clicking on the plus icon.
+
+After making changes save it by clicking on “Save Changes”.
+
+Now you can publish your build by clicking on publish.
+
+![agb-10](/images/gdc/agb-10.png)
+
+Congratulations you have published your first build, now all the content is in the publish section, configure the compatibility matrix on the token factory section.
+
+---
+title: 'Introduction'
+
+order: 1
+---
+
+# Game Developer Center
+
+## Overview
+
+Before we start with a step by step guide on how to upload your game on Ultra, we will start with a high level overview of Ultra’s unique product distribution technology.
+
+Unlike other game distribution platforms, on Ultra, product ownership is represented on the blockchain.
+
+Other platforms works like this:
+
+User buys product => Company stores ownership variable on database => product shows up in user library
+
+On Ultra ownership entitlement looks like this:
+
+User buys product => Gets asset token on his blockchain account => product shows up in user’s library
+
+In other words, product entitlements are stored on the blockchain instead of a classic Database. The advantages of representing product ownership on the blockchain are plentiful.
+
+By setting up a “token factory” in Ultra’s Game Developer Center (no coding required), you can associate a game build branch to any token this token factory produces.
+
+User Purchase game => Token Factory produces token => Token is sent to buyer’s blockchain account => game appear in owner’s inventory
+
+---
+title: 'Getting Started'
+
+outline: [0, 5]
+order: 0
+prev: false
+layout: 'doc'
+---
+
+# Getting Started with Integrating Ultra
+
+First, we must define what type of app you have and what tech stack you are using. With this information, we can help guide you as to what type of integration you'll need to successfully integrate into Ultra's ecosystem.
+
+## Are you web-based?
+
+If your app is web-based, next you will need to decide whether or not you need verified user identification. This boils down to whether you need to know if the user who has connected to your app is who he says he is, or whether him being able to sign a transaction is enough.
+
+For any app that is not embedded in the Ultra client directly, it is sufficient to simply allow users to sign transactions. A good example of an app that requires user verification is Ultra Arena, which is deeply integrated into Ultra's ecosystem.
+
+-   If your app is deeply integrated into Ultra's ecosystem, you must follow our [Ultra SSO integration guide](./web/index.md).
+-   If your app is a web-based app that a user will connect to via their browser, you should follow our [Wallet Extension guide](../products/ultra-wallet/index.md).
+
+## Are you building with Unity?
+
+If you're building with Unity, we have a set of helpful examples and a plugin which will help you get started. You should check our [Ultra Unity integration guide](./unity/index.md) which houses the details for where to get the Unity plugin, and how to use it.
+
+## Are you building with Unreal?
+
+If you're building with Unreal, we have a set of helpful examples and a plugin which will help you get started. You should check our [Ultra Unreal Subsystem integration guide](./unreal/index.md) which houses the details for where to get the Unreal Subsystem, and how to use it.
+
+Many developers use Epic's Online Service for multiplayer so that they can unify their player base across all deployments. We have put [together a document](./web/index.md) that specifies exactly how to do that so that your game can connect Ultra's users to those of other platforms.
+
+We currently do not have a subsystem that you can use to connect to the Ultra client.
+
+---
+title: 'Getting the Ultra Unity Plugin'
+
+outline: [0, 5]
+order: 2
+---
+
+# Getting the Ultra Unity Plugin
+
+To connect the Ultra client to your Unity-based game, you must use our Unity plugin. The plugin passes the user's wallet id and an auth token into Unity from Ultra's client. This is used to connect to Braincloud's SDK and authenticate.
+
+Before you get started, please make sure to get your [client_id](../web/get-client-id.md), as you'll need this to be able to use the Ultra Unity Plugin.
+
+## Getting the Ultra Unity Plugin
+
+We provide access to the Ultra Unity plugin via a public repository.
+
+[Download the Unity plugin here](https://github.com/ultraio/unity-auth-plugin)
+
+## Installing the Ultra Unity Plugin
+
+The Ultra Unity Plugin is based on UPM (Unity Package Manager). As of now it's not published to any registry so you will have to manually install the package with one of the following approaches:
+
+### With a clone of the repository
+
+-   Open the Package Manager (Window > Package Manager)
+-   Click the `+` icon and select `Add package from disk`
+-   Select the root folder of the plugin
+
+### With a git URL
+
+-   Open the Package Manager (Window > Package Manager)
+-   Click the `+` icon and select `Add Package from git URL`
+
+### Unity Compatibility
+
+The plugin has been created and tested with Unity 2021.
+
+## Example Project
+
+We provide an example project which you can download and explore. It not only uses the Ultra Unity Plugin, but also integrates
+
+[Bombers Example Project](https://github.com/ultraio/unity-bombers)
+
+We need to cover:
+
+-   What is the Unity plugin
+-   What does the Unity plugin do?
+-   where to get the unity plugin
+-   how to install it
+-   how to use it to connect to the ultra client
+    -   what do you need? (auth links, client_id)
+
+---
+title: 'Using the Ultra Unity Plugin'
+
+outline: [0, 5]
+order: 3
+---
+
+# Using the Ultra Unity Plugin
+
+Welcome to the Ultra Unity Plugin!
+This simple plugin is meant to allow you to leverage from Ultra's ecosystem without breaking your players flow (= seamless in-game authentication).
+Once you complete the following the page, your game will be able to:
+
+-   Retrieve players basic information (such as their username) with no user input required.
+-   Connect to UltraCloud using the brainCloud SDK, allowing you to access Ultra in-game features.
+
+## Settings
+
+Once the package is installed, open the Ultra Settings window (a new entry should have been added): `Ultra > Settings`
+
+![Ultra Menu](/images/unity_images/ultra_menu.png)
+
+This will open the following editor:
+
+![Ultra Settings](/images/unity_images/ultra_settings.png)
+
+There you need to enter your Ultra `Client Id`. For now, you need to get in contact with the Ultra support to receive your Client Id.
+
+The default `Authentication URL` is the Ultra production authentication server. If you are using a different server, make sure to edit this field.
+
+## Initialization script
+
+### TL;DR
+
+Samples are attached to the package.
+
+There you will find a scene and a sample script showing you how to interact with Ultra.
+
+![Ultra Menu](/images/unity_images/ultra_samples.png)
+
+### Step by Step implementation
+
+If you want the initialization to start on the launch of the game, you could create a `gameObject` in the first scene of your game and attach a new script to it.
+
+In the `Awake` or `Start` method you can then initialze the plugin. Example:
+
+```
+void Awake()
+{
+    DontDestroyOnLoad(gameObject); // Only if you wish to use this gameObject as a place to manage Ultra lifecycle in parallel of your game execution
+    Ultra.Init();
+}
+```
+
+Note that you don't need to specify the settings. The `Init()` call will retrieve the configuration made graphically. If you prefer not relying on the settings from the UI, you can instead use `Init(authUrl, clientId)`.
+
+The `Init` function also takes callbacks as parameters so to track failures and successes you should instead do as follow:
+
+```
+    Ultra.Init(OnInitSuccess, OnInitFailure);
+```
+
+```
+void OnInitSuccess(string username, string idToken)
+{
+    Debug.Log($"{username} is now playing!");
+}
+
+void OnInitFailure(UltraError error)
+{
+    Debug.LogError($"Ultra initialization failed - {error.Message}");
+}
+```
+
+Note that for the game to retrieve player information, the Ultra Desktop Client has to be running with an active session.
+
+At development time, if you don't use the Ultra desktop application, you could use the browser to authenticate instead.
+For this you simply need to activate the browser configuration before intializing the tool.
+Example:
+
+```
+#if UNITY_EDITOR
+    Ultra.UseBrowser = true;
+#endif
+    Ultra.Init();
+```
+
+## Connecting to UltraCloud
+
+As mentioned before, if you wish to connect your game to Ultra gaming ecosystem, you will also have to install our partner brainCloud's SDK which already supports our blockchain features and comes with plenty of additional game tools.
+
+Connecting to UltraCloud means:
+
+-   Installing the brainCloud SDK
+-   Configuring it to rely on our Ultra instance
+-   Initialzing it programmatically
+
+### Installing brainCloud SDK
+
+You will find the brainCloud SDK and installation steps [here](https://github.com/getbraincloud/braincloud-csharp).
+At this stage you only need to install the brainCloud package.
+Note that to use the Ultra flavour we need here, you will have to use a specific configuration though.
+
+### UltraCloud configuration
+
+Once the SDK is installed, open the brainCloud Settings page.
+![Ultra Menu](/images/unity_images/bc_settings.png)
+
+Here you need to do few changes:
+
+-   Deselect the `Use Default brainCloud Server` option to specify the Ultra production instance in place of the default `Server URL`: `https://api.ultracloud.ultra.io`
+-   The `email` here should be from one user with access to UltraCloud Portal(accessible from the Ultra desktop Client)
+-   The `password` here should be an API key generated for this given user in the UltraCloud Portal (check the following ).
+
+#### Get your API key
+
+For teams you want to access apps for (using the Unity plugin), a Team-admin must generate an API key in the Ultra Cloud Portal:
+
+Access the UltraCloud Portal:
+
+![Ultra Menu](/images/unity_images/ultracloud_app.png)
+
+-   Enable Builder API access via the Team | Manage | Team Info page
+
+-   Give any devs Builder API permission via the Team | Manage | Members page
+
+-   Finally, the developer needs to create an API key for himself to use. This is a personal key linked to him.
+
+-   Log into the portal in a Team where you have Builder API permission
+
+-   Click in the top-right-hand corner (on the user name), go to the API Keys page - and create a key.
+
+-   Click the [Get] button to retrieve the key, and that same button again to [Copy]
+
+Finally, use that API key retrieved as the password when logging into the user’s account via the brainCloud window in Unity.
+
+Once you are all set, login and select your relevant application information (team + application name)!
+
+### Initialize brainCloud with the Ultra session
+
+Once the configuration is done. You need to initialize the brainCloud library programmatically.
+
+Modify the `OnUltraInitializationSuccess` callback previously created with the following:
+
+```
+void OnUltraInitializationSuccess(string username, string idToken)
+{
+    Debug.Log($"{username} is now playing!");
+    SuccessCallback successCallback = (response, cbObject) =>
+    {
+        Debug.Log("UltraCloud Authentication was successful");
+    };
+    FailureCallback failureCallback = (status, code, error, cbObject) =>
+    {
+        Debug.Log($"Failed | {status} {code} {error}");
+    };
+    var go = new GameObject();
+    BrainCloudWrapper _ultracloud = go.AddComponent<BrainCloudWrapper>();
+    _ultracloud.Init();
+    _ultraCloud.AuthenticateUltra(username, idToken, true, successCallback, failureCallback);
+    DontDestroyOnLoad(go);
+}
+```
+
+Now, your users will be connecting to UltraCloud using their Ultra active sessions. Congratulations!
+
+[Check the BrainCloud documentation to see what you can do with the BrainCloudWrapper instance.](http://getbraincloud.com/apidocs/apiref/#capi)
+
+---
+title: 'Getting the Ultra Unreal Subsystem'
+
+outline: [0, 5]
+order: 4
+---
+
+# Getting the Ultra Unreal Subsystem
+
+To connect the Ultra client to your Unity-based game, you must use our Ultra Unreal Subsystem. The subsystem passes the user's wallet id and an auth token into Unreal from Ultra's client. This is used to connect to Braincloud's SDK and authenticate.
+
+Before you get started, please make sure to get your [client_id](../web/get-client-id.md), as you'll need this to be able to use the Ultra Unity Plugin.
+
+## Getting the Ultra Unreal Subsystem
+
+We provide access to the Ultra Unity plugin via a public repository.
+
+[Download the Ultra Unreal Subsystem here](https://github.com/ultraio/UltraUnrealOnlineSubsystem)
+
+## Installing the Ultra Unreal Subsystem
+
+The Ultra Unreal Subsystem is not published to any registry so you will have to manually install the package:
+
+-   Clone the Repository
+-   Add the plugin to your project YourProjectName/Plugins/OnlineSubsystemUltra
+-   Start Unreal Editor
+-   Go to Edit / Plugins
+-   Search OnlineSubsystemUltra
+-   Enable the plugin
+-   Setup OnlineSubsystemUltra in DefaultEngine.ini (see Configuration below for more details)
+
+---
+title: 'Ultra Unreal OpenID guide'
+
+outline: [0, 5]
+order: 5
+---
+
+# Ultra Unreal OpenID guide
+
+If you're a developer working on Unreal, have an established game, and would like to deploy your game to Ultra Games, then this guide is for you.
+
+You'll be using OpenID to connect via Epic's Online Service.
+
+To have access to Ultra's OpenID, each development partner must [request a client_id](../web/get-client-id.md) from Ultra.
+
+## 1. Select Product Settings
+
+![](/images/ultra-unreal-OpenID-guide/image2.png)
+
+## 2. Select Identity Providers
+
+![](/images/ultra-unreal-OpenID-guide/image5.png)
+
+## 3. Add Identity Provider
+
+![](/images/ultra-unreal-OpenID-guide/image4.png)
+
+## 4. Select OpenID
+
+Input the following
+![](/images/ultra-unreal-OpenID-guide/image3.png)
+
+Easy copying:
+
+-   issuer - https://auth.ultra.io/auth/realms/ultraio
+-   jwks_uri - https://auth.ultra.io/auth/realms/ultraio/protocol/openid-connect/certs
+
+## 5.Set it in your Sandboxes so that you can use it
+
+Set the Sandbox
+![](/images/ultra-unreal-OpenID-guide/image1.png)
+
+Make sure to select Ultra.io!
+![](/images/ultra-unreal-OpenID-guide/image6.png)
+
+---
+title: 'Using the Ultra Unreal Subsystem'
+
+outline: [0, 5]
+order: 5
+---
+
+# Using the Ultra Unreal Subsystem
+
+## Example Project
+
+We've put together an example project which illustrates the expected flow. You can grab the [example project here](https://github.com/ultraio/UnrealSampleProject).
+
+## Access
+
+You'll need a `client_id` for this. To get one, [you can request one directly from Ultra](https://developers.ultra.io/guides/Integrating%20Ultra/requesting-a-client_id.html).
+
+## Configuration
+
+To configure Ultra's Unreal Online Subsystem, you need to edit the DefaultEngine.ini:
+
+```ini
+[OnlineSubsystem]
+DefaultPlatformService=Ultra ; Set OnlineSubsystemUltra as default online subsystem
+
+[OnlineSubsystemUltra]
+bEnabled=true
+; Authentication
+ClientId="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" ; Mandatory - The Client Id given by Ultra
+DispatcherUrl="https://api.ultracloud.ultra.io/dispatcherv2" ; Optional - The dispatcher URL (default: https://api.ultracloud.ultra.io/dispatcherv2)
+AuthenticationUrl="https://auth.ultra.io/auth/realms/ultraio/protocol/openid-connect" ; Optional - The openid authentication URL (default: https://auth.ultra.io/auth/realms/ultraio/protocol/openid-connect)
+bUseBrowser=false ; Optional - If true, the browser will be launched to prompt the user credentials otherwise the 'ApplicationProtocol' will be used to handle the login (default: false)
+ApplicationProtocol=ultra ; Optional - If set to "ultra", the Ultra launcher will be called to login the user (default: ultra)
+```
+
+## Authentication
+
+```
+const IOnlineIdentityPtr IdentityInterface = Online->GetIdentityInterface();
+FDelegateHandle Handle;
+IdentityInterface->AddOnLoginCompleteDelegate_Handle(UserIndex, FOnLoginCompleteDelegate::CreateLambda([IdentityInterface, Handle](int32 LocalUserNum, bool Success, const FUniqueNetId& UserId, const FString& Error)
+{
+  IdentityInterface->ClearOnLoginCompleteDelegate_Handle(LocalUserNum, Handle);
+  FString Nickname = IdentityInterface->GetPlayerNickname(LocalUserNum);
+  // do something
+}));
+IdentityInterface->AutoLogin(UserIndex);
+```
+
+---
+title: 'Requesting a client_id'
+
+outline: [0, 5]
+order: 6
+next: false
+---
+
+# Requesting a client_id
+
+Ultra's authentication servers, both for their staging and their production environments, are protected by Keycloak.
+
+To access them, you'll require a `client_id`. This can be requested directly from [developers@ultra.io](mailto:developers@ultra.io).
+
+Without this you will not be able to use the Unity plugin, integrate into Epic's Online Service for multiplayer, or integrate your app directly into Ultra's client.
+
+---
+title: 'Ultra SSO integration guide'
+
+outline: [0, 5]
+order: 1
+---
+
+# Ultra SSO integration guide
+
+The ultra platform Identity and Access Management (IAM) is provided by an OpenID Connect compliant server.
+
+The ultra platform OpenID Connect server is Keycloak. Each development partner must [request a client_id](./get-client-id.md) from Ultra.
+
+OpenID Connect is an interoperable authentication protocol based on the OAuth 2.0 family of specifications.
+
+## Requesting access from Ultra
+
+Before being able to successfully start this tutorial, you will need to send a client request to the Ultra team to the [support@ultra.io](mailto:support@ultra.io) email address giving:
+
+-   a description of the purpose of the web application
+-   a redirect URL which will be used by our auth server to redirect the user when logged in (we will take `https://redirecturi/callback` as example in the tutorial)
+
+Once the [client_id](./get-client-id.md) for your web application has been created by the Ultra team, an email response will be sent back to you with the corresponding client_id (and clientSecret which will be useless for the flow used in the Single Sign On - i.e. SSO).
+
+### Domains
+
+For different domains, Ultra provides different URLs that you must use for authentication purposes. These are the ones that are open to the public.
+
+| Auth Domain           | Blockchain network | Example URL                                                                    |
+| --------------------- | ------------------ | ------------------------------------------------------------------------------ |
+| auth.ultra.io         | Mainnet            | https://auth.ultra.io/auth/realms/ultraio/protocol/openid-connect/auth         |
+| auth.staging.ultra.io | Testnet            | https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/auth |
+
+## Requesting OAuth Authorization Code
+
+### Request
+
+Below is an example of a request URL that you can open in the browser windows (Ultra client) to request an OAuth Authorization Code. Replace the parameter values with the ones relevant to your project.
+
+```sh
+https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/auth
+?client_id=third-party-client
+&response_type=code
+&state=fj8o3n7bdy1op5
+```
+
+In this example, the parts above are:
+
+-   http://auth.staging.ultra.io – is the domain on which our authorization server is running (for production environment staging will need to be replaced by https://auth.ultra.io as described in the openId flows documentation)
+
+-   ultraio – is the Ultra Realm
+
+-   third-party-client – is the OAuth client_id you received from the Ultra team (see the above prerequisite)
+
+-   code – is a response_type (OAuth Response Type). This value must be “code” for the OAuth Code Grant flow to work. If you provide a different value here, the request will not work. The response_type is a required parameter in OAuth Code Grant flow,
+
+-   fj8o3n7bdy1op5 – is a RECOMMENDED, opaque value used by the client to maintain state between the request and callback. You will need to generate this random alphanumeric string of characters and include them in the request. The authorization server includes this value when redirecting the user-agent back to the client. The parameter SHOULD be used for preventing cross-site request forgery. The page that handles the response from the authorization server will need to read this value and compare it to the original one that was sent with this request. The two values must match.
+
+Remember that this parameter should be:
+
+1. Unique per user session.
+2. Secret
+3. Unpredictable (large random value generated by a secure method. Ex.: java.security.SecureRandom).
+
+### Response
+
+In the case of a successful request, the authorization server will generate the authorization code and will redirect the client application to a Redirect URI configured in our auth server for this OAuth client.
+
+```json
+https://redirecturi/callback
+?state=fj8o3n7bdy1op5
+&session_state=f109bb89-cd34-4374-b084-c3c1cf2c8a0b
+&code=0aaca7b5-a314-4c07-8212-818cb4b7e8d0.f109bb89-cd34-4374-b084-c3c1cf2c8a0b.1dc15d06-d8b9-4f0f-a042-727eaa6b98f7
+```
+
+## Optional Request Parameters
+
+A request for an authorization code can include other optional parameters:
+
+-   scope – OPTIONAL. The scope of the access request,
+
+-   redirect_uri – OPTIONAL. After completing its interaction with the resource owner, the authorization server directs the resource owner’s user-agent back to the client. The authorization server redirects the user-agent to the client’s redirection endpoint previously established with the authorization server during the client registration process or when making the authorization request. If you include this request parameter in the request, then its value must match the one configured in Ultra authorization server. Otherwise, an error will take place.
+
+Below is a Request URL that contains all required, recommended, and optional request parameters you can use in the request for an OAuth Authorization Code.
+
+```sh
+https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/auth
+?client_id=third-party-client
+&response_type=code
+&scope=blockchainid
+&redirect_uri=https://redirecturi/callback
+&state=fj8o3n7bdy1op5
+```
+
+## Exchanging Authorization Code for the Id token
+
+Once you have the Authorization Code, you are ready to exchange it for an access token. Below is an example of a curl command you can use to exchange an authorization code for an access token. Replace the request parameter values with the ones relevant to your project.
+
+### Request
+
+```sh
+curl --location --request POST 'https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=authorization_code' \
+--data-urlencode 'client_id=third-party-client' \
+--data-urlencode 'code=0aaca7b5-a314-4c07-8212-818cb4b7e8d0.f109bb89-cd34-4374-b084-c3c1cf2c8a0b.1dc15d06-d8b9-4f0f-a042-727eaa6b98f7' \
+--data-urlencode 'redirect_uri=https://redirecturi/callback'
+```
+
+Where:
+
+-   https://redirecturi/callback – is a redirect_uri which is REQUIRED, if the redirect_uri parameter was included in the authorization request to acquire the Authorization Code,
+-   authorization_code – is a REQUIRED grant_type parameter which value must be “authorization_code”. If you provide a different value here, the request will not be successful.
+-   The value of a code request parameter must be an OAuth Authorization Code that was received from an authorization server. It is this value we are exchanging for an access token.
+
+### Response
+
+In case of a successful request, below is an example of a response that contains an idtoken (containing the requested user information / ex: walletId, username, email), an access token and a refresh token.
+
+```json
+{
+    "id_token": "eyJdewfregtrgtgerse6ICItNUlsX2I0cUktdWFvaEI3d244UHY3WEM2UEktU3BNbmZCRnlJZUx6QTJNIn0.eyJleHAiOjE1OTIzNDM5NDEsImlhdCI6MTU5MjM0MzY0MSwiYXV0aF90aW1lIjoxNTkyMzQwODA1LCJqdGkiOiJlYjlhNTc2NS1jYmVhLTQ2ZWMtYTk4NS0wOWFkYTM5NTk5YjIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvYXBwc2RldmVsb3BlcmJsb2ciLCJzdWIiOiIxZGRlM2ZjMy1jNmRiLTQ5ZmItOWIzZC03OTY0YzVjMDY4N2EiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJwaG90by1hcHAtY29kZS1mbG93LWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJmMTA5YmI4OS1jZDM0LTQzNzQtYjA4NC1jM2MxY2YyYzhhMGIiLCJhY3IiOiIwIiwic2NvcGUiOiJwcm9maWxlIiwibmFtZSI6IkthcmdvcG9sb3YiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzZXJnZXkiLCJmYW1pbHlfbmFtZSI6IkthcmdvcG9sb3YifQ.KHCNF0Rn-I7iFosB3oEaWetRw9lhSkkP0-Ef6iW2GAZuuI-GQtZUBDAD_aEDtLTdUpvGL8MKx8Os0qbUZKJJhBhTAJyz2DycgY--ROc_vLbPtJSll-F68tHT6KgC2etbTjpz4Ira6PaLigkT80zGb6tpnQmm1o7a4IGQ40-faKC4fivdfblypGqgRnniOGXMLGpzO2Ln92w1azjFAyOCIBhe3Nlcofjupi26qNGrJKuwBudzZgZCla9RDWm2MUTqMW65AOUpOmiJCd5E4JxbwOuG6H2tbYI2Z-ajQXzzcodmCAWfWu2oRkMaAuNImph8W9tRrqCQ0wlb55tXnUvEuw",
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNUlsX2I0cUktdWFvaEI3d244UHY3WEM2UEktU3BNbmZCRnlJZUx6QTJNIn0.eyJleHAiOjE1OTIzNDM5NDEsImlhdCI6MTU5MjM0MzY0MSwiYXV0aF90aW1lIjoxNTkyMzQwODA1LCJqdGkiOiJlYjlhNTc2NS1jYmVhLTQ2ZWMtYTk4NS0wOWFkYTM5NTk5YjIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvYXBwc2RldmVsb3BlcmJsb2ciLCJzdWIiOiIxZGRlM2ZjMy1jNmRiLTQ5ZmItOWIzZC03OTY0YzVjMDY4N2EiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJwaG90by1hcHAtY29kZS1mbG93LWNsaWVudCIsInNlc3Npb25fc3RhdGUiOiJmMTA5YmI4OS1jZDM0LTQzNzQtYjA4NC1jM2MxY2YyYzhhMGIiLCJhY3IiOiIwIiwic2NvcGUiOiJwcm9maWxlIiwibmFtZSI6IkthcmdvcG9sb3YiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJzZXJnZXkiLCJmYW1pbHlfbmFtZSI6IkthcmdvcG9sb3YifQ.KHCNF0Rn-I7iFosB3oEaWetRw9lhSkkP0-Ef6iW2GAZuuI-GQtZUBDAD_aEDtLTdUpvGL8MKx8Os0qbUZKJJhBhTAJyz2DycgY--ROc_vLbPtJSll-F68tHT6KgC2etbTjpz4Ira6PaLigkT80zGb6tpnQmm1o7a4IGQ40-faKC4fivdfblypGqgRnniOGXMLGpzO2Ln92w1azjFAyOCIBhe3Nlcofjupi26qNGrJKuwBudzZgZCla9RDWm2MUTqMW65AOUpOmiJCd5E4JxbwOuG6H2tbYI2Z-ajQXzzcodmCAWfWu2oRkMaAuNImph8W9tRrqCQ0wlb55tXnUvEuw",
+    "expires_in": 300,
+    "refresh_expires_in": 1800,
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJlYWQyMDZmOS05MzczLTQ1OTAtOGQ4OC03YWNkYmZjYTU5MmMifQ.eyJleHAiOjE1OTIzNDU0NDEsImlhdCI6MTU5MjM0MzY0MSwianRpIjoiOGE2NTdhMDktYTQ3My00OTAyLTk1MjItYWYxMGFkMzUwYzUyIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2FwcHNkZXZlbG9wZXJibG9nIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2FwcHNkZXZlbG9wZXJibG9nIiwic3ViIjoiMWRkZTNmYzMtYzZkYi00OWZiLTliM2QtNzk2NGM1YzA2ODdhIiwidHlwIjoiUmVmcmVzaCIsImF6cCI6InBob3RvLWFwcC1jb2RlLWZsb3ctY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImYxMDliYjg5LWNkMzQtNDM3NC1iMDg0LWMzYzFjZjJjOGEwYiIsInNjb3BlIjoicHJvZmlsZSJ9.WevUHYd7DV3Ft7mFJnM2iLlArotBvLlMfQxlcy0nig8",
+    "token_type": "bearer",
+    "not-before-policy": 0,
+    "session_state": "f109bb89-cd34-4374-b084-c3c1cf2c8a0b",
+    "scope": "blockchainid"
+}
+```
+
+Within the access token, you will be able to extract user information.
+
+---
+
+title: 'Ultra.io'
+layout: home
+headline: "Build on Ultra"
+
+gettingstarted:
+  - title: "Putting Developers in Control"
+    content: "Take advantage of all the best features of decentralized technologies without the downside of high costs, hard on-boarding, and slow networks."
+
+documentation:
+  content: "Our documentation is segmented into two discrete parts that cater to your specific developer needs."
+  bighero: 
+    title: "Jump to the Ultracloud SDK Documentation"
+    content: "Our gaming orientated SDK provides easy to use multiplayer, NFTs, inventory management, SSO, and more."
+    link: "https://getbraincloud.com/apidocs/"
+  concepts:
+    - title: "Blockchain"
+      link: "/learn/Blockchains/block-production"
+      links:
+        - title: "Block Production"
+          link: "/learn/Blockchains/block-production"
+        - title: "Actions & Transactions"
+          link: "/learn/Blockchains/actions-and-transactions"
+        - title: "Account & Permissions"
+          link: "/learn/Blockchains/accounts-and-permissions"
+    - title: "Ultra Blockchain"
+      link: "/learn/Ultra Blockchain/key-differences"
+      links:
+        - title: "Key Differences"
+          link: "/learn/Ultra Blockchain/key-differences"
+        - title: "Account Types"
+          link: "/learn/Ultra Blockchain/account-types"
+        - title: "POWER Resource"
+          link: "/learn/Ultra Blockchain/power-resource"
+    - title: "Block Producers"
+      link: "/learn/Block Producers/Infrastructure/block-producing-infrastructure"
+      links:
+        - title: "Overview"
+          link: "/learn/Block Producers/Infrastructure/block-producing-infrastructure"
+        - title: "Minimum Infrastructure"
+          link: "/learn/Block Producers/Infrastructure/minimum-recommended-infrastructure"
+        - title: "Infrastructure & Network"
+          link: "/learn/Block Producers/Infrastructure/infrastructure-and-network-overview"
+  guides:
+    - title: "Basics"
+      link: "/guides/Basics/introduction"
+      links:
+        - title: "Introduction"
+          link: "/guides/Basics/introduction"
+        - title: "Actions & Transactions"
+          link: "/learn/Blockchains/actions-and-transactions"
+        - title: "Account & Permissions"
+          link: "/learn/Blockchains/accounts-and-permissions"
+    - title: "Contract Dev Kit"
+      link: "/guides/CDT/index"
+      links:
+        - title: "Introduction"
+          link: "/guides/CDT/index"
+        - title: "Create a contract"
+          link: "/guides/CDT/create-a-contract"
+        - title: "Compile a contract"
+          link: "/guides/CDT/compile-a-contract"
+    - title: "Docker"
+      link: "/guides/Docker/getting-started"
+      links:
+        - title: "Introduction"
+          link: "/guides/Docker/getting-started"
+        - title: "Environment Setup"
+          link: "/guides/Docker/development-environment"
+        - title: "Image Usage"
+          link: "/guides/Docker/docker-image-usage"
+    - title: "Uniq Variants"
+      link: "/guides/Uniq Variants/index"
+      links:
+        - title: "Overview"
+          link: "/guides/Uniq Variants/index"
+        - title: "Common Metadata Concepts"
+          link: "/guides/Uniq Variants/common-metadata-concepts"
+        - title: "FAQ"
+          link: "/guides/Uniq Variants/faq"
+    - title: "Wallet Extension"
+      link: "/guides/Wallet Extension/index"
+      links:
+        - title: "Introduction"
+          link: "/guides/Wallet Extension/index"
+        - title: "Installing Extension"
+          link: "/guides/Wallet Extension/installing-extension"
+        - title: "Establishing a Connection"
+          link: "/guides/Wallet Extension/stablishing-connection"
+    - title: "Misc"
+      link: "/guides/Ultra Specific/token-swap"
+      links:
+        - title: "Token Swap Overview"
+          link: "/guides/Ultra Specific/token-swap"
+        - title: "Request Fungible Token"
+          link: "/guides/Ultra Specific/request-fungible-token"
+        - title: "Testnet Faucet Guide"
+          link: "/guides/Ultra Specific/faucet"
+
+tooling:
+  content: "Many excellent developer tools already exist within the Ultra ecosystem."
+  links:
+    - title: "Ultra Mainnet Explorer"
+      link: "https://explorer.mainnet.ultra.io/"
+      icon: "/svgs/link.svg"
+    - title: "Ultra Testnet Explorer"
+      link: "https://explorer.testnet.ultra.io/"
+      icon: "/svgs/link.svg"
+    - title: "pNetwork Bridge"
+      link: "https://dapp.ptokens.io/#/swap?asset=uos&from=eth&to=ultra"
+      icon: "/svgs/link.svg"
+    - title: "Account & Faucet for Testnet"
+      link: "https://faucet.testnet.app.ultra.io/"
+      icon: "/svgs/link.svg"
+    - title: "EOS Authority Keypair Generator"
+      link: "https://eosauthority.com/generate_eos_private_key"
+      icon: "/svgs/link.svg"
+
+support:
+  content: "We know that not everything always goes smoothly. Here's how we can help."
+  links:
+    - title: "Developer Support Email"
+      link: "mailto:developers@ultra.io"
+      text: "developers@ultra.io"
+    - title: "Discord"
+      link: "https://discord.gg/invite/U7raPf6qZu"
+      text: "Join Discord"
+
+footer:
+  sections:
+    - title: 'LEARN'
+      links:
+        - text: 'Ultra Games'
+          link: 'https://ultra.io'
+    - title: 'BUILD'
+      links:
+        - text: 'Documentation'
+          link: '#'
+        - text: 'Mainnet Explorer'
+          link: 'https://explorer.mainnet.ultra.io/' 
+        - text: 'Testnet Explorer'
+          link: 'https://explorer.testnet.ultra.io/'
+        - text: 'GitHub'
+          link: 'https://github.com/ultraio' 
+    - title: 'APPLY'
+      links:
+        - text: 'Careers'
+          link: 'https://ultra.io/career'
+        - text: 'Partners'
+          link: 'mailto:partnership@ultra.io'
+    - title: 'MATERIAL'
+      links: 
+        - text: 'Press Kit'
+          link: 'https://zeroheight.com/8f930e3cd/v/latest/p/61d035-ultra-press-kit/'
+---
+
+
+---
+title: 'Common Table Lookups'
+
+order: -99998
+---
+
+# Common Table Lookups
+
+When you are looking for information about the Ultra blockchain and its individual uers there are a few tables in particular that are very handy to lookup.
+
+See [get table rows](./get-table-rows.md) for more information.
+
+## Latest USD/UOS Price
+
+| account      | table      | scope |
+| ------------ | ---------- | ----- |
+| eosio.oracle | finalrates | 1     |
+
+## User Owned Tokens
+
+| account      | table   | scope              |
+| ------------ | ------- | ------------------ |
+| eosio.nft.ft | token.a | `*account of user` |
+| eosio.nft.ft | token.b | `*account of user` |
+
+## Token Factory
+
+| account      | table     | scope        |
+| ------------ | --------- | ------------ |
+| eosio.nft.ft | factory.a | eosio.nft.ft |
+| eosio.nft.ft | factory.b | eosio.nft.ft |
+---
+title: '/get_abi'
+
+outline: [0,4]
+---
+
+# POST - /get_abi
+
+Returns information about a smart contract's available actions, tables, etc. This is really useful for creating data validation off-chain for forms when having a user create a transaction based on manual entries.
+
+## Body
+
+```typescript
+{
+	"account_name": "ultra.tools"
+}
+```
+
+## Request
+
+```
+curl -X POST -d '{ "account_name": "ultra.tools" }'  https://api.ultra.eossweden.org/v1/chain/get_abi
+```
+
+## Response
+
+::: details Response
+```typescript
+{
+	"account_name": "ultra.tools",
+	"abi": {
+		"version": "eosio::abi/1.1",
+		"types": [],
+		"structs": [
+			{
+                // This is an action name
+                // The action itself can be found further down.
+				"name": "correlate",
+				"base": "",
+                // These are the required fields
+				"fields": [
+					{
+						"name": "payer",
+						"type": "name"
+					},
+					{
+						"name": "correlation_id",
+						"type": "string"
+					}
+				]
+			}
+		],
+		"actions": [
+            // This action matches the one above.
+			{
+				"name": "correlate",
+				"type": "correlate",
+				"ricardian_contract": ""
+			}
+		],
+		"tables": [
+			{
+				"name": "corrids",
+				"index_type": "i64",
+				"key_names": [],
+				"key_types": [],
+				"type": "correlation_id"
+			}
+		],
+		"ricardian_clauses": [],
+		"error_messages": [],
+		"abi_extensions": [],
+		"variants": []
+	}
+}
+```
+:::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_abi" 
+	:body="[{ key: 'account_name', value: 'eosio.token' }]"
+/>
+---
+title: '/get_account'
+
+---
+
+# POST - /get_account
+
+Returns account information for a given blockchain account name.
+
+**Highlights**
+
+* core_liquid_balance - Amount of UOS Available
+* RAM available
+* Permission list
+
+### Body
+
+Account name should be `., 1-5, a-z` and up to 12 characters long.
+
+```typescript
+{
+    "account_name": "ultra"
+}
+```
+
+### Request
+
+```
+curl -X POST -d '{ "account_name": "ultra" }'  https://api.ultra.eossweden.org/v1/chain/get_account
+```
+
+### Response
+
+::: details Response
+```typescript
+{
+	"account_name": "ultra",
+	"head_block_num": 61670882,
+	"head_block_time": "2022-06-10T20:32:04.500",
+	"privileged": true,
+	"last_code_update": "2021-11-09T11:58:35.500",
+	"created": "2021-06-18T07:07:07.000",
+	"core_liquid_balance": "0.01100000 UOS",
+	"ram_quota": -1,
+	"net_weight": -1,
+	"cpu_weight": -1,
+	"net_limit": {
+		"used": -1,
+		"available": -1,
+		"max": -1
+	},
+	"cpu_limit": {
+		"used": -1,
+		"available": -1,
+		"max": -1
+	},
+	"ram_usage": 2301250,
+	"permissions": [
+		{
+			"perm_name": "active",
+			"parent": "owner",
+			"required_auth": {
+				"threshold": 1,
+				"keys": [],
+				"accounts": [
+					{
+						"permission": {
+							"actor": "eosio.prods",
+							"permission": "active"
+						},
+						"weight": 1
+					}
+				],
+				"waits": []
+			}
+		},
+		{
+			"perm_name": "owner",
+			"parent": "",
+			"required_auth": {
+				"threshold": 1,
+				"keys": [],
+				"accounts": [
+					{
+						"permission": {
+							"actor": "eosio.prods",
+							"permission": "active"
+						},
+						"weight": 1
+					}
+				],
+				"waits": []
+			}
+		}
+	],
+	"total_resources": null,
+	"self_delegated_bandwidth": null,
+	"refund_request": null
+}
+```
+:::
+
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_account" 
+	:body="[{ key: 'account_name', value: 'ultra' }]"
+/>
+---
+title: '/get_block'
+
+---
+
+# POST - /get_block
+
+Returns information about a block.
+
+**Highlights**
+
+* confirmed - Determines if a block is finalized.
+* timestamp - When the block was made.
+* producer - Who produced the block
+
+### Body
+
+```typescript
+{
+	"block_num_or_id": 61672404
+}
+```
+
+### Request
+
+```
+curl -X POST -d '{ "block_num_or_id": 61672404 }'  https://api.ultra.eossweden.org/v1/chain/get_block
+```
+
+### Response
+
+::: details Response
+```typescript
+{
+	"timestamp": "2022-06-10T20:44:45.500",
+	"producer": "eosriobrazil",
+	"confirmed": 0,
+	"previous": "03ad0bd3...",
+	"transaction_mroot": "71a4f5...",
+	"action_mroot": "afbd14c...",
+	"schedule_version": 15,
+	"new_producers": null,
+	"producer_signature": "SIG_K1_K5...",
+	"transactions": [],
+	"id": "03ad0bd4a31c382ad257cf72247dfbdc3317bd977f1762353a6f5171620819b5",
+	"block_num": 61672404,
+	"ref_block_prefix": 1926191058
+}
+```
+:::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_block" 
+	:body="[{ key: 'block_num_or_id', value: '8675309' }]"
+/>
+---
+title: '/get_currency_balance'
+
+---
+
+# POST - /get_currency_balance
+
+Returns the current currency balance for a given token contract, account, and a token symbol.
+
+### Body
+
+```typescript
+{
+	"code": "eosio.token",
+    "account": "ultra.nft.ft",
+    "symbol": "UOS"
+}
+```
+
+### Request
+
+```
+curl -X POST -d '{ "code": "eosio.token", "account": "ultra.nft.ft", "symbol": "UOS" }'  https://api.ultra.eossweden.org/v1/chain/get_currency_balance
+```
+
+### Response
+
+::: details Response
+```typescript
+[
+	"475.34122996 UOS"
+]
+```
+:::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_currency_balance" 
+	:body="[
+        { key: 'code', value: 'eosio.token' },
+        { key: 'account', value: 'ultra.nft.ft' },
+        { key: 'symbol', value: 'UOS' }
+    ]"
+/>
+---
+title: '/get_info'
+
+order: -99
+---
+
+# GET - /get_info
+
+A good way to get information about the chain including a unique identifier for the chain, current head block number, etc.
+
+### Request
+
+```
+curl -X GET https://api.ultra.eossweden.org/v1/chain/get_info
+```
+
+### Response
+
+::: details Response
+```typescript
+{
+	"server_version": "dcec8f25",
+	"chain_id": "a9c481d....",
+	"head_block_num": 61691776,
+	"last_irreversible_block_num": 61691680,
+	"last_irreversible_block_id": "03ad57....",
+	"head_block_id": "03ad5....",
+	"head_block_time": "2022-06-10T23:26:11.500",
+	"head_block_producer": "eosnationftw",
+	"virtual_block_cpu_limit": 400000,
+	"virtual_block_net_limit": 1048576,
+	"block_cpu_limit": 399999,
+	"block_net_limit": 1048568,
+	"server_version_string": "v2.0.9-1.13.1",
+	"fork_db_head_block_num": 61691776,
+	"fork_db_head_block_id": "03ad57....",
+	"server_full_version_string": "v2.0.9-1.13.1-dc...."
+}
+```
+:::
+
+## Try It
+
+<DemoApi 
+	type="GET" 
+	query="/v1/chain/get_info" 
+	:body="[]"
+/>
+---
+title: '/get_table_by_scope'
+
+---
+
+# POST - /get_table_by_scope
+
+Returns tables available and their given scopes for a specific contract account name. Useful for seeing what entries made it into a table and the amount of rows in that table.
+
+### Body
+
+```typescript
+{
+	"code": "eosio.token",
+    "limit": 2
+}
+```
+
+### Additional Parameters
+
+There are many additional parameters but here are the useful ones.
+
+* lower_bound - The lowest matching start point in table rows. Useful for looking from forward to back.
+
+* upper_bound - The highest matching point in the table rows. Useful for looking from back to forward.
+
+* table - filter by table name
+
+* limit - How many entries to return.
+
+### Request
+
+```
+curl -X POST -d '{ "code": "eosio.token", "limit": 2 }'  https://api.ultra.eossweden.org/v1/chain/get_table_by_scope
+```
+
+### Response
+
+If the response has "more" with an account name that means there are more entries below and potentially above.
+
+::: details Response
+```typescript
+{
+	"rows": [
+		{
+			"code": "eosio.token",
+			"scope": "........ehbp5",
+			"table": "stat",
+			"payer": "eosio.token",
+			"count": 1
+		},
+		{
+			"code": "eosio.token",
+			"scope": "aa1aa2aa3aa4",
+			"table": "accounts",
+			"payer": "ultra.eosio",
+			"count": 1
+		}
+	],
+	"more": "aa1aa2aa3ab4"
+}
+```
+:::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_table_by_scope" 
+	:body="[
+		{ key: 'code', value: 'eosio.token'},
+		{ key: 'table', value: 'accounts' },
+		{ key: 'limit', value: 10 }
+	]"
+/>
+---
+title: '/get_table_rows'
+
+---
+
+# POST - /get_table_rows
+
+Returns rows in a table given a code, table, and a scope. Rows will return empty if there is no table available under that table, or scope.
+
+### Body
+
+```typescript
+{
+	"code": "eosio.nft.ft",
+	"table": "factory.a",
+	"scope": "eosio.nft.ft",
+	"json": true,
+    "limit": 5
+}
+```
+
+### Additional Parameters
+
+There are many additional parameters but here are the useful ones.
+
+* lower_bound - The lowest matching start point in table rows. Useful for looking from forward to back.
+
+* upper_bound - The highest matching point in the table rows. Useful for looking from back to forward.
+
+* limit - How many entries to return.
+
+* json - convert from serialized to readable json. Should always set this to true.
+
+### Request
+
+```
+curl -X POST -d '{"code": "eosio.nft.ft", "table": "factory.a", "scope": "eosio.nft.ft", "json": true, "limit": 5}'  https://api.ultra.eossweden.org/v1/chain/get_table_rows
+```
+
+### Response
+
+If the response has "more" with an account name that means there are more entries below and potentially above.
+
+::: details Response
+```typescript
+{
+	"rows": [
+		{
+			"id": 0,
+			"asset_manager": "ultra.nft.ft",
+			...more here
+		}
+	],
+	"more": true,
+	"next_key": "1"
+}
+```
+:::
+
+### How to fetch the NFTs of a given account
+
+- *code* is eosio.nft.ft, where NFT smart contract is deployed.
+- *table* is token.b.
+- *scope* is the owner account, in this case: *fy1rp2kk3np4*.
+
+::: details NFT query
+```shell
+curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"token.b","scope":"fy1rp2kk3np4","code":"eosio.nft.ft","limit":1,"json":true}'
+
+# output example
+{
+  "rows": [
+    {
+      "id": 189,
+      "token_factory_id": 2,
+      "mint_date": "2021-11-26T07:21:01",
+      "serial_number": 37,
+      "uos_payment": 0,
+      "uri": null,
+      "hash": null
+    }
+  ],
+  "more": true,
+  "next_key": "272"
+}
+
+```
+:::
+
+
+### How to fetch the info of a given factory
+
+- *code* is eosio.nft.ft, where NFT smart contract is deployed.
+- *table* is factory.b.
+- *scope* is eosio.nft.ft.
+- *lower_bound* is the factory id from the above NFT query result: 2
+
+::: details factory query
+```shell
+curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"factory.b","scope":"eosio.nft.ft","code":"eosio.nft.ft","lower_bound":2,"limit":1,"json":true}'
+
+# example output
+{
+  "rows": [
+    {
+      "id": 2,
+      "asset_manager": "ultra.nft.ft",
+      "asset_creator": "ultra.nft.ft",
+      "minimum_resell_price": "0.00000000 UOS",
+      "resale_shares": [
+        {
+          "receiver": "gg1kf2or3vt4",
+          "basis_point": 500
+        },
+        {
+          "receiver": "mc1lh2wu3wx4",
+          "basis_point": 500
+        }
+      ],
+      "mintable_window_start": null,
+      "mintable_window_end": null,
+      "trading_window_start": null,
+      "trading_window_end": null,
+      "recall_window_start": 0,
+      "recall_window_end": null,
+      "lockup_time": 0,
+      "conditionless_receivers": [
+        "ultra.nft.ft"
+      ],
+      "stat": 0,
+      "factory_uri": "https://s3.us-east-1.wasabisys.com/ultraio-uniq-prod/3844d9f938db8144895407e198492a2b7a670e975c2224f880815f38c18f7e11.zip",
+      "factory_hash": "3844d9f938db8144895407e198492a2b7a670e975c2224f880815f38c18f7e11",
+      "max_mintable_tokens": 80,
+      "minted_tokens_no": 80,
+      "existing_tokens_no": 80,
+      "authorized_tokens_no": null,
+      "account_minting_limit": null,
+      "transfer_window_start": null,
+      "transfer_window_end": null,
+      "default_token_uri": "https://s3.us-east-1.wasabisys.com/ultraio-uniq-prod/3844d9f938db8144895407e198492a2b7a670e975c2224f880815f38c18f7e11.zip",
+      "default_token_hash": "3844d9f938db8144895407e198492a2b7a670e975c2224f880815f38c18f7e11",
+      "lock_hash": 0
+    }
+  ],
+  "more": true,
+  "next_key": "3"
+}
+
+```
+:::
+
+## Try It
+
+<DemoApi 
+	type="POST" 
+	query="/v1/chain/get_table_rows" 
+	:body="[
+		{ key: 'code', value: 'eosio.nft.ft'},
+		{ key: 'table', value: 'factory.b' },
+		{ key: 'scope', value: 'eosio.nft.ft' },
+		{ key: 'limit', value: 5 },
+	]"
+/>
+---
+title: 'API'
+
+order: -99999
+---
+
+# API
+
+Ultra's blockchain REST API uses HTTP methods to communicate with network.
+
+Endpoints are available for retrieving data, submitting transactions, and executing smart contracts.
+
+_It is recommended to use a package such as [@ultraos/ultra-api-lib](https://www.npmjs.com/package/@ultraos/ultra-api-lib) for handling transactions or more complex API calls._
+
+## Producer Endpoints
+
+**Main Network (Production)**
+
+Chain ID:
+
+```
+a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097
+```
+
+- http://ultra.api.eosnation.io
+- https://ultra.eosrio.io
+- https://api.ultra.cryptolions.io/
+- https://ultra-api.eoseoul.io/
+- https://ultra.eosusa.io
+- https://api.ultra.eossweden.org
+
+**Test Network (Staging)**
+
+Chain ID:
+
+```
+7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9
+```
+
+- https://ultratest-api.eoseoul.io/
+- http://ultratest.api.eosnation.io
+- https://testnet.ultra.eosrio.io
+- https://test.ultra.eosusa.io
+- https://api.ultra-testnet.cryptolions.io
+- https://api.testnet.ultra.eossweden.org
+
+**Example**
+
+```
+http://ultra.api.eosnation.io/v1/chain/get_info
+```
+
+---
+title: 'Introduction'
+
+order: -99999999
+---
+
+# Contract Builder Overview
+
+The contract builder allows you to easily build smart contracts in various ways.
+
+You can drag & drop, or use the `cli` directly, or even integrate it as a library into your own tools.
+
+The contract builder comes in three different flavors.
+
+* Library
+* Global `cli` application
+* Binary File
+
+Each of these are available to download from the main repository.
+
+Usage as a library can be viewed inside of the README in the official repository.
+
+[https://github.com/ultraio/contract-builder](https://github.com/ultraio/contract-builder)
+
+## Supports
+
+* cdt-cpp
+* cmake
+
+## Dependencies
+
+* [Docker](https://docs.docker.com/engine/install/)
+
+
+## Installing with NodeJS
+
+Keep in mind we use at least Node v16+ for this.
+
+```
+npm i -g @ultraos/contract-builder
+```
+
+## Obtaining Binary Files
+
+Binaries can be [obtained here](https://github.com/ultraio/contract-builder/releases)
+
+## Usage
+
+If you are on windows, you can drag / drop the folder onto the binary file to compile.
+
+```
+contract-builder ./some-folder/some-example-contract-folder
+```
+
+### Build Parameters
+
+```sh
+contract-builder -i ./test/example-contract -b "-DTEST=true"
+```
+
+## Examples
+
+See [https://github.com/ultraio/contract-builder/tree/main/test](https://github.com/ultraio/contract-builder/tree/main/test) for example contracts to utilize with this project.
+
+---
+title: 'Request Fungible Token'
+
+outline: [0, 4]
+order: -99
+---
+
+# Request Fungible Token
+
+## Prerequisite
+
+By design, we do not allow developers to freely create new Fungible Token (FT) on our blockchain since developers might take advantage of our blockchain and spam the network by sending their FT to everyone. This action first of all wastes our RAM that can be put to much better use, and second of all it will annoy our users with a lot of junk FT.
+
+However, Ultra still allows developers to create their own FT on our network if they make a request and meet our requirements.
+
+## Requirements
+
+-   You need to own a developer account before making a request. Please refer to this [process](../../blockchain/general/tools/cleos.md#creating-an-account).
+-   Token you want to create must meet our standards. Please refer below for more info.
+
+## Make a request
+
+-   Send request email to [developers@ultra.io](developers@ultra.io)
+
+-   Or go to our [Discord](https://discord.com/invite/mkfkJexbV3).
+
+-   Navigate to one of our development channels.
+
+![](/images/discord-dev-channels.png)
+
+-   Create an FT creation request with your account. You can follow this example:
+
+```sh
+FT Creation Request
+Account: 1ab2cd3ef4gh
+Token Max Supply: 100000.000000 TOKEN
+```
+
+-   If your token meet our requirements, we will process your token creation, and issue the token to your requested account.
+
+_Note_: Since creating token requires Ultra and Block Producers reviews, it might take up to 2-5 working days once your request is approved.
+
+## Token Requirements
+
+-   Token Symbol
+    -   Can only be characters in capital
+    -   Can not have more than 7 characters
+    -   Must meet our community standards and regulations.
+    -   Must not be taken yet.
+-   Token Supply
+    -   Cannot be 0
+    -   The maximum supply without decimal is `2^62 - 1` or `4611686018427387903`
+    -   You can define how many decimals you can have by moving the decimal point on your desired max supply.
+    -   The maximum number of digits you can have before the decimal point is `18`.
+
+Examples:
+
+-   Valid Token
+    -   18273.21233 TEST
+    -   213.0 BDGA
+    -   123467889 A
+-   Invalid Token
+    -   1000 G4H%A - Token symbol contains invalid character.
+    -   1000.0000 ABCDEFGH - Token symbol is too long
+    -   17268.9900 SEX - Token symbol might not meet our standards.
+    -   1000.000 UOS - UOS is our core token and it already taken.
+    -   0 HAGD - Max supply need to be larger than 0.
+    -   10000.0000000000000000 ABC - Max supply without decimal point is larger than `4611686018427387903`.
+
+---
+title: 'Products'
+
+outline: [0, 5]
+order: 0
+---
+
+# Ultra Products
+
+Check out some of the various libraries, code examples and products we have available.
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>URL</th>
+        <th>Tutorial</th>
+    </tr>
+    <tr>
+        <td>Ultra Wallet</td>
+        <td>The Ultra Wallet is a non-custodial crypto wallet that allows you to store your UOS and Uniqs.</td>
+        <td><a href="https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Download</a></td>
+        <td><a href="./ultra-wallet/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Docker Container</td>
+        <td>A docker container that contains binaries for cleos, nodeos, keosd, and ultratest. This container has everything to start a local blockchain.</td>
+        <td><a href="https://quay.io/repository/ultra.io/3rdparty-devtools?tab=tags&tag=latest">Image</a></td>
+        <td><a href="../tutorials/docker/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Ultratest</td>
+        <td>A testing framework built by Ultra to test smart contracts. Only available inside the docker image.</td>
+        <td>N/A</td>
+        <td><a href="./ultratest/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Chain API</td>
+        <td>Ultra's block producers provide infrastructure to query various chain data such as accounts, user balances, and more.</td>
+        <td>N/A</td>
+        <td><a href="./chain-api/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>NFT API</td>
+        <td>Ultra is providing direct access to uniq data in a easily digestable API. Lookup Uniq data quickly, and easily.</td>
+        <td>N/A</td>
+        <td><a href="./nft-api/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Ultra Ledger Lib</td>
+        <td>Sign transactions with your Ledger devices on Antelope chains.</td>
+        <td><a href="https://www.npmjs.com/package/@ultraos/ultra-ledger-lib">NPM</a></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>Ultra Signer Lib</td>
+        <td>Sign transactions with a private keys, Google KMS, or Keosd instances.</td>
+        <td><a href="https://www.npmjs.com/package/@ultraos/ultra-signer-lib">NPM</a></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>Ultra API Lib</td>
+        <td>Simplify table and chain api lookups with this handy NPM package.</td>
+        <td><a href="https://www.npmjs.com/package/@ultraos/ultra-api-lib">NPM</a></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>Contract Builder Lib</td>
+        <td>Build smart contracts from the CLI with docker and this CLI tool.</td>
+        <td><a href="https://www.npmjs.com/package/@ultraos/contract-builder">NPM</a></td>
+        <td>N/A</td>
+    </tr>
+     <tr>
+        <td>Fungible Tokens</td>
+        <td>Request to create a fungible token alternative to UOS on our chain.</td>
+        <td>N/A</td>
+        <td><a href="./fungible-tokens/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Smart Contract Toolkit for VSCode</td>
+        <td>An all inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to our blockchain for VSCode.</td>
+        <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>Uniq Discord Bot</td>
+        <td>A bot that links Discord Users with Ultra Accounts, and allows custom role integration based on owned uniqs.</td>
+        <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
+        <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
+    </tr>
+</table>
+---
+title: 'Authentication'
+
+order: 1
+---
+
+# Authentication
+
+## API Endpoints
+
+```yaml
+# Sandbox:
+https://staging.api.ultra.io/graphql
+# Production:
+https://api.ultra.io/graphql
+```
+
+## Get your access token
+
+Once you have your credentials you can retrieve your access token manually thanks to the curl command below :
+
+```
+curl \
+  -d "client_id=YOUR_CLIENT_ID" \
+  -d "client_secret=YOUR_CLIENT_SECRET" \
+  -d "grant_type=client_credentials" \
+  "https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/token"
+```
+
+Then, the response will be like this :
+
+<!-- prettier-ignore -->
+```
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCdTRsMi12RzVZaDdqUFBuSWNSNlZEakxCRzVOQjVlZUdqV2ZfWmlhTVlvIn0.eyJleHAiOjE2ODkyNTM3NzUsImlhdCI6MTY4OTI1MDE3NSwianRpIjoiZjYzNTB```mZTAtYzg4YS00MTE1LTkyYmQtNGZlMjlhMWRkNGI2IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRldi51bHRyYS5pby9hdXRoL3JlYWxtcy91bHRyYWlvIiwiYXVkIjpbInVsdHJhV2ViYXBwIiwicmVhbG0tbWFuYWdlbWVudCIsInVsdHJhQ2xvdWRXZWJhcHAiLCJhY2NvdW50IiwicGxhdGZvcm0iXSwic3ViIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGVzdCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJlYmEiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidWx0cmFXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwicXVlcnktZ3JvdXBzIiwicXVlcnktdXNlcnMiXX0sInVsdHJhQ2xvdWRXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJwbGF0Zm9ybSI6eyJyb2xlcyI6WyIwMDFHIiwiMDAxVSIsIjAwMUEiLCJzZXJ2aWNlIiwiMDAxTSIsInVzZXIiLCI5OTlNIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIGxlZ2FjeSByZWZlcnJhbCBwaG9uZSBibG9ja2NoYWluIHByaXZhdGVfYWNjZXNzIiwidmFsaWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiJ0ZXN0IiwiY2xpZW50SG9zdCI6IjEwLjEzMi4wLjE0IiwicGVybWlzc2lvbiI6eyJnbG9iYWwiOlsiMDAxRyIsIjAwMVUiLCIwMDFBIiwiMDAxTSIsIjk5OU0iXX0sImlkIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LXRlc3QiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjbGllbnRBZGRyZXNzIjoiMTAuMTMyLjAuMTQifQ.XVkgotJ0JcOOxjksyFRJOmut5WE4rWUObLZ_1oXfTJ41TuIwj5rNEM_gGZC89v_FQEcMRKC46x8HAutlnjPti6-6ejFP5SKJZ5TU-0F2iUQIXJw1inIYUcJWxQUVG1fV9vzW1pQK3TRRkoJW63O6vXodcBZ6Pvv5Ff9keV_n-YfdOqHiHpG_o6hZUq-_bT0MOJ8pX14CWl44_vsZPvm6E__F1kcPuBjwY-664I9Blp46vTYnXnpOMQWvNnQ7VSAFoSmjEg4vHbx3GfnbiorDgkI8pAa_vHuYoM1hqMUxSekIE08yfZ6HoJ6z_o2YDB-fJpdKJdzIFD7IziFz034cXZ",
+    "expires_in": 3600,
+    "refresh_expires_in": 0,
+    "token_type": "Bearer",
+    "not-before-policy": 1608643774,
+    "scope": "some access"
+}
+```
+
+Extract the _access_token_ field and use it as a bearer token inside the your graphql queries/mutations :
+
+<!-- prettier-ignore -->
+```
+{
+    "headers": {
+        "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCdTRsMi12RzVZaDdqUFBuSWNSNlZEakxCRzVOQjVlZUdqV2ZfWmlhTVlvIn0.eyJleHAiOjE2ODkyNTM3NzUsImlhdCI6MTY4OTI1MDE3NSwianRpIjoiZjYzNTB```mZTAtYzg4YS00MTE1LTkyYmQtNGZlMjlhMWRkNGI2IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRldi51bHRyYS5pby9hdXRoL3JlYWxtcy91bHRyYWlvIiwiYXVkIjpbInVsdHJhV2ViYXBwIiwicmVhbG0tbWFuYWdlbWVudCIsInVsdHJhQ2xvdWRXZWJhcHAiLCJhY2NvdW50IiwicGxhdGZvcm0iXSwic3ViIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGVzdCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJlYmEiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidWx0cmFXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwicXVlcnktZ3JvdXBzIiwicXVlcnktdXNlcnMiXX0sInVsdHJhQ2xvdWRXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJwbGF0Zm9ybSI6eyJyb2xlcyI6WyIwMDFHIiwiMDAxVSIsIjAwMUEiLCJzZXJ2aWNlIiwiMDAxTSIsInVzZXIiLCI5OTlNIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIGxlZ2FjeSByZWZlcnJhbCBwaG9uZSBibG9ja2NoYWluIHByaXZhdGVfYWNjZXNzIiwidmFsaWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiJ0ZXN0IiwiY2xpZW50SG9zdCI6IjEwLjEzMi4wLjE0IiwicGVybWlzc2lvbiI6eyJnbG9iYWwiOlsiMDAxRyIsIjAwMVUiLCIwMDFBIiwiMDAxTSIsIjk5OU0iXX0sImlkIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LXRlc3QiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjbGllbnRBZGRyZXNzIjoiMTAuMTMyLjAuMTQifQ.XVkgotJ0JcOOxjksyFRJOmut5WE4rWUObLZ_1oXfTJ41TuIwj5rNEM_gGZC89v_FQEcMRKC46x8HAutlnjPti6-6ejFP5SKJZ5TU-0F2iUQIXJw1inIYUcJWxQUVG1fV9vzW1pQK3TRRkoJW63O6vXodcBZ6Pvv5Ff9keV_n-YfdOqHiHpG_o6hZUq-_bT0MOJ8pX14CWl44_vsZPvm6E__F1kcPuBjwY-664I9Blp46vTYnXnpOMQWvNnQ7VSAFoSmjEg4vHbx3GfnbiorDgkI8pAa_vHuYoM1hqMUxSekIE08yfZ6HoJ6z_o2YDB-fJpdKJdzIFD7IziFz034cXZ"
+    }
+}
+```
+
+---
+title: 'Errors'
+
+order: 2
+---
+
+# Errors
+
+This section aims to inform our users how errors are handled.
+
+## GraphQL errors
+
+These are errors related to the server-side execution of a GraphQL operation. They include:
+
+-   Syntax errors (e.g., a query was malformed)
+-   Validation errors (e.g., a query included a schema field that doesn't exist)
+-   Resolver errors (e.g., an error occurred while attempting to populate a query field)
+
+If a syntax error or validation error occurs, your server doesn't execute the operation at all because it's invalid. If resolver errors occur, your server can still return partial data.
+
+Here an error sample returned after a validation failure :
+
+```json
+{
+    "data": null,
+    "errors": [
+        {
+            "message": {
+                "statusCode": {
+                    "value": 400
+                },
+                "message": "Cannot query field \"nonexistentField\" on type \"Query\"."
+            },
+            "path": ["exampleOfPath"],
+            "locations": [
+                {
+                    "line": {
+                        "value": 2
+                    },
+                    "column": {
+                        "value": 3
+                    }
+                }
+            ],
+            "extensions": {
+                "response": {
+                    "statusCode": {
+                        "value": 400
+                    },
+                    "message": "Cannot query field \"nonexistentField\" on type \"Query\"."
+                },
+                "exception": {
+                    "response": {
+                        "statusCode": {
+                            "value": 400
+                        },
+                        "message": "Cannot query field \"nonexistentField\" on type \"Query\"."
+                    },
+                    "status": {
+                        "value": 400
+                    },
+                    "options": {},
+                    "message": "Cannot query field \"nonexistentField\" on type \"Query\".",
+                    "name": "GraphQlValidationException",
+                    "stacktrace": [
+                        "GraphQLError: Cannot query field \"nonexistentField\" on type \"Query\".",
+                        "...additional lines..."
+                    ]
+                },
+                "code": "GRAPHQL_VALIDATION_FAILED",
+                "statusCode": {
+                    "value": 400
+                }
+            }
+        }
+    ]
+}
+```
+
+### Network errors
+
+These are errors encountered while attempting to communicate with your GraphQL server, usually resulting in a 4xx or 5xx response status code (and no data).
+
+---
+title: 'Introduction'
+
+order: -9999
+---
+
+# Introduction
+
+Ultra is proud to provide external developers more direct access to the data that is stored on-chain in a package that is easy for them to digest within the apps that they are building.
+
+The NFTAPI is based on [graphql](https://graphql.org/), which is a schema-based format that abstracts data into a developer-friendly, accessible configuration.
+
+-   [Authentication](./authentication.md)
+-   [Errors](./errors.md)
+-   [Queries](./queries.md)
+-   [Subscriptions](./subscriptions.md)
+-   [Types](./types.md)
+
+## Why would someone need the NFTAPI?
+
+It’s currently hard to get specific current data about stuff that we consider central to our ecosystem. This means that Users, Uniq Factories, the Uniqs that they mint, and the metadata associated with them are hard to access.
+
+The NFTAPI makes it easy for developers to integrate and use NFT data.
+
+## Specific Examples of what you can do with the NFTAPI
+
+The NFTAPI is targeted towards (surprise, surprise) NFT data.
+
+Some stuff that is now simple to do with access to the NFTAPI:
+
+-   Get a list of all Uniq Factories IDs
+-   Get a specific Token Factory based on an ID
+-   Get a specific Uniq based on an ID
+-   Get a specific Token Factory based on the Uniq ID
+-   Get a list of Uniqs based on a wallet ID
+-   Get the Token Factory Metadata and/or Media Content based on an ID
+    -   Images
+    -   Descriptions
+    -   etc.
+-   Get the Uniq type (collectible, game) based on an ID
+
+You can also get a lot of marketplace specific data like resale status, revenue split, metadata status, etc.
+
+## Using the NFTAPI
+
+To use the NFTAPI developers must have a `client_id` to access the endpoints. To get access, developers must send an email to [developers@ultra.io](mailto:developers@ultra.io). Following this, a request must be made to the #devrel-requests Slack channel.
+
+---
+title: 'Queries'
+
+order: 3
+---
+
+# Queries
+
+## `uniq`
+
+##### Description
+
+This query is used to retrieve information about a uniq by its id.
+
+##### Response
+
+Returns a [`Uniq!`](types.md#uniq)
+
+##### Arguments
+
+| Name                                            | Description                                                             |
+| ----------------------------------------------- | ----------------------------------------------------------------------- |
+| `blockStep` - [`BlockStep`](types.md#blockstep) | Filter on type of transaction. Irreversible by default if not provided. |
+| `id` - [`BigInt!`](types.md#bigint)             | On chain id of the uniq.                                                |
+
+#### Example
+
+##### Query
+
+``` js
+query Uniq(
+  $blockStep: BlockStep,
+  $id: BigInt!
+) {
+  uniq(
+    blockStep: $blockStep,
+    id: $id
+  ) {
+    factory {
+      accountMintingLimit
+      assetCreator
+      assetManager
+      conditionlessReceivers
+      defaultUniqMetadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            key
+            value {
+              description
+              dynamic
+              name
+              type
+            }
+          }
+          description
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        locked
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintableWindow {
+        endDate
+        startDate
+      }
+      resale {
+        minimumPrice {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        shares {
+          account
+          basisPoints
+          ratio
+        }
+      }
+      status
+      stock {
+        authorized
+        existing
+        maxMintable
+        mintable
+        minted
+      }
+      tradingWindow {
+        endDate
+        startDate
+      }
+      transferWindow {
+        endDate
+        startDate
+      }
+      type
+    }
+    id
+    metadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          descriptor {
+            description
+            dynamic
+            name
+            type
+          }
+          key
+          value
+        }
+        description
+        dynamicAttributes {
+          contentType
+          uris
+        }
+        dynamicResources {
+          key
+          value {
+            contentType
+            uris
+          }
+        }
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    mintDate
+    owner
+    resale {
+      onSaleDate
+      price {
+        amount
+        creators {
+          amount
+          basisPoints
+          ratio
+        }
+        currency {
+          code
+          symbol
+        }
+        owner {
+          amount
+          basisPoints
+          ratio
+        }
+        platform {
+          amount
+          basisPoints
+          ratio
+        }
+        promoter {
+          amount
+          basisPoints
+          ratio
+        }
+      }
+    }
+    serialNumber
+    tradingPeriod {
+      duration
+      endDate
+      startDate
+    }
+    transferPeriod {
+      duration
+      endDate
+      startDate
+    }
+    type
+  }
+}
+```
+
+##### Variables
+
+``` js
+{"blockStep": "IRREVERSIBLE", "id": 987}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniq": {
+      "factory": UniqFactory,
+      "id": 987,
+      "metadata": UniqMetadata,
+      "mintDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+      "owner": "aa1aa2aa3ag4",
+      "resale": UniqResale,
+      "serialNumber": 987,
+      "tradingPeriod": UniqTradingPeriod,
+      "transferPeriod": UniqTransferPeriod,
+      "type": "COLLECTIBLE"
+    }
+  }
+}
+```
+
+[Queries](#group-Operations-Queries)
+
+## `uniqFactories`
+
+##### Description
+
+This query is used to find information about uniq factories. If no
+filter applied, will return all existing factories.
+
+##### Response
+
+Returns a [`UniqFactoryList!`](types.md#uniqfactorylist)
+
+##### Arguments
+
+| Name                                                         | Description                                                                                                    |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `assetManager` - [`WalletId`](types.md#walletid)             | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                       |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqFactories(
+  $assetManager: WalletId,
+  $pagination: PaginationInput
+) {
+  uniqFactories(
+    assetManager: $assetManager,
+    pagination: $pagination
+  ) {
+    data {
+      accountMintingLimit
+      assetCreator
+      assetManager
+      conditionlessReceivers
+      defaultUniqMetadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            key
+            value {
+              description
+              dynamic
+              name
+              type
+            }
+          }
+          description
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        locked
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintableWindow {
+        endDate
+        startDate
+      }
+      resale {
+        minimumPrice {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        shares {
+          account
+          basisPoints
+          ratio
+        }
+      }
+      status
+      stock {
+        authorized
+        existing
+        maxMintable
+        mintable
+        minted
+      }
+      tradingWindow {
+        endDate
+        startDate
+      }
+      transferWindow {
+        endDate
+        startDate
+      }
+      type
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "assetManager": "aa1aa2aa3ag4",
+  "pagination": PaginationInput
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqFactories": {
+      "data": [UniqFactory],
+      "pagination": Pagination,
+      "totalCount": 123
+    }
+  }
+}
+```
+
+[Queries](#group-Operations-Queries)
+
+## `uniqFactory`
+
+##### Description
+
+This query is used to find a factory based on their ID.
+
+##### Response
+
+Returns a [`UniqFactory!`](types.md#uniqfactory)
+
+##### Arguments
+
+| Name                                | Description                       |
+| ----------------------------------- | --------------------------------- |
+| `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq factory . |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqFactory($id: BigInt!) {
+  uniqFactory(id: $id) {
+    accountMintingLimit
+    assetCreator
+    assetManager
+    conditionlessReceivers
+    defaultUniqMetadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          descriptor {
+            description
+            dynamic
+            name
+            type
+          }
+          key
+          value
+        }
+        description
+        dynamicAttributes {
+          contentType
+          uris
+        }
+        dynamicResources {
+          key
+          value {
+            contentType
+            uris
+          }
+        }
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    id
+    metadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          key
+          value {
+            description
+            dynamic
+            name
+            type
+          }
+        }
+        description
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      locked
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    mintableWindow {
+      endDate
+      startDate
+    }
+    resale {
+      minimumPrice {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      shares {
+        account
+        basisPoints
+        ratio
+      }
+    }
+    status
+    stock {
+      authorized
+      existing
+      maxMintable
+      mintable
+      minted
+    }
+    tradingWindow {
+      endDate
+      startDate
+    }
+    transferWindow {
+      endDate
+      startDate
+    }
+    type
+  }
+}
+```
+
+##### Variables
+
+``` js
+{"id": 987}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqFactory": {
+      "accountMintingLimit": 987,
+      "assetCreator": "aa1aa2aa3ag4",
+      "assetManager": "aa1aa2aa3ag4",
+      "conditionlessReceivers": [
+        "aa1aa2aa3ag4"
+      ],
+      "defaultUniqMetadata": UniqMetadata,
+      "id": 987,
+      "metadata": UniqFactoryMetadata,
+      "mintableWindow": UniqFactoryMintableWindow,
+      "resale": UniqFactoryResale,
+      "status": "ACTIVE",
+      "stock": UniqFactoryStock,
+      "tradingWindow": UniqFactoryTradingWindow,
+      "transferWindow": UniqFactoryTransferWindow,
+      "type": "COLLECTIBLE"
+    }
+  }
+}
+```
+
+[Queries](#group-Operations-Queries)
+
+## `uniqsOfFactory`
+
+##### Description
+
+This query is used to find uniqs that are associated with a factory
+based on their ID.
+
+##### Response
+
+Returns a [`UniqList!`](types.md#uniqlist)
+
+##### Arguments
+
+| Name                                                                    | Description                                                                                                    |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `blockStep` - [`BlockStep`](types.md#blockstep)                         | Filter on type of transaction. Irreversible by default if not provided.                                        |
+| `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination to apply. Please refer to pagination section.                                                       |
+| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter by a range of serial number.                                                                            |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqsOfFactory(
+  $blockStep: BlockStep,
+  $factoryId: BigInt!,
+  $ids: [BigInt!],
+  $pagination: PaginationInput,
+  $serialRange: UniqSerialRangeInput
+) {
+  uniqsOfFactory(
+    blockStep: $blockStep,
+    factoryId: $factoryId,
+    ids: $ids,
+    pagination: $pagination,
+    serialRange: $serialRange
+  ) {
+    data {
+      factory {
+        accountMintingLimit
+        assetCreator
+        assetManager
+        conditionlessReceivers
+        defaultUniqMetadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              key
+              value {
+                description
+                dynamic
+                name
+                type
+              }
+            }
+            description
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          locked
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            account
+            basisPoints
+            ratio
+          }
+        }
+        status
+        stock {
+          authorized
+          existing
+          maxMintable
+          mintable
+          minted
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintDate
+      owner
+      resale {
+        onSaleDate
+        price {
+          amount
+          creators {
+            amount
+            basisPoints
+            ratio
+          }
+          currency {
+            code
+            symbol
+          }
+          owner {
+            amount
+            basisPoints
+            ratio
+          }
+          platform {
+            amount
+            basisPoints
+            ratio
+          }
+          promoter {
+            amount
+            basisPoints
+            ratio
+          }
+        }
+      }
+      serialNumber
+      tradingPeriod {
+        duration
+        endDate
+        startDate
+      }
+      transferPeriod {
+        duration
+        endDate
+        startDate
+      }
+      type
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "blockStep": "IRREVERSIBLE",
+  "factoryId": 987,
+  "ids": [987],
+  "pagination": PaginationInput,
+  "serialRange": UniqSerialRangeInput
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqsOfFactory": {
+      "data": [Uniq],
+      "pagination": Pagination,
+      "totalCount": 123
+    }
+  }
+}
+```
+
+[Queries](#group-Operations-Queries)
+
+## `uniqsOfWallet`
+
+##### Description
+
+This query is used to recover user-specific uniqs.
+
+##### Response
+
+Returns a [`UniqList!`](types.md#uniqlist)
+
+##### Arguments
+
+| Name                                                         | Description                                                                                               |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `blockStep` - [`BlockStep`](types.md#blockstep)              | Filter on type of transaction. Irreversible by default if not provided.                                   |
+| `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is owned by the user. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                  |
+| `walletId` - [`WalletId!`](types.md#walletid)                | Wallet id of the user.                                                                                    |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqsOfWallet(
+  $blockStep: BlockStep,
+  $ids: [BigInt!],
+  $pagination: PaginationInput,
+  $walletId: WalletId!
+) {
+  uniqsOfWallet(
+    blockStep: $blockStep,
+    ids: $ids,
+    pagination: $pagination,
+    walletId: $walletId
+  ) {
+    data {
+      factory {
+        accountMintingLimit
+        assetCreator
+        assetManager
+        conditionlessReceivers
+        defaultUniqMetadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              key
+              value {
+                description
+                dynamic
+                name
+                type
+              }
+            }
+            description
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          locked
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            account
+            basisPoints
+            ratio
+          }
+        }
+        status
+        stock {
+          authorized
+          existing
+          maxMintable
+          mintable
+          minted
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintDate
+      owner
+      resale {
+        onSaleDate
+        price {
+          amount
+          creators {
+            amount
+            basisPoints
+            ratio
+          }
+          currency {
+            code
+            symbol
+          }
+          owner {
+            amount
+            basisPoints
+            ratio
+          }
+          platform {
+            amount
+            basisPoints
+            ratio
+          }
+          promoter {
+            amount
+            basisPoints
+            ratio
+          }
+        }
+      }
+      serialNumber
+      tradingPeriod {
+        duration
+        endDate
+        startDate
+      }
+      transferPeriod {
+        duration
+        endDate
+        startDate
+      }
+      type
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "blockStep": "IRREVERSIBLE",
+  "ids": [987],
+  "pagination": PaginationInput,
+  "walletId": "aa1aa2aa3ag4"
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqsOfWallet": {
+      "data": [Uniq],
+      "pagination": Pagination,
+      "totalCount": 987
+    }
+  }
+}
+```
+
+
+---
+title: 'Subscriptions'
+
+order: 4
+---
+
+# Subscriptions
+
+## `uniqFactories`
+
+##### Description
+
+This subscription is used to find information about uniq factories. If
+no filter is applied, it will return all existing factories.
+
+##### Response
+
+Returns a [`UniqFactory!`](types.md#uniqfactory)
+
+##### Arguments
+
+| Name                                             | Description                                                                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `assetManager` - [`WalletId`](types.md#walletid) | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
+
+#### Example
+
+##### Query
+
+``` js
+subscription UniqFactories($assetManager: WalletId) {
+  uniqFactories(assetManager: $assetManager) {
+    accountMintingLimit
+    assetCreator
+    assetManager
+    conditionlessReceivers
+    defaultUniqMetadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          descriptor {
+            description
+            dynamic
+            name
+            type
+          }
+          key
+          value
+        }
+        description
+        dynamicAttributes {
+          contentType
+          uris
+        }
+        dynamicResources {
+          key
+          value {
+            contentType
+            uris
+          }
+        }
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    id
+    metadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          key
+          value {
+            description
+            dynamic
+            name
+            type
+          }
+        }
+        description
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      locked
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    mintableWindow {
+      endDate
+      startDate
+    }
+    resale {
+      minimumPrice {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      shares {
+        account
+        basisPoints
+        ratio
+      }
+    }
+    status
+    stock {
+      authorized
+      existing
+      maxMintable
+      mintable
+      minted
+    }
+    tradingWindow {
+      endDate
+      startDate
+    }
+    transferWindow {
+      endDate
+      startDate
+    }
+    type
+  }
+}
+```
+
+##### Variables
+
+``` js
+{"assetManager": "aa1aa2aa3ag4"}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqFactories": {
+      "accountMintingLimit": 987,
+      "assetCreator": "aa1aa2aa3ag4",
+      "assetManager": "aa1aa2aa3ag4",
+      "conditionlessReceivers": [
+        "aa1aa2aa3ag4"
+      ],
+      "defaultUniqMetadata": UniqMetadata,
+      "id": 987,
+      "metadata": UniqFactoryMetadata,
+      "mintableWindow": UniqFactoryMintableWindow,
+      "resale": UniqFactoryResale,
+      "status": "ACTIVE",
+      "stock": UniqFactoryStock,
+      "tradingWindow": UniqFactoryTradingWindow,
+      "transferWindow": UniqFactoryTransferWindow,
+      "type": "COLLECTIBLE"
+    }
+  }
+}
+```
+
+[Subscriptions](#group-Operations-Subscriptions)
+
+## `uniqsOfFactory`
+
+##### Description
+
+This subscription is used to find uniqs that are associated with a
+factory based on their ID.
+
+##### Response
+
+Returns a [`Uniq!`](types.md#uniq)
+
+##### Arguments
+
+| Name                                                                    | Description                                                                                                    |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `blockStep` - [`BlockStep`](types.md#blockstep)                         | Filter on type of transaction. Irreversible by default if not provided.                                        |
+| `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
+| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter from a range of serial number.                                                                          |
+
+#### Example
+
+##### Query
+
+``` js
+subscription UniqsOfFactory(
+  $blockStep: BlockStep,
+  $factoryId: BigInt!,
+  $ids: [BigInt!],
+  $serialRange: UniqSerialRangeInput
+) {
+  uniqsOfFactory(
+    blockStep: $blockStep,
+    factoryId: $factoryId,
+    ids: $ids,
+    serialRange: $serialRange
+  ) {
+    factory {
+      accountMintingLimit
+      assetCreator
+      assetManager
+      conditionlessReceivers
+      defaultUniqMetadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            key
+            value {
+              description
+              dynamic
+              name
+              type
+            }
+          }
+          description
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        locked
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintableWindow {
+        endDate
+        startDate
+      }
+      resale {
+        minimumPrice {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        shares {
+          account
+          basisPoints
+          ratio
+        }
+      }
+      status
+      stock {
+        authorized
+        existing
+        maxMintable
+        mintable
+        minted
+      }
+      tradingWindow {
+        endDate
+        startDate
+      }
+      transferWindow {
+        endDate
+        startDate
+      }
+      type
+    }
+    id
+    metadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          descriptor {
+            description
+            dynamic
+            name
+            type
+          }
+          key
+          value
+        }
+        description
+        dynamicAttributes {
+          contentType
+          uris
+        }
+        dynamicResources {
+          key
+          value {
+            contentType
+            uris
+          }
+        }
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    mintDate
+    owner
+    resale {
+      onSaleDate
+      price {
+        amount
+        creators {
+          amount
+          basisPoints
+          ratio
+        }
+        currency {
+          code
+          symbol
+        }
+        owner {
+          amount
+          basisPoints
+          ratio
+        }
+        platform {
+          amount
+          basisPoints
+          ratio
+        }
+        promoter {
+          amount
+          basisPoints
+          ratio
+        }
+      }
+    }
+    serialNumber
+    tradingPeriod {
+      duration
+      endDate
+      startDate
+    }
+    transferPeriod {
+      duration
+      endDate
+      startDate
+    }
+    type
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "blockStep": "IRREVERSIBLE",
+  "factoryId": 987,
+  "ids": [987],
+  "serialRange": UniqSerialRangeInput
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqsOfFactory": {
+      "factory": UniqFactory,
+      "id": 987,
+      "metadata": UniqMetadata,
+      "mintDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+      "owner": "aa1aa2aa3ag4",
+      "resale": UniqResale,
+      "serialNumber": 987,
+      "tradingPeriod": UniqTradingPeriod,
+      "transferPeriod": UniqTransferPeriod,
+      "type": "COLLECTIBLE"
+    }
+  }
+}
+```
+
+[Subscriptions](#group-Operations-Subscriptions)
+
+## `uniqsOfWallet`
+
+##### Description
+
+This subscription is used to recover user-specific uniqs.
+
+##### Response
+
+Returns a [`Uniq!`](types.md#uniq)
+
+##### Arguments
+
+| Name                                            | Description                                                                                                 |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `blockStep` - [`BlockStep`](types.md#blockstep) | Filter on type of transaction. Irreversible by default if not provided.                                     |
+| `ids` - [`[BigInt!]`](types.md#bigint)          | Filter from a list of uniq id. Can be used to know with a list of uniq witch one is related to the factory. |
+| `walletId` - [`WalletId!`](types.md#walletid)   | Wallet id of the user.                                                                                      |
+
+#### Example
+
+##### Query
+
+``` js
+subscription UniqsOfWallet(
+  $blockStep: BlockStep,
+  $ids: [BigInt!],
+  $walletId: WalletId!
+) {
+  uniqsOfWallet(
+    blockStep: $blockStep,
+    ids: $ids,
+    walletId: $walletId
+  ) {
+    factory {
+      accountMintingLimit
+      assetCreator
+      assetManager
+      conditionlessReceivers
+      defaultUniqMetadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            key
+            value {
+              description
+              dynamic
+              name
+              type
+            }
+          }
+          description
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        locked
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintableWindow {
+        endDate
+        startDate
+      }
+      resale {
+        minimumPrice {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        shares {
+          account
+          basisPoints
+          ratio
+        }
+      }
+      status
+      stock {
+        authorized
+        existing
+        maxMintable
+        mintable
+        minted
+      }
+      tradingWindow {
+        endDate
+        startDate
+      }
+      transferWindow {
+        endDate
+        startDate
+      }
+      type
+    }
+    id
+    metadata {
+      cachedSource {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      content {
+        attributes {
+          descriptor {
+            description
+            dynamic
+            name
+            type
+          }
+          key
+          value
+        }
+        description
+        dynamicAttributes {
+          contentType
+          uris
+        }
+        dynamicResources {
+          key
+          value {
+            contentType
+            uris
+          }
+        }
+        medias {
+          gallery {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          hero {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          product {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          square {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        name
+        properties
+        resources {
+          key
+          value {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+        }
+        subName
+      }
+      source {
+        contentType
+        integrity {
+          hash
+          type
+        }
+        uri
+      }
+      status
+    }
+    mintDate
+    owner
+    resale {
+      onSaleDate
+      price {
+        amount
+        creators {
+          amount
+          basisPoints
+          ratio
+        }
+        currency {
+          code
+          symbol
+        }
+        owner {
+          amount
+          basisPoints
+          ratio
+        }
+        platform {
+          amount
+          basisPoints
+          ratio
+        }
+        promoter {
+          amount
+          basisPoints
+          ratio
+        }
+      }
+    }
+    serialNumber
+    tradingPeriod {
+      duration
+      endDate
+      startDate
+    }
+    transferPeriod {
+      duration
+      endDate
+      startDate
+    }
+    type
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "blockStep": "IRREVERSIBLE",
+  "ids": [987],
+  "walletId": "aa1aa2aa3ag4"
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqsOfWallet": {
+      "factory": UniqFactory,
+      "id": 987,
+      "metadata": UniqMetadata,
+      "mintDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+      "owner": "aa1aa2aa3ag4",
+      "resale": UniqResale,
+      "serialNumber": 987,
+      "tradingPeriod": UniqTradingPeriod,
+      "transferPeriod": UniqTransferPeriod,
+      "type": "COLLECTIBLE"
+    }
+  }
+}
+```
+
+
+---
+title: 'Types'
+
+order: 5
+---
+
+# Types
+
+## BigFloat
+
+##### Description
+
+A binary integer decimal representation of a 128-bit decimal value,
+supporting 34 decimal digits of significand and an exponent range of
+-6143 to +6144.
+
+##### Example
+
+``` js
+987.65
+```
+
+[Types](#group-Types)
+
+## BigInt
+
+##### Description
+
+Defines a Long class for representing a 64-bit two’s-complement integer
+value.
+
+##### Example
+
+``` js
+987
+```
+
+[Types](#group-Types)
+
+## BlockStep
+
+##### Description
+
+Represent an on chain type of transaction.
+
+##### Values
+
+| Enum Value     | Description                                               |
+| -------------- | --------------------------------------------------------- |
+| `IRREVERSIBLE` | Perform a search on IRREVERSIBLE transaction (by default) |
+| `NEW`          | Perform a search on NEW transaction.                      |
+
+##### Example
+
+``` js
+"IRREVERSIBLE"
+```
+
+[Types](#group-Types)
+
+## Boolean
+
+##### Description
+
+The `Boolean` scalar type represents `true` or `false`.
+
+[Types](#group-Types)
+
+## Currency
+
+##### Description
+
+Represents a currency, can be used to display pricing unit.
+
+##### Fields
+
+| Field Name                      | Description                                                                                                                              |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `code` - [`String!`](#string)   | Country currency code, defines alpha codes and numeric codes for the representation of currencies. This field follow ISO 4217 code list. |
+| `symbol` - [`String!`](#string) | The currency symbol or currency sign is a graphic symbol used to denote a currency unit.                                                 |
+
+##### Example
+
+``` js
+{
+  "code": "abc123",
+  "symbol": "abc123"
+}
+```
+
+[Types](#group-Types)
+
+## Date
+
+##### Description
+
+ISO 8601 date format. The timezone is always zero UTC offset, as denoted
+by the suffix Z. Milliseconds since epoch is an alternative input
+format.
+
+##### Example
+
+``` js
+"Thu Jul 13 2023 13:27:11 GMT+0200"
+```
+
+[Types](#group-Types)
+
+## Float
+
+##### Description
+
+The `Float` scalar type represents signed double-precision fractional
+values as specified by [IEEE
+754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+
+##### Example
+
+``` js
+987.65
+```
+
+[Types](#group-Types)
+
+## Int
+
+##### Description
+
+The `Int` scalar type represents non-fractional signed whole numeric
+values. Int can represent values between -(2^31) and 2^31 - 1.
+
+##### Example
+
+``` js
+123
+```
+
+[Types](#group-Types)
+
+## JSONObject
+
+##### Description
+
+Represent a JSON object.
+
+##### Example
+
+``` js
+{"someProperty": "myStringValue", "otherProperty": 987}
+```
+
+[Types](#group-Types)
+
+## JSONPrimitive
+
+##### Description
+
+Represent all supported primitive type for json object.
+
+##### Example
+
+``` js
+"true | "myStringValue" | 987 | 987.65"
+```
+
+[Types](#group-Types)
+
+## MonetaryAmount
+
+##### Description
+
+The MonetaryAmount object represents a monetary value using a currency's
+unit.
+
+##### Fields
+
+| Field Name                            | Description                                |
+| ------------------------------------- | ------------------------------------------ |
+| `amount` - [`BigFloat!`](#bigfloat)   | Amount value with a precision of 8 digits. |
+| `currency` - [`Currency!`](#currency) | Currency unit related to the amount.       |
+
+##### Example
+
+``` js
+{"amount": 987.65, "currency": Currency}
+```
+
+[Types](#group-Types)
+
+## Pagination
+
+##### Description
+
+Pagination applied to the result. Maximum limit allowed result per page
+is 25.
+
+##### Fields
+
+| Field Name               | Description                                                   |
+| ------------------------ | ------------------------------------------------------------- |
+| `limit` - [`Int!`](#int) | Maximum number of expected results per page. Mandatory field. |
+| `skip` - [`Int!`](#int)  | Number of results skipped. Mandatory field.                   |
+
+##### Example
+
+``` js
+{"limit": 987, "skip": 123}
+```
+
+[Types](#group-Types)
+
+## PaginationInput
+
+##### Description
+
+Pagination filter. Used as query argument, it's optional filter. If not
+provided, default pagination will be applied with skip value to 0 and
+limit to 25 maximum results per page.
+
+##### Fields
+
+| Input Field             | Description                                        |
+| ----------------------- | -------------------------------------------------- |
+| `limit` - [`Int`](#int) | Number of wanted results per page. Optional field. |
+| `skip` - [`Int`](#int)  | Number of results to skip.s Optional field.        |
+
+##### Example
+
+``` js
+{"limit": 987, "skip": 123}
+```
+
+[Types](#group-Types)
+
+## String
+
+##### Description
+
+The `String` scalar type represents textual data, represented as UTF-8
+character sequences. The String type is most often used by GraphQL to
+represent free-form human-readable text.
+
+##### Example
+
+``` js
+"xyz789"
+```
+
+[Types](#group-Types)
+
+## Uniq
+
+##### Description
+
+The Uniq object represents all information about a uniq.
+
+##### Fields
+
+| Field Name                                                     | Description                                                                 |
+| -------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `factory` - [`UniqFactory!`](#uniqfactory)                     | Information on factory related to this uniq.                                |
+| `id` - [`BigInt!`](#bigint)                                    | On chain id of the uniq.                                                    |
+| `metadata` - [`UniqMetadata`](#uniqmetadata)                   | Information on uniq metadata.                                               |
+| `mintDate` - [`Date!`](#date)                                  | Date of uniq mint.                                                          |
+| `owner` - [`WalletId!`](#walletid)                             | WalletId of the uniq owner.                                                 |
+| `resale` - [`UniqResale`](#uniqresale)                         | Information about the uniq resale. Null means not on sale.                  |
+| `serialNumber` - [`BigInt!`](#bigint)                          | Serial number of the uniq.                                                  |
+| `tradingPeriod` - [`UniqTradingPeriod`](#uniqtradingperiod)    | Window time which trading actions are allowed. Null means not tradable      |
+| `transferPeriod` - [`UniqTransferPeriod`](#uniqtransferperiod) | Window time which transfer actions are allowed. Null means not transferable |
+| `type` - [`UniqType!`](#uniqtype)                              | Specify the type of the uniq asset.                                         |
+
+##### Example
+
+``` js
+{
+  "factory": UniqFactory,
+  "id": 987,
+  "metadata": UniqMetadata,
+  "mintDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "owner": "aa1aa2aa3ag4",
+  "resale": UniqResale,
+  "serialNumber": 987,
+  "tradingPeriod": UniqTradingPeriod,
+  "transferPeriod": UniqTransferPeriod,
+  "type": "COLLECTIBLE"
+}
+```
+
+[Types](#group-Types)
+
+## UniqDynamicResource
+
+##### Description
+
+The UniqDynamicResource object represents a resource, it's an image,
+video or a file. It can be refreshed to discover changes.
+
+##### Fields
+
+| Field Name                           | Description                        |
+| ------------------------------------ | ---------------------------------- |
+| `contentType` - [`String!`](#string) | Type of resource image,video etc.  |
+| `uris` - [`[String!]!`](#string)     | Uris where the resource is stored. |
+
+##### Example
+
+``` js
+{
+  "contentType": "xyz789",
+  "uris": ["abc123"]
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactory
+
+##### Description
+
+The UniqFactory object represents all information about a uniq factory.
+
+##### Fields
+
+| Field Name                                                                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `accountMintingLimit` - [`BigInt`](#bigint)                                   | The number of minting limit per account.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `assetCreator` - [`WalletId!`](#walletid)                                     | Wallet id of who created the uniq factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `assetManager` - [`WalletId!`](#walletid)                                     | Wallet id of whom manages the uniq lifecycle - issuing, burning, reselling etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `conditionlessReceivers` - [`[WalletId!]!`](#walletid)                        | A set of receiver account which uniqs can be transferred to without any restrictions. Without taking in account the trading windows, minimum resell price, etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `defaultUniqMetadata` - [`UniqMetadata`](#uniqmetadata)                       | uniq default metadata are utilized whenever any token is the reference that does not have a dedicated metadata uri. this can happen either intentionally if the tokens minted from the factory are identical (so there is no need for anything except default metadata) or accidentally in case due to some issue, tokens are minted without a dedicated metadata URI. In any case, the default metadata function identically to individual Uniq metadata with only exceptions that it is utilized when there is no override and the URI for this metadata is placed in the dedicated field of the factory on-chain data default_token_uri. It can be used as a fallback when uniq metadata is not yet available. |
+| `id` - [`BigInt!`](#bigint)                                                   | On chain id of the uniq factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `metadata` - [`UniqFactoryMetadata!`](#uniqfactorymetadata)                   | Metadata information of the uniq factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `mintableWindow` - [`UniqFactoryMintableWindow!`](#uniqfactorymintablewindow) | Period of time which minting actions are allowed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `resale` - [`UniqFactoryResale!`](#uniqfactoryresale)                         | Information about resale operations that will be applied on uniqs on the second hand market.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `status` - [`UniqFactoryStatus!`](#uniqfactorystatus)                         | The uniq factory on chain status.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `stock` - [`UniqFactoryStock!`](#uniqfactorystock)                            | Information about the circulation quantity of uniqs related to the factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `tradingWindow` - [`UniqFactoryTradingWindow!`](#uniqfactorytradingwindow)    | Period of time which trading actions are allowed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `transferWindow` - [`UniqFactoryTransferWindow!`](#uniqfactorytransferwindow) | Period of time which transfer actions are allowed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `type` - [`UniqType!`](#uniqtype)                                             | Specify the type of the uniq factory asset.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+##### Example
+
+``` js
+{
+  "accountMintingLimit": 987,
+  "assetCreator": "aa1aa2aa3ag4",
+  "assetManager": "aa1aa2aa3ag4",
+  "conditionlessReceivers": [
+    "aa1aa2aa3ag4"
+  ],
+  "defaultUniqMetadata": UniqMetadata,
+  "id": 987,
+  "metadata": UniqFactoryMetadata,
+  "mintableWindow": UniqFactoryMintableWindow,
+  "resale": UniqFactoryResale,
+  "status": "ACTIVE",
+  "stock": UniqFactoryStock,
+  "tradingWindow": UniqFactoryTradingWindow,
+  "transferWindow": UniqFactoryTransferWindow,
+  "type": "COLLECTIBLE"
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryActionWindow
+
+##### Description
+
+Interface for actions on a window period.
+
+##### Fields
+
+| Field Name                    | Description |
+| ----------------------------- | ----------- |
+| `endDate` - [`Date`](#date)   |             |
+| `startDate` - [`Date`](#date) |             |
+
+##### Possible Types
+
+| UniqFactoryActionWindow Types                             |
+| --------------------------------------------------------- |
+| [`UniqFactoryMintableWindow`](#uniqfactorymintablewindow) |
+| [`UniqFactoryTradingWindow`](#uniqfactorytradingwindow)   |
+| [`UniqFactoryTransferWindow`](#uniqfactorytransferwindow) |
+
+##### Example
+
+``` js
+{
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryList
+
+##### Description
+
+The UniqFactoryList object represents a list of uniq factory with
+pagination information.
+
+##### Fields
+
+| Field Name                                  | Description                           |
+| ------------------------------------------- | ------------------------------------- |
+| `data` - [`[UniqFactory!]!`](#uniqfactory)  | List of factory results.              |
+| `pagination` - [`Pagination!`](#pagination) | Pagination applied.                   |
+| `totalCount` - [`Int!`](#int)               | Total number of uniq factory results. |
+
+##### Example
+
+``` js
+{
+  "data": [UniqFactory],
+  "pagination": Pagination,
+  "totalCount": 123
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryMetadata
+
+##### Description
+
+The UniqFactoryMetadata object represents global metadata information
+related to a uniq factory.
+
+##### Fields
+
+| Field Name                                                              | Description                                                                                                                                                                          |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `cachedSource` - [`UniqResource`](#uniqresource)                        | Copy of the source metadata inside ultra system. Optimized access to the metadata file, should be preferred over source field if provided. Null if not stored yet into ultra system. |
+| `content` - [`UniqFactoryMetadataContent`](#uniqfactorymetadatacontent) | Resolved content of the metadata file, ideal to display all metadata information about a uniq factory. Null if not resolved yet.                                                     |
+| `locked` - [`Boolean!`](#boolean)                                       | Metadata modification allowed. False means metadata can change over the time. True means metadata are immutable and cannot be changed.                                               |
+| `source` - [`UniqResource!`](#uniqresource)                             | All information related to the source of the metadata information.                                                                                                                   |
+| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)                 | Internal status of verification and caching metadata into ultra system. It can be used to know if the metadata content is available/displayable.                                     |
+
+##### Example
+
+``` js
+{
+  "cachedSource": UniqResource,
+  "content": UniqFactoryMetadataContent,
+  "locked": true,
+  "source": UniqResource,
+  "status": "INVALID"
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryMetadataAttribute
+
+##### Description
+
+The UniqFactoryMetadataAttribute object represents a key value store
+describing attributes available for uniqs related to a factory.
+
+##### Fields
+
+| Field Name                                                                       | Description                               |
+| -------------------------------------------------------------------------------- | ----------------------------------------- |
+| `key` - [`String!`](#string)                                                     | Key that allow to retrieve the attribute. |
+| `value` - [`UniqMetadataAttributeDescriptor!`](#uniqmetadataattributedescriptor) | Information details about the attribute.  |
+
+##### Example
+
+``` js
+{
+  "key": "abc123",
+  "value": UniqMetadataAttributeDescriptor
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryMetadataContent
+
+##### Description
+
+The UniqFactoryMetadataContent object represents the content that
+follows the uniq factory metadata structure of the NFT standard.
+
+##### Fields
+
+| Field Name                                                                        | Description                                                                                |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `attributes` - [`[UniqFactoryMetadataAttribute!]`](#uniqfactorymetadataattribute) | This field allows you to specify structured numeric or string data for the factory.        |
+| `description` - [`String`](#string)                                               | A detailed explanation about what this factory represents, mints and/or used for.          |
+| `medias` - [`UniqMedias!`](#uniqmedias)                                           | Contains the media used to display this factory. Refer to Metadata media for more details. |
+| `name` - [`String!`](#string)                                                     | Name of the token factory as a whole. Can represent the collection name.                   |
+| `properties` - [`JSONObject`](#jsonobject)                                        | An arbitrary data that you can supply that does not fit any other category.                |
+| `resources` - [`[UniqMetadataResource!]`](#uniqmetadataresource)                  | Allows additional media or reference data to be added as a part of the metadata.           |
+| `subName` - [`String`](#string)                                                   | An additional flavor name used to describe this Uniq factory.                              |
+
+##### Example
+
+``` js
+{
+  "attributes": [UniqFactoryMetadataAttribute],
+  "description": "abc123",
+  "medias": UniqMedias,
+  "name": "xyz789",
+  "properties": {"someProperty": "myStringValue", "otherProperty": 987},
+  "resources": [UniqMetadataResource],
+  "subName": "abc123"
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryMintableWindow
+
+##### Description
+
+The UniqFactoryMintableWindow object represents a period of time when a
+uniq can be minted from a factory. \[no start, no end\], forever
+mintable. \[no start, end\], can only be minted before the ending date.
+\[start, no end\], can only be minted after the starting date. \[start,
+end\], can only be minted between the start and end dates
+
+##### Fields
+
+| Field Name                    | Description                                                                                         |
+| ----------------------------- | --------------------------------------------------------------------------------------------------- |
+| `endDate` - [`Date`](#date)   | The end of the time period when uniq can be minted. Null means no ending date to mint a uniq.       |
+| `startDate` - [`Date`](#date) | The beginning of a time period when uniq can be minted. Null means no starting date to mint a uniq. |
+
+##### Example
+
+``` js
+{
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryResale
+
+##### Description
+
+The UniqFactoryResale object represents information about second hand
+market resale operations that will be applied to a uniq related to this
+factory.
+
+##### Fields
+
+| Field Name                                                         | Description                                                                                                                                                                   |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `minimumPrice` - [`MonetaryAmount!`](#monetaryamount)              | The minimum price allowed when a resell is performed on a secondhand marketplace.                                                                                             |
+| `shares` - [`[UniqFactoryResaleShare!]!`](#uniqfactoryresaleshare) | A vector of \[account, share\] pairs setting the share each account receives during the token resale. Total limit to 7000 basis_point or 70%. The receiver can be duplicated. |
+
+##### Example
+
+``` js
+{
+  "minimumPrice": MonetaryAmount,
+  "shares": [UniqFactoryResaleShare]
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryResaleShare
+
+##### Description
+
+The UniqFactoryResaleShare object represents a share commission on
+second hand market. It can be used to display details about commissions
+that will be applied when the uniq is sold.
+
+##### Fields
+
+| Field Name                           | Description                                                                                                                                              |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `account` - [`WalletId!`](#walletid) | WalletId representing a company or user share.                                                                                                           |
+| `basisPoints` - [`Int!`](#int)       | The token resale commission. 1 means 0.0001, which means 0.01%                                                                                           |
+| `ratio` - [`Float!`](#float)         | Value between 0 and 1, can be used to simplify calculation with prices. This field is calculated and based on basis point. ratio = basisPoints / 10 000. |
+
+##### Example
+
+``` js
+{
+  "account": "aa1aa2aa3ag4",
+  "basisPoints": 987,
+  "ratio": 123.45
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryStatus
+
+##### Description
+
+Uniq factory on chain status.
+
+##### Values
+
+| Enum Value | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `ACTIVE`   | On chain value 0 = active - fully functional            |
+| `INACTIVE` | On chain value 1 = inactive - cannot mint               |
+| `SHUTDOWN` | On chain value 2 = shutdown - cannot mint or set active |
+
+##### Example
+
+``` js
+"ACTIVE"
+```
+
+[Types](#group-Types)
+
+## UniqFactoryStock
+
+##### Description
+
+The UniqFactoryStock object represents quantity available for minting
+purpose.
+
+##### Fields
+
+| Field Name                          | Description                                                                            |
+| ----------------------------------- | -------------------------------------------------------------------------------------- |
+| `authorized` - [`BigInt`](#bigint)  | The number of uniq authorized by the asset_manager to be minted by authorized minters. |
+| `existing` - [`BigInt!`](#bigint)   | The number circulating uniqs, corresponding to minted uniq minus number of burnt uniq. |
+| `maxMintable` - [`BigInt`](#bigint) | The maximal number of uniq that can be minted with the factory. Null means infinite.   |
+| `mintable` - [`BigInt`](#bigint)    | The number of uniq left that can be minted. Null means infinite.                       |
+| `minted` - [`BigInt!`](#bigint)     | The total number of minted uniq.                                                       |
+
+##### Example
+
+``` js
+{
+  "authorized": 987,
+  "existing": 987,
+  "maxMintable": 987,
+  "mintable": 987,
+  "minted": 987
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryTradingWindow
+
+##### Description
+
+The UniqFactoryTradingWindow object represents a period of time when a
+uniq can be traded. \[no start, no end\], forever tradable. \[no start,
+end\], can only be traded before the ending date. \[start, no end\], can
+only be traded after the starting date. \[start, end\], can only be
+traded between the start and end dates It's being checked when a
+buy/resell action is performed.
+
+##### Fields
+
+| Field Name                    | Description                                                                                          |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `endDate` - [`Date`](#date)   | The end of a time period when uniq can be traded. Null means no ending date to trade a uniq.         |
+| `startDate` - [`Date`](#date) | The beginning of a time period when uniq can be traded. Null means no starting date to trade a uniq. |
+
+##### Example
+
+``` js
+{
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+[Types](#group-Types)
+
+## UniqFactoryTransferWindow
+
+##### Description
+
+The UniqFactoryTransferWindow object represents a period of time when a
+uniq can be transferred. \[no start, no end\], forever transferable.
+\[no start, end\], can only be transferred before the ending date.
+\[start, no end\], can only be transferred after the starting date.
+\[start, end\], can only be transferred between the start and end dates
+It's being checked when a transfer action is performed.
+
+##### Fields
+
+| Field Name                    | Description                                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `endDate` - [`Date`](#date)   | The end of a time period when uniq can be transferred. Null means no ending date to transfer a uniq.         |
+| `startDate` - [`Date`](#date) | The beginning of a time period when uniq can be transferred. Null means no starting date to transfer a uniq. |
+
+##### Example
+
+``` js
+{
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+[Types](#group-Types)
+
+## UniqList
+
+##### Description
+
+The UniqList object represents a list of uniq with pagination
+information.
+
+##### Fields
+
+| Field Name                                  | Description                            |
+| ------------------------------------------- | -------------------------------------- |
+| `data` - [`[Uniq!]!`](#uniq)                | List of uniq results.                  |
+| `pagination` - [`Pagination!`](#pagination) | Pagination applied.                    |
+| `totalCount` - [`Int!`](#int)               | Total amount of uniq matching results. |
+
+##### Example
+
+``` js
+{
+  "data": [Uniq],
+  "pagination": Pagination,
+  "totalCount": 987
+}
+```
+
+[Types](#group-Types)
+
+## UniqMedias
+
+##### Description
+
+Each token and factory must have some visual representation added to it
+so it could be nicely displayed in the frontend.
+
+##### Fields
+
+| Field Name                                      | Description                                                                                                                                                                                                                         |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `gallery` - [`[UniqResource!]!`](#uniqresource) | Here you provide a list of multiple media files. Not always would it make sense to have multiple images, but if this token is representing an in-game item then gallery images could be screenshots of this item in the game itself |
+| `hero` - [`UniqResource`](#uniqresource)        | Hero image is a big banner image that is typically placed in the top middle of the page. You can think of it as a movie poster buy applied to Uniq token.                                                                           |
+| `product` - [`UniqResource!`](#uniqresource)    | This is a main media resource visually representing your token. If your token is a picture of an apple, then product media would be this picture by itself.                                                                         |
+| `square` - [`UniqResource!`](#uniqresource)     | Square image is used whenever multiple tokens are shown on the same page, by providing a square image you make it easy to display your token by making its representation tileable.                                                 |
+
+##### Example
+
+``` js
+{
+  "gallery": [UniqResource],
+  "hero": UniqResource,
+  "product": UniqResource,
+  "square": UniqResource
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadata
+
+##### Description
+
+Uniq metadata represent what this specific token is - it's name,
+description and attached media and data. When the token is issued, you
+can attach a URI of this Uniq metadata to the token and this way you
+would create a link between on-chain token and off-chain metadata.
+Example of what this metadata could represent can be an image from a
+collection of various other images and in this case you would put this
+image as one of the media fields and fill out the name and description
+to give some flavour to the token.
+
+##### Fields
+
+| Field Name                                                | Description                                                                                                                                                                          |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `cachedSource` - [`UniqResource`](#uniqresource)          | Copy of the source metadata inside ultra system. Optimized access to the metadata file, should be preferred over source field if provided. Null if not stored yet into ultra system. |
+| `content` - [`UniqMetadataContent`](#uniqmetadatacontent) | Resolved content of the metadata file, ideal to display all metadata information about a uniq. Null if not resolved yet.                                                             |
+| `source` - [`UniqResource!`](#uniqresource)               | All information related to the source of the metadata information.                                                                                                                   |
+| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)   | Internal status of verification and caching metadata inside ultra system. Can be used to know if the metadata content is available/displayable.                                      |
+
+##### Example
+
+``` js
+{
+  "cachedSource": UniqResource,
+  "content": UniqMetadataContent,
+  "source": UniqResource,
+  "status": "INVALID"
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadataAttribute
+
+##### Description
+
+The UniqMetadataAttribute object represents a key value store describing
+attributes available for the uniq.
+
+##### Fields
+
+| Field Name                                                                           | Description                                                                              |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `descriptor` - [`UniqMetadataAttributeDescriptor`](#uniqmetadataattributedescriptor) | Details about the attribute.                                                             |
+| `key` - [`String!`](#string)                                                         | Key that allow to retrieve the attribute.                                                |
+| `value` - [`JSONPrimitive`](#jsonprimitive)                                          | The value of the attribute, the type can be determined thanks to the "descriptor" field. |
+
+##### Example
+
+``` js
+{
+  "descriptor": UniqMetadataAttributeDescriptor,
+  "key": "xyz789",
+  "value": "true | \"myStringValue\" | 987 | 987.65"
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadataAttributeDescriptor
+
+##### Description
+
+The UniqMetadataAttributeDescriptor allows you to specify structured
+numerical or string data for the factory.
+
+##### Fields
+
+| Field Name                                                          | Description                                                                                                                       |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `description` - [`String`](#string)                                 | Details about what this attribute is.                                                                                             |
+| `dynamic` - [`Boolean`](#boolean)                                   | Information flag to tag if the attribute is intended to change over time or not.                                                  |
+| `name` - [`String!`](#string)                                       | Title of the attribute                                                                                                            |
+| `type` - [`UniqMetadataAttributeType!`](#uniqmetadataattributetype) | Type of value expected. Can be used to know how to display the attribute. It can be boolean \| number \| string \| ISODateString. |
+
+##### Example
+
+``` js
+{
+  "description": "xyz789",
+  "dynamic": false,
+  "name": "xyz789",
+  "type": "ISODateString"
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadataAttributeType
+
+##### Description
+
+Primitive type of the attribute.
+
+##### Values
+
+| Enum Value      | Description             |
+| --------------- | ----------------------- |
+| `ISODateString` | Date primitive type.    |
+| `boolean`       | Boolean primitive type. |
+| `number`        | Number primitive type.  |
+| `string`        | String primitive type.  |
+
+##### Example
+
+``` js
+"ISODateString"
+```
+
+[Types](#group-Types)
+
+## UniqMetadataContent
+
+##### Description
+
+The UniqMetadataContent object represents the content that follows the
+uniq metadata structure of the NFT standard.
+
+##### Fields
+
+| Field Name                                                                            | Description                                                                                                                                                                |
+| ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `attributes` - [`[UniqMetadataAttribute!]`](#uniqmetadataattribute)                   | Here you can specify a list of simple numerical or string attributes to go with the token. Allowed types for each of the attributes are: boolean, string and number        |
+| `description` - [`String`](#string)                                                   | A detailed explanation about what this token is. The description could include some trivia or details about how it can be sued.                                            |
+| `dynamicAttributes` - [`UniqDynamicResource`](#uniqdynamicresource)                   | This field is represented as a single dynamic resource and it is used to provide a URI to an external resource detailing the content of dynamic attributes for this token. |
+| `dynamicResources` - [`[UniqMetadataDynamicResource!]`](#uniqmetadatadynamicresource) | Allows additional dynamic media or reference data to be added as a part of the metadata. Each resource must be described as a dynamic resource.                            |
+| `medias` - [`UniqMedias!`](#uniqmedias)                                               | Contains the media used to display this token. Refer to Metadata media for more details.                                                                                   |
+| `name` - [`String!`](#string)                                                         | Name of this uniq. Used for identification purposes so best to make it distinguishable from other uniqs.                                                                   |
+| `properties` - [`JSONObject`](#jsonobject)                                            | An arbitrary data that you can supply that does not fit any other category.                                                                                                |
+| `resources` - [`[UniqMetadataResource!]`](#uniqmetadataresource)                      | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a static resource.                                     |
+| `subName` - [`String`](#string)                                                       | An additional flavor name used to describe this Uniq token.                                                                                                                |
+
+##### Example
+
+``` js
+{
+  "attributes": [UniqMetadataAttribute],
+  "description": "xyz789",
+  "dynamicAttributes": UniqDynamicResource,
+  "dynamicResources": [UniqMetadataDynamicResource],
+  "medias": UniqMedias,
+  "name": "abc123",
+  "properties": {"someProperty": "myStringValue", "otherProperty": 987},
+  "resources": [UniqMetadataResource],
+  "subName": "xyz789"
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadataDynamicResource
+
+##### Description
+
+Allows additional dynamic media or reference data to be added as a part
+of the metadata. Each resource must be described as a dynamicResource.
+
+##### Fields
+
+| Field Name                                               | Description                                              |
+| -------------------------------------------------------- | -------------------------------------------------------- |
+| `key` - [`String!`](#string)                             | Key that allow to retrieve the additional dynamic media. |
+| `value` - [`UniqDynamicResource!`](#uniqdynamicresource) | The additional dynamic media data.                       |
+
+##### Example
+
+``` js
+{
+  "key": "xyz789",
+  "value": UniqDynamicResource
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadataResource
+
+##### Description
+
+The UniqMetadataResource object allows additional media or reference
+data to be added as a part of the metadata. Each resource must be
+described as a staticResource.
+
+##### Fields
+
+| Field Name                                             | Description                                      |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| `key` - [`String!`](#string)                           | Key that allow to retrieve the additional media. |
+| `value` - [`UniqStaticResource!`](#uniqstaticresource) | The additional media data.                       |
+
+##### Example
+
+``` js
+{
+  "key": "xyz789",
+  "value": UniqStaticResource
+}
+```
+
+[Types](#group-Types)
+
+## UniqMetadataStatus
+
+##### Description
+
+Internal status of the metadata resolution.
+
+##### Values
+
+| Enum Value   | Description                                                                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `INVALID`    | Metadata resolution are in error, resources are misisng or metadata are not compliant, all informations about metadata are not or partially available. |
+| `PROCESSING` | Metadata resolution is in progress inside ultra backend system.                                                                                        |
+| `VALID`      | Metadata resolution are done, all informations about metadata are compliant and available.                                                             |
+
+##### Example
+
+``` js
+"INVALID"
+```
+
+[Types](#group-Types)
+
+## UniqResale
+
+##### Description
+
+The UniqResale object represents information about the resale action.
+
+##### Fields
+
+| Field Name                               | Description         |
+| ---------------------------------------- | ------------------- |
+| `onSaleDate` - [`Date!`](#date)          | Date of the resale. |
+| `price` - [`UniqRevenue!`](#uniqrevenue) | Selling price.      |
+
+##### Example
+
+``` js
+{
+  "onSaleDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "price": UniqRevenue
+}
+```
+
+[Types](#group-Types)
+
+## UniqResource
+
+##### Description
+
+The UniqResource object represents a resource, it's an image, video or a
+file.
+
+##### Fields
+
+| Field Name                                                      | Description                               |
+| --------------------------------------------------------------- | ----------------------------------------- |
+| `contentType` - [`String`](#string)                             | Type of resource image, video etc.        |
+| `integrity` - [`UniqResourceIntegrity`](#uniqresourceintegrity) | Information about the resource integrity. |
+| `uri` - [`String!`](#string)                                    | Uri where the resource is stored.         |
+
+##### Example
+
+``` js
+{
+  "contentType": "xyz789",
+  "integrity": UniqResourceIntegrity,
+  "uri": "abc123"
+}
+```
+
+[Types](#group-Types)
+
+## UniqResourceIntegrity
+
+##### Description
+
+The UniqResourceIntegrity object provides information about the
+integrity of the resource. Can be used to verify that the resource is
+the attended one.
+
+##### Fields
+
+| Field Name                                                          | Description                   |
+| ------------------------------------------------------------------- | ----------------------------- |
+| `hash` - [`String!`](#string)                                       | Hash related to the resource. |
+| `type` - [`UniqResourceIntegrityType!`](#uniqresourceintegritytype) | Type of cryptographic hash.   |
+
+##### Example
+
+``` js
+{"hash": "xyz789", "type": "SHA256"}
+```
+
+[Types](#group-Types)
+
+## UniqResourceIntegrityType
+
+##### Description
+
+Type of cryptographic hash used.
+
+##### Values
+
+| Enum Value | Description                  |
+| ---------- | ---------------------------- |
+| `SHA256`   | SHA256 encryption algorithm. |
+
+##### Example
+
+``` js
+"SHA256"
+```
+
+[Types](#group-Types)
+
+## UniqRevenue
+
+##### Description
+
+The UniqRevenue object represents the distribution revenue that will be
+applied if the uniq is sold.
+
+##### Fields
+
+| Field Name                                              | Description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| `amount` - [`BigFloat!`](#bigfloat)                     | Uniq sells price. Amount value with a precision of 8 digits. |
+| `creators` - [`UniqSharedRevenue!`](#uniqsharedrevenue) | Fees taken by the creator.                                   |
+| `currency` - [`Currency!`](#currency)                   | Currency related to the amount.                              |
+| `owner` - [`UniqSharedRevenue!`](#uniqsharedrevenue)    | Seller revenue.                                              |
+| `platform` - [`UniqSharedRevenue!`](#uniqsharedrevenue) | Fees taken by the platform.                                  |
+| `promoter` - [`UniqSharedRevenue`](#uniqsharedrevenue)  | Fees taken by the promoter.                                  |
+
+##### Example
+
+``` js
+{
+  "amount": 987.65,
+  "creators": UniqSharedRevenue,
+  "currency": Currency,
+  "owner": UniqSharedRevenue,
+  "platform": UniqSharedRevenue,
+  "promoter": UniqSharedRevenue
+}
+```
+
+[Types](#group-Types)
+
+## UniqSerialRangeInput
+
+##### Description
+
+The UniqSerialRangeInput object represent a range of value. Can be used
+to filter uniqs by a range of serial number inside a factory.
+
+##### Fields
+
+| Input Field                  | Description                                                                                                                                                                                     |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `max` - [`BigInt`](#bigint)  | Maximum value of the range. If provided, it has to be greater or equal than min field. Null value means it will return all existing uniqs with a serial number greater or equal than min field. |
+| `min` - [`BigInt!`](#bigint) | Minimum value of the range.                                                                                                                                                                     |
+
+##### Example
+
+``` js
+{"max": 987, "min": 987}
+```
+
+[Types](#group-Types)
+
+## UniqSharedRevenue
+
+##### Description
+
+The UniqSharedRevenue object represents a share commission on the second
+hand market. Can be used to display details about thecommission that
+will be applied when a uniq is sold.
+
+##### Fields
+
+| Field Name                          | Description                                                                                                                                                |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `amount` - [`BigFloat!`](#bigfloat) | Amount value with a precision of 8 digits. This field is calculated, the amount corresponds to the sale price with the ratio applied to it.                |
+| `basisPoints` - [`Int!`](#int)      | The token resale commission. Values between \[0,7000\] 1 means 0.0001 %.                                                                                   |
+| `ratio` - [`Float!`](#float)        | A value between 0 and 1, can be used to simplify calculation with prices. This field is calculated and based on basis point. ratio = basisPoints / 10 000. |
+
+##### Example
+
+``` js
+{"amount": 987.65, "basisPoints": 123, "ratio": 987.65}
+```
+
+[Types](#group-Types)
+
+## UniqStaticResource
+
+##### Description
+
+The UniqStaticResource object represents a resource, it's an image,
+video or a file. Represented as a UniqResource with a hash specified.
+
+##### Fields
+
+| Field Name                                                       | Description                               |
+| ---------------------------------------------------------------- | ----------------------------------------- |
+| `contentType` - [`String!`](#string)                             | Type of resource image,video etc.         |
+| `integrity` - [`UniqResourceIntegrity!`](#uniqresourceintegrity) | Information about the resource integrity. |
+| `uri` - [`String!`](#string)                                     | Uri where the resource is stored.         |
+
+##### Example
+
+``` js
+{
+  "contentType": "xyz789",
+  "integrity": UniqResourceIntegrity,
+  "uri": "xyz789"
+}
+```
+
+[Types](#group-Types)
+
+## UniqTradingPeriod
+
+##### Description
+
+The UniqTradingPeriod object represents a period of time when a uniq can
+be traded. \[no start, no end\], forever tradable. \[no start, end\],
+can only be traded before the ending date. \[start, no end\], can only
+be traded after the starting date. \[start, end\], can only be traded
+between the start and end dates.
+
+##### Fields
+
+| Field Name                       | Description                                                                                                                                   |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `duration` - [`BigInt`](#bigint) | Duration of trading period, number of milliseconds. Ideal to display the remaining time before the period ends. Null means infinite duration. |
+| `endDate` - [`Date`](#date)      | The ending of a time period when uniq can be traded. Null means no ending date to trade a uniq.                                               |
+| `startDate` - [`Date!`](#date)   | The beginning of a time period when uniq can be traded.                                                                                       |
+
+##### Example
+
+``` js
+{
+  "duration": 987,
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+[Types](#group-Types)
+
+## UniqTransferPeriod
+
+##### Description
+
+The UniqTransferPeriod object represents a period of time when a uniq
+can be transferred. \[no start, no end\], forever transferable. \[no
+start, end\], can only be transferred before the ending date. \[start,
+no end\], can only be transferred after the starting date. \[start,
+end\], can only be transferred between the start and end dates.
+
+##### Fields
+
+| Field Name                       | Description                                                                                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `duration` - [`BigInt`](#bigint) | Duration of transfer period, number of milliseconds. Ideal to display the remaining time before the period ends. Null means infinite duration. |
+| `endDate` - [`Date`](#date)      | The ending of a time period when uniq can be transferred. Null means no ending date to transfer a uniq.                                        |
+| `startDate` - [`Date!`](#date)   | The beginning of a time period when uniq can be transferred.                                                                                   |
+
+##### Example
+
+``` js
+{
+  "duration": 987,
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+[Types](#group-Types)
+
+## UniqType
+
+##### Description
+
+Specify the type of the uniq asset.
+
+##### Values
+
+| Enum Value    | Description                         |
+| ------------- | ----------------------------------- |
+| `COLLECTIBLE` | Asset available on the marketplace. |
+| `GAME`        | Asset of type Game.                 |
+
+##### Example
+
+``` js
+"COLLECTIBLE"
+```
+
+[Types](#group-Types)
+
+## WalletId
+
+##### Description
+
+A non empty string that represent a user wallet id.
+
+##### Example
+
+``` js
+"aa1aa2aa3ag4"
+```
+
+---
+title: 'Introduction'
+
+order: -99999999
+---
+
+# VSCode Smart Contract Extension
+
+Build smart contracts, and get rid of those annoying squigglies while working with smart contracts on EOS based chains.
+
+This is your all in one toolkit to do everything EOS in the blink of an eye.
+
+## Install
+
+[Download from VSCode Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+
+Inside of vscode extension browser type `ultra-cpp`.
+
+## Features
+
+* Fix Smart Contract Header Issues
+* Build Smart Contracts
+* Deploy Smart Contracts
+* Scaffold New Smart Contracts
+* Query Endpoints
+* Wallet
+* Send Transactions
+
+## Prerequisities
+
+Make sure you have docker installed while using this tool!
+
+* [Docker](https://docs.docker.com/engine/install/)
+* Microsoft C++ Extension (optional)
+
+## Tutorials & Help
+
+* [Extension tutorial page](../../guides/Smart%20Contracts/3.compile.md)
+
+* Vscode extension walkthrough 👇
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/88dOlL6nwWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+---
+title: 'How to add custom networks'
+
+order: 12
+outline: [0, 4]
+---
+
+# How to add custom networks
+
+For non-EBA wallet accounts, it is possible to add custom networks for testing purposes.
+
+This is the correct procedure:
+
+1. Open your Ultra Wallet extension, click on the environment dropdown at the top of the screen, and click the button “Add Network”
+
+    ![](/images/uwax-add-custom-net.png)
+
+2. Fill all the fields with your custom network parameters and click “Add Network”
+
+    - Network name: This is the name used to be displayed in the environment dropdown list.
+    - Network HTTP URL: URL used to connect to your Ultra blockchain node, for more information follow this [documentation page](../../blockchain/general/tools/nodeos.md).
+    - Block explorer URL: URL for the blockchain explorer, for example, https://local.bloks.io
+
+    ![](/images/uwax-add-net.png)
+
+3. Custom networks can be edited or deleted if it is needed
+
+    ![](/images/uwax-edit-net.png)
+
+---
+title: 'Demo application'
+
+order: 14
+outline: [0,4]
+---
+
+# Demo application
+
+For a live example of simple integration with the Ultra Wallet browser extension, check out our sample project on [GitHub](https://github.com/luisintosh/ultra-wallet-playground/).
+
+https://luisintosh.github.io/ultra-wallet-playground/
+
+---
+title: 'Detecting the Blockchain Network'
+
+order: 5
+outline: [0, 4]
+---
+
+# Detecting the Blockchain Network
+
+The Ultra blockchain is distinguished by a unique identifier that facilitates the identification of the associated blockchain network. 
+This essential information can be retrieved through the Wallet extension using the following method.
+
+```JavaScript
+try {
+    const response = await ultra.getChainId();
+    response.data;
+    // a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097
+} catch (err) {
+    // { status: "error" }
+}
+```
+
+For more information visit the [List of official Ultra blockchain networks](../../products/chain-api/index.md)
+
+---
+title: 'Detecting the Ultra Wallet'
+
+order: 4
+outline: [0, 4]
+---
+
+# Detecting the Ultra Wallet
+
+To detect if a user has already installed the Ultra Wallet browser extension the web application should run over HTTPS and check for the existence of an `ultra` object in the `window` variable.
+
+```JavaScript
+if ('ultra' in window) {
+  console.log('Ultra Wallet is installed!');
+}
+```
+
+---
+title: 'Developer resources'
+
+order: 15
+outline: [0, 4]
+---
+
+# Developer resources
+
+## Local server
+
+The Ultra wallet extension is only active when the page in the browser uses the HTTPS protocol. That means that you will need a local server with SSL enabled. Many frameworks have an option to easily configure it for you, but if you need a quick development environment, we recommend:
+
+-   [ViteJS](https://vitejs.dev/)
+-   [@vitejs/plugin-basic-ssl](https://www.npmjs.com/package/@vitejs/plugin-basic-ssl)
+
+## Ultra Wallet types
+
+These are the TypeScript ambient definitions for Ultra Wallet APIs, which provides code completions in the code editor.
+
+::: code-group
+
+```ts [window.d.ts]
+import EventEmitter from 'events';
+
+export {};
+
+declare global {
+    interface Window {
+        ultra: IUltraWalletApi & EventEmitter;
+    }
+}
+
+interface IUltraWalletApi {
+    /**
+     * Request permission to establish a connection with the Wallet extension
+     */
+    connect(): Promise<IResponse<{ blockchainId: string; publicKey: string }>>;
+
+    /**
+     * Request permission to disconnect the app from the wallet extension
+     */
+    disconnect(): Promise<void>;
+
+    /**
+     * Request permission to sign a message with the user's private key.
+     * The message should have one of the next prefixes: `0x`, `UOSx`, or `message:`
+     * Message signatures do not involve network fees.
+     * @param message
+     */
+    signMessage(message: string): Promise<IResponse<{ signature: string }>>;
+
+    /**
+     * Request permission to sign a transaction object or an array of them with
+     * the user's private key and push it to the blockchain network.
+     * @param transaction
+     */
+    signTransaction(transaction: ITransaction | ITransaction[]): Promise<IResponse<{ transactionHash: string }>>;
+}
+
+interface IResponse<T = any> {
+    status: 'success' | 'fail' | 'error';
+    data: T;
+    message?: string;
+}
+
+interface ITransaction<T = any> {
+    /**
+     * The blockchain smart contract owner account
+     */
+    contract: string;
+
+    /**
+     * The blockchain smart contract name
+     */
+    action: string;
+
+    /**
+     * The smart contract action parameters as a JSON Array of Objects
+     * @type {T}
+     */
+    data: T;
+}
+```
+
+:::
+
+---
+title: 'Errors'
+
+order: 10
+outline: [0, 4]
+---
+
+# Errors
+
+When making requests to the Ultra Wallet, it may respond with one of the following errors.
+
+| Code   | Title                 | Description                                                              |
+| ------ | --------------------- | ------------------------------------------------------------------------ |
+| 4001   | User Rejected Request | The user rejected the request.                                           |
+| 4100   | Unauthorized          | The requested method and/or account has not been authorized by the user. |
+| 4900   | Disconnected          | Could not connect to the network.                                        |
+| -32000 | Invalid Input         | Missing or invalid parameters.                                           |
+| -32002 | Resource unavailable  | Requested resource not available.                                        |
+| -32003 | Transaction Rejected  | An error occurred while processing the transaction.                      |
+| -32005 | Limit Exceeded        | Request exceeds defined limit.                                           |
+| -32601 | Method Not Found      | The method does not exist.                                               |
+| -32603 | Internal Error        | Something went wrong within the wallet extension.                        |
+
+These error messages are inspired by Ethereum's [EIP-1474](https://eips.ethereum.org/EIPS/eip-1474#error-codes) and [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193#provider-errors).
+
+---
+title: 'Establishing a Connection'
+
+order: 6
+outline: [0, 4]
+---
+
+# Establishing a Connection
+
+To begin interacting with the Ultra Wallet, a web application must first establish a connection. This connection request will ask the user for permission to share its blockchain id and public key, indicating that they are willing to continue interacting. Once the permission is set for the first time, the web application domain will be whitelisted for future connection requests.
+Similarly, it is possible to terminate the connection both on the application and on the user side.
+
+## Connecting
+
+```JavaScript
+try {
+    const response = await ultra.connect();
+    response.data.blockchainId;
+    // ej1vx2ft3ht4
+    response.data.publicKey;
+    // EOS7uRb72dR8jrLjNuC9UoevBBH3YbVZfNKUtYCfLkV7aPGcmDjs7
+} catch (err) {
+    // { status: "error", message: "Connection rejected" }
+}
+```
+
+The `connect()` call will return a Promise that is resolved when the user accepts the connection request and is rejected when the user rejects the request or closes the popup.
+
+### Eagerly Connecting
+
+After a web application connects to the Ultra Wallet for the first time, it gains a trusted status.
+Once this trust is established, the application can seamlessly link with Ultra Wallet during future visits or when the page is refreshed,
+eliminating the need to ask the user for authorization. This concept is commonly known as "eagerly connecting".
+
+To implement this, web applications should pass an `onlyIfTrusted` option into the `connect()` call.
+
+```JavaScript
+try {
+    await ultra.connect({onlyIfTrusted: true});
+} catch (err) {
+    // { status: 'error', code: 4001, message: 'The user rejected the request.' }
+}
+```
+
+### Sending a referral code
+
+An application can send its referral code to the wallet. The referral code will be used if the user signs up during the connection process.
+
+To implement this, applications should pass the referralCode option into the connect() call.
+
+```JavaScript
+ultra.connect({referralCode: 'ecd1f052-9d0d-4b84-8dd3-10a753d044b5'});
+```
+
+To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section, click on the link to copy it.
+
+Once you copy your referral link you can get the referral code from the URL. For example, the next link https://ultra.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5 has the referral code `ecd1f052-9d0d-4b84-8dd3-10a753d044b5`.
+
+## Disconnecting
+
+```JavaScript
+try {
+  await ultra.disconnect();
+} catch (err) {
+  // { status: "error", message: "Forbidden" }
+}
+```
+
+The `disconnect()` method revokes the connection permission that the user granted to the web application, if the application is already disconnected, the Promise will throw an error.
+
+To handle disconnections, the app can also subscribe to disconnect events.
+
+```JavaScript
+ultra.on('disconnect', () => {
+    console.log('Disconnected from Ultra Wallet');
+})
+```
+
+---
+title: 'Events'
+
+order: 9
+outline: [0, 4]
+---
+
+# Events
+
+The Ultra Wallet can emit different events to notify applications about changes happening inside the Wallet.
+
+To subscribe/unsubscribe from these events, the following methods are available:
+
+-   `ultra.on(eventName, callback)`
+-   `ultra.off(eventName, callback)`
+-   `ultra.once(eventName, callback)`
+-   `ultra.prependListener(eventName, callback)`
+-   `ultra.prependOnceListener(eventName, callback)`
+-   `ultra.addListener(eventName, callback)`
+-   `ultra.removeListener(eventName, callback)`
+
+| Event name | Description                                                           |
+| ---------- | --------------------------------------------------------------------- |
+| disconnect | Emitted when the application gets disconnected from the Ultra Wallet. |
+
+---
+title: 'How to get tokens on Testnet'
+
+order: 13
+outline: [0, 4]
+---
+
+# How to get tokens on Testnet
+
+Issuing tokens to your account on Ultra's Testnet blockchain is done using the Ultra faucet tool [Ultra Testnet Tools](https://faucet.testnet.app.ultra.io/). In the Ultra Wallet, when you are using a Testnet account, the "Buy UOS" button also redirects to this tool.
+
+![](/images/uwax-home-buy-uos.png)
+
+When you open the Faucet, you have to copy/paste your blockchain account, pass the captcha quiz, and click the button “Issue”. There is a rate limit of 10 UOS every two minutes.
+
+![](/images/faucet-issue-tokens.png)
+
+---
+title: 'Import your account’s private key'
+
+order: 11
+outline: [0, 4]
+---
+
+# Import your account’s private key
+
+The Ultra Wallet Extension supports two kinds of accounts: EBA and Non-EBA. To understand how a private key can be imported into the wallet, we have to explain first the differences between both account types.
+
+## EBA (Easy Blockchain Account)
+
+One of the most critical missions of Ultra is to democratize the blockchain, bringing all its advantages to the mass market. To do so, it was required to simplify drastically how the blockchain is managed, making it almost transparent for the user.
+
+The EBA is an account type where the users store their own private keys in their devices and Ultra only provides a way to recover a blockchain account or sync a private key with a blockchain account.
+
+![](/images/uwax-login-btns.png)
+
+To get an Easy Blockchain Account you only have to create an Ultra account using the Ultra Wallet Extension or the Ultra Desktop client.
+
+## Non-EBA (Self-managed blockchain account)
+
+A non-EBA account is a typical blockchain account controlled by private keys that you must secure yourself. This type of account is recommended for developers and other advanced users. To learn more about how to generate your own keys, read this [documentation page](../../blockchain/general/tools/nodeos.md).
+
+![](/images/uwax-private-key-btn.png)
+
+To import your blockchain account’s private key, use the `Use Private Key & Password` option in the wallet extension. The wallet will ask you for a strong password to encrypt your keys. This password is not stored in the wallet so you have to save it securely. Without this password, you won’t be able to unlock your wallet again.
+
+Once the private key is imported and encrypted, you will be able to select and activate the associated Ultra blockchain accounts.
+
+---
+title: 'Introduction'
+
+order: -1
+oultine: [0, 4]
+---
+
+# Ultra Wallet Browser Extension
+
+![](/images/uwax_main.png)
+
+The Ultra Wallet browser extension is a crypto wallet that allows you to access decentralized applications on Ultra's blockchain and securely manage your digital assets.
+
+The principal functions are to create and manage private keys on behalf of its users, to manage the connections between the wallet and web applications, and allow users to securely sign transactions.
+
+To interact with the wallet, the wallet injects an object named `ultra` into the javascript context of every site. This object contains all the methods required to obtain the user's blockchain id, their public key, and to sign blockchain transactions.
+
+## Links
+
+-   [How to install the extension](./installing-extension.md)
+-   [How to get tokens on Testnet](./get-tokens-testnet.md)
+-   [Demo application](https://stackblitz.com/edit/ultra-wallet-test)
+-   [Developer resources](./developer-resources.md)
+-   [App Template](https://github.com/Stuyk/ultra-wallet-app-template)
+
+## Try It
+
+Use the button below to try connecting with the Ultra Wallet, it should pop up when clicked if the extension is installed.
+
+<ClientOnly>
+    <Button @onClick="openWallet" align="left">Open Wallet</Button>
+</ClientOnly>
+
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+let isOpening = ref<bool>(false);
+
+async function openWallet() {
+    if (isOpening.value) {
+        return;
+    }
+
+    isOpening.value = true;
+
+    if (window && window.ultra) {
+        await window.ultra.connect();
+        alert('Wallet Connected!')
+    } else {
+        alert('Wallet Unavailable')
+    }
+
+    isOpening.value = false;
+}
+</script>
+
+---
+title: 'Installing the extension'
+
+order: 2
+outline: [0, 4]
+---
+
+# Installing the extension
+
+The Ultra Wallet is a non-custodial crypto wallet that allows you to access your UOS and Uniqs which are stored on the Ultra blockchain.
+
+Visit the Chrome Web Store and install the Ultra Wallet extension:
+
+https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln
+
+---
+title: 'Response interface'
+
+order: 3
+outline: [0, 4]
+---
+
+# Response interface
+
+To standardize the communication between decentralized applications and the extension, each method will respond with a Promise and this response format.
+
+```JavaScript
+/**
+ * Based on JSend a specification for a simple, no-frills,
+ * JSON based format for application-level communication.
+ * https://github.com/omniti-labs/jsend
+ */
+{
+  status: "fail", // "success", "fail" or "error"
+  data: { ... }, // Response data
+  message: "Forbiden" // Optional: end-user-readable message, explaining what went wrong.
+};
+```
+
+---
+title: 'Signing a Transaction'
+
+order: 7
+outline: [0, 4]
+---
+
+# Signing a Transaction
+
+Once a web application is connected to the Ultra Wallet, it can prompt the user for permission to sign and push transactions on their behalf.
+
+The requirements to send a transaction are:
+
+## Create a transaction object
+
+Ultra Wallet has its own format for transaction objects that makes it easy to understand and fulfill. The required fields are “action”, “contract” and “data”.
+
+Below is a transaction example to send tokens from a user's blockchain account to another one.
+
+```JSON
+{
+  "action": "transfer",
+  "contract": "eosio.token",
+  "data": {
+    "memo": "This is a transaction test",
+    "quantity": "11.20000000 UOS",
+    "from": "ej1vx2ft3ht4",
+    "to": "nwyklp2aa1qd"
+  }
+}
+```
+
+## Sign the transaction object
+
+When the transaction object is created, the web application may ask for permission from the Ultra Wallet to sign and send the transaction using `signTransaction()`. This returns a Promise. If accepted, the wallet will sign the transaction with the user's private key and submit it to the Ultra blockchain. Conversely, if the user declines the transaction or closes the window, the Promise will return an error.
+
+```JavaScript
+try {
+  const response = await ultra.signTransaction(txObject);
+  response.data.transactionHash;
+  // 51c6d324522a0ee05baeee2a8857b016e47481207850074ee83f914e6adc45ae
+} catch (err) {
+  // { status: "error", message: "Transaction declined" }
+}
+```
+
+Once the transaction is executed, the transaction hash is returned and it can be validated on the blockchain.
+
+## Sign multiple transactions at the same time
+
+The `signTransaction()` method accepts one transaction object or an array of them to sign multiple transaction objects in the same transaction. For example, it’s possible to sign a **transfer** and **buy** action in the same transaction as shown in the next example.
+
+```JavaScript
+const txArray = [{
+    "action": "transfer",
+    "contract": "eosio.token",
+    "data": {
+        "memo": "",
+        "quantity": "11.20000000 UOS",
+        "from": "ej1vx2ft3ht4",
+        "to": "nwyklp2aa1qd"
+    }
+},
+    {
+        "action": "buy",
+        "contract": "eosio.nft.ft",
+        "data": {
+            "buy": {
+                "token_id": 9974,
+                "buyer": "mg1vg2lv3fs4",
+                "receiver": "mg1vg2lv3fs4",
+                "max_price": "78.00000000 UOS",
+                "memo": "",
+                "promoter_id": null
+            }
+        }
+    }
+];
+
+try {
+    const response = await ultra.signTransaction(txArray);
+    response.data.transactionHash;
+    // 51c6d324522a0ee05baeee2a8857b016e47481207850074ee83f914e6adc45ae
+} catch (err) {
+    // { status: "error", message: "Transaction declined" }
+}
+```
+
+---
+title: 'Signing a Message'
+
+order: 8
+outline: [0, 4]
+---
+
+# Signing a Message
+
+In some cases, a web application can also request the user to sign a given message to verify the ownership of a blockchain account. Applications are free to write their messages which will be displayed to users from within the Ultra Wallet's signature prompt using the method `signMessage()`. These messages should have one of the next prefixes: `0x`, `UOSx`, or `message:`.
+
+**Message signatures do not involve network fees.**
+
+```JavaScript
+try {
+  const response = await ultra.signMessage("message:This is a test message");
+  response.data.signature;
+  // SIG_K1_KXuKhsxcdDTKuMbo2kveKsggwUfV9p5FuPsirkFcjjQo2sxUvxcc1TEnkoancsWTf6SEHj1jMjB9e6GuRkg6ZrEvV5tHa8
+} catch (err) {
+  // { status: "error", message: "Transaction declined" }
+}
+```
+
+If the user declines the message signing or closes the window, the Promise will return an error.
+
+---
+title: 'Introduction'
+
+order: 0
+outline: [0,4]
+---
+
+# Ultratest Usage
+
+This document pertains to developers who want to write smart contracts.
+
+## Obtaining ultratest
+
+We have created a Docker image that has pre-created scripts, tools, and pre-packaged binaries. `ultratest` is already included inside of the Docker image.
+
+Individual binaries are not currently available for download.
+
+[Docker Image Usage](../../tutorials/docker/docker-image-usage.md)
+
+## Usage
+
+Inside the Docker Container the following can be executed for general usage.
+
+```sh
+ultratest --help
+```
+
+## Nodeos instances
+
+Nodeos instances are automatically created in the background with a preset chain configuration.
+
+The first instance will have the following deployed:
+
+-   bios contract
+-   protocol configurations
+-   system contract
+-   token contract
+-   msig contract
+-   various initialization actions for ram market, system currency, etc.
+
+After the first instance has this data deployed it will take a snapshot.
+
+This snapshot will be used to quickly reboot the chain and run each test file as necessary.
+
+_Additional instances will be launched if additional producers are needed in a test file._
+
+## Keosd Instances
+
+Keosd is launched and a single wallet is created which will contain all keys that were used during the boot process for the framework.
+
+All keys can be seen by running either of these two commands inside of the docker image.
+
+```
+cleos wallet keys
+```
+
+```
+cleos wallet private_keys
+```
+
+The wallet password can be found at `~/ultratest/wallet.txt`.
+
+## Data Persistence
+
+During each test a system snapshot is used between each test file.
+
+All data is wiped if a new instance of `ultratest` is ran.
+
+However, a configuration inside of test files exists to prevent any additional rollbacks during chained tests. See [Understanding the Test Class](#understanding-the-test-class)
+
+## Warning on Naming Files
+
+The way that `ultratest` kills `nodeos` processes is very indiscriminate.
+
+It matches `nodeos` and `keosd` in pkill as a search string, meaning if you are running other processes with `nodeos` or `keosd`, it will kill them as well.
+
+This affects tests when running singular tests, for instance `ultratest -t tests/nodeos_test.ultra_test.js` will kill the test suite execution because the process has `nodeos` within the cmd.
+
+## Starting a System Node
+
+Options exist to start a node with system contracts deployed and will function as a normal node until you kill the nodeos instance.
+
+```
+ultratest -D -n --system
+```
+
+## Writing Tests
+
+Test files must have a suffix of `ultra_test.js` in order to be recognized by the `ultratest` framework.
+
+**Incorrect ->** `hello-world-test.js`
+
+**Correct ->** `hello-world.ultra_test.js`
+
+### Basic Format
+
+Our test format is very specific but also has plenty of options to get most smart contract developers off the ground.
+
+```js
+module.exports = class test {
+    constructor() {}
+
+    // Deploys ultra system contracts to the nodeos instance
+    requiresSystemContracts() {
+        return true;
+    }
+
+    // What account to create, and what contract to deploy on it
+    importContracts() {
+        return [{ account: 'smrtcntract1', path: '../contracts', contract: 'hello' }];
+    }
+
+    // Created after importing contracts
+    requiredAccounts() {
+        return ['account1', 'account2', 'account3', 'account4'];
+    }
+
+    tests({ assert, endpoint, cleos, rpc, api, ecc, keychain }) {
+        assert(true, "This will never trigger because it is true.");
+        return {
+            'should execute transaction': async () => {
+                // Something should happen in this test.
+            };
+    }
+};
+```
+
+### Understanding the Test Class
+
+The various class functions inside of the file above all have their own use cases.
+
+-   requiresSystemContracts()
+    -   Deploys system contracts to the nodeos instance for this test.
+    -   Must return a `boolean`.
+        <br />
+        <br />
+-   importContracts()
+    -   Imports smart contracts based on account, path of the contract, and the contract name.
+    -   Must return an Array of Objects: \* `[{ account: string, path: string, contract: string }]`
+        <br />
+        <br />
+-   requiredAccounts()
+    -   A string list of accounts to create before running the tests.
+    -   Must return an Array of Strings
+        <br />
+        <br />
+-   requiredUnlimitedAccounts()
+    -   A string list of unlimited accounts to create before running tests.
+    -   These accounts have zero restrictions on resources.
+    -   Must return an Array of Strings
+        <br />
+        <br />
+-   nodeosConfigs()
+    -   A way to change `genesis.json` and `config.ini` options for nodeos instance.
+    -   Must return an Object of Objects. \* { genesis: {}, config: {} }
+        <br />
+        <br />
+-   requiredProducers()
+    -   Creates multiple producers for the chain that produce blocks.
+    -   Must return an Array of Objects:
+        -   `[{ name:'', config:{}, node:0'}]`
+    -   name is the producer name
+    -   node is the nodeos instance
+    -   Optional - config is a custom `config.ini` for this producer
+        <br />
+        <br />
+-   requiredUnlimitedSupply()
+    -   Specifies whether system will use max supply when creating the system token.
+    -   Must return boolean
+        <br />
+        <br />
+-   preventRollback()
+    -   Specifies whether the chain should rollback before this test is started.
+    -   Must return boolean
+
+### tests() class function
+
+Tests usually passes a handful of useful objects from commonly used libraries like eosjs, eos-ecc, etc.
+
+```js
+tests({ assert, endpoint, cleos, rpc, api, ecc, keychain }) {
+        assert(true, "This will never trigger because it is true.");
+        return {
+            'should execute transaction': async () => {
+                // Something should happen in this test.
+    };
+}
+```
+
+-   `assert(condition, error_message)`
+    -   Standard issue testing suite asserter.
+        <br />
+        <br />
+-   `endpoint`
+    -   The URL for the running nodeos (port might not always be 8888)
+        <br />
+        <br />
+-   `cleos(command, options)`
+    -   A helper method that will execute all [cleos commands](https://developers.eos.io/manuals/eos/v2.2/cleos/index) fed to it.
+    -   options is an object that takes the following properties:
+        ```
+        {
+          swallow:boolean, // whether to swallow errors from this cleos command
+          fetch:boolean // if true cleos will return the results, if false cleos will return a boolean based on success.
+        }
+        ```
+-   `rpc` a standard `eosjs` rpc object ([Getting table information using eosjs](https://developers.eos.io/manuals/eosjs/v22.0/how-to-guides/how-to-get-table-information/?query=get_table_rows&page=1#get-table-rows))
+    <br />
+    <br />
+-   `api` a standard `eosjs` api object ([Sending a transaction using eosjs](https://github.com/EOSIO/eosjs/#sending-a-transaction))
+    <br />
+    <br />
+-   `ecc` a standard `eosjs-ecc` object ([Full documentation here](https://github.com/EOSIO/eosjs-ecc))
+    <br />
+    <br />
+-   `common` a group of functions that are most commonly used for fetching `eosio` chain data, creating accounts, sending tokens, etc.
+    -   See below.
+-   `keychain`
+    -   See below.
+
+### keychain object
+
+Ultratest follows a deterministic keys schema, where the keys for each account/permission will be exactly
+the same each run. For example the key for `foo` will always be the same, but `bar` will be different from `foo`.
+
+-   `generateAndReturnPublicKey(account:string): Promise<string>` \* This will return a public key which is created for this account, it will also inject that key into both eosjs and keosd for signing. You can specify `account@permission` in the `account` parameter.
+    <br />
+    <br />
+-   `getAccountKeys(account:string): Array<string>|null`
+    -   will return all available keys or null.
+        <br />
+        <br />
+-   `setAccountKeys(account:string, key_object:EosjsKey): Promise<void>`
+    -   will allow setting a private key for an account, and will also import it into eosjs and keosd. **Will not override!**. Must be a key object (eosjs).
+        <br />
+        <br />
+-   `getAllPublicKeys(): Array<string>`
+    -   Will get all available public keys.
+        <br />
+        <br />
+-   `getPrivateKey(public_key:string): string|null`
+    -   Will return any private key found matching this public key.
+        <br />
+        <br />
+-   `getPublicKeyFromAccount(account:string): string|null`
+    -   Will return a public key associated with an account.
+        <br />
+        <br />
+-   `getPrivateKeyFromAccount(account:string): string|null`
+    -   Will return a public key associated with an account.
+        <br />
+        <br />
+-   `sign(signargs:object): Promise<{ signatures, serializedTransaction }>`
+    -   Will sign a transaction following the `eosjs` signature provider format. Keys will be inferred from the authorizations & required keys.
+
+## Writing a Simple Test
+
+Below is an example of writing a simple test that checks the value of a global `eosio` table to ensure that it is a specific value. It also checks if the `eosio` account has been created.
+
+```ts
+module.exports = class test {
+    constructor() {}
+
+    requiredAccounts() {
+        return ['annie'];
+    }
+
+    requiresSystemContracts() {
+        return true;
+    }
+
+    tests({ assert, endpoint, cleos, rpc, api, ecc, keychain, common }) {
+        return {
+            'should perform an account lookup against eosio': async () => {
+                const account = await common.getAccount('eosio');
+                assert(account, "Account 'eosio' does not exist.");
+            },
+            'should perform an account lookup against annie': async () => {
+                const account = await common.getAccount('eosio');
+                assert(account, "Account 'eosio' does not exist.");
+            },
+            'should lookup eosio global table': async () => {
+                const results = await common.getTable('eosio', 'eosio', 'global');
+                assert(results[0] && result[0].ultra_veto_enabled, 'Table was found, and vote is enabled.');
+            },
+        };
+    }
+};
+```
+
+`assert` can be used in a handful of ways, but the most common way to write an `assert` is to check if a value is true or false.
+
+## Common API
+
+The `common` object inside of `tests` has a handful of useful functions that will speed up your test deployment time.
+
+### getSingleton
+
+Returns a single table object with what is presumed to be the table data inside of it.
+
+**Usage**
+
+```typescript
+getSingleton(account: string, scope: string, table: string);
+```
+
+**Example**
+
+```typescript
+const result = common.getSingleton('eosio', 'eosio', 'global');
+
+if (!result) {
+    // No table exists or the function already errored out.
+    return;
+}
+
+assert(result.ultra_veto_enabled === 1, 'veto was not enabled');
+```
+
+### getTable
+
+Returns entries from the table.
+
+**Usage**
+
+```typescript
+getTable(account: string, scope: string, table: string, limit = 100, showMore = true);
+```
+
+_limit_ - The number of entries to show.
+
+_showMore_ - This will return the entire table object with a `showMore` boolean that will be toggled to true if there are more entries.
+
+**Example**
+
+```typescript
+const results = await common.getTable('eosio', 'eosio', 'producers');
+assert(Array.isArray(results.rows), 'More than two rows are present');
+```
+
+**Example Data Output**
+
+```typescript
+{
+    "rows": [
+        {
+            "code": 'eosio',
+            "scope": 'eosio',
+            "table": 'producers',
+            "payer": 'eosio',
+            "count": 1
+        },
+    ],
+    "more": ''
+}
+```
+
+### getScopes
+
+Returns an array of available tables, and scopes for a given contract.
+
+**Usage**
+
+```typescript
+getTable(account: string);
+```
+
+**Example**
+
+```typescript
+const scopes = await common.getScopes('eosio.token');
+assert(scopes.rows.length >= 1, 'Did not retrieve any scopes from eosio.token');
+```
+
+**Example Data Output**
+
+```typescript
+{
+    "rows": [
+        {
+            "code": 'eosio.token',
+            "scope": '........ehbp5',
+            "table": 'stat',
+            "payer": 'eosio.token',
+            "count": 1
+        },
+    ],
+    "more": ''
+}
+```
+
+### getAccount
+
+Returns the account information if the account is available. Otherwise returns null.
+
+**Usage**
+
+```typescript
+getAccount(account: string);
+```
+
+**Example**
+
+```typescript
+const account = await common.getAccount('bobbyjoe');
+assert(account, 'Did not find account bobbyjoe');
+```
+
+**Example Data Output**
+
+```typescript
+{
+    account_name: 'bobbyjoe',
+    head_block_num: 47,
+    head_block_time: '2022-05-02T17:59:26.500',
+    privileged: false,
+    last_code_update: '1970-01-01T00:00:00.000',
+    created: '2022-05-02T17:59:26.000',
+    core_liquid_balance: '100.00000000 UOS',
+    ram_quota: 256000,
+    net_weight: 0,
+    cpu_weight: 0,
+    net_limit: { used: -1, available: -1, max: -1 },
+    cpu_limit: { used: -1, available: -1, max: -1 },
+    ram_usage: 380,
+    permissions: [
+      { perm_name: 'active', parent: 'owner', required_auth: [Object] },
+      { perm_name: 'owner', parent: '', required_auth: [Object] }
+    ],
+    total_resources: {
+      owner: 'bobbyjoe',
+      power_weight: '0.00000000 UOS',
+      ram_bytes: 256000,
+      flags: 0
+    },
+    self_delegated_bandwidth: null,
+    refund_request: null
+}
+```
+
+### createAccount
+
+Creates an account and returns `true` if account creation was successful.
+
+**Usage**
+
+```typescript
+createAccount(account: string, ram = 250, tokens = 100);
+```
+
+**Example**
+
+```typescript
+const result = await common.createAccount('bobbyjoe');
+assert(result, 'account bobbyjoe was not created');
+```
+
+### addUOS
+
+Adds tokens to a specific account.
+
+Returns the transaction result if successful.
+
+**Usage**
+
+```typescript
+addUOS(name: string, amount: string | number);
+```
+
+_amount_ - must be a whole number
+
+**Example**
+
+```typescript
+const result = await common.addUOS('bobbyjoe', 100);
+```
+
+### transfer
+
+Transfers tokens from an account to another account.
+
+Returns the transaction result if successful.
+
+**Usage**
+
+```typescript
+transfer(from: string, to: string, fixedAmount: number, memo = '');
+```
+
+**Example**
+
+```typescript
+const result = await common.transfer('bobbyjoe', 'alice', 5.00004321, 'moneys!');
+```
+
+### transactAssert
+
+Used to verify that a certain smart contract will assert a certain message when it fails. Otherwise returns `false`.
+
+If successful it will return true if transaction succeeds.
+
+**Usage**
+
+```typescript
+transactAssert(
+    actions: Array<{ account: string, name: string, authorization: Array<{ actor: string, permissions: string}>, data: Object}>, 
+    assertionMessage: string
+);
+```
+
+**Example**
+
+```typescript
+const memo = [...Array(257).keys()].map(x => 'a').join('');
+
+const res = await common.transactAssert(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'limitmint',
+            authorization: [{ actor: 'somemanager', permission: 'active' }],
+            data: { token_factory_id: 1, account_minting_limit: 10, memo },
+        },
+    ],
+    'memo has more than 256 bytes',
+);
+```
+
+### pushAction
+
+Pushes a normal `cleos` based transaction.
+
+Returns transaction if successful.
+
+**Usage**
+
+```typescript
+pushAction(code: string, action: string: authority: string, args: Array<any>)
+```
+
+**Example**
+
+```typescript
+ const result = await common.pushAction(
+    "eosio.token",
+    "transfer",
+    "ultra.eosio@active",
+    ["ultra.eosio", "alice", "4.00000000 UOS", ""]
+);
+
+assert(result, "Did not push transaction with 'pushAction' common api");
+```
+
+### getBalance
+
+Returns the current `numerical` representation of the user's system balance.
+
+**Usage**
+
+```typescript
+getBalance(account: string)
+```
+
+**Example**
+
+```typescript
+const currentBalance = await common.getBalance('alice');
+assert(currentBalance >= 1, "Did not have any tokens");
+```
+
+### addCodePermission
+
+Adds a code permission to a smart contract account permission.
+
+Returns successful transaction or throws error.
+
+**Usage**
+
+```typescript
+addCodePermission(account: string, permission = 'active');
+```
+
+**Example**
+
+```typescript
+const result = await common.addCodePermission("alice", "active");
+```
+
+### sleep
+
+Milliseconds to wait before moving to next part of a function.
+
+**Usage**
+
+```typescript
+sleep(milliseconds: number);
+```
+
+**Example**
+
+```typescript
+await common.sleep(500);
+```
+
+### post
+
+Performs a simple post request against any available test API.
+
+Returns the fetched data in object format.
+
+**Usage**
+
+```typescript
+post(endpoint: string, body: Object);
+```
+
+**Example**
+
+```typescript
+const result = await common.post("chain/get_account", {
+    account_name: "alice",
+    expected_core_symbol: "8,UOS",
+});
+
+assert(result, "Could not perform a POST request");
+```
+
+### get
+
+Performs a simple get request against any available test API.
+
+Returns the fetched data in object format.
+
+**Usage**
+
+```typescript
+get(endpoint: string);
+```
+
+**Example**
+
+```typescript
+const result = await common.post("chain/get_info");
+console.log(result);
+```
+
+### updateAuth
+
+Updates the permissions for an account.
+
+**Usage**
+
+```typescript
+updateAuth(account: string, parent: string, permission: string, weight: number, keys: Array<Object>, accounts: Array<Object>);
+```
+
+**Example**
+
+```typescript
+const result = await common.updateAuth(
+    "alice",
+    "active",
+    "newperm",
+    1,
+    [],
+    [
+        {
+            weight: 1,
+            permission: {
+                actor: "bobbyjoe",
+                permission: "active",
+            },
+        },
+    ]
+);
+```
+
+---
+title: 'Environment Variables'
+
+outline: [0, 4]
+order: 6
+---
+
+# Environment Variables
+
+Each section of this file is an environment variable name.
+
+For anything that has to do with an ID you want to turn on the Discord Developer Mode.
+
+This option can be found under:
+
+```sh
+User Settings > Advanced > Developer Mode
+```
+
+IDs can be obtained by right-clicking server icons, roles, etc. and copying the ID.
+
+### DISCORD_BOT_TOKEN
+
+Obtained under the bot tab in the [discord developer panel](https://discord.com/developers/applications).
+
+### APPLICATION_ID
+
+Obtained under the general information tab in the [discord developer panel](https://discord.com/developers/applications).
+
+### GUILD_ID
+
+ID of the dicord server where this bot is added.
+
+### WEBSERVER_PORT
+
+What port to run the web server under.
+
+Usually `3000`.
+
+### CNAME
+
+Change this to a real URL, or the address of your host if deploying into production. This is the actual URL pointing to the bot.
+
+### MONGODB_URL
+
+Connection string to your mongodb instance. If you need a free host MongoDB Atlas provides small databases for free; and it's perfect for our little bot.
+
+---
+title: 'Introduction'
+
+outline: [0, 4]
+order: 1
+---
+
+# Ultra Uniq Discord Bot
+
+![](/images/discordbot/discordbot.png)
+
+## What is the Discord Bot?
+
+Ultra has created a Discord Bot which allows you to verify your Ultra Mainnet account, and then use Uniqs (NFTs) as keys which open access to gated channels. In short, if you have the right Uniq, you can have access to special content on a Discord server.
+
+## Where do you get the Discord Bot?
+
+Ultra provides both the [Github repository](https://github.com/ultraio/ultra-discord-uniq-roles-bot) for the Discord Bot, and the [Quay.io image](https://quay.io/repository/ultraio/discord-uniq-roles-bot?tab=tags).
+
+## Summary of Use
+
+-   An Administrator of the server will assign a factory to a discord role.
+-   A user uses a command in your Discord Server to bind their Discord Account to the Ultra Blockchain.
+-   A user will then receive a private message with a prefilled URL that points to a WebServer that this bot is running alongside itself.
+-   The user will then visit the attached URL.
+-   The user will either be prompted to connect to the Ultra Wallet extension, or obtain the Ultra Wallet Extension.
+-   Upon connecting they will be asked to sign a message with their blockchain account.
+-   A callback URL will be invoked back to this bot with the signed message.
+-   We now have identified that the user owns the blockchain account and we can store that into a database.
+    -   Stores the Discord ID
+    -   Stores the Blockchain ID
+    -   Stores the Signature
+-   After the internal logic of the bot will lookup the blockchain id and bind roles to the discord user based on what Uniq's they own and have in their inventory.
+-   If a matching token factory is found in the user's inventory they are given a discord role that matches it.
+-   Perioidic updates are done to add / remove roles based on users who are stored in the Database.
+
+---
+title: 'Installing the Client'
+
+outline: [0, 4]
+order: 4
+---
+
+# Installing the Client
+
+This is where the HTML data lives, and includes all the necessary files for a small single page application.
+
+This utilizes Vite to create a single page application that utilizes Vue.
+
+## Commands
+
+From the root directory of this monorepo; run any of the following commands.
+
+### Vue Development Server
+
+Spins up a localhost server to perform development. This spins up a Vite server on port 3000 (usually) and allows you to make changes and view them in your browser.
+
+```sh
+npm run vue-dev -w client
+```
+
+### Build
+
+Builds the client-side into a single page application, and pushes it to the server folder under packages/server/dist/html.
+
+```sh
+npm run build -w client
+```
+
+## Folder Structure
+
+This is a traditional Vite + Vue folder structure with TypeScript.
+
+Everything is inside of the src directory.
+
+---
+title: 'Installing the Server'
+
+outline: [0, 4]
+order: 3
+---
+
+# Installing the Server
+
+This is where the backend data lives. This handles database writing, verifying signatures, and Discord commands.
+
+## Commands
+
+From the root directory of this monorepo; run any of the following commands.
+
+### Dev
+
+Spins up a localhost server to perform development against for the server-side.
+
+```sh
+npm run -w server
+```
+
+### Build
+
+Builds the client-side into a single page application, and pushes it to the server folder under packages/server/dist/html.
+
+```sh
+npm run build -w server
+```
+
+## Folder Structure
+
+The main logic lives inside of the `src/services` folder.
+
+The bot will not start without starting every service successfully.
+
+### services/blockchain
+
+Handles various calls to the ultra main network chain
+
+### services/database
+
+Handles writing to a MongoDB collection for an individual user, or a token factory binding to a discord role
+
+### services/discord
+
+Handles all slash commands that are integrated with discord
+
+### services/express
+
+Handles feeding the compiled HTML static site to users who access the available endpoint that is provided by this bot
+
+### services/messageProvider
+
+Generates cached messages which are used to help identify a signature after a signature is signed by a blockchain account
+
+### services/users
+
+Handles refreshing user data and inventories and rebinding roles.
+
+---
+title: 'Running the Bot'
+
+outline: [0, 4]
+order: 5
+---
+
+# Running the Bot
+
+Depending on your environment and usecase you will want to use one of the following commands to start the bot.
+
+## Production
+
+Builds both Client & Server, then Starts the Bot.
+
+HTML files are automatically built to `packages/server/dist/html`.
+
+```sh
+npm run start -ws
+```
+
+## Development
+
+Use this if you are making changes.
+
+Ultra Wallet requires an HTTP(s) server to work with it.
+
+This starts a Vite Server with local https, and the server without feeding the built pages through the endpoint.
+
+```sh
+npm run dev -w packages/server
+```
+
+### Docker
+
+These are general purpose docker instructions based off this repository.
+
+Start by adding your `.env` file to `packages/server/.env`
+
+Run the following to start the bot.
+
+```sh
+docker build -t uniqbot .
+```
+
+```sh
+docker compose up
+```
+
+---
+title: 'Setup Instructions'
+
+outline: [0, 4]
+order: 2
+---
+
+# Setup Instructions
+
+## Prerequisites
+
+-   [NodeJS 16+](https://nodejs.org/en/download)
+-   [Discord Bot Setup](./setup.md)
+
+## Clone the repository
+
+You'll start by cloning the repository.
+
+```sh
+git clone https://github.com/ultraio/ultra-discord-uniq-roles-bot
+```
+
+Navigate into the newly created folder
+
+```sh
+cd ultra-discord-uniq-roles-bot
+```
+
+Install npm packages
+
+```sh
+npm install
+```
+
+Create an `.env` file in the `packages/server` folder.
+
+Fill it out with the environment variable information.
+
+See the [Environment Variables](./environment-variables.md) section for more info.
+
+See the [Discord Bot Setup](./setup.md) to deploy your bot.
+
+```sh
+DISCORD_BOT_TOKEN=
+APPLICATION_ID=
+GUILD_ID=
+WEBSERVER_PORT=3000
+CNAME=localhost
+MONGODB_URL=mongodb://USERNAME:PASSWORD@HOST
+```
+
+---
+title: 'Development Environment Setup'
+
+order: -9998
+outline: [0,4]
+---
+
+# Development Environment Setup
+
+Most convinent way to interact with a docker container and manage the files inside it is by using VSCode
+
+## Local
+
+For the local environment you just open `~/ultra_workdir` if you're on Linux or `C:\Users\Username\ultra_workdir` on Windows using VSCode. You can write all the tests and smart contract code locally. Then if you want to build and test use one of the following pathways:
+- [VSCode extension](../../products/smart-contract-toolkit/index.md)
+- [Run build commands in docker](./docker-contract-development-flow.md)
+
+## Docker
+
+Start a docker container using this [command](./docker-image-usage.md#running-the-image).
+It'll start a container called `ultra` which you can connect to using VSCode.
+By default your `ultra-workdir` is mounted to the `/opt/ultra_workdir` directory inside
+the container so any changes in that directory will persist on your filesystem.
+Go to the `Remote-Explorer` and attach to the `ultra` container.
+
+![](/images/vscode-attach-to-container.png)
+
+Once connected to the container open the terminal
+
+![](/images/vscode-open-the-terminal.png)
+
+and open the `/opt/ultra_workdir` directory inside the container
+
+![](/images/vscode-select-ultra-workdir.png)
+
+## VPS
+
+To connect to your virtual machine using ssh go to `Remote-Explorer` and then select `SSH Targets`. Make sure the targets are available in your `~/.ssh/config`.
+
+![](/images/vscode-ssh.png)
+
+---
+title: 'Docker Contract Development Flow'
+
+order: -9990
+outline: [0,4]
+prev: false
+---
+
+# Docker Contract Development Flow
+
+A smart contract is written in C++ but compiled into WASM.
+
+Developers must have some knowledge in C++ to write smart contracts for the Ultra Blockchain.
+
+## Hello World Smart Contract
+
+Recommended to setup a [VSCode Environment](./development-environment.md) before moving forward.
+
+### Setup
+
+Create a directory called `hello` inside of any of the following directories:
+
+-   Windows: `C:\\Users\\Username\\ultra_workdir\\hello`
+
+-   Linux: `~/ultra_workdir/hello`
+
+-   Docker Container: `/opt/ultra_workdir/hello`
+
+_Additional permissions may be required to create the directory._
+
+### Create hello.cpp
+
+Navigate to the following directory.
+
+```
+cd /opt/ultra_workdir/hello
+```
+
+Create the file `hello.cpp` inside of the `hello` directory.
+
+Then place the following content inside of `hello.cpp` and ensure you save the file.
+
+```cpp
+#include <eosio/eosio.hpp>
+class [[eosio::contract]] hello : public eosio::contract {
+  public:
+      using eosio::contract::contract;
+      [[eosio::action]]
+      void hi( eosio::name user ) {
+         print( "Hello, ", user);
+      }
+};
+```
+
+_Above is Content for `hello.cpp`_
+
+## cdt-cpp binary
+
+There is a single binary which is included with our docker image.
+
+### What is it?
+
+- A clang-based WASM compiler and ABI generator tool
+- Must be ran anywhere inside of the docker image
+
+### Usage
+
+```
+cdt-cpp -help
+```
+
+## Compiling a Smart Contract
+
+Using the above `hello.cpp` file we can utilize `cdt-cpp` to compile it.
+
+Run the following command **inside the docker image**.
+
+```cpp
+cdt-cpp hello.cpp
+```
+
+Three files should be created in the `hello` directory.
+
+- hello.cpp
+  - This is the source code of an example smart contract.
+- hello.abi
+  - This file describes the interface of the smart contract.
+- hello.wasm
+  - This is a compiled Web Assembly smart contract.
+
+After compiling the smart contract there are two options for deployment in the local development environment.
+
+- [Deploy with 'ultratest' framework](../../products/ultratest/index.md)
+- ['cleos' based contract deployment](../../blockchain/general/tools/cleos.md#deploying-a-smart-contract)
+
+## CMake
+
+When building smart contracts, developers may have more than one file. While `cdt-cpp` provides the basics, it is recommended to use CMake for anything more complex than single file.
+
+We will try compiling the `eosio.token` contract in this example.
+
+### Preparations
+
+Create a directory called `eosio.token` in one of the following locations:
+
+-   Windows: `C:\\Users\\Username\\ultra_workdir\\eosio.token`
+
+-   Linux: `~/ultra_workdir/eosio.token`
+
+-   Docker Container: `/opt/ultra_workdir/eosio.token`
+
+After creating the directory, create directories inside of `eosio.token` with the following paths:
+
+- `eosio.token/include/eosio.token`
+- `eosio.token/src`
+
+Obtain the following files from [the following markdown page](../../examples/eosio.token.md) and append the content from each section in their own corresponding file.
+
+### Example Folder Structure
+
+```
+/opt/ultra_workdir/eosio.token/
+    |
+    |- CMakeLists.txt
+    |- include/
+    |  |- eosio.token/
+    |     |- eosio.token.hpp
+    |- src/
+        |- eosio.token.cpp
+```
+
+### Building using CMakeLists.txt
+
+After preparing all the smart contract files and CMakeLists.txt you should be able to proceed with building the contract using the following commands:
+
+```sh
+mkdir -p build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ../
+make
+```
+
+If you want to rebuild the contract you can either run the `make` command in the `build` directory again or delete the `build` directory and perform the commands above again
+
+If everything is setup correctly the commands will use the `CMakeLists.txt` and build your contract.
+
+![](/images/vscode-eosio-token-contract-build.png)
+
+<br />
+
+## Additional Files with CMake
+
+CMake has a handful of functions that can be placed inside of a `CMakeLists.txt` file to include other files, and folders.
+
+---
+
+`target_include_directories(target PUBLIC dir_list)`
+
+> Specifies include directories to use when compiling a given target.
+
+**Example**
+
+This example shows how to include other folders.
+
+```
+target_include_directories(mycontract 
+    PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include 
+    ${CMAKE_CURRENT_SOURCE_DIR}/common/include 
+    ${CMAKE_CURRENT_SOURCE_DIR}/mycontract_specific/include)
+```
+
+---
+
+`add_contract`
+
+>Used to build your smart contract and generate an ABI, the first parameter is the contract name, the second is the cmake target name, and the rest are the CPP files needed to build the contract.
+
+**Example**
+
+This example shows how to include additional `.cpp` source files.
+
+```
+add_contract(mycontract mycontract 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/a.cpp 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/b.cpp)
+```
+
+---
+
+## Troubleshooting
+
+Any errors encountered during builds or deployment can potentially have solutions in our [troubleshooting section](./troubleshooting.md).
+---
+title: 'Docker Image Usage'
+
+order: -9997
+outline: [0,4]
+---
+
+# Docker Image Usage
+
+Pull the docker image down from quay.io
+
+```sh
+docker pull quay.io/ultra.io/3rdparty-devtools:latest
+```
+
+## Usage
+
+We currently support Docker for a majority of our development needs as it allows most end-users to easily spin up our tools in almost any environment.
+
+### Running the Image
+
+```sh
+docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra/ultra_workdir:/opt/ultra_workdir --name ultra quay.io/ultra.io/3rdparty-devtools:latest
+```
+
+* -d 
+  * Run container in background and print container ID
+* -i
+  * Keep STDIN open even if not attached
+* -t
+  * Allocate a pseudo-TTY
+* -p \[ HostPort:ContainerPort \]
+  * A port range to expose for the Container
+  * Port 8888 used as an HTTP port by `nodeos`
+  * Port 9876 is used as P2P connection port by `nodeos`
+* -v \[ HostPath:GuestPath \]
+  * Attaches a directory from your host machine to the docker container
+
+### Getting in the Image
+
+If the above container name is kept as `ultra` then the following can be used to access the Docker Container.
+
+```
+docker start ultra && docker attach ultra
+```
+
+### Persisting container between runs
+
+If you stick to commands specified under the `Docker` section of guides you should have your Docker container persist between runs. Commands such as `docker start` and `docker attach` will not destroy your existing container. Running the `docker run` command again with the same `ultra` container name will also not overwrite your container but instead will fail
+
+Commands that may potentially remove your container (and erase the data inside it are): `docker rm`, `docker prune`. Please be sure to avoid them if you are concerned with your data being removed.
+
+::: warning
+When container is removed all changes you've done inside it will be erased. Because of that please ensure that your `ultra_workdir` is mounted to the container and move any files you want to keep to this `ultra_workdir`.
+:::
+
+## Available Binaries
+
+Binaries available inside of the Docker Image
+
+* cleos
+* nodeos
+* keosd
+* ultratest
+  
+_All "eosio" based binaries can be found in `/usr/opt/eosio/<SOME_VERSION>/bin`_
+
+
+---
+title: 'Endpoint Usage'
+
+order: -9993
+outline: [0,4]
+---
+
+# Cleos Endpoint Usage
+
+In many cases when working with smart contracts, or on-chain actions you will need an endpoint. An endpoint can be described as a URL to push transactions to, get chain information such as tables, or lookup accounts.
+
+## Cleos Usage
+
+Cleos has a section on using [external endpoints](../../products/chain-api/index.md#external-apis).
+
+In short append the `-u` flag with a url. If you are using local environment then this flag can be skipped. The default value of `http://127.0.0.1:8888` will be used
+
+```
+cleos -u <endpoint>
+```
+
+## cUrl Usage
+
+cUrl can be used normally but suggested to use `json_pp` to help prettify the output from a cUrl response.
+
+```
+curl -X POST <endpoint>/v1/chain/get_info
+```
+
+## wget Usage
+
+wget can also be used to fetch endpoint information as well.
+
+```
+wget -qO- /dev/stdout <endpoint>/v1/chain/get_info | json_pp
+```
+
+## Available Endpoints
+
+[See this API section](../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
+
+## Limitations and Availability
+
+Each of these endpoints has their own policies and limitations on data that can be sent to and pull from the endpoint. However, those limitations are not easily understood. These are all public facing endpoints and if an API node is down, simply try another one.
+---
+title: 'Getting Started'
+
+order: -9999
+outline: [0,4]
+---
+
+# Docker Quickstart
+
+The goal of this document is to get a development environment setup in as little time as possible.
+
+## Prerequisites
+
+-   [Docker for Windows](https://docs.docker.com/desktop/windows/install/)
+-   [Docker for Linux](https://docs.docker.com/engine/install/ubuntu/)
+-   [Docker for Mac](https://docs.docker.com/desktop/install/mac-install/)
+-   [Git for Windows / Linux](https://git-scm.com/)
+    -   Ensure that you install Git Bash
+
+Make sure docker engine is up on your system:
+
+```sh
+docker --version
+```
+
+`Docker version 20.10.21, build baeda1f`
+
+## Obtaining the Docker Image
+
+Pull the docker image down from quay.io
+
+```sh
+docker pull quay.io/ultra.io/3rdparty-devtools:latest
+```
+
+_The above image tag may be out of date. Visit [our official quay.io repository](https://quay.io/ultra.io/3rdparty-devtools) to get the latest image tag._
+
+## Starting / Stopping Image
+
+Open your terminal (on Windows use `Git Bash`) and use the following command to create development tools container
+
+```sh
+docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra_workdir:/opt/ultra_workdir --name ultra quay.io/ultra.io/3rdparty-devtools:latest
+```
+
+::: warning
+The above command will utilize ports 8888 and 9876. If those ports are occupied the docker will fail to create the container. You will have an option to change which ports will be used on your host machine later.
+:::
+
+After you created the container you realistically won't need to create it again. Existing container will be accessible under the name of `ultra`.
+
+To stop the container without destroying it you can use the following command
+
+```sh
+docker stop ultra
+```
+
+## Accessing the Image
+
+After you created the container you will be able to attach to it using the following command. It will also start the container if it is currently stopped (for Windows keep in mind to use `Git Bash` still).
+
+```sh
+docker start ultra && docker attach ultra
+```
+
+## Accessing Docker Volume
+
+The docker container has a shared directory located somewhere in your operating system.
+
+-   Windows: `C:\\Users\\Username\\ultra_workdir`
+
+-   Linux: `~/ultra_workdir`
+
+-   Mac OS: `~/ultra_workdir`
+
+-   Docker Container: `/opt/ultra_workdir`
+
+## Creating a Smart Contract
+
+Create a directory in the `ultra_workdir` directory called `contracts` with a file inside called `hello.cpp`.
+- You can do it either on your host machine (Windows/Linux) or inside the docker image using your editor of choice (`nano` is preinstalled, other editors require manual installation)
+- You also have an option to use [VSCode Environment](./development-environment.md)
+
+```cpp
+#include <eosio/eosio.hpp>
+
+using namespace eosio;
+
+class [[eosio::contract]] hello : public eosio::contract {
+  public:
+      using contract::contract;
+
+      [[eosio::action]]
+      void world( eosio::name name ) {
+        print("Hi, ", name);
+      }
+};
+```
+
+### Compiling a Smart Contract
+
+Inside of the docker image (using the terminal that is attached to the `ultra` container) navigate into the `contracts` directory, and run the following command.
+
+```
+mkdir -p /opt/ultra_workdir/contracts && cd /opt/ultra_workdir/contracts
+```
+
+```
+cdt-cpp -abigen -o hello.wasm hello.cpp
+```
+
+## Writing your first test
+
+### Setup directory Structure
+
+This directory structure should be reflected inside of the docker image.
+
+```sh
+/opt
+  /ultra_workdir
+    /contracts
+      |- hello.wasm
+      |- hello.abi
+      |- hello.cpp
+    /tests
+      |- hello.ultra_test.js
+```
+
+### Write Tests
+
+Test files are written in JavaScript and must have `ultra_test.js` suffix (e.g. `hello.ultra_test.js`).
+
+Now try adding the following code snippet to `hello.ultra_test.js`. You should place the file `ultra_workdir/tests` directory like the file tree in the section above suggests
+
+```js
+module.exports = class test {
+    constructor() {}
+
+    // Deploys ultra system contracts to the nodeos instance
+    requiresSystemContracts() {
+        return true;
+    }
+
+    // What account to create, and what contract to deploy on it
+    importContracts() {
+        return [{ account: 'smrtcntract1', path: '../contracts', contract: 'hello' }];
+    }
+
+    // Created after importing contracts
+    requiredAccounts() {
+        return ['account1', 'account2', 'account3', 'account4'];
+    }
+
+    tests({ assert, endpoint, cleos, rpc, api, ecc, keychain }) {
+        assert(true, "This will never trigger because it is true.");
+
+        // Should always return an object of async tests
+        return {
+            'should execute transaction': async () => {
+                const result = await api.transact({
+                    actions: [{
+                        account: 'smrtcntract1', // The smart contract account
+                        name: 'world', // Name of the action
+                        authorization: [
+                            // actor -> The account performing the action
+                            // permission -> Permission required for that account. Usually 'active'.
+                            { actor: 'account1', permission: 'active' },
+                        ],
+                        // This is an exact match of the data to send to the 'action'.
+                        // In the example below the 'hello' action will take a name parameter.
+                        data: {
+                            name: 'account1',
+                        },
+                    }],
+                },{ blocksBehind: 3, expireSeconds: 3600 });
+            },
+        };
+    }
+};
+```
+
+### Running Tests
+
+Inside of the docker image run the following commands.
+
+```sh
+cd /opt/ultra_workdir
+```
+
+```
+ultratest
+```
+
+If you did everything properly you should see the test line stating `All Tests Passed`
+
+::: info
+If the test run fails or gets stuck you can kill it using the ^C (Ctrl + C) termination command.
+:::
+
+---
+title: 'Overview'
+
+order: -99999
+---
+
+# Docker Overview
+
+This section highlights the tools provided inside of a Docker image.
+
+- [Getting Started](./getting-started.md)
+- [Setup a Development Environment](./development-environment.md)
+- [Docker Image Usage](./docker-image-usage.md)
+- [Endpoint Usage](./endpoint-usage.md)
+- [Docker Contract Development Flow](./docker-contract-development-flow.md)
+- [Obtaining Tokens Locally](./obtaining-tokens-locally.md)
+- [Troubleshooting Docker Image](./troubleshooting.md)
+---
+title: 'Obtaining Tokens Locally'
+
+order: -9989
+outline: [0,4]
+---
+
+# Obtaining Tokens Locally
+
+Tokens can be obtained in one of two ways in the **local environment**.
+
+The first way involves obtaining tokens in a unit test, check the [ultratest](../../products/ultratest/index.md#adduos) documentation for more information.
+
+The second way involves an `ultratest` no test instance and `cleos`.
+
+## Before the Transfer Action
+
+You should be inside of the docker image.
+
+You should have [ultratest running in a no-tests instance](../../products/ultratest/index.md#starting-a-system-node).
+
+Make sure you have [created an account locally](../../blockchain/general/tools/cleos.md#creating-an-account) before running the following command.
+
+## The Transfer Action
+
+The chain should be ran locally through ultratest. 
+
+You have all of the account keys for your own chain inside of `cleos`.
+
+You can now perform a simple transfer action through the `eosio.token` contract.
+
+```
+cleos push action eosio.token transfer '["ultra.eosio", "someaccount", "5.00000000 UOS", ""]' -p ultra.eosio
+```
+
+_The above command transfers 5 UOS from `ultra.eosio` to `someaccount`.
+
+
+---
+title: 'Troubleshooting Docker Image'
+
+order: 99999
+outline: [0,4]
+---
+
+# Troubleshooting Docker Image
+
+General troubleshooting while working with the docker image and individual tools inside of the image.
+
+## Smart Contract Debugging
+
+If you are unable to determinne what the issue is inside of a smart contract we suggest the following methods.
+
+**Rubber Ducky Debugging**
+
+- Step through your code one at a time and read it back to yourself out loud.
+- Ensure that it makes as much sense as possible as you read it out loud.
+- Usually during the explanation page you can figure out where your error may be.
+
+**Cave Man Debugging**
+
+- Add various `eosio::print` statements inside of your smart contract.
+- Print out every step of the way to help figure out where your smart contract may be failing.
+
+**Test Based Debugging**
+
+- Using the `ultratest` framework inside of the Docker image, you can write your own tests for a smart contract.
+- This is very useful for debugging a smart contract that can already compile.
+
+## Container is not starting
+
+`Bind for 0.0.0.0:9876 failed: port is already allocated`
+
+**Solution(s)**
+
+Make sure there are no processes listening to ports `8888` and `9876`. They're used by the container.
+To find the pid of the process listening to `PORT` on linux run `sudo lsof -i | grep PORT`,
+on windows - `netstat -ano | findStr "PORT"`.
+
+## Compiling smart contracts
+
+```ini
+error 2022-03-16T09:23:47.545 cleos     main.cpp:3985                 main                 ] Failed with error: Assert Exception (10)
+!action_type.empty(): Unknown action <action_name> in contract hello
+```
+
+**Solution(s)**
+
+Make sure the `<action_name>` is inside the abi file. If not check that it's marked with an `[[eosio::action]]` compiler attribute.
+
+## Transaction Exceeding CPU Limit
+
+```
+Error 3080002: transaction exceeded the current network usage limit imposed on the transaction
+```
+
+**Solution(s)**
+
+-    Improve the efficiency of your smart contract
+-    Attempt to deploy the transaction multiple times
+-    Find an HTTP endpoint for Testnet / Mainnet deployment that is very close to your network
+-    Change transaction CPU Limits (Only applies to own networks)
+
+## Authorization Error
+
+```
+Provided keys, permissions, and delays do not satisfy declared authorizations
+```
+
+**Solution(s)**
+
+Revolves around specific private keys not currently available in your wallet that match the account permissions.
+
+## No ABI or WASM Files
+
+```
+Error 3160010: No abi file found
+```
+
+```
+Error 3160009: No wasm file found
+```
+
+**Solution(s)**
+
+During the compilation of the smart contract it may not have compiled correctly. Try reviewing the compilation process and ensure that there are no additional errors showing inside of the console.
+
+
+## Out of ram error
+
+```
+Reading WASM from /Users/shankar/contracts/hello/hello.wasm...
+Publishing contract...
+Error 3080001: Account using more than allotted RAM usage
+Error Details:
+account youraccname1 has insufficient ram; needs 25588 bytes has 9547 bytes
+```
+
+The state of a contract, along with the code and ABI are stored in a in-memory database.
+Your storage quota is calculated based on the RAM resource.
+
+**Solution(s)**
+- Buy more ram using `buyram` action of the system contract
+- Reduce your code size by not relying on 3rdparty libraries
+
+
+---
+title: 'How to create an Account'
+order: -99998
+oultine: [0,5]
+---
+
+# How to create a Developer Account
+
+Creating an account for development with Ultra.io is situational. You only need a developer account if you're dealing with smart contracts, and transactions. In that case continue forward with this brief tutorial.
+
+## Video Tutorial
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zOmt-aYUJjI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+## Generate a Key Pair
+
+First you'll need need a private and public key. If you're going into production, do not use this key generator. See [how to generate a keypair](./how-to-generate-a-keypair.md) for additional information.
+
+After obtaining a keypair, write it down somewhere safe. You are going to need it later.
+
+<KeyGenerator />
+
+## Visit Test Network Faucet
+
+Visit the link below to open our faucet application.
+
+* https://faucet.testnet.app.ultra.io
+
+1. Click `Account Creator`
+2. Paste your `Public Key` in the owner and active fields
+3. Fill the Captcha
+4. Click Create Account
+5. Write down the **Account Name** that was returned
+
+![](./images/create-account.png)
+
+![](./images/account-name.png)
+
+## Lookup Your Account
+
+Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
+
+<AccountLookupTestnet />
+
+## All Done!
+
+You now have a development account for our test network.
+---
+title: 'How to generate a Keypair'
+order: -99999
+oultine: [0,5]
+---
+
+# How to Generate a Key Pair
+
+Ultra uses an elliptic curve key pair consists of a public key (used for verification) and a private key (kept secret for signing transactions), enabling secure digital interactions on the Ultra blockchain.
+
+A keypair is **required** for most blockchain development besides reading APIs. If you are going to publish a smart contract, sign a transaction, or even sign a message you're going to need a keypair.
+
+::: details Additional Information
+
+#### What is a Public Key?
+
+A public key is primarily used for cryptographic verification. In the context of blockchain or digital signatures, it allows others to confirm that a message or transaction was indeed signed by the corresponding private key without revealing the private key itself. This verification process is crucial for ensuring the integrity and authenticity of data in secure communications and transactions.
+
+#### What is a Private Key?
+
+A private key, a secret alphanumeric code, is used to digitally sign transactions or messages. It grants control over associated assets or data in blockchain systems. Essential for secure communication, it enables identity verification and access control, emphasizing the need for stringent security measures to prevent unauthorized access or loss.
+
+:::
+
+### Generate a Keypair
+
+In most cases we don't recommend generating private keys online. However, if you are using this for our test network it is safe to use there. Otherwise, seek out some of the additional ways to generate a key pair safely. Such as using [cleos](../../blockchain/general/tools/cleos.md).
+
+<KeyGenerator />
+<br />
+<br />
+
+### Alternative Ways to Generate Keypairs
+
+* [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+* [EOS Authority](https://eosauthority.com/generate_eos_private_key)
+* [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
+* [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
+---
+title: 'How to get RAM'
+order: -99995
+oultine: [0,5]
+---
+
+# How to get RAM
+
+After creating a developer account you can also purchase RAM for your account.
+
+::: warning
+
+This is only necessary if you are a smart contract developer
+
+:::
+
+## Why do you need RAM?
+
+RAM on the Ultra blockchain is essential for storing smart contract data and state. When you purchase RAM, you are purchasing RAM with the intent of storing data on-chain for other users to interact with.
+
+## Initial Setup
+
+1. Download Chrome or Brave
+2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+3. Refresh this Page
+4. Use the form below to quickly add RAM
+5. Ultra wallet should open
+6. **Make sure to set your wallet to `Testnet`**
+7. Import your private key into the wallet
+
+![](./images/select-network-wallet.png)
+
+## Purchase RAM
+
+Use the form below to add RAM to your account on our Test Network.
+
+<BuyRam />
+
+## All Done!
+
+You now have a development account with some UOS balance, and a little bit of RAM to publish a smart contract!
+---
+title: 'How to get Tokens'
+order: -99997
+oultine: [0,5]
+---
+
+# How to get Tokens
+
+After creating a developer account you can also use the testnet faucet to get tokens.
+
+::: warning
+
+Make sure you have an account on our Test Network before you continue.
+
+:::
+
+## Visit Test Network Faucet
+
+Visit the link below to open our faucet application.
+
+* https://faucet.testnet.app.ultra.io
+
+1. Click `Token Faucet`
+2. Paste your `Account Name` in the `To Account` field.
+3. Fill the Captcha
+4. Click Issue
+
+![](./images/get-tokens.png)
+
+## Check Your Account Balance
+
+Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
+
+<AccountLookupTestnet />
+
+
+## All Done!
+
+You now have a development account with some UOS balance distributed to the account!
+---
+title: 'How to make a REST Request'
+order: -99994
+oultine: [0,5]
+---
+
+# How to make a REST Request
+
+A REST request is a way to interact with a web service or in our case the blockchain, using HTTP methods (GET, POST, PUT, DELETE) to perform actions on resources identified by URIs. It follows the principles of Representational State Transfer (REST) for stateless communication.
+
+## Why would I need to do this?
+
+You may need to perform a REST request if you're looking up user balance, user account data, or maybe even NFTs.
+
+## REST API Basics
+
+Observe the following URL:
+
+```
+http://ultra.api.eosnation.io/v1/chain/get_info
+```
+
+It is composed of two parts:
+
+```
+<block_producer_url><endpoint>
+```
+
+Block Producer URL: `http://ultra.api.eosnation.io`
+
+Endpoint: `/v1/chain/get_info`
+
+Knowing this we can make a simple REST request.
+
+## Making the Request
+
+Use a CLI, or write some code in the language of your choice.
+
+::: code-group
+
+```sh [curl]
+curl http://ultra.api.eosnation.io/v1/chain/get_info
+```
+
+```js [JavaScript]
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: 'false'};
+
+fetch('http://ultra.api.eosnation.io/v1/chain/get_info', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```C# [C#]
+var client = new RestClient("http://ultra.api.eosnation.io/v1/chain/get_info");
+var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+IRestResponse response = client.Execute(request);
+```
+
+```GO [Go]
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "http://ultra.api.eosnation.io/v1/chain/get_info"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("Content-Type", "application/json")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```Java [Java]
+HttpResponse<String> response = Unirest.get("http://ultra.api.eosnation.io/v1/chain/get_info")
+  .header("Content-Type", "application/json")
+  .asString();
+```
+:::
+
+::: details Example Response
+```ts
+{
+	"server_version": "b668b78f",
+	"chain_id": "a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097",
+	"head_block_num": 152993457,
+	"last_irreversible_block_num": 152993368,
+	"last_irreversible_block_id": "091e7e580dc242f48fc8aca5685affdea9f65288d871fd818d3ec8cf602928ad",
+	"head_block_id": "091e7eb1ca42c9e9c9a4d134aacde9bcee73bcdbf03cc02e881a0b22a260344f",
+	"head_block_time": "2023-11-21T19:32:20.000",
+	"head_block_producer": "cryptolions1",
+	"virtual_block_cpu_limit": 400000,
+	"virtual_block_net_limit": 1048576,
+	"block_cpu_limit": 400000,
+	"block_net_limit": 1048576,
+	"server_version_string": "v3.2.4-2.0.1",
+	"fork_db_head_block_num": 152993457,
+	"fork_db_head_block_id": "091e7eb1ca42c9e9c9a4d134aacde9bcee73bcdbf03cc02e881a0b22a260344f",
+	"server_full_version_string": "v3.2.4-2.0.1-0-gb668b78f6",
+	"total_cpu_weight": 613000000,
+	"total_net_weight": 613000000,
+	"earliest_available_block_num": 1,
+	"last_irreversible_block_time": "2023-11-21T19:31:35.500"
+}
+```
+:::
+
+
+
+## What are the available endpoints?
+
+Check out our section on the [Chain API](../../products/chain-api/index.md) for all endpoints, and available URLs.
+---
+title: 'How to read the Block Explorer'
+order: -99996
+oultine: [0,5]
+---
+
+# How to read the Block Explorer
+
+A block explorer is a web tool that allows users to view information about cryptocurrency transactions and blockchain data. It provides details such as transaction history, wallet balances, and block information, enhancing transparency and accountability.
+
+## Our Explorers
+
+* [Main Network](https://explorer.mainnet.ultra.io/)
+* [Test Network (You probably want this one)](https://explorer.testnet.ultra.io/)
+
+## Usage
+
+In most cases the search bar at the top takes any of the following:
+
+* Account Name
+* Transaction ID
+* Block Number
+
+### Example Queries
+
+::: details Examples
+
+```
+account:eosio.token 
+
+receiver:eosio.token (data.from:eoscanadacom OR data.to:eoscanadacom)
+
+(auth:eoscanadacom OR receiver:eoscanadacom)
+
+account:eosio.token action:transfer
+
+(ram.consumed:eoscanadacom OR ram.released:eoscanadacom)
+
+receiver:eosio.token 
+
+db.table:global
+```
+
+Examples pulled from [dFuse Docs](https://docs.dfuse.eosnation.io/eosio/public-apis/reference/search/terms/)
+:::
+
+## Account Page
+
+
+### Account Balance
+
+Account balance is available at the top.
+
+![](./images/block-explorer/explorer-balance.png)
+
+### RAM & Power
+
+Both of these are available on the account page as well.
+
+`∞` means the account has no limitations. Otherwise, most accounts have a limitation.
+
+Storing data on-chain costs `RAM`.
+
+Executing transactions utilizes `POWER`.
+
+![](./images/block-explorer/explorer-costs.png)
+
+### Permissions
+
+You can see who owns an account, or what key has control over an account under the `permissions` section.
+
+The +1/1 shows how many signatures are necessary to act on behalf of a `permission`. Permission being `active` or `owner` in the example below.
+
+![](./images/block-explorer/explorer-permissions.png)
+
+In the example below the `tech` `permission` requires two users to a transaction to act on behalf of the `ultra@tech` account.
+
+![](./images/block-explorer/explorer-permissions-advanced.png)
+
+### Contracts
+
+When you are on an account page such as `eosio.token` you can see that it has a contract deployed because it has the `tables` and `ABI` tabs.
+
+![](./images/block-explorer/explorer-abi.png)
+
+### Tables
+
+Tables can be browsed for additional information if you're aware of how the table is structured. In the case of `eosio.nft.ft` I can view the `factory.b` table to see available Uniqs. Tables available can be gathered from the `abi` tab.
+
+It's highly recommended to use `curl` requests against [REST API Endpoints](./how-to-make-a-rest-request.md) when reading data, or write a small script in one of your favorite programming languages.
+
+![](./images/block-explorer/explorer-tables.png)
+---
+title: 'How to setup the Ultra Wallet'
+order: -99996
+oultine: [0,5]
+---
+
+# How to setup the Ultra Wallet
+
+Ultra Wallet is a chrome extension that allows you to login to your normal account, but also add a private key to perform transactions. The ultra wallet is a necessary tool to write web-based applications.
+
+## Setup
+
+1. Download Chrome, Brave, or Chromium Equivalent
+2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+
+## Open Ultra Wallet
+
+Open your `Ultra Wallet` by clicking it inside of the extensions panel.
+
+![](./images/ultra-wallet-extension-panel.png)
+
+## Set the Network
+
+Set your network to `Testnet` if you are developing applications. This may need to be done for other applications.
+
+![](./images/set-network-testnet.png)
+
+## Import Private Key
+
+::: info
+
+This tutorial is meant for developers, if you are using a non-development account login normally.
+
+:::
+
+Click on `Use Private Key & Password` to import your private key from the [How to Generate a Keypair Tutorial](./how-to-generate-a-keypair.md)
+
+![](./images/use-private-key-wallet.png)
+
+Set a password.
+
+Paste your private key.
+
+![](./images/import-private-key-wallet.png)
+
+![](./images/wallet-import-done.png)
+
+## Success!
+
+You have successfully imported your private key into your wallet!
+---
+title: 'Creating a Testnet Account'
+
+order: -99994
+oultine: [0, 4]
+---
+
+# Creating a Testnet Account
+
+It's easy to create an account on our public Testnet. These accounts are used for interacting with smart contracts, or for deploying smart contracts to. If you wish to do the latter, please reach out to developers@ultra.io so that we can help set the flag which enables you to do so. We restrict direct access to reduce spam and malicious behaviour on the network.
+
+## Faucets
+
+Ultra provides two types of faucets on our public Testnet.
+
+-   `Account Faucet` - Here you can provide a public key and we will generate an account.
+-   `Token Faucet` - Here you can fund your Testnet account with some fake UOS for testing purposes.
+
+## Using your account with Ultra's Authenticator
+
+We've put together a quick video that illustrates how to import your private key into the Ultra Authenticator.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zOmt-aYUJjI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+---
+title: 'Creating a Wallet'
+
+order: -99995
+oultine: [0, 4]
+---
+
+# Creating a Wallet
+
+This should only be done when you are **NOT** using `cleos` with `ultratest`. If you prefer to have Ultratest generate your accounts and wallets automatically, check the [start a local chain](start-local-chain.md) section for how to do so.
+
+## Creating a Wallet
+
+You can create a wallet with cleos using the command:
+
+```sh
+cleos wallet create --to-console
+```
+
+Alternatively, you can also output to a password file:
+
+```sh
+cleos wallet create --file <filename>
+```
+
+## Unlocking a Wallet
+
+You can unlock your wallet with:
+
+```sh
+cleos wallet unlock
+```
+
+You'll be prompted to provide your password.
+
+## Generating a Key Pair
+
+Run the following command to generate a key pair:
+
+```sh
+cleos create key --to-console
+```
+
+This command will generate a new key pair and display the public and private keys on the console.
+
+Make sure to securely store the generated private key as it will be needed for signing transactions.
+
+Here's an example output of the cleos create key command:
+
+```sh
+Private key: `<private_key>`
+Public key: `<public_key>`
+```
+
+Remember to keep your private key safe and secure. It's crucial to protect your private key from unauthorized access to prevent any potential misuse.
+
+## Adding Keys to a Wallet
+
+You must have your wallet open and unlocked. You'll need to generate a new key pair as is shown in the above section.
+
+Run the following command to import the private key into your wallet:
+
+```sh
+cleos wallet import --private-key <private_key>
+```
+
+Make sure to keep your wallet secure and protect it with a strong password.
+
+---
+title: 'Basics Introduction'
+
+order: -99999
+oultine: [0, 4]
+prev: false
+---
+
+# Introduction
+
+Ultra's blockchain is fast, easy to use, and friendly for developers. There are a few concepts that you as a developer will need to get to grips with so that you can successfully integrate our stack into your application.
+
+Here will cover some of those basics that are necessary for working with the Ultra Blockchain.
+
+## Prerequisites
+
+You'll be running images that we provide inside of Docker, which instantiates VMs for use in development or production environments.
+
+-   [Docker](https://docs.docker.com/get-docker/) - Provided for free for Linux, Mac, and Windows
+
+### Obtain Latest Image
+
+Ultra does not provide direct access to our proprietary source code. Instead, we provide images which can be run in Docker. These images provide compiled versions of all the software you'll need to get up and running.
+
+To obtain the latest image, pull the docker image down from quay.io
+
+You can run this command in any Terminal or CLI application after installing [Docker](https://docs.docker.com/get-docker/).
+
+```sh
+docker pull quay.io/ultra.io/3rdparty-devtools:latest
+```
+
+Depending on your internet connection, this may take a while to complete.
+
+### Start Docker Container
+
+After pulling the image down, you can start the container and access it by running the following command in any Terminal or CLI application.
+
+```sh
+docker run -it --name ultra -p 8888:8888 -p 9876:9876 quay.io/ultra.io/3rdparty-devtools
+```
+
+## Sections
+
+1. [Start a Local Chain](./start-local-chain.md)
+2. [Using CLEOS](./using-cleos.md)
+3. [Pushing Transactions](./pushing-transactions.md)
+4. [Creating a Wallet](./creating-a-wallet.md)
+5. [Creating a Testnet Account](./create-a-testnet-account.md)
+
+---
+title: 'Pushing Transactions'
+
+order: -99996
+oultine: [0, 4]
+---
+
+# Pushing Transactions
+
+A transaction refers to a set of actions bundled together and submitted to the blockchain as a single atomic operation. It represents a unit of work or a state change that can be executed on the Ultra network. Transactions are fundamental to interacting with smart contracts and updating the blockchain state.
+
+## Push a transaction with `cleos`
+
+Open your terminal or command prompt.
+
+The transaction command has the following structure:
+
+```sh
+cleos push transaction '
+  {"actions":
+    [
+      {
+        "account":"<contract_account>",
+        "name":"<action_name>",
+        "authorization":
+          [
+            {
+              "actor":"<actor_account>",
+              "permission":"<actor_permission>"
+            }
+          ],
+        "data":<data_as_json_string>}
+      ]
+    }'
+```
+
+-   `<contract_account>`: The account associated with the contract where the action is defined.
+-   `<action_name>`: The name of the action you want to invoke.
+-   `<actor_account>`: The account that authorizes and signs the transaction.
+-   `<actor_permission>`: The permission level of the actor account (e.g., "active").
+-   `<data_as_json_string>`: The parameters or data for the action in JSON format. Ensure that you properly format the data according to the action's requirements.
+
+Replace the placeholders `<contract_account>`, `<action_name>`, `<actor_account>`, `<actor_permission>`, and `<data_as_json_string>` with the actual values specific to your contract, action, and transaction data.
+
+If the transaction is successful, you will receive a transaction ID as output. You can use this ID to verify the transaction's status on a block explorer.
+
+## Transaction Format
+
+On Ultra, transactions are formatted using JSON and consist of the following components:
+
+Signatures are the cryptographic proof that an authorized account has approved and authorized the transaction. Signatures are generated using the private key corresponding to the account's public key.
+
+Transactions can be optionally compressed using the zlib compression algorithm to reduce their size when transmitted over the network.
+
+Packed Transaction: The packed transaction is the core component of the transaction format. It includes the following sub-components:
+
+-   `expiration`: The expiration time of the transaction, represented as a timestamp. The transaction must be included in a block before this time to be considered valid.
+-   `ref_block_num` and `ref_block_prefix`: These values refer to the block number and block prefix of a previous block. They are used for generating a unique identifier for the transaction and for ensuring that the transaction cannot be replayed on a different fork of the blockchain.
+-   `max_net_usage_words` and `max_cpu_usage_ms`: These values represent the maximum allowed network and CPU usage for the transaction. The transaction's actions must consume resources within these limits to be accepted by the network.
+-   `delay_sec`: An optional delay (in seconds) for scheduling the execution of the transaction.
+-   `context_free_actions`: These are actions that do not require any context from the blockchain state. They can be executed in parallel and do not affect the transaction's authorization or signing.
+-   `actions`: The main actions that define the intended operations to be performed on the blockchain. Each action includes the account, action name, authorization, and associated data.
+
+Once the transaction is signed and ready for broadcasting, it is assigned a unique transaction ID. The ID is generated by hashing the packed transaction using the SHA-256 algorithm.
+
+The use of JSON and cryptographic signatures ensures the integrity and authenticity of the transactions while facilitating interoperability with different tools and libraries.
+
+---
+title: 'Starting a Local Chain'
+
+order: -99998
+oultine: [0, 4]
+---
+
+# Start a Local Chain
+
+Now that you have the [Docker image up and running](./index.md), we can move on to spinning up a local chain which you can use for development.
+
+Inside your Docker image instance, you can start a local chain by running the following command that runs our test suite, Ultratest.
+
+```sh
+ultratest -D -n -s
+```
+
+Ultratest automatically sets up a wallet, keys, and all smart contracts. These are necessary to grant you access to the functionality necessary to develop on our stack.
+
+A quick note on the flags above.
+
+`-D` stops the `ultratest` framework from closing after tests have ran.
+
+`-s` enables all system contracts
+
+`-n` tells the program to not run any tests.
+
+## Verifying Chain API is Started
+
+Check `http://localhost:8888/v1/chain/get_info` to ensure that it is running.
+
+When accessing the API externally use the URL `http://localhost:8888`.
+
+---
+title: 'Using cleos'
+
+order: -99997
+oultine: [0, 4]
+---
+
+# Using cleos
+
+With `cleos`, developers and users can interact with Ultra's blockchain network by executing various commands. Some of the common operations that can be performed using cleos include:
+
+-   Account management: Creating, modifying, and managing user accounts on the EOSIO blockchain.
+-   Contract deployment: Compiling and deploying smart contracts onto the blockchain network.
+-   Interacting with smart contracts: Sending actions to smart contracts and querying their state.
+-   Transaction management: Creating, signing, and broadcasting transactions to the blockchain.
+-   Blockchain data queries: Retrieving information about blocks, transactions, accounts, and other data on the blockchain.
+
+By utilizing the `cleos` command-line tool, developers can automate interactions with Ultra's blockchain network, build DApps, and integrate web3 functionality into their applications.
+
+These sections are written with the assumption that you have started a local chain with `ultratest`. See [Start Local Chain](./start-local-chain.md) for further information if you have not.
+
+## Key Generation and Wallets
+
+Ultratest comes with a `default` wallet which you can display with the command
+
+```sh
+more ~/ultratest/wallet.txt
+```
+
+To learn more about wallets and how to use them from the command line, we recommend that you [read through our section on Wallets](../../../blockchain/general/antelope-ultra/wallets.md).
+
+The basic process is simply:
+
+1. Generate keys
+2. Create a wallet
+3. Open the wallet
+4. Unlock the wallet
+
+Then you'll be able to use it to do things like creating accounts or signing transactions.
+
+## Account Creation
+
+Ultra has a [few different types of accounts](../../../blockchain/general/antelope-ultra/accounts-and-permissions.md) that are available for creation. In short, there are:
+
+-   EBA accounts - These are created by the Ultra client on Mainnet and Testnet. They are non-custodial, recoverable accounts.
+-   Non-EBA accounts - These are created by users and developers who wish to self-manage their keys.
+-   Premium accounts - These are custom names reserved for Ultra and their partners.
+
+For your local chain, you'll be creating a **non-EBA account**. You can do so with the cleos command:
+
+```sh
+cleos push action eosio newnonebact '{"creator":"default", "owner":{"threshold":1,"keys":[{"key":"YOURPRIVATEKEY","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"PUBLICKEY","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p default
+```
+
+To perform the account creation transaction, you'll need to have enough UOS to cover the RAM cost associated with account creation.
+
+## Transferring Tokens
+
+Open and unlock your wallet.
+
+To transfer tokens you run the command:
+
+```sh
+cleos push action eosio.token transfer '["myaccount", "recipientacc", "10.00000000 UOS", "Memo message"]' -p myaccount@active
+```
+
+## Publishing a Contract
+
+Open and unlock your wallet.
+
+To publish a contract you run the command:
+
+```sh
+cleos set code <account_name> <contract_wasm_file> -p <account_name>@active
+```
+
+## Tables
+
+On Ultra, tables are a fundamental concept used for storing and organizing data within smart contracts. Tables act as a persistent data storage mechanism, allowing contracts to store, retrieve, and modify structured data on the blockchain.
+
+Tables consist of rows and columns. Each row represents a record or an entry, and each column represents a field or a piece of data associated with that record.
+
+They are commonly used to store various types of information, such as user accounts, token balances, transaction histories, game data, or any other structured data relevant to the contract's functionality. Contracts define their own custom tables, specifying the fields and their types. A table also includes an index, which allows for efficient querying and retrieval of data.
+
+The data stored in tables is persistent on the blockchain. It remains available even after the execution of a contract's actions or transactions.
+
+Smart contracts can read, modify, and delete data in tables. This allows for the creation of decentralized applications with complex business logic that can interact with and update the stored data.
+
+Tables have a scope, which defines the context in which the data is stored. Each row in a table has a primary key, which is a unique identifier for that specific row. The combination of scope and primary key allows contracts to organize and retrieve data efficiently.
+
+Tables can have one or more indexes defined on specific fields. Indexes enhance the performance of data retrieval by enabling faster search and filtering capabilities.
+
+Storing data in tables consumes RAM resources on the EOSIO network. Contracts typically need to manage their RAM usage efficiently to avoid running out of resources.
+
+### Reading Table Data with Cleos
+
+To read table row data in EOSIO, you can use the EOSIO database API functions available within your smart contract.
+
+#### Read the table row data
+
+To read table row data using `cleos` on Ultra, you can use the get table command.
+
+Here's how you can do it:
+
+```sh
+cleos get table <contract_account> <scope> <table_name>
+```
+
+-   `<contract_account>`: The EOSIO account associated with the smart contract containing the table.
+-   `<scope>`: The scope or context in which the table data is stored. It determines the subset of data you want to retrieve.
+-   `<table_name>`: The name of the table you want to read.
+
+Replace `<contract_account>`, `<scope>`, and `<table_name>` with the actual values specific to your contract and table.
+
+For example, if you want to read the accounts table of the eosio.token contract on the EOS mainnet, you can use the following command:
+
+```sh
+cleos get table eosio.token myaccount accounts
+```
+
+This command retrieves the table data for the `accounts` table in the `eosio.token` contract, scoped to the account `myaccount`.
+
+The output will display the table row data in JSON format, including all the rows and their associated fields.
+
+Note: The `get table` command retrieves the entire table, so it may take some time to display the output if the table has a large number of rows. If you only need specific rows or want to filter the results, you can use additional options like `--lower`, `--upper`, or `--index` with the `get table` command. Check the cleos documentation for more details on these options.
+
+Using the `get table` command in cleos, you can conveniently retrieve and view table row data on the EOSIO blockchain without the need for direct smart contract interaction.
+
+### Using Scope
+
+When using `cleos` to interact with Ultra table data, you can specify the scope parameter to retrieve table data associated with a specific scope. Here's how you can use scope with `cleos` to query table data:
+
+```sh
+cleos get table <contract_account> <scope> <table_name>
+```
+
+-   `<contract_account>`: The EOSIO account associated with the smart contract containing the table.
+-   `<scope>`: The scope or context in which the table data is stored. It determines the subset of data you want to retrieve.
+-   `<table_name>`: The name of the table you want to query.
+
+Replace `<contract_account>`, `<scope>`, and `<table_name>` with the actual values specific to your contract and table.
+
+For example, if you want to retrieve the table data with a scope of "myaccount" from the `accounts` table of the `eosio.token` contract on the EOS mainnet, you can use the following command:
+
+```sh
+cleos get table eosio.token myaccount accounts
+```
+
+This command retrieves the table data for the `accounts` table in the `eosio.token` contract, specifically scoped to the account name "myaccount".
+
+The output will display the table row data in JSON format, including all the rows and their associated fields that match the specified scope.
+
+By providing the desired scope parameter in the `get table` command, you can retrieve table data associated with a specific scope using `cleos`. This allows you to access and view subsets of data within the table based on your defined scopes.
+
+---
+title: 'Testnet Faucet Guide'
+
+outline: [0,4]
+order: -99
+---
+
+# Testnet Faucet Guide
+
+Keys can be created in a variety of ways and through many different websites.
+
+_We would never recommend using an external website for a Main Network keypair_
+
+Anyway, here's a few websites you can do it on, or you can use [cleos](../../../blockchain/general/tools/cleos.md)
+
+* [EOS Authority](https://eosauthority.com/generate_eos_private_key)
+* [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
+* [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
+
+Next go to the https://faucet.testnet.app.ultra.io/ and paste public key into the form as shown below
+
+![](/images/faucet-create-account-1.png)
+
+Click on Create Account
+
+![](/images/faucet-create-account-2.png)
+
+Make sure the account was created
+
+```sh
+cleos -u https://ultratest-api.eoseoul.io get account 1aa2aa3aa4ae
+```
+
+## Claiming tokens
+
+Once you created an account click on the `Token Faucet` tab and insert your account name in the form.
+
+![](/images/faucet-issue-tokens-1.png)
+
+Click on issue and you should get 10 UOS
+
+![](/images/faucet-issue-tokens-2.png)
+
+If you need more tokens wait for 2 minutes and claim again.
+
+---
+title: 'General Tutorials Overview'
+
+order: -99994
+oultine: [0, 4]
+---
+
+# General Tutorials
+
+
+---
+title: 'Tutorials'
+
+order: -99994
+oultine: [0, 4]
+---
+
+# All Tutorials
+
+General tutorials to help feed your curiosity.
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>How to generate a Keypair</td>
+        <td>Get a basic understand of private and public keys</td>
+        <td><a href="/tutorials/fundamentals/how-to-generate-a-keypair">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to create an Account</td>
+        <td>How to generate a development account on our testnet</td>
+        <td><a href="/tutorials/fundamentals/how-to-create-an-account">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to get Tokens</td>
+        <td>How to get tokens for interactions on the testnet</td>
+        <td><a href="/tutorials/fundamentals/how-to-get-tokens">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to read the Block Explorer</td>
+        <td>Learn how to use our block explorer for reading data</td>
+        <td><a href="/tutorials/fundamentals/how-to-read-the-block-explorer">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to setup the Ultra Wallet</td>
+        <td>Learn how to use our Ultra Wallet extension and set it up</td>
+        <td><a href="/tutorials/fundamentals/how-to-setup-the-wallet">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to get RAM</td>
+        <td>Use this tutorial to get RAM on the Testnet for your account</td>
+        <td><a href="/tutorials/fundamentals/how-to-get-ram">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to make a REST Request</td>
+        <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
+        <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
+    </tr>
+    <tr>
+        <td>Learn the Basics</td>
+        <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
+        <td><a href="/tutorials/general/basics/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Docker Container</td>
+        <td>Learn how to use our development docker container</td>
+        <td><a href="/tutorials/docker/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Create a Test Network Account</td>
+        <td>Learn how to create a test network account on Ultra's Test Network</td>
+        <td><a href="/tutorials/general/basics/create-a-testnet-account">Link</a></td>
+    </tr>
+    <tr>
+        <td>Get Test Network Tokens</td>
+        <td>Learn how to obtain test network tokens</td>
+        <td><a href="/tutorials/general/faucet/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Build Smart Contracts</td>
+        <td>Learn how to build your first smart contract on Ultra</td>
+        <td><a href="/tutorials/smart-contracts/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Build a Uniq Factory</td>
+        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
+        <td><a href="/tutorials/uniq-factories/building-uniq-factories/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Uniq Avatars</td>
+        <td>Learn how to manage your uniq avatar as a user</td>
+        <td><a href="/tutorials/uniq-factories/uniq-avatar/index">Link</a></td>
+    </tr>
+</table>
+
+
+
+---
+title: '3. Smart Contract Compiling'
+
+outline: [0,5]
+order: -97
+---
+
+# Smart Contract Compiling
+
+Compiling smart contracts is very simple with the [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+
+If docker is installed correctly it will automatically download our development image, and use the image to compile your contracts.
+
+Make sure you're not connected to any vm or docker container with remote explorer otherwise the plugin won't work correctly.
+## How to Compile
+
+There are **two ways** to compile your smart contract.
+
+1. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VSCode.
+
+![](./images/compile-button.png)
+
+1. Use the `Command Palette (F1)` under `Ultra: Build Contract`
+
+![](./images/command-palette-build.png)
+
+## Successful Compilation
+
+If successful you won't see any `errors` in the output window for `ultra-cpp`.
+
+![](./images/successful-build.png)
+
+## Bad Compilation
+
+If unsuccessful you will see various errors such as the ones below.
+
+![](./images/unsuccessful-build.png)
+
+## Compiled Files
+
+Once the files are compiled you should see an `abi` and a `wasm` file next to your compiled smart contract.
+
+![](./images/compiled-files.png)
+---
+title: '4. Deploy Smart Contract'
+
+outline: [0,5]
+order: -96
+---
+
+# Deploy Smart Contract
+
+Once you have an `abi` and `wasm` file for a contract you are ready for deployment.
+
+## Create a Wallet
+
+You can create a wallet through [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+
+Using the Command Palette (F1), type `Ultra: Create Wallet`.
+
+You can also use `Ultra: Create Wallet - Create Key` to generate a private key in console
+
+Take note of both your `private key` and `public key`.
+
+**You will need your public key after importing**.
+
+- Fill out the password fields
+  - This will be used to unlock your wallet
+- Fill out the private key field
+
+Wallet will tell you the account creation was successful in the bottom-right upon completion.
+
+
+## Creating a Test Network Account
+
+You will need a test network account on a supported blockchain to deploy a contract and test it.
+
+::: details Local Environment
+
+1. Generate new key using Smart Contract Toolkit or [cleos](../../blockchain/general/tools/cleos.md)
+2. Start ultratest in detached mode using [docker image usage](../../tutorials/docker/docker-image-usage.md)
+
+```
+ultratest -Dsn
+```
+
+3. Create new account
+```
+cleos create account ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
+```
+
+4. Deploy your contract using instructions below
+
+:::
+
+::: details Ultra Testnet
+1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create a non-eba account and receive tokens. Use the key from the step of creating a wallet
+2. Open VSCode and Command Palette (F1) and type `Ultra: Create Transaction`
+3. Select Ultra Testnet
+4. Enter Wallet Password
+5. Lookup eosio and select action `buyrambytes`
+6. Look at your .wasm file properties to determine the RAM you need. Buy extra for storing table data. You will want to lookup the total amount of bytes your .wasm file has. For small contracts 65356 bytes should be sufficient
+7. Fill out the form, and buy some RAM. payer and receiver should be the same.
+8. Ensure that the transaction is successful
+:::
+
+::: details Ultra Mainnet
+1. Create an eba account with ultra <a href="https://ultra.io/">desktop client</a>
+2. Download ultra wallet <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">extension</a>
+3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to create a non-eba account and buy ram. Log in with your eba account credentials created in the first step
+:::
+
+## Deploy Contract
+
+Using the Command Palette (F1), type `Ultra: Deploy Contract`.
+
+Select the contract you want to deploy.
+
+![](./images/select-contract-to-deploy.png)
+
+Select the endpoint you want to deploy to.
+
+![](./images/select-network.png)
+
+Enter your wallet password.
+
+Type in the `account` you have access to on the network you have picked.
+
+If successful you will see the smart contract has been deployed in the output window.
+
+## Redeploy Smart Contract
+
+After you've done some changes to your contract you will need to build it again and redeploy
+
+Redeploying the contract is identical to the first time you've deployed the contract. Just follow the above instructions and use the same account to deploy to
+
+VSCode extension will deploy both ABI and WASM files so there is no manual action needed to redeploy both
+
+# Environments
+
+Environments are specific locations where you can perform tests against your smart contracts, and applications.
+
+There are three environments; local, testnet, and mainnet.
+
+[See this API section](../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
+
+## Local
+
+The local environment is where you are browsing this documentation from.
+
+You would be running code against your local machine on a blockchain that is also running on your local machine.
+
+In the case of `cleos` you would not provide any `-u` parameters to target your own local blockchain inside of a docker image.
+
+### Why use local?
+
+* Just beginning smart contract development.
+* Need to test and write tests before full deployment.
+* Easy way to start and stop a blockchain and restart from zero each time.
+
+## Test Network
+
+The test network environment is where you want to deploy your smart contract after going through general testing.
+
+This should be the first place you will want to deploy your smart contract for other users to interact with.
+
+### Why use Testnet?
+
+* Ready to deploy smart contracts to other users.
+* Begin getting feedback in a public manner.
+* Begin writing frontend for your decentralized application.
+* Need a way for others to easily interact and test your smart contract.
+
+Go to the [faucet documentation page]() to start working with testnet.
+
+## Main Network
+
+The main network environment is when you want to partner with ultra to get your smart contract deployed to the world.
+
+This is the stage where you have a smart contract, you have had that contract audited, you have an application, and you want to get it into ultra ecosystem for everyone to interact with.
+
+### Why use Mainnet?
+
+* Ready to go live with your smart contract.
+* Smart contract has already been audited.
+* Optional frontend application is ready to be used.
+
+---
+title: '6. Code Examples'
+
+outline: [0,5]
+order: -94
+next: false
+---
+
+# Smart Contract Examples
+
+[Blockmatic Contract List](https://github.com/blockmatic/antelope-contracts-list) provides a ton of example links to various smart contracts that are available.
+
+However, you might be just looking for a quick way to perform basic functionality inside of your smart contract.
+
+## Require Authorization Action
+
+Requires permission from the name passed from the client to transact.
+
+::: details Code
+```cpp
+ACTION hi(name user) {
+    require_auth(user);
+}
+```
+:::
+
+## Actions with More Parameters
+
+When you need to add more parameters to your action.
+
+::: details Code
+```cpp
+ACTION hi(name user, string message) {
+    print("Hello, your message was: ", message);
+}
+```
+:::
+
+## CRUD Operations
+
+When you want to create a data entry, store it, update it, and delete that entry from a table.
+
+The code below is a simple 'set your status' contract.
+
+::: details Code
+
+<<< @/examples/contracts/contract-with-table.cpp
+
+:::
+
+## Scoped CRUD Operations
+
+When you want to create a data entry, store it, update it, and delete that entry from a table owned by a user.
+
+This means that table entries are owned by the user for their specific table. Only they can modify their entries.
+
+The code below is the equivalent of a Twitter clone.
+
+::: details Code
+
+<<< @/examples/contracts/contract-with-table-scope.cpp
+
+:::
+
+## Reading Data from Table Iterators
+
+In some cases, you may need to read directly from a table in a contract.
+
+You can use the iterator to directly access the data.
+
+The code below is based on the Scoped CRUD Operations
+
+::: details Code
+```cpp
+journal_t scoped_journal = journal_t(get_self(), user.value);
+auto journal_itr = scoped_journal.require_find(timepoint, "entry was not found");
+print("Message at ", timepoint, " is ", journal_itr->message);
+```
+:::
+
+## Listening for Token Transfers
+
+The code below allows only the default `UOS` token with a precision of `8`.
+
+_You must add the `eosio.code` permission to your account to use this._
+
+::: details Code
+
+<<< @/examples/contracts/contract-on-notify-eosio-token.cpp
+
+:::
+
+## Listening for Uniq Transfers
+
+If you want to listen for transfers from `eosio.nft.ft` see [onIssue Example](../../tutorials/uniq-factories/uniq-variants/Examples/on-issue.md).
+
+
+
+
+---
+title: '1. Intro'
+
+outline: [0,5]
+order: -99
+prev: false
+---
+
+# Intro to Smart Contracts
+
+Smart contracts are pieces of code that are applied on-chain and have functions that can be called to run code.
+
+Think of it like a REST endpoint that requires a POST request to run under specific parameters.
+
+## Language
+
+Smart contracts on Ultra are written in C++ and compiled down into Web Assembly.
+
+It's not as intimidating as you think; here's an example `hello-world.cpp` contract.
+
+::: details hello-world.cpp
+```cpp
+#include <eosio/eosio.hpp>
+#include <eosio/print.hpp>
+
+namespace mycontract {
+    using namespace std;
+    using namespace eosio;
+
+    CONTRACT hello : public eosio::contract {
+        using eosio::contract::contract;
+
+        public:
+            ACTION hi(name user) {
+                print("Hi there, ", user.value, "!");
+            }
+   };
+}
+```
+:::
+
+## Building a contract
+
+There are 3 options to build a contract at the moment:
+
+* Via [cdt-cpp](../../tutorials/docker/getting-started.md) with docker
+* Via [contract-builder](../../products/contract-builder/index.md) tool
+* Via [vscode extension](./compile.md)
+
+Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
+it's better to use the docker option.
+---
+title: '2. Smart Contract Setup'
+
+outline: [0,5]
+order: -98
+---
+
+# Smart Contract Setup
+
+There's a few things you will need to get started with writing smart contracts.
+
+We highly suggest you install the following programs and their individual extensions for this tutorial.
+
+- [Docker](https://docs.docker.com/engine/install/)
+- [VSCode](https://code.visualstudio.com/download)
+  - [C/C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+  - [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+
+Depending on where you want to start your project. Always start with a workspace folder and open it in VSCode.
+
+![](./images/select-project-folder.png)
+
+## Scaffolding
+
+Once you have the [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp) installed, you can easily create a starting template.
+
+Access the `Command Palette` in VSCode with `F1` on the keyboard.
+
+![](./images/open-command-palette.png)
+
+### Command Palette Command
+
+```
+Ultra: Create Smart Contract
+```
+
+It will prompt you for a folder to put the source code under. It is recommended to use `src` if it's a single contract.
+
+## Header Setup
+
+After creating the contract, you will need to **install headers** to remove some of the errors you will get from VSCode about the code.
+
+There are currently **two ways** to install headers.
+
+- Open your `.cpp` file that was generated, and follow the prompts.
+- Through the `Command Palette (F1)` under `Ultra: Add C++ Header Files`
+
+After installation, and following the prompts your window will restart.
+
+Wait for intellisense to finish updating to ensure everything is working correctly.
+
+![](./images/intellisense-updating.png)
+
+![](./images/intellisense-ready.png)
+---
+title: '5. Create a Transaction'
+
+outline: [0,5]
+order: -95
+---
+
+# Create a Transaction
+
+After you have deployed your smart contract you can use [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or use the [Ultra Wallet Extension](../../products/ultra-wallet/index.md) to transact.
+
+In this guide we'll use the toolkit to keep it brief.
+
+Using the Command Palette (F1), type `Ultra: Create Transaction`.
+
+Select the correct you used earlier.
+
+![](./images/select-network.png)
+
+Type in the name of the account which the contract was deployed under.
+
+![](./images/type-contract-name.png)
+
+You will see a list of available transactions if deployed correctly.
+
+![](./images/select-available-action.png)
+
+The signer should be the account you have access to. You should have created an account earlier in this guide with keys in your wallet.
+
+Fill out your transaction, and execute it.
+
+![](./images/fillout-form.png)
+
+## Successful Transaction!
+
+![](./images/successful-transaction.png)
+---
+title: '7. Troubleshooting Deployment'
+
+order: -93
+outline: [0,5]
+---
+
+# Troubleshooting Deployment
+
+## Invalid UOS precision
+
+```sh
+Error 3050003: eosio_assert_message assertion failure
+Error Details:
+assertion failure with message: must buy ram with core token
+```
+
+Make sure UOS is specified with **exactly** 8 decimals as in [buyram](https://developers.ultra.io/experimental/contracts/System%20Contract/system-actions/buyram.html#buyram-buy-ram-with-uos) page.
+
+## Docker container start issues
+
+You may get a port allocated
+
+```
+1f9fd2ba03b243b5c8dabff76b9ffa49a8141af0fc9f7d46b37f9054e8cc945f
+docker: Error response from daemon: driver failed programming external connectivity on endpoint ultra (2da26f7837141bd89470ce839b24c5ce9784376c7bdf8ffdcbaa6e93495773cf): Bind for 0.0.0.0:9876 failed: port is already allocated.
+```
+
+Consider stoppping a process listening to that port or reassigning a mapping to a different port on your host machine, i.e `-p 9876:1234`
+
+You can also change your workdir (output directory) with `-v`. Refer to docker [documentation](https://docs.docker.com/storage/volumes/#choose-the--v-or---mount-flag).
+
+## Vscode extension docker unavailable
+
+![](/images/vscode-docker-issue.png)
+
+If you get `docker unavailable` error message make sure you have disconnected from docker container by clicking on the bottom-left corner.
+
+\
+For any further assistance don't hestitate to contract the team on [discord](https://discord.com/invite/U7raPf6qZu).
+---
+title: 'Token Swap Overview'
+
+outline: [0,4]
+order: -99
+---
+
+# Token Swap Overview
+
+The new native Ultra Mainnet is an EOSIO-based so any exchanges that are currently familiar with the EOS Mainnet should not have any issues deploying infrastructure.
+
+The only major differences that exchanges will need to worry about versus a standard EOSIO deployment are:
+
+*   Accounts now require KYC to deploy a smart contract to our network
+    
+*   Depending on how the exchange sets up their infrastructure they may need a smart contract
+    
+In the case that an exchange needs to deploy a smart contract, please speak with our representative and we will enable the KYC flag for your account.
+
+::: tip Info
+
+If you are simply looking for a way to swap from ERC-20 to native UOS use the following service [https://dapp.ptokens.io](https://dapp.ptokens.io) which is provided by our partner at pNetwork.
+
+:::
+
+## API Nodes
+
+See the [API Section](../../products/chain-api/index.md) for a list of available nodes to transact with.
+
+## Block Explorers
+
+You can use these explorers to check transactions on our networks.
+
+### Testnet
+
+*   [https://explorer.testnet.ultra.io/](https://explorer.testnet.ultra.io/)
+    
+### Mainnet
+
+*   [https://explorer.mainnet.ultra.io/](https://explorer.mainnet.ultra.io/)
+    
+
+## Creating Account(s)
+
+The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create these non-EBA accounts. Exchanges will be able to access the network and accounts through an API node.
+
+*   **Requirement checklist**
+    *   **Accountname** (12 characters, a-z, 1-5)
+    *   **Public Keys** for each permission
+        
+## Pre-Swap
+
+Ultra will be leveraging the p.network token swap solution. This means that partner exchanges will log in to [https://dapp.ptokens.io/](https://dapp.ptokens.io/) and must have their metamask (or ledger, etc.) ready to perform the swap.
+
+During the swap process you will be making Ethereum transactions. Depending on the time of day, activity, etc. of the chain gas prices may be extremely high. Please keep an eye on gas prices before performing a swap.
+
+## Performing the Swap
+
+Since the original UOS token is ERC-20 based that means they will need to use the Ultra Vault Smart Contract that will automatically swap ERC-20 UOS for native chain UOS. See below for the general usage.
+
+### General flow of the swap
+
+![](/images/token-swap-pnetwork.png)
+
+During the swap you will be putting in an Ultra accountname. This is the target account, controlled by the exchange. **This account must exist before you swap tokens.**
+
+### Fees and Costs
+
+The fee for ERC-20 swap to the native chain will have a 0% fee on the amount transferred. However, transferring from native UOS to ERC-20 UOS (or any other token) will have a 0.25% fee. Which means that you will only have a fee if you are moving into the ERC-20 platform. This fee will go to the validators of pNetwork and their infrastructure.
+
+#### Actions and fees
+
+| Action                                                   | Fee Covered By                             |
+| -------------------------------------------------------- | ------------------------------------------ |
+| Sending ERC20 UOS tokens to the p.network Vault Contract | Covered by the user, paid in ETH (Gas Fee) |
+| Peg In                                                   | Covered by p.network                       |
+| Peg Out                                                  | The user (0.25% of transaction)            |
+
+## EOSIO Examples
+
+Below you can see examples of the cleos commands necessary to perform the Ultra → Ethereum swap.
+
+```ts
+// using cleos
+cleos transfer <YOUR_ACCOUNT> ultra.swap "1.00000000 UOS" "<ETHEREUM_ADDRESS>"
+
+// using eosjs
+const result = await api.transact({
+  actions: [{
+    account: 'eosio.token',
+    name: 'transfer',
+    authorization: [{
+      actor: YOUR_ACCOUNT,
+      permission: 'active',
+    }],
+    data: {
+      from: YOUR_ACCOUNT,
+      to: 'ultra.swap',
+      quantity: '1.00000000 UOS',
+      memo: ETHEREUM_ADDRESS,
+    },
+  }]
+}, {
+  blocksBehind: 3,
+  expireSeconds: 30,
+});
+```
+
+## Token Transfer to Ultra
+
+Upon sending UOS token to `ultra.swap`, an inline action will be triggered to convert UOS to PUOS then redeem this PUOS to ERC20 UOS to targeted ETH address.
+
+### Action Flow
+
+*   User transfer UOS to **ultra.swap** with memo as ETH address
+    
+    ```typescript
+    cleos transfer user.acc ultra.swap “1.00001000 UOS” “0xB57edF3fF3e1ba7854Ec083438D53AD6032518Ac“
+    ```
+    
+*   `swap` contract will be notified and execute `on_transfer` to verify and process to redeem if all value is valid.
+    
+*   `on_transfer` order of execution and check
+    
+    *   Skip redeem if `from` is **ultra.eosio**
+        
+    *   Skip redeem if `to` is not **ultra.swap**
+        
+    *   Skip redeem if `quantity` is not **UOS**
+        
+    *   Reject transaction if `memo` is empty
+        
+    *   Reject transaction if `memo` is not a valid ETH address format
+        
+        *   Start with `0x`
+            
+        *   End with 40 hexadecimal characters
+            
+        *   Example: `0xB57edF3fF3e1ba7854Ec083438D53AD6032518Ac`
+            
+    *   Convert UOS to PUOS
+        
+        *   amount less than “0.00010000 UOS” will be return to `to` account
+            
+        *   the rest will convert to PUOS for redeem
+            
+        *   Example
+            
+            *   quantity = “1.00001000 UOS”
+                
+            *   return = “0.00001000 UOS”
+                
+            *   redeem = “1.00000000 PUOS”
+                
+    *   Reject transaction if redeem amount = 0
+        
+    *   If return amount > 0, **ultra.swap** will transfer these fund back to user
+        
+    *   Lastly, **ultra.swap** will call `redeem` action from pnetwork contract to handle the actual convert from PUOS to ERC20 UOS\\
+        
+        *   redeem(sender, quantity, memo)
+            
+            *   sender will be **ultra.swap**
+                
+            *   quantity will be PUOS from conversion
+                
+            *   memo will be memo (ETH address) from transfer action
+---
+title: 'Creating Metadata'
+
+order: 4
+outline: [0, 4]
+---
+
+# Creating Metadata
+
+## What is Metadata?
+
+Uniqs are tokens that can be associated with anything; games, assets, keys, items, and much more. The data that represents those things _is the metadata_. The title, the descriptions, and the images are all metadata.
+
+Ultra has a specific format for how we expect metadata to be organized.
+
+## Using the Metadata Tool
+
+The metadata tool simplifies the process for creating complicated uniq factories and associating tokens with those factories. This tool allows the user to specify token factory specifications and corresponding token(s) specifications in an easy to use CSV template.
+
+This tool takes CSVs and media files (Uniq images, videos and other supported media files) as input, converts to files to JSON objects, validates the JSON data, generates sha256 hashes of the JSON objects and outputs the generated JSON files.
+
+![Metadata Tool](/images/token-factories/metadatatool.png)
+
+**Note that the tool itself does not interact with the blockchain; rather, it simplifies the process of creating complicated uniq factories and the associated tokens.**
+
+## Obtaining the Metadata tool
+
+1. You can download the latest release of the tool from [here](https://github.com/ultraio/metadata-tool/releases).
+2. **[Optional]** Create a `config.json` file in the same directory as your binary/executable. Refer to [Configuration file](#configuration-file) section for more info on the config file.
+
+## Configuration file
+
+The configuration file (`config.json`) is a JSON object that allows user to map environment names to their corresponding base URIs. Each environment corresponds to a specific environment in which the metadata and media file for token factory and associated token(s) are to be be hosted/uploaded.
+
+Here's an example of what the config file _might_ look like:
+
+```json
+{
+    "production": "https://www.my-nft-website.com",
+    "staging": "https://staging.my-nft-website.com",
+    "mys3bucket": "https://s3.us-east-1.foobar.com",
+    "custom": "https://www.my-custom-env.com"
+}
+```
+
+In the example above, the `production`, `staging`, `mys3bucket` and `custom` environments are mapped to their corresponding base URIs. When the tool is run, it will read the config file and will prompt the user to select either one of the provided environments. The corresponding URI for the selected environment will be used as base URI for the generated factory and token(s).
+
+Note that the environments and base URIs in the config file shown above are just examples, and you should replace them with the actual environment(s) for your use-case.
+
+For our example, we'll be creating a `config.json` that looks like this:
+
+```json
+{
+    "custom": "https://developers.ultra.io/images/token-factories/example"
+}
+```
+
+**Note**: If you do not provide a config file, the tool will prompt you to enter a base URI manually.
+
+## How to use
+
+Once you have obtained the tool, the next step is to setup the folder structure along with the media files, followed by adding data to the CSV template.
+
+There are a few things to note.
+
+-   A report is always generated during runtime.
+-   Reports are not generated until you close the program.
+-   Reports will help you debug your CSV files, any missing information will be posted to the report and sometimes in the terminal / console window.
+
+### Setup Folder Structure:
+
+To make it compliant with the token id card you must provide images:
+
+-   product: the principal image used when you expand the token id card
+-   square: used to represent your asset when the token id card is collapsed
+-   hero: used as the background when you expand the token id card
+-   gallery: a list of images and videos available in the carousel
+
+To let the system identify those different elements you must provide a `manifest.json` where you describe your images by giving a textual descriptions and a path to them in the `uniq_factory` folder.
+
+Aside the requirement above, you can put anything else in your `uniq_factory` folder. Those files will be part of the NFT owned by the user and will be the asset(s) the user bought.
+
+It is recommended to use the following folder setup for ease of use.
+
+```
+example/ 📁 (This is your Root Folder)
+|- factory.csv
+|- tokens.csv
+|- manifest.json
+|
+|- factory/ 📁
+|   |- square.png
+|   |- uniq.png
+|   |- gallery/ 📁
+|       |- media-01.png
+|
+|- tokens/ 📁
+    |- 1 📁
+    |   |- uniq.png
+    |   |- gallery/ 📁
+    |       |- media-01.png
+    |
+    |- 2 📁
+    |   |- uniq.png
+    |   |- gallery/ 📁
+    |       |- media-01.png
+```
+
+However, the folder structure can be modified and replaced with a single folder that contains CSV files and relevant images/media files.
+
+We provide a template example for you to use in the context of this guide.
+
+[![Download](/images/token-factories/download.png)](/zip/example.zip)
+
+### Setup CSV Template:
+
+1.  Use the following CSV template: [Google Sheets Metadata Tool Template](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing) (Visit the link and go to `File -> Make a Copy` to make a copy in your own Google Drive).
+2.  Open your copied CSV template in your Google Drive and begin modifications of individual fields. (Read the first sheet for information regarding the template).
+3.  Export both `factory` and `tokens` sheets as CSV files. `File -> Download -> csv`
+4.  Rename factory file to `factory.csv` and place in your root folder. (See [Folder Structure](#folder-structure) Above)
+5.  Rename token file to `tokens.csv` and place in your root folder.
+
+### Image/Media Pathing:
+
+There are two ways to link to an image/media file in your CSV file. One is relative path, and the other is an external HTTP or HTTPS address.
+
+-   Relative Path: `./tokens/1/image.png` (Relative to your root folder)
+-   External: `https://some-external-website.com/tokens/1/image.png`
+
+For example, in the above structure, your CSV file should have referenced the images like this:
+
+![CSV example](/images/token-factories/csv_example.png)
+
+If the paths in your CSV are incorrect, then when you try to run the metadata tool against the files which are online, you will get errors and your images in your `uploads.json` will show `undefined`. This must be fixed before you move on to the next step.
+
+### Supported Media Types:
+
+The tool currently only supports the follow media types:
+
+-   jpg / jpeg
+-   png
+-   bmp
+-   gif
+-   webp
+-   mp4
+-   webm
+-   json
+
+### Running the tool:
+
+Once the CSV files and all related images/media files are present in the folder, you can process the folder for JSON creation.
+
+1. In Windows you can drag and drop the folder onto the executable. For Mac and Linux you'll have to run the executable from the command line with the folder as the parameter.
+
+    a. Watch the console window for errors.
+    b. If errors have occurred, you can check the report generated after closing the application
+
+2. If there are no errors, an `upload.json` file will be generated in your root folder.
+
+### Output file structure:
+
+The `upload.json` file contains all metadata (collection name, factory/token hashes & URLs, media URLs) for your Uniq collection. A sample output file _might_ look like this:
+
+(This example is based on the sample folder structure provided above.)
+
+```json
+{
+    "collectionName": "MyFirstUniq",
+    "factory": {
+        "hash": "<sha256-of-factory.json>",
+        "url": "https://www.my-nft-website.com/MyFirstUniq/<sha256-of-factory.json>.json"
+    },
+    "defaultToken": {
+        "hash": "<sha256-of-defaultToken.json>",
+        "url": "https://www.my-nft-website.com/MyFirstUniq/{serial_number}.json"
+    },
+    "tokens": [
+        {
+            "serialNumber": "1",
+            "hash": "<sha256-of-1.token.json>",
+            "url": "https://www.my-nft-website.com/MyFirstUniq/1.json"
+        },
+        {
+            "serialNumber": "2",
+            "hash": "<sha256-of-2.token.json>",
+            "url": "https://www.my-nft-website.com/MyFirstUniq/2.json"
+        }
+    ],
+    "media": {
+        "factory/sq.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png",
+        "factory/product.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png",
+        "factory/gallery/1.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png",
+        "tokens/1/image.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png",
+        "tokens/1/gallery/1.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png",
+        "tokens/2/image.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png",
+        "tokens/2/gallery/1.png": "https://www.my-nft-website.com/MyFirstUniq/<hash-of-file>.png"
+    },
+    "environment": {
+        "env": "production",
+        "tokenUriTemplate": "{serial_number}",
+        "url": "https://www.my-nft-website.com",
+        "toolVersion": "1.4.0"
+    }
+}
+```
+
+Note that the URLs provided in the output file are based on the environment URIs that were provided to the program. These URLs are where your Uniq metadata files _should_ be hosted/uploaded.
+
+---
+title: 'Your First Uniq Factory'
+
+order: 5
+outline: [0, 4]
+---
+
+# Your First Uniq Factory
+
+## Make sure you're ready
+
+Once you have your [metadata set up](./creatingmetadata.md), you'll be ready to create your first token factory.
+
+Just to be absolutely clear, the expected flow for building a Token Factory is:
+
+1. Upload images
+2. Generate metadata
+3. Calculate hashes
+4. Push on-chain
+
+Without the images already uploaded to the correct location, the metadata tool can not verify that they exist, nor can it create the unique hashes that identify them.
+
+::: warning
+
+**It is up to you to manage the Token Factory images and ensure that they are permanently available for the network to access.**
+
+:::
+
+If you'd prefer to focus just on this section and learn how to push the on-chain transaction that generates the Token Factory, we have prepared a simple example zip file for you that already has been generated based on files that are located in this developer guide. You're welcome to upload this to anywhere semi-permanent for your learning purposes. We suggest Github, and you can access it as a RAW file from there.
+
+[![Download](/images/token-factories/download.png)](/zip/example_token_factory.zip)
+
+To create a Token Factory on Testnet, you'll be using the Ultra Developer Tools. If you haven't set up your developer environment, we've [set up a quick checklist](./yourdevelopmentenv.md) for you to be able to hit the ground running.
+
+Once you're inside your docker image, have your wallet set up, and have your Testnet account ready, you're good to go for the next step.
+
+## Creating your first Token Factory
+
+![](/images/token-factories/new-token-factory.png)
+
+Once you have everything set up, you'll be ready to create this Token Factory on the Testnet.
+
+The following is an example transaction. You will have to fill in the missing details:
+
+-   `<YOUR ACCOUNT>` - Your Testnet account
+-   `<MINT WINDOW START>` - A datetime in the format `2021-05-31T00:00:00`
+-   `<TRADING WINDOW START>` - A datetime in the format `2021-05-31T00:00:00`
+-   `<YOUR UNIQ FACTORY URI>` - The URI of the metadata either as a zip file, or targeting the `factory.json` file with a full path
+-   `<YOUR META HASH>` - The hash of the filename, you can find this in `upload.json` in the `factory` block at the top
+
+```sh
+cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create \
+  '[
+      {
+        "memo":"thirdPartyUniqNewMeta",
+        "version":0,
+        "asset_manager":"<YOUR ACCOUNT>",
+        "asset_creator":"<YOUR ACCOUNT>",
+        "conversion_rate_oracle_contract":null,
+        "chosen_rate":null,
+        "minimum_resell_price":null,
+        "resale_shares":null,
+        "mintable_window_start":"<MINT WINDOW START>",
+        "mintable_window_end":null,
+        "trading_window_start": "<TRADING WINDOW START>",
+        "trading_window_end":null,
+        "recall_window_start": null,
+        "recall_window_end":null,
+        "max_mintable_tokens":10,
+        "lockup_time":null,
+        "conditionless_receivers":null,
+        "stat":0,
+        "meta_uris":["<YOUR UNIQ FACTORY URI>"],
+        "meta_hash":"<YOUR META HASH>",
+        "authorized_minters":[],
+        "account_minting_limit":1
+      }
+    ]' \
+-p <YOUR ACCOUNT>
+```
+
+Once you've run this command, you should get a message confirming that your transaction has been executed locally.
+
+To see it in action on the Testnet, hop on over to the [Testnet block explorer](https://explorer.testnet.ultra.io/) and input your account name into the search box at the top.
+
+You should see a new transaction that shows that your new Token Factory has been successfully created.
+
+![](/images/token-factories/great_success.png)
+
+We are glossing over a lot of functionality here, in the interest of getting you up and running quickly. Later guides will cover some of the more advanced features that our NFT standard supports, including variants, authorized minters, and much more.
+
+In the meantime, congratulations on creating your first Token Factory. **Now, let's go mint your first Uniq!**
+
+---
+title: 'Introduction'
+
+order: 1
+outline: [0, 4]
+---
+
+# Building Uniq Factories
+
+## Introduction
+
+![](/images/token-factories/intro.png)
+
+In this guide, we will be walking you through how you can build your own Token Factory on Ultra's networks using our very own [Uniq NFT Standard](../../../blockchain/contracts/nft-contract/index.md). For your first go at it, we'll be using the Testnet.
+
+There are a few discrete steps to get things up and running, and we will walk you through each of them. At the end of the guide, you'll have published your very own Token Factory, and issued your first Uniqs on the Testnet.
+
+## Get Started
+
+1. [Development Environment](./yourdevelopmentenv.md)
+2. [Creating Metadata](./creatingmetadata.md)
+3. [Your First Token Factory](./firsttokenfactory.md)
+4. [Minting Your First Uniq](./mintingyourfirstuniq.md)
+---
+title: 'Minting Your First Uniq'
+
+order: 6
+outline: [0, 4]
+---
+
+# Minting your first Uniq
+
+## Let's Gooooo!
+
+Now that you have your Token Factory up and running, you are free to mint some Uniqs. Exciting times are ahead!
+
+### Token Factory Information
+
+As with the Token Factory, there is some specific data that you must include in the command.
+
+-   `<YOUR UNIQ URL>` - The URL of the metadata either as a zip file, or targeting the `X.json` file with a full path
+-   `<YOUR META HASH>` - The hash of the uniq, you can find this in `upload.json` in the `factory` block at the top
+
+You can find these in the `upload.json` file and they will look something like this:
+
+![](/images/token-factories/tokens_data.png)
+
+You will also need your `<FACTORY ID>`.
+
+The easiest way to get this information is to:
+
+1. Go to your account on the [Block Explorer](https://explorer.testnet.ultra.io)
+2. Scroll down to the transactions and open the `create` action
+3. On the left, you can see DB Operations
+
+In the DB Operations section you'll see some information. Most pertinent to you is the `UPDATE ROW` which actually holds your Token Factory id.
+
+![](/images/token-factories/db_operation.png)
+
+### Accounts
+
+You'll also, of course, need to input `<YOUR ACCOUNT>` and the `<TARGET ACCOUNT>` which will receive the new Uniq.
+
+### The Issue Action
+
+Once you have the required information, minting is a simple, straightforward transaction via cleos.
+
+```sh
+cleos --url http://ultratest.api.eosnation.io push action eosio.nft.ft issue.b '[
+  {
+    "to": "<TARGET ACCOUNT>",
+    "token_configs": [
+      {
+        "token_factory_id": <FACTORY ID>,
+        "amount": 1,
+        "custom_data": ""
+      }
+    ],
+    "memo": "Your first Uniq!",
+    "authorizer": null,
+    "maximum_uos_payment": null,
+    "token_metadata": [
+      {
+        "meta_uri": "<YOUR UNIQ URI>",
+        "meta_hash":"<YOUR META HASH>"
+      }
+    ]
+  }
+]' -p <YOUR ACCOUNT>
+
+```
+
+Congratulations! You've now minted your first Uniq on Ultra's Testnet!
+
+---
+title: 'Development Environment'
+
+order: 2
+outline: [0, 4]
+---
+
+# Development Environment
+
+Ultra provides a development enviroment that runs inside of a docker image.
+
+This means that you do not have to compile any software to get your system into a state which you can run the required commands to achieve your goal. Instead, you'll be using our image to run the special software that Ultra uses to process transactions on our networks.
+
+## 1. Docker
+
+You'll be using docker to run the necessary commands. We already have a great guide for how to set this up [that you can refer to](../../../tutorials/docker/getting-started.md).
+
+Once you have Docker installed, the Ultra image downloaded, and you've run the script to enter it, you can continue.
+
+## 2. Setting up your Wallet
+
+Next you will need to set up your local wallet, which will house your private key and allow you to sign transactions on any network. You will have to generate keys locally. These will be used in the next step where you associate those keys with the Testnet account that you will be creating. [A quick guide on how to do this is located here](../../../tutorials/general/basics/creating-a-wallet.md).
+
+## 3. Testnet Account
+
+Lastly, you will need a [Testnet account](https://faucet.testnet.app.ultra.io/) which will be the authorizing account that creates the Token Factory and mints the transactions. While you are creating your account, make sure to get tokens for use on Testnet. You'll need these to create Uniq Factories and Mint tokens.
+
+To set up your account, you can follow [this easy to understand guide](../../../tutorials/general/basics/create-a-testnet-account.md). You will need docker set up to create your keys, so make sure that you've completed the previous step.
+
+---
+title: 'Exchange a Uniq Using Smart Contract'
+
+order: 3
+---
+
+# Exchange a Uniq Using Smart Contract
+
+## What does "Exchange a Uniq" mean
+
+In this guide, we will cover the possibility of issuing a new Uniq to the user when he burns or transfers some other Uniq. The purpose of such an exchange may be to migrate a user Uniq to a newer factory which may have different set of rules (e.g. Uniqs from new factory can be transferred).
+
+An alternative use case could be if you want to allow users to redeem a Uniq using some "ticket" Uniq which does not have anything useful by itself but can be exchanged for an actual Uniq from a different factory.
+
+Some of the factory's values are immutable after they are created, and when a Uniq is exchanged it provides the opportunity for customers to migrate to a new factory with different values.
+
+## When do you need a smart contract
+
+You won't need a dedicated smart contract for each case where you need to exchange Uniqs. In some cases the first-hand purchase options may be sufficient enough: [factory purchase options](./factory-purchase-options.md#purchase-option-use-cases).
+
+You should consider using the smart contract approach in the following scenarios:
+- I want to exchange Uniq only if some specific conditions are met which are not covered by first-hand purchase feature
+    - examples include: requiring preregistration using a dedicated smart contract action; having alternative pricing model where you will check that the payment was done using smart contract; 
+- I have some automation requirements which requires minimum user input
+    - since smart contracts are flexible, you are able to do more things than besides simply minting a Uniq
+- There is an extra interaction with other smart contract that needs to happen
+    - NFT contract by default notifies only certain accounts about the action execution and if you need to extend this list you will have to rely on your own smart contract to notify other contracts
+
+## Overview of the smart contract
+
+Smart contract provided on this page does and showcases the following:
+- Smart contract is notified when token is burnt or transferred
+    - Burn notification happens only if contract is deployed to the same account as token factory manager
+    - Transfer notification happens for both sender, receiver of the token and the token factory manager
+- Smart contract issues a new Uniq from the pre-configured factory to the original owner of the Uniq
+
+To make the contract below work based on your needs, you will need to do some adjustments:
+- Change name of the factory manager account to the one appropriate to the factory you are trying to mint from
+- Change factory id of the factory you are going to mint from
+- Add any necessary preliminary checks before issuing a token
+    - You may potentially want to check what token was burnt or transferred (id of the token, serial number of factory id)
+    - There could be other requirements that you want to impose, like requiring user to register via some other smart contract action
+- Depending on the permission structure and where you put the contract, you may want to add `smart_contract_name@eosio.code` permission under the `factory_manager@active` so that the contract will be able to issue tokens in the name of the factory manager
+
+::: info
+Note that in the later versions of NFT standard the specific names of the actions and their interface may change so be sure to reference the pages under *[NFT contract actions](../../../blockchain/contracts/nft-contract/nft-actions/activers.md)*
+:::
+
+Source code for Uniq swap contract is provided below
+
+::: details uniq.swap.hpp
+```cpp
+#include <eosio/eosio.hpp>
+#include <eosio/system.hpp>
+#include <eosio/asset.hpp>
+#include <eosio/singleton.hpp>
+
+using namespace std;
+using namespace eosio;
+
+// replace these with your actual factory manager account
+// simplest scenario is that the manager account and the account you place this contract in are the same
+// in this case can use get_self() instead of writing the account name explicitly
+constexpr eosio::name factory_manager{"1aa2aa3aa4aa"};
+constexpr uint64_t factory_id = 1234;
+
+struct burn_wrap {
+    optional<name> owner;
+    optional<uint64_t_vector> token_ids;
+    optional<string> memo;
+
+    EOSLIB_SERIALIZE( burn_wrap, (owner)(token_ids)(memo) )
+};
+
+struct transfer_wrap {
+    optional<name> from;
+    optional<name> to;
+    optional<uint64_t_vector> token_ids;
+    optional<string> memo;
+
+    EOSLIB_SERIALIZE( transfer_wrap, (from)(to)(token_ids)(memo) )
+};
+
+struct issue_token_config {
+    uint64_t token_factory_id;
+    uint32_t amount;
+    string custom_data;
+
+    EOSLIB_SERIALIZE( issue_token_config, (token_factory_id)(amount)(custom_data) )
+};
+
+typedef vector<issue_token_config> issue_token_config_vector;
+
+struct issue_token_metadata{
+    optional<string> meta_uri;
+    optional<checksum256> meta_hash;
+
+    EOSLIB_SERIALIZE( issue_token_metadata, (meta_uri)(meta_hash) )
+};
+
+typedef vector<issue_token_metadata> issue_token_metadata_vector;
+
+// this struct is not required but provides a reference about the interface of issue.b action
+struct issue_wrap_v1 {
+    name                      to;
+    issue_token_config_vector token_configs;
+    string                    memo;
+    optional<name>            authorizer;
+    optional<asset>           maximum_uos_payment;
+    binary_extension<optional<issue_token_metadata_vector>> token_metadata;
+
+    EOSLIB_SERIALIZE( issue_wrap_v1, (to)(token_configs)(memo)(authorizer)(maximum_uos_payment)(token_metadata) )
+};
+
+[[eosio::action("issue.b")]]
+void issue_v1(const issue_wrap_v1& issue);
+
+using issue_v1_action = eosio::action_wrapper<"issue.b"_n, &issue_v1>;
+
+class [[eosio::contract("uniq.swap")]] uniq_swap_contract : public contract {
+  public:
+    using contract::contract;
+
+    uniq_swap_contract(name receiver, name code, datastream<const char*> ds)
+      : contract(receiver, code, ds) {
+    }
+
+    // will be called when someone transfers a token
+    // note that contract is notified if the token is transferred either from or to
+    // the account that has this contract or if the token that is being transferred
+    // is from the factory managed by the account which has this contract
+    [[eosio::on_notify("eosio.nft.ft::transfer")]]
+    void on_transfer(const transfer_wrap& param);
+
+    // will be called when someone burns a token
+    // note that contract is notified only if the token being burnt is from a factory
+    // managed by the account which has this contract
+    // as such there is little reason to have this notification if the contract will
+    // be deployed to the account which is not a factory manager
+    [[eosio::on_notify("eosio.nft.ft::burn")]]
+    void on_burn(const burn_wrap& param);
+
+  private:
+
+};
+```
+:::
+
+::: details uniq.swap.cpp
+```cpp
+#include <uniq.swap.hpp>
+
+void issue_token(name user) {
+    // to make factory manager permission accessible to the smart contract you need to
+    // add the code permission to the factory manager account
+    // example: contract is set to 1aa2aa3aa4aa account, factory manager is 1aa2aa3aa4ab
+    // need to add 1aa2aa3aa4aa@eosio.code permission to 1aa2aa3aa4ab@active
+    action(
+        permission_level{factory_manager, eosio::name{"active"}},
+        "eosio.nft.ft"_n,
+        "issue.b"_n,
+        std::make_tuple(
+            user,
+            issue_token_config_vector{ { .token_factory_id = factory_id, .amount = 1 } },
+            string{""},
+            optional<name>(),
+            optional<issue_token_metadata_vector>{}
+        )
+    ).send();
+}
+
+void ultra_avatar_contract::on_transfer(const transfer_wrap& param) {
+    // only want to swap a token if it was transferred to the factory manager
+    if (*param.to != factory_manager) {
+        // if you put check() instead of return it will make it so users won't be able
+        // to transfer tokens from your factory between each other
+        return;
+    }
+    // perform any other checks you want here
+    issue_token(*param.from);
+}
+
+void ultra_avatar_contract::on_burn(const burn_wrap& param) {
+    // perform any checks you want here
+    issue_token(*param.owner);
+}
+```
+:::
+---
+title: 'Factory Purchase Options Examples'
+
+order: 2
+---
+
+
+# Factory Purchase Options Examples
+
+Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
+
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
+
+::: info
+Please keep in mind that the factory IDs, token IDs, user group IDs, and account names used throughout this page are not real and must be replaced with the actual data you are interested in.
+:::
+
+## Simple UOS/USD pricing
+
+This example utilizes the `price` field to set the price to 50 UOS
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+To be able to purchase from such factory you utilize `purchase.a` action
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+This example utilizes the `price` field to set the price to 5 USD
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "5.00000000 USD",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing using the option that has USD pricing you still provide `max_price` in UOS. The conversion from the USD price into appropriate UOS price will be done automatically.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Limited purchase quantity
+
+Setting `purchase_limit` is optional, and it allows to restrict the total number of tokens that can be purchased using this option. The limit applies to the single option itself and not the accounts that purchase from your factory. So if you set the `purchase_limit` to 10 it means that one account can purchase 10 tokens or five accounts can purchase 2 tokens or ten accounts can purchase 1 token and anything in between.
+
+After exceeding the `purchase_limit`, no one will be able to use this specific purchase option and you either need to create a new purchase option or update an existing one to increase the `purchase_limit` (history for the number of Uniqs purchased is preserved).
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 10,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+## Exclusive access to purchase option via Uniq ownership
+
+`purchase_option_with_uniqs` is a more advanced use case where you are able to link the purchase option to other factories. The example below requires the user to own 1 Uniq from factory with ID 42. If the user owns it then he will be able to use this purchase option, the token from factory 42 will be left untouched. Note how `strategy` is set to 0 ([0 means "check"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": null,
+        "factories": [{
+            "token_factory_id": 42,
+            "count": 1,
+            "strategy": 0
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing, the transaction needs to specify which token exactly the user shows as a proof of satisfying condition of ownership for the token from factory 42. In this case, assume token 77 was minted from factory 42.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 77,
+        "strategy": 0
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Exclusive access to purchase option via user groups
+
+Alternative condition for allowing direct purchases from the factory can be the usage of user groups ([covered here](../../../blockchain/contracts/user-group-contract/index.md)). In this case user must belong to certain group(s) or not be a part of a specific group(s).
+
+Example below covers the simplest case where a user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage, reference the action documentation: [setprchsreq.a user groups support](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md#example-usage-of-the-parameter-group-restriction)
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": [11, 12],
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing no extra input is required from the user, the verification of group's membership will be verified by the smart contract automatically
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Using purchase option for swapping
+
+"Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44, no additional UOS payment needed. Note how `strategy` is set to 1 ([1 means "burn"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "0.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": null,
+        "factories": [{
+            "token_factory_id": 43,
+            "count": 1,
+            "strategy": 1
+        },{
+            "token_factory_id": 44,
+            "count": 1,
+            "strategy": 1
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+Purchasing from such a purchase option requires the user to specify which Uniqs the user is willing to be given up. Here, assumes token 123 is from factory 43 and token 124 is from factory 44. Note how the `strategy` matches the value of the purchase option.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "0.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 123,
+        "strategy": 1
+      },{
+        "token_id": 124,
+        "strategy": 1
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Using purchase option for exchange
+
+Exchanging a Uniq is similar to swapping it but this time instead of a user losing access to his Uniq and burning a Uniq it will simply be transferred to a dedicated account. This may be useful in case Uniqs have valuable metadata attached to them, and you will later utilize those Uniqs in some other scenario. The example below configures the receiver of transferred Uniqs as `1aa2aa3aa4aa` account, and it also must be a Uniq from factory 45 to be able to use this purchase option. Specifying `transfer_tokens_receiver_account` is mandatory in such scenario. Note how `strategy` is set to 2 ([2 means "transfer"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.a
+```sh
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "0.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": "1aa2aa3aa4aa",
+        "factories": [{
+            "token_factory_id": 45,
+            "count": 1,
+            "strategy": 2
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+Purchasing using the above option is similar to previous examples. User needs to specify which Uniq will be used during the purchase and this Uniq will be transferred to `1aa2aa3aa4aa` at the end. The `strategy`, again, should match the `strategy` specified in the purchase option itself.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "0.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 125,
+        "strategy": 2
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+---
+title: 'Factory Purchase Options'
+
+order: 1
+---
+
+
+# Factory Purchase Options
+
+## Overview of factory purchase options feature
+
+First-hand factory purchase options allow users to receive Uniqs from the factory directly without requiring you to manually issue Uniqs to the users. Various configuration options can be set when creating the purchase option for your factory, and in addition to that each factory can have multiple purchase options available. The usage of the actions to create and utilize purchase options is provided below.
+
+-   [setprchsreq.a - set purchase requirement](../../contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [purchase.a - purchase a token](../../contracts/nft-contract/nft-actions/purchase.a.md)
+
+The first-hand purchase options provide following benefits to you
+- No need for factory manager input to issue a token to the user
+- Flexible pricing and conditions: can utilize other factories as a condition and can interact with [user groups contract](../../../blockchain/contracts/user-group-contract/index.md)
+- Configurable accessibility time window which does not require you to manually disable ability to purchase Uniqs
+
+## Purchase option use cases
+
+There are various use cases that are covered by the first-hand purchase feature. The list below covers the most common ones that are supported:
+- Specifying fixed UOS or USD price to purchase from factory
+    - To have both prices available simultaneously, you can simply create two purchase options
+- Restricting the number of Uniqs that can be bought from the specific purchase option
+    - To globally limit the number that can be purchased (minted in this case) you have to specify it during the token factory creation
+- Splitting the purchase revenue between multiple recipients
+    - Note that protocol fee still applies and the split only occurs for UOS or USD amounts
+- Limiting the availability window when Uniqs can be purchased
+    - You can set a campaign to open at a later date and have a fixed date when it will end (or no end date at all)
+- Specifying the price using Uniqs from other factories
+    - Allows user to exchange or swap Uniqs
+- Verify eligibility using Uniqs from other factories or user groups
+    - Those are read-only operations, so user does not lose Uniqs or membership of the user group
+- Migrating Uniqs of the factory to a new one which has desired alternative values set
+    - Since some of the values inside the factory cannot be changed after creation that can be an alternative solution to effectively provide the option to users to migrate to a new factory with alternative values
+
+### First-hand purchase directly from Uniq factory
+
+All use cases above are accessible using the `setprchsreq.a` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
+
+### Swap Uniqs
+
+In certain situations you may need a more granular condition set which is not provided by the first-hand purchase feature. Since the range of possible conditions you may desire is vast we only limited the feature to the most common ones. For any more advanced usage you should consider utilizing a smart contract instead.
+
+Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage
+---
+title: 'Uniq Factories'
+
+outline: [0,4]
+order: -99
+---
+
+# Uniq Factories
+
+A uniq factory also known as a uniq factory is our non-fungible token system that is built on top of Ultra's blockchain.
+
+## Uniqs
+
+A Uniq is a unique digital asset representing ownership or authenticity proof using blockchain. Stored on a decentralized ledger, each uniq has a verifiable and tamper-proof transaction history, ensuring transparency. Uniqs can represent digital or physical items, and their ownership is facilitated through smart contracts, enabling secure and automated transactions.
+---
+title: 'The `clearavatar` action'
+
+outline: [0, 4]
+order: 3
+---
+
+# The clearavatar action
+
+## Summary
+
+This action is used to unlink user’s Uniq as the avatar of their account.
+
+## Technical Behavior
+
+The action requires authorization of the user who created a link. In case the user hasn’t linked anything an error message will be emitted that the user doesn't have an avatar is returned.
+
+## Action Parameters
+
+| Property Name | C++ Type | JS Type |
+| ------------- | -------- | ------- |
+| user          | name     | string  |
+
+# CLI - cleos
+
+```bash
+cleos push action ultra.avatar clearavatar '["alice"]' -p alice
+```
+
+# Javascript - eosjs
+
+```js
+await transact([
+    {
+        account: 'ultra.avatar',
+        name: 'clearavatar',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            user: 'alice',
+        },
+    },
+]);
+```
+
+---
+title: 'Introducing Uniq Avatars'
+
+outline: [0, 4]
+order: 1
+---
+
+# Introducing Uniq Avatars
+
+The Ultra Avatar contract, `ultra.avatar` allows users to set an Uniq as their avatar.
+
+The user sets an avatar using the `setavatar` action and it is then availabe for anyone using Ultra's blockchain to view and use. They read data from the contract and render the Uniq inside their app.
+
+Users can change their avatar with the same action or remove avatar completely with the `clearavatar` action.
+
+If a user loses possession of the Uniq through transfer or burn actions, it can no longer be used as an avatar and an active avatar with such a Uniq will be cleared.
+
+## What are Uniq Avatars for?
+
+We intend for Uniq Avatars to be used within Ultra as cross-ecosystem visual identifiers of users and their identity. This means that if you see someone with a Uniq as their avatar in a game or an application, you can rest assured that **it is verifiable**.
+
+## Developer Use
+
+For developers we provide details about the two actions available via the on-chain ABI.
+
+-   [setavatar](./setavatar.md)
+-   [clearavatar](./clearavatar.md)
+
+---
+title: 'The `setavatar` action'
+
+outline: [0, 4]
+order: 2
+---
+
+# The setavatar action
+
+## Summary
+
+This action is used to set a user’s Uniq as the avatar for their account.
+
+## Technical Behavior
+
+The action requires that there is an authorization of the user who is creating a link, and that the nft_id of the Uniq belongs to the user. If a link already exists, it will be updated with a new nft_id.
+
+## Action Parameters
+
+| Property Name | C++ Type | JS Type |
+| ------------- | -------- | ------- |
+| user          | name     | string  |
+| nft_id        | uint64   | number  |
+
+## CLI - cleos
+
+```bash
+cleos push action ultra.avatar setavatar '["alice", 42]' -p alice
+```
+
+## Javascript - eosjs
+
+```js
+await transact([
+    {
+        account: 'ultra.avatar',
+        name: 'setavatar',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            user: 'alice',
+            nft_id: 42,
+        },
+    },
+]);
+```
+
+---
+title: 'Example Metadata Project'
+
+---
+
+
+# Example Project with Reveal
+
+Let's create a minimalistic bored ape factory. It has to contain 3 metadata files and 3 jsons
+for factory, default token and uniq. For the sake of simplicity, we'll only fill the required fields for each metadata file. You can of course enrich uniqs, for example, by adding `attributes` to them. See [uniq metadata fields](../uniq-metadata.md#metadata-fields).
+
+Since this is a reveal scenario each uniq will be displayed as a question mark until it's minted. This is controlled by `default_token_uri` which acts as fallback in case there's no uri for a token.
+
+Download the example project [here](https://github.com/ultraio/docs-example-x/blob/main/nft/example-pfp-project.zip?raw=true).
+
+## Creating a Bored Ape Factory
+
+```sh
+cleos push action eosio.nft.ft create.b '[
+  {
+    "memo": "",
+    "asset_manager": "ultra.nft.ft",
+    "asset_creator": "ultra",
+    "minimum_resell_price": null,
+    "resale_shares": [
+      {
+        "receiver": "ultra.nft.ft",
+        "basis_point": 1
+      }
+    ],
+    "mintable_window_start": "2023-05-04T00:00:00",
+    "mintable_window_end": null,
+    "trading_window_start": "2023-05-04T00:00:00",
+    "trading_window_end": null,
+    "recall_window_start": null,
+    "recall_window_end": null,
+    "max_mintable_tokens": 10000,
+    "lockup_time": null,
+    "conditionless_receivers": null,
+    "stat": 0,
+    "factory_uri": "https://s3.us-east-1.wasabisys.com/ultraio-uniq-dev/example-pfp-project/factory.json",
+    "factory_hash": "f9e1a773c6f3c9df715f1ebf2dc08ed602851da7de862243630d0151632117c2",
+    "authorized_minters": null,
+    "account_minting_limit": 100,
+    "transfer_window_start": null,
+    "transfer_window_end": null,
+    "maximum_uos_payment": null,
+    "default_token_uri": "https://s3.us-east-1.wasabisys.com/ultraio-uniq-dev/example-pfp-project/default.json",
+    "default_token_hash": "74f101c0fb325cbca62df0d4afaed241fedc488e4c917049c8fddaf7980d1858",
+    "lock_hash": null
+  }
+]' -p ultra.nft.ft -p ultra
+```
+
+## Minting a token
+
+Whenever there's a mint action triggered on your backend you can dynamically fill a token's uri:
+
+```sh
+cleos push action eosio.nft.ft issue.b '[
+  {
+    "to": "to.user.acc",
+    "token_configs": [
+      {
+        "token_factory_id": 256,
+        "amount": 1,
+        "custom_data": ""
+      }
+    ],
+    "token_metadata": [
+      {
+        "meta_uri": "https://s3.us-east-1.wasabisys.com/ultraio-uniq-dev/example-pfp-project/uniq.json",
+        "meta_hash": "741f4cd605d0c777e42399367b10ffac621e8652bf709ed6ada2dd06d570f144"
+      }
+    ],
+    "memo": ""
+  }
+]' -p ultra.nft.ft
+```
+
+
+---
+title: 'issue Smart Contract Example'
+
+---
+
+# Uniq variants - On issue.b smart contract example
+
+This page describes an example smart contract that utilizes smart contract notifications produced by `eosio.nft.ft` contract when one of the actions within it are utilized. As a goal for this smart contract we chose to modify the token URI right after it is minted based on it's serial number. For tokens with even or odd serial number we will substitute one of 2 possible URIs.
+
+### Logic
+
+When writing a smart contract that actively interacts with some other contract you need to either write some definitions to properly read the data from that other smart contract or you will need to get the definitions directly from the smart contract source code. This is needed since data on blockchain is stored in dense binary representation so without these definitions you will only be able to get the raw binary data from the smart contract which is not convenient to work with.
+
+For this smart contract to properly interact with `eosio.nft.ft` we will need information regarding the following tables:
+
+- `token.b` - described using `token_v1` structure. This table stores information about all tokens of NFT standard v1
+- `next.token` - described using `next_token_number` structure. This singleton stores the id of the next token that will be minted, by subtracting 1 you get the id of the token that was previously minted.
+
+To know the layout of those tables refer to the following documents [uniq metadata fields](../../../../blockchain/contracts/nft-contract/nft-tables.md)
+
+In addition to the above we also need to define an action within our smart contract with interface that matches `issue.b` action. This will cause `eosio.nft.ft` contract to notify us when `issue.b` action is executed and the account that will host this contract (here it will be `onissue`) is involved in the minting process (e.g. `onissue` is the issuer of the token). For that the following interface is re-created with an indication to listen for `issue.b` action:
+
+```cpp
+[[eosio::on_notify("eosio.nft.ft::issue.b")]]
+void on_issue(const issue_wrap_v1& issue);
+```
+
+We will also add 2 extra actions to be able to configure which URI will be used depending on if serial number is odd or even. This data will be stored a simple singleton `uricfg` and depending on the scope it will be either for even URIs (scope is 0) or for odd URIs (scope is 1). The actions themselves are `even_uri` and `odd_uri` and they simply write input string into the singleton.
+
+Logic for `on_issue` listener is to first deduce the token ID that was just minted by reading `next.token` singleton, then to read the `token.b` to get the serial number of the token. After that we simply read `uricfg` singleton and get the URI to write based on the serial number of the token and do an inline call to `settknmeta`. The `settknmeta` action will be responsible for writing the new URI we want into the token data since our example contract does not have authority to change data of other smart contracts - we can only read the data and do inline action calls.
+
+::: info
+To be able to do the inline call to `settknmeta` an extra permission is required for `onissue` account. It is configured in the test using the following `cleos` command:
+```
+await cleos(`set account permission onissue active --add-code onissue -p onissue@owner`)
+```
+This is equivalent to adding `onissue@eosio.code` account permission inside `onissue@active`. And effectively means that smart contract stored in `onissue` account has same authority that `onissue@active` would have
+:::
+
+### Disclaimers
+
+::: warning
+This example contract is not production ready and has some functionality and checks missing, be sure to do a proper testing if you intend to use any of the code provided in your solution
+:::
+
+::: warning
+This contract only listens to `issue.b` action, but tokens may also be issued when `issue` action is called after v1 actions are enabled. That means that in addition to listening to `issue.b` action you may also want to listen to `issue` action. This is only applicable in cases where you don't control the service that initiates the minting process (e.g. token is issued from 3rd party to your service). This example contract assumes you have full control over the minting process so only `issue.b` action is considered
+:::
+
+::: warning
+`issue.b` action supports minting multiple tokens at a time but this example contract will only update the very last token minted per `issue.b` action. This again assumes you have full ownership of the minting process and can control the number of tokens minted at a time. If this is not the case the smart contract will require adjustments to support multiple tokens minted at a time.
+:::
+
+::: warning
+This contract assumes no one will be issuing tokens to `onissue` contract so if someone actually does try to issue a token this example contract will try to modify it, but will fail since it will most likely not be the factory manager.
+:::
+
+### How to build and test
+
+First step after writing the `onissue.hpp` and `onissue.cpp` will be to build the contract. Follow [this](../../../../tutorials/smart-contracts/compile.md) for instructions of the build process.
+
+As an alternative the build command using `cdt-cpp`:
+
+```bash
+cdt-cpp ./src/onissue.cpp -abigen
+```
+
+After you successfully compile the contract you will have two files: `onissue.abi` and `onissue.wasm` both of them are needed for proper functionality of your contract on-chain.
+
+The test provided in `onissue.ultra_test.js` in the section below assumes that the compiled contract is located at `pconfig.ultraRootPath + '/eosio.contracts/build/contracts/onissue'` where `ultraRootPath` is the persistent path configured for `ultratest` (e.g. the end result could be `~/ultra/eosio.contracts/build/contracts/onissue`). In your case it may not be true so be sure to modify the `set contract` section of the test with correct path to your contract.
+
+To run the test simply run the `ultratest` with proper path to the test file:
+
+```bash
+ultratest -t ./onissue.ultra_test.js
+```
+
+### Smart contract source code
+
+::: details onissue.hpp
+```cpp
+#include <eosio/eosio.hpp>
+#include <eosio/system.hpp>
+#include <eosio/asset.hpp>
+#include <eosio/singleton.hpp>
+#include <eosio/binary_extension.hpp>
+
+using namespace std;
+using namespace eosio;
+
+// Alternatively can include if available:
+//#include <eosio.nft.ft/nft.common.hpp>
+//#include <eosio.nft.ft/eosio.nft.ft.hpp>
+namespace eosio {
+  // Declare table structure types
+  struct next_token_number {
+    uint64_t value;
+    EOSLIB_SERIALIZE( next_token_number, (value) )
+  };
+  typedef eosio::singleton<"next.token"_n, next_token_number> next_token_number_singleton;
+
+  struct token_v1 {
+    uint64_t                id;
+    uint64_t                token_factory_id;
+    time_point_sec          mint_date;
+    uint32_t                serial_number;
+    int64_t                 uos_payment;
+    optional<string>        uri;
+    optional<checksum256>   hash;
+
+    uint64_t primary_key()const { return id; }
+
+    EOSLIB_SERIALIZE( token_v1, (id)(token_factory_id)(mint_date)(serial_number)(uos_payment)(uri)(hash) )
+  };
+  typedef eosio::multi_index< "token.b"_n, token_v1 > token_table_v1;
+
+  // Get interface issue_wrap_v1 type from eosio.nft.ft contract
+  struct issue_token_config {
+    uint64_t token_factory_id;
+    uint32_t amount;
+    string custom_data;
+
+    EOSLIB_SERIALIZE( issue_token_config, (token_factory_id)(amount)(custom_data) )
+  };
+
+  typedef vector<issue_token_config> issue_token_config_vector;
+
+  struct issue_token_metadata{
+    optional<string> meta_uri;
+    optional<checksum256> meta_hash;
+
+    EOSLIB_SERIALIZE( issue_token_metadata, (meta_uri)(meta_hash) )
+  };
+  
+  typedef vector<issue_token_metadata> issue_token_metadata_vector;
+
+  struct issue_wrap_v1 {
+    name                      to;
+    issue_token_config_vector token_configs;
+    string                    memo;
+    optional<name>            authorizer;
+    optional<asset>           maximum_uos_payment;
+    binary_extension<optional<issue_token_metadata_vector>> token_metadata;
+
+    EOSLIB_SERIALIZE( issue_wrap_v1, (to)(token_configs)(memo)(authorizer)(maximum_uos_payment)(token_metadata) )
+  };
+}
+
+class [[eosio::contract("onissue")]] onissue : public contract {
+  public:
+    using contract::contract;
+
+    [[eosio::action("even.uri")]]
+    void even_uri(const string& uri);
+    [[eosio::action("odd.uri")]]
+    void odd_uri(const string& uri);
+
+    onissue(name receiver, name code, datastream<const char*> ds)
+      : contract(receiver, code, ds) {
+    }
+
+    [[eosio::on_notify("eosio.nft.ft::issue.b")]]
+    void on_issue(const issue_wrap_v1& issue);
+  
+  private:
+    struct [[eosio::table("uricfg"), eosio::contract("onissue")]] uri_config {
+      string value;
+
+      EOSLIB_SERIALIZE( uri_config, (value) )
+    };
+
+    //scope: 0 (even), 1 (odd)
+    typedef eosio::singleton< "uricfg"_n, uri_config > uri_config_singleton;
+};
+```
+:::
+
+::: details onissue.cpp
+```cpp
+#include "onissue.hpp"
+
+void onissue::even_uri(const string& uri) {
+  onissue::uri_config_singleton _s(get_self(), 0);
+  _s.set({.value = uri}, get_self());
+}
+
+void onissue::odd_uri(const string& uri) {
+  onissue::uri_config_singleton _s(get_self(), 1);
+  _s.set({.value = uri}, get_self());
+}
+
+void onissue::on_issue(const issue_wrap_v1& issue) {
+  // Multiple tokens could be issued by a single issue action.
+  // For the purposes of this smart contract we will assume that 'onissue' account will issue tokens
+  // only from the factories that this contract should apply to and that only one token will be issued at a time.
+
+  // If more granular logic is required then it is necessary to check issue.token_configs vector and check
+  // each token_factory_id to make sure it is one of the factories managed by 'onissue'.
+  // Additionally will need to check the issue.token_configs[i].amount and apply the logic for each token minted
+
+  eosio::name token_owner = issue.to;
+  // next token number singleton indicates the id of the next token that will be minted
+  // we can safely subtract 1 from it to get the id of that token that was just minted
+  next_token_number_singleton next_token_number_s("eosio.nft.ft"_n, 0);
+  uint64_t token_id = next_token_number_s.get().value - 1;
+
+  eosio::token_table_v1 tokens("eosio.nft.ft"_n, token_owner.value);
+  auto token_itr = tokens.find(token_id);
+  uint64_t serial_number_remainder = token_itr->serial_number % 2;
+  onissue::uri_config_singleton uri_config_s(get_self(), serial_number_remainder);
+  string new_uri = uri_config_s.get().value;
+
+  // if the eosio.nft.ft.hpp header is included the following wrapper can be used
+  //eosio::nft::set_token_meta_action settknmeta("eosio.nft.ft"_n, {{ get_self(), "active"_n }});
+  //settknmeta.send( token_id, token_owner, "modify on mint", new_uri, std::nullopt );
+
+  action(
+    permission_level{get_self(), "active"_n},
+    "eosio.nft.ft"_n,
+    "settknmeta"_n,
+    std::make_tuple( token_id, token_owner, std::string("modify on mint"), std::optional<string>(new_uri), std::optional<checksum256>() )
+  ).send();
+}
+```
+:::
+
+### Validation test
+
+::: details onissue.ultra_test.js
+```js
+module.exports = class onissue_test {
+
+    constructor() {}
+
+    requiredPlugins() {
+        return [];
+    }
+
+    requiresSystemContracts() {
+        return true;
+    }
+
+    nodeosConfigs() {
+        return {
+            config: {
+                'abi-serializer-max-time-ms': 100000,
+            },
+        }
+    }
+
+    requiredUnlimitedAccounts() {
+        return [];
+    }
+
+    requiredAccounts() {
+        return [
+            "onissue"
+        ];
+    }
+
+    tests({assert, endpoint, cleos, rpc, api, ecc, pconfig}) {
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        const {
+            activers,
+            default_create_wrap_v1,
+            create_test_conversion_rate,
+            create_token_factory_v1,
+            issue_nft_v1,
+        } = require('./eosio.nft.ft/shared_nft')(cleos, api, rpc, assert, this.requiredAccounts, endpoint);
+
+        const test_create = { ... default_create_wrap_v1,
+            stat: 0,
+            asset_manager: 'onissue',
+            asset_creator: 'onissue',
+            factory_uri: 'test',
+            factory_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523',
+            default_token_uri: 'test',
+            default_token_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc523'
+        }
+
+        return {
+            'should activate v1 and allow 3rd party factories': async () => {
+                assert(await activers(), 'failed to activate v1');
+                await sleep(1000);
+            },
+            'should create test factory': async () => {
+                // need to have oracle rates available for NFT contract to work properly
+                await create_test_conversion_rate();
+                await create_token_factory_v1(test_create, "onissue", "onissue");
+            },
+            'should deploy onissue contract': async () => {
+                // provide KYC with dummy signature to be able to deploy the contract
+                assert(await cleos(`push action eosio.kyc registerkyc '["onissue","ultra","bfed20bb7e82fd800f653411d17d9ec1f51ff7e3ac5635113061af50a99d40e4","SIG_K1_KiyvFxSYrFNawpf747HFG4wDtq2wjV3dp6dbW6AijtMiKSzz5Gm5JBtLQ55yKnMpbsUuJwYc9AsDoTANMhVqKrfLXCmaid","SIG_K1_KiyvFxSYrFNawpf747HFG4wDtq2wjV3dp6dbW6AijtMiKSzz5Gm5JBtLQ55yKnMpbsUuJwYc9AsDoTANMhVqKrfLXCmaid"]' -p ultra.kyc`), "Did not register KYC for onissue account");
+                // modify the path to the compiled contract as needed
+                const contractPath = pconfig.ultraRootPath + '/eosio.contracts';
+                assert(await cleos(`set contract onissue ${contractPath}/build/contracts/onissue onissue.wasm onissue.abi -p onissue@active`), 'Did not set contract for onissue');
+                // allow inline actions to use active permission of 'onissue' account
+                assert(await cleos(`set account permission onissue active --add-code onissue -p onissue@owner`), "Could not set onissue permissions");
+            },
+            'should try to issue a token and fail because even.uri and odd.uri are not configured for smart contract': async() => {
+                assert(!await issue_nft_v1(test_create.asset_manager, [{token_factory_id: 0, amount: 1, custom_data: ''}], test_create.asset_manager, null, null, null, null, 'singleton does not exist'), 'was able to mint a token');
+            },
+            'should configure even.uri and odd.uri': async() => {
+                assert(await cleos(`push action onissue even.uri '["http://test.io/even.json"]' -p onissue`), "Was not able to configure even URI");
+                assert(await cleos(`push action onissue odd.uri '["http://test.io/odd.json"]' -p onissue`), "Was not able to configure odd URI");
+            },
+            'should issue 2 tokens, first one should have even URI, second one should have odd uri': async() => {
+                // first token has serial number of 1 - odd
+                // second token has serial number of 2 - even
+
+                // as mentioned in the contract code - will only issue 1 token at a time
+                // token_factory_id is 0 since it is the first factory ever created within this test so it will have id of 0
+                // in practice you need to get your token factory ID after creation from the chain
+                assert(await issue_nft_v1(test_create.asset_manager, [{token_factory_id: 0, amount: 1, custom_data: ''}], test_create.asset_manager), 'was not able to mint tokens');
+                assert(await issue_nft_v1(test_create.asset_manager, [{token_factory_id: 0, amount: 1, custom_data: ''}], test_create.asset_manager), 'was not able to mint tokens');
+            
+                // check tokens owned by 'onissue' and make sure that first one has odd.json URI and second one has even.json URI
+                const tokens = await rpc.get_table_rows({json: true, code: 'eosio.nft.ft', scope: 'onissue', table: `token.b`});
+                assert(tokens.rows[0].uri === 'http://test.io/odd.json', "Wrong token 1 URI");
+                assert(tokens.rows[1].uri === 'http://test.io/even.json', "Wrong token 2 URI");
+            },
+        }
+    }
+}
+```
+:::
+---
+title: 'Variant Example Use Cases'
+
+---
+
+# Variant example use cases
+
+Variant standard is quite flexible and allows for a variety of potential projects and use cases. This page will cover some of them and explain how they work
+
+## Video game token factory
+
+The simplest example is providing the same metadata to all the tokens minted from the factory. Such example could be tokens of a specific game, where each token is identical. This factory utilizes `default_token_uri` to avoid duplication inside each minted token
+
+| Property                   | Value                      |
+| -------------------------- | -------------------------- |
+| factory.default_token_uri  | MyGame.com/Metadata        |
+| factory.default_token_hash | b0dafd687d5527cef28300392e |
+| token.uri (per token)      | _null_                     |
+| token.hash (per token)     | _null_                     |
+
+## Video game token factory with a rare unique copy
+
+Similar to the previous example we have a simple factory for game tokens where all of them are identical except for a few unique cases. For those unique tokens (here it is token #1000000) we provide a specific URI and hash so it does not fallback to default
+
+| Property                   | Value                                         |
+| -------------------------- | --------------------------------------------- |
+| factory.default_token_uri  | MyGame.com/DefaultMetadataMyGame.com/Metadata |
+| factory.default_token_hash | b0dafd687d5527cef28300392e                    |
+| token.uri (#1000000)       | MyGame.com/1MthMetadata                       |
+| token.hash (#1000000)      | 4e3304e9af1ec7aaa05206b                       |
+| token.uri (rest of Uniqs)  | _null_                                        |
+| token.hash (rest of Uniqs) | _null_                                        |
+
+## Simple profile picture project
+
+Common situation for profile picture projects is that there is a base URI with serial number utilized as an identifier to find the metadata for a specific token. By using a dynamic value inside `default_token_uri` we can avoid duplication of base URI inside each of the minted tokens and can still provide a hash to each of the tokens for the purposes of data provenance.
+
+| Property                   | Value                                     |
+| -------------------------- | ----------------------------------------- |
+| factory.default_token_uri  | https://AngryBananas/Uniq/{serial_number} |
+| factory.default_token_hash | _null_                                    |
+| token.uri (#1)             | _null_                                    |
+| token.hash (#1)            | bea34b0a7cdef454f4                        |
+| ...                        | ...                                       |
+| token.uri (#1000)          | _null_                                    |
+| token.hash (#1000)         | def454f46557a96ff84                       |
+
+## Obfuscated profile picture project
+
+In some cases it may be desired for a profile picture project to not be able to probe metadata beforehand by substituting different serial numbers. Since serial numbers are sequential it is easy to go through all of them. In this example we use token hash which is not known beforehand as a part of dynamic `deafult_token_uri`. Hash of the token will only be known after the token is minted.
+
+| Property                   | Value                            |
+| -------------------------- | -------------------------------- |
+| factory.default_token_uri  | https://AngryBananas/Uniq/{hash} |
+| factory.default_token_hash | _null_                           |
+| token.uri (#1)             | _null_                           |
+| token.hash (#1)            | bea34b0a7cdef454f4               |
+| ...                        | ...                              |
+| token.uri (#1000)          | _null_                           |
+| token.hash (#1000)         | def454f46557a96ff84              |
+
+## IPFS-based profile picture project
+
+Alternative storage solutions may have a different way of naming the metadata URIs. This example demonstrates how in case of IPFS you could provide both a URI and a hash for all the tokens you mint as each metadata file on IPFS will have a unique URI.
+
+| Property                   | Value                                     |
+| -------------------------- | ----------------------------------------- |
+| factory.default_token_uri  | https://ipfs.io/ipfs/Qme7ss3ARVgxv6rX     |
+| factory.default_token_hash | b0dafd687d5527cef28300392e                |
+| token.uri (#1)             | https://ipfs.io/ipfs/04e9af1ec7aaa0520    |
+| token.hash (#1)            | bea34b0a7cdef454f4                        |
+| ...                        | ...                                       |
+| token.uri (#1000)          | https://ipfs.io/ipfs/cdef454f46557a96ff84 |
+| token.hash (#1000)         | def454f46557a96ff84                       |
+
+---
+title: 'Common Metadata Concepts'
+
+order: -99996
+---
+
+# Common metadata concepts
+
+## Integrity
+
+Integrity allows standard integrators and Ultra backend to validate how genuine the provided information is. By providing a hash within the integrity field it is possible to verify that the associated data (e.g. media image or another JSON file) is what it is claimed to be by calculating it's hash and comparing it with the one provided within the metadata.
+
+For now the only supported hash algorithm is SHA256 and hash must be represented as a hexidecimal string
+
+The following schema is used for the integrity field
+
+```JSON
+"integrity": {
+   "type": "object",
+   "properties": {
+      "type": { "type": "string", "enum": ["SHA256"] },
+      "hash": {
+            "type": "string",
+            "description": "only 64 characters SHA256 hash is supported initially",
+            "minLength": 64,
+            "maxLength": 64,
+            "pattern": "^([a-fA-F0-9]{2})+$"
+      }
+   },
+   "required": ["type", "hash"],
+   "additionalProperties": false
+}
+```
+
+## Static resource
+
+Static resource describes some piece of data that is intended to change infrequently or never at all. For static resource you specify it's `contentType`, provide a single URI pointing to the resource and provide an `integrity` field (described above). Each time any change is done to the underlying data described by the static resource you must update the associated `integrity` field to maintain data consistency. Note that this may require you to also update the hash in any parent metadata files containing the resource fields and it will also require you to update token/factory metadata hash on-chain.
+
+The following schema is used for the static resource field
+
+```JSON
+"staticResource": {
+   "type": "object",
+   "description": "A static resource provides a hash to check integrity",
+   "properties": {
+         "contentType": { "type": "string" },
+         "uris": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+         },
+         "integrity": {
+            "type": "object",
+            "properties": {
+               "type": { "type": "string", "enum": ["SHA256"] },
+               "hash": {
+                     "type": "string",
+                     "description": "only 64 characters SHA256 hash is supported initially",
+                     "minLength": 64,
+                     "maxLength": 64,
+                     "pattern": "^([a-fA-F0-9]{2})+$"
+               }
+            },
+            "required": ["type", "hash"],
+            "additionalProperties": false
+         }
+   },
+   "required": ["contentType", "uris", "integrity"],
+   "additionalProperties": false
+}
+```
+
+## Dynamic resource
+
+Dynamic resource describes some piece of data that is intended to change frequently or you are is not intended to have any integrity or validation attached to it. For dynamic resource you specify it's `contentType` and provide a single URI pointing to the resource. No integrity field is specified in this case and there is no need to update any other place in the metadata file in case underlying data pointed by dynamic resource is changed.
+
+The following schema is used for the dynamic resource field
+
+```JSON
+"dynamicResource": {
+   "type": "object",
+   "title": "DynamicResource",
+   "description": "A dynamic resource can be refreshed to discover changes",
+   "properties": {
+         "contentType": { "type": "string" },
+         "uris": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+         }
+   },
+   "required": ["contentType", "uris"],
+   "additionalProperties": false
+}
+```
+
+## Metadata media
+
+Each token and factory must have some visual representation added to it so it could be nicely displayed in the frontend. Each media must be represented as a [staticResource](#static-resource) with a hash specified.
+
+Breakdown of each individual media:
+
+| Field   | Description                                                                                                                                                                                                                         |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| product | This is a main media resource visually representing your token. If your token is a picture of an apple then `product` media would be this picture by itself                                                                         |
+| square  | Square image is used whenever multiple tokens are shown on the same page, by providing a square image you make it easy to display your token by making it's representation tileable.                                                |
+| hero    | Hero image is a big banner image that is typically placed in the top middle of the page. You can think of it as a movie poster buy applied to Uniq token.                                                                           |
+| gallery | Here you provide a list of multiple media files. Not always would it make sense to have multiple images, but if this token is representing an in-game item then gallery images could be screenshots of this item in the game itself |
+
+
+```JSON
+"media": {
+   "description": "Specify the advertising content for this NFT Factory",
+   "type": "object",
+   "properties": {
+         "product": { "$ref": "#/definitions/staticResource" },
+         "square": { "$ref": "#/definitions/staticResource" },
+         "hero": { "$ref": "#/definitions/staticResource" },
+         "gallery": {
+            "description": "A list of path pointing to images, videos... relative from this manifest relative from this manifest.",
+            "type": "array",
+            "items": { "$ref": "#/definitions/staticResource" }
+         }
+   },
+   "required": ["product", "square"],
+   "additionalProperties": false
+}
+```
+---
+title: 'Factory Metadata'
+
+order: -99995
+---
+
+# Factory metadata
+
+## Introduction
+
+Factory metadata represents the high level overview of the Uniqs that this factory could mint. This metadata should always exist when a token factory is created and should contain the necessary information about what this factory is and what kind of tokens are expected to be minted from it. By specifying distinguishable name, description and media images you provide the necessary feedback for the users to know what to expect from tokens minted from this factory. Example of the theme for a factory could be a collection of images and in this case factory metadata would describe what kind of images to expect from this factory and what there common concept is or you could provide a breakdown about the rarity of some of images to expect (e.g. there are some more rare and special images compared to the rest)
+
+## Concepts
+
+Refer to this page for explanation on some concepts used in the metadata files
+
+> [Common metadata concepts](./common-metadata-concepts.md)
+
+## Metadata fields
+
+Here is a short breakdown of possible fields for factory metadata and their purpose. In the next section a more detailed information will be provided for some of the fields. For exact restrictions per field see JSON schema at the bottom of the document
+
+| Property Name | Description                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| specVersion   | Defines the specification version for this metadata. The only allowed value is 1.0 for this version of specification                                                                                                                                                                                                                                                                                                                             |
+| name          | Name of the token factory as a whole. Can represent the collection name                                                                                                                                                                                                                                                                                                                                                                          |
+| subName       | Additional flavor name used to describe this Uniq factory                                                                                                                                                                                                                                                                                                                                                                                        |
+| description   | Detailed explanation about what this factory represents, mints anr/or used for                                                                                                                                                                                                                                                                                                                                                                   |
+| author        | Specifies who the author of this factory is                                                                                                                                                                                                                                                                                                                                                                                                      |
+| defaultLocale | Specifies the locale of this factory metadata. For this version the only allowed value is `en-US`.                                                                                                                                                                                                                                                                                                                                               |
+| media         | Contains the media used to display this factory. Refer to [Metadata media](./common-metadata-concepts.md#metadata-media) for more details                                                                                                                                                                                                                                                                                                        |
+| properties    | Arbitrary data that you can supply that does not fit any other category                                                                                                                                                                                                                                                                                                                                                                          |
+| attributes    | This field allows you to specify structured numerical or string data for the factory. Each attribute must be represented as an object with a `name` - title of the attribute; `description` - details about what this attribute is; `type` - either `boolean`, `number`, `string` or `ISODateString`; `dynamic` - true or false depending on if it is intended to change over time or not, in any case it will be a part of the hash calculation |
+| resources     | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a `staticResource` (details here [staticResource](./common-metadata-concepts.md#static-resource))                                                                                                                                                                                                                            |
+
+The following fields are required to be specified:
+- `specVersion`
+- `name`
+- `defaultLocale`
+- `media`
+  - `product`
+    - `contentType`
+    - `uris`
+    - `integrity`
+      - `type`
+      - `hash`
+  - `square`
+    - `contentType`
+    - `uris`
+    - `integrity`
+      - `type`
+      - `hash`
+
+## Minimalistic example
+
+To get started here is a simplest example of the valid factory metadata you can provide
+
+```JSON
+{
+    "specVersion":"1.0",
+    "name":"Uniq factory",
+    "defaultLocale":"en-US",
+    "media": {
+        "product": {
+            "contentType":"image/png",
+            "integrity": {
+                "type":"SHA256","hash":"76378a8e97f500dfd69fb9816189fb503a913e0f306a4307bc2d4d61ded8f89e"
+            },
+            "uris":["https://example.io/uniq/76378a8e97f500dfd69fb9816189fb503a913e0f306a4307bc2d4d61ded8f89e.png"]
+        },
+        "square": {
+            "contentType":"image/png",
+            "integrity":{
+                "type":"SHA256","hash":"f41938bf16ed3e779b3de6c63e531bce84101947da49617ee6f6322ecadb1b0e"
+            },
+            "uris":["https://example.io/uniq/f41938bf16ed3e779b3de6c63e531bce84101947da49617ee6f6322ecadb1b0e.png"]
+        }
+    }
+}
+```
+
+## JSON schema
+
+Here the JSON schema is provided for Uniq factory metadata which can be used for validation purposes using AJV. Additionally it gives insight about what the allowed values are for different fields
+
+```JSON
+{
+    "type": "object",
+    "description": "The NTF Factory metadata",
+    "properties": {
+        "specVersion": {
+            "type": "string",
+            "description": "The version of the NFT Factory metadata standard specification which the manifest uses. This enables the interpretation of the context. Compliant manifests MUST use a value of 0.1 when referring to this version of the specification."
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "Identifies the asset to which this NFT Factory represents"
+        },
+        "subName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "A secondary name that identify a special flavor of the asset to which this NFT represents. For example “Limited Edition”"
+        },
+        "description": {
+            "type": "string",
+            "description": "Long description of the asset to which this NFT represents",
+            "maxLength": 4096
+        },
+        "author": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "Specify the author(s) of the asset to which this NFT represents"
+        },
+        "defaultLocale": {
+            "type": "string",
+            "enum": ["en-US"],
+            "description": "Specify the local of this metadata. The value must be one of the locales from the list available here: https://github.com/unicode-org/cldr-json/blob/master/cldr-json/cldr-core/availableLocales.json"
+        },
+        "media": {
+            "description": "Specify the advertising content for this NFT Factory",
+            "type": "object",
+            "properties": {
+                "product": { "$ref": "#/definitions/staticResource" },
+                "square": { "$ref": "#/definitions/staticResource" },
+                "hero": { "$ref": "#/definitions/staticResource" },
+                "gallery": {
+                    "description": "A list of path pointing to images, videos... relative from this manifest relative from this manifest.",
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/staticResource" }
+                }
+            },
+            "required": ["product", "square"],
+            "additionalProperties": false
+        },
+        "properties": {
+            "description": "Specify the properties for this NFT Factory",
+            "type": "object",
+            "additionalProperties": true
+        },
+        "attributes": {
+            "description": "Describes the attributes of each NFT generated by this factory",
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "dynamic": { "type": "boolean" },
+                    "type": {
+                        "type": "string",
+                        "enum": ["boolean", "number", "string", "ISODateString"]
+                    },
+                    "name": { "type": "string" },
+                    "description": { "type": "string" }
+                },
+                "required": ["type", "name"],
+                "additionalProperties": false
+            }
+        },
+        "resources": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#/definitions/staticResource" }
+        }
+    },
+    "required": ["specVersion", "name", "defaultLocale", "media"],
+    "additionalProperties": false,
+    "definitions": {
+        "staticResource": {
+            "type": "object",
+            "description": "A static resource provides a hash to check integrity",
+            "properties": {
+                "contentType": { "type": "string" },
+                "uris": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { "type": "string" }
+                },
+                "integrity": {
+                    "type": "object",
+                    "properties": {
+                        "type": { "type": "string", "enum": ["SHA256"] },
+                        "hash": {
+                            "type": "string",
+                            "description": "only 64 characters SHA256 hash is supported initially",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^([a-fA-F0-9]{2})+$"
+                        }
+                    },
+                    "required": ["type", "hash"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["contentType", "uris", "integrity"],
+            "additionalProperties": false
+        }
+    }
+}
+```
+---
+title: 'FAQ'
+
+order: -99998
+---
+
+# FAQ
+
+## Whats the difference between asset creator and asset manager roles inside token factory?
+
+Asset creator is an entity responsible for the fact of token factory creation. Being an asset creator implies that due to your initiative this token factory is created.
+
+On the other hand asset manager is the one responsible for any changes done to the factory itself. Asset manager regulates all factory settings and performs minting of tokens. His signature is also required to create a token factory as a sign of cooperation between the creator and manager
+
+Asset creator and manager can be (and often is) the same entity
+
+## Why can't I provide a simple URI to the image for factory/token?
+
+NFT standard developed by Ultra aims not only to extend the flexibility offered to the developers but also to provide a good user experience. As such in Ultra client for better visual feedback we are displaying different versions of the desired Uniq image that better fits the user interface and requires the developer to provide those different image variations as to not accidentally mess up your work with automated processing
+
+In addition to that by requiring a metadata to be represented as a JSON with clearly defined standard version and layout we reduce ambiguity for all parties
+
+## Why isn't metadata stored on-chain?
+
+Depending on the use case the metadata files could be as large as a couple of megabytes. Since the RAM is a limited and expensive resource for the blockchain we want to minimize the impact of NFT standard on it. In addition to that even if metadata was to be stored on-chain that won't be sufficient for a complete solution as it will still refer to media files stored off-chain
+
+## Why do I need to know token owner to find token metadata?
+
+There could be many different use cases for associating a specific token with some other property (token id, token factory id, token owner, serial number, etc). We decided that the most common use case is to view a list of tokens owned by a specific user since any interaction with a specific token always goes through the owner of that token (e.g. to transfer or sell a token you need owner's approval).
+
+If there is a need to bypass that requirement (e.g. showing a gallery of all tokens for a specific token factory) then you must rely on alternative solutions either through streaming or by querying the full metadata table and performing data manipulation locally
+
+## Why some actions have .b (or similar) extension at the end and others don't? Why I can (or can't) use the action without .b extension instead?
+
+Extensions such as `.b` indicate a next iteration of the specific action. This is done for actions that have a breaking change in the interface or in the data they are referencing (e.g. `issue.b` action will work with contract tables `token.b` and `factory.b` and only after it is activated).
+
+Some actions that don't have this extension will redirect you to a new version automatically by converting provided arguments (e.g. `issue` action will trigger `issue.b`), but you are still advised to use an appropriate latest available action.
+
+Some actions may not have a newer iteration available in case no changes are done to the interface or the logic is backwards compatible (e.g. `setstatus`)
+
+## Can I hide metadata until I am ready to reveal it? How can I use a serial number of the token as a part of the metadata URI? How do I avoid micromanaging URI/hashes on-chain?
+
+Refer to pages related to [organizing factory metadata](./organizing-metadata.md) and [example use cases](./Examples/variant-example-use-cases.md)
+
+## Why can't I use my own RAM to store NFT data instead of paying a fee?
+
+On Ultra blockchain the RAM price fluctuates based on the available supply meaning that for one developer the price to publish token factory and mint tokens will be different compared to another developer and will fluctuate over time.
+
+To avoid this issue and make the process of creating a Uniq factory predictable in terms of cost we enforce a flat fee specified in USD and does not depend on any blockchain state. But note that the payment for RAM in this case is still done in UOS by using USD/UOS conversion rate.
+
+## Why is X storage solution not supported?
+
+Right now our Backend expects all external data to be accessible through simple HTTP/HTTPS endpoints. In case your storage solution relies on some other type of the protocol you are temporarily encouraged to use a proxy server that will serve the media through HTTP/HTTPS protocol
+---
+title: 'Uniq Variants'
+
+order: -99999
+---
+
+# Uniq Variants
+
+This section aims to inform our users of how Uniq's and their individual variants currently work. It will help familiarize end users with our terminology, and how our Uniq data is structured.
+
+## Terminology
+
+These are generalized terms to help identify how the developers at Ultra speak about the NFTs that are minted.
+
+* Uniq
+  * NFT
+  * A uniq is a single token that is generated by a Uniq Factory.
+  * A uniq can have its own unique **uri** which points to metadata.
+
+* Uniq Factory
+  * A uniq factory is a system that mints tokens based on specific metadata.
+  * Each factory on-chain has the following:
+    *  factory_uri
+    *  factory_hash
+    *  default_token_uri
+    *  default_token_hash
+  * The values above are used to determine where metdata is located, and the hash is made from the contents of the metadata file.
+
+* Metadata
+  * Is a type of dataset that is stored off-chain and usually has different hashes to verify the authenticity of the data.
+  * Inside you can usually find links to images, descriptions, and traits for a given token, or factory.
+
+* Hash
+  * A set of bytes that are strung together to generate a unique string based on those bytes of data.
+  * In Ultra's case we use the SHA-256 algorithm for its wide availability across all platforms
+
+* Uniq Default Token
+  * Uniq's utilize a default token to apply a template to any token that does not have unique data.
+  * The metadata from this file is automatically applied.
+
+### Recap
+
+This is the short version of the above.
+
+* Uniq Factories create Uniq's that contain references to their uniq factory, or individual metadata.
+* Metadata can be obtained by visiting the various URLs inside of a factory, or an individual token.
+* All uniqs can have their own metadata, or utilize a single default template for all uniqs.
+* The authenticity of data is verified by the SHA256 algorithm by hashing the contents of files, and the files inside of the files.
+
+## Uniq Factory Metadata
+
+Each Uniq Factory is required to utilize our schema's to help standardize the system across our entire platform.
+
+In the link provided below, you can learn more about how this uniq factory metadata is built, and what to expect when building your own uniq factory.
+
+> [Factory Metadata](./factory-metadata.md)
+
+## Uniq Default Token Metadata
+
+Depending on the factory strategy it may either supply a `default_token_uri` or individually link to a `uri` inside of the uniq itself. The uniq can be *revealed* at runtime by appending the `uri` that is necessary for a unqi to have its own metadata.
+
+Factory managers may choose to lock a uniq's data after it is minted depending on how they would like to distribute their uniqs.
+
+In the link provided below, you can learn more about the default token and its given format.
+
+> [Uniq Default Metadata](./uniq-default-metadata.md)
+
+## Uniqs
+
+Uniqs have their own schema that is shared with the default token, but there are a few differences in how it functions. In the link provided below you can learn more about what actions to call, and individual changes that can be applied to a uniq.
+
+> [Uniq Metadata](./uniq-metadata.md)
+
+## Relevant Actions
+
+Below you can find some relevant blockchain actions for the `eosio.nft.ft` account for managing uniqs, uniq factories, and their status.
+
+* [Set Factory Meta](../../../blockchain/contracts/nft-contract/nft-actions/setmeta.b.md)
+* [Set Default Uniq Meta](../../../blockchain/contracts/nft-contract/nft-actions/setdflttkn.md)
+* [Set Uniq Meta](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md)
+* [Lock Factory](../../../blockchain/contracts/nft-contract/nft-actions/lckfactory.md)
+* [Create Uniq Factory](../../../blockchain/contracts/nft-contract/nft-actions/create.b.md)
+* [Issue Uniq](../../../blockchain/contracts/nft-contract/nft-actions/issue.b.md)
+
+---
+title: 'Organizing Metadata'
+
+order: -99997
+---
+
+# Organizing metadata
+
+This page will cover how the metadata off-chain can be linked to on-chain data and what options you have to better organize your metadata URIs
+
+## Dynamic and static metadata URI
+
+The distinction between static and dynamic metadata URI applies only for `default_token_uri` field inside the token factory. By specifying one of the possible dynamic values inside the `default_token_uri` the URI will automatically be considered as dynamic for the purposes of searching the token metadata as described in the section below.
+
+If no dynamic value is used inside `default_token_uri` then this URI will be considered static.
+
+Acceptable dynamic URI values:
+
+-   `factory_id` - Factory ID based on the on-chain data
+-   `serial_number` - Serial number of a specific token. Incremental value starting from 1
+-   `id` - ID of the token. Pool of possible IDs is shared between all Uniqs and in general you won't know it until the token is minted
+-   `hash` - Hash of the token metadata stored per token
+
+Example of `static` default token URI: http://myfactory.io/deafult_token.json
+
+Example of `dynamic` default token URI: http://myfactory.io/{serial_number}.json
+
+## How to set factory metadata
+
+Factory can contain two different types of metadata URI: factory metadata URI and default uniq metadata. Factory metadata URI must always be provided and point to a single JSON metadata file. Factory metadata hash must also be provided and be a hash of the metadata file pointed by factory metadata URI.
+
+For default token URI there is a flexibility in choosing between static and dynamic default token URI (the difference is explained above) but you must always specify some default token URI. For static default token URI you have a possibility to also specify a hash, but for dynamic default token URI you should not be providing hash since dynamic URI implies the possibility that it points to multiple different metadata files depending on the context and thus a single hash cannot fully describe the provenance of metadata files.
+
+The following diagram displays potential use cases when setting factory URIs:
+
+![](/images/bbea7125-931a-4f98-b99e-d91ac8c8fe48.png)
+
+Token factory metadata can be specified during creation - [create.b](../../../blockchain/contracts/nft-contract/nft-actions/create.b.md)
+
+Following actions are used to change factory metadata URIs and hashes after creation:
+[setmeta.b](../../../blockchain/contracts/nft-contract/nft-actions/setmeta.b.md)
+[setdflttkn](../../../blockchain/contracts/nft-contract/nft-actions/setdflttkn.md)
+
+## How to set token metadata
+
+You have an option to provide a metadata URI and hash for each token individually. In this case there will be no need to fallback to default token URI inside the token factory.
+
+Both the URI and hash are optional. You may want to provide either of them or both of them at the same time depending on your use case. Refer to this page for details: [use cases](./Examples/variant-example-use-cases.md)
+
+Token metadata can be specified when minting a token - [issue.b](../../../blockchain/blockchain/contracts/nft-contract/nft-actions/issue.b.md)
+
+Alternatively URI and hash can be changed after the token is minted using the following action - [settknmeta](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md)
+
+## How to find metadata for a given Uniq
+
+For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../../blockchain/contracts/nft-contract/nft-tables.md#token.b).
+
+The first step is to check if there is a URI specified on the token itself by checking the `uri` field of the token. If it is specified then you are done - go to `uri` and fetch the metadata.
+
+In case the `uri` is empty or points to an invalid file you need to fallback to default token URI stored inside the token factory. Token factory ID is available in the token data and by querying the `factory.b` table you will be able to access it's `default_token_uri` field.
+
+Then depending on if `default_token_uri` is dynamic or not one of two following paths should be used:
+
+-   `default_token_uri` is `static` - go to the URI pointed by `default_token_uri` and fetch the metadata
+-   `default_token_uri` is `dynamic` - substitute all dynamic values inside the URI with information available in the token data (e.g. serial number) and then fetch the metadata using the generated URI.
+
+Refer to the following diagram for details:
+
+![](/images/5c92a44c-bbb0-4111-ac27-e5848fe43aeb.png)
+
+---
+title: 'Uniq Default Metadata'
+
+order: -99994
+---
+
+# Uniq default metadata
+
+## Introduction
+
+Uniq default metadata is utilized whenever any token is reference that does not have a dedicated metadata URI. This can happen either intentionally if the tokens minted from the factory are identical (so there is no need for anything except default metadata) or accidentally in case due to some issue the tokens are minted without a dedicated metadata URI. In any case the default metadata functions identically to individual Uniq metadata with only exceptions that it is utilized when there is no override and the URI for this metadata is placed in the dedicated field of the factory on-chain data `default_token_uri`.
+
+## Supported dynamic values
+
+Default token URI supports special `dynamic` values that can be used to modify the URI based on different context values which are different between different tokens/factories. If none of those values are specified the the URI is considered to be `static` (meaning that it is not context dependant). Followind `dynamic` values are supported:
+
+| Value         | Description                                             |
+| ------------- | ------------------------------------------------------- |
+| factory_id    | ID of the token factory from which the token was minted |
+| id            | ID of the token                                         |
+| hash          | Hash of the token                                       |
+| serial_number | Serial number of the token                              |
+
+To specify a `dynamic` values within a URI you must enclose it in `{}` like so: `https://example.io/{token_id}.json` which should evaluate to `https://example.io/42.json` for the token with serial number of 42 whenever Ultra or any other integrator will be reading this default token metadata.
+
+## Metadata fields
+
+Identical to [Uniq metadata fields](./uniq-metadata.md#metadata-fields)
+
+## Minimalistic example
+
+```JSON
+{
+    "specVersion":"1.0",
+    "name":"Uniq default variant",
+    "defaultLocale":"en-US",
+    "media": {
+        "product": {
+            "contentType":"image/png",
+            "integrity": {
+                "type":"SHA256","hash":"76378a8e97f500dfd69fb9816189fb503a913e0f306a4307bc2d4d61ded8f89e"
+            },
+            "uris":["https://example.io/default/76378a8e97f500dfd69fb9816189fb503a913e0f306a4307bc2d4d61ded8f89e.png"]
+        },
+        "square": {
+            "contentType":"image/png",
+            "integrity":{
+                "type":"SHA256","hash":"f41938bf16ed3e779b3de6c63e531bce84101947da49617ee6f6322ecadb1b0e"
+            },
+            "uris":["https://example.io/default/f41938bf16ed3e779b3de6c63e531bce84101947da49617ee6f6322ecadb1b0e.png"]
+        }
+    }
+}
+```
+
+## JSON schema
+
+Identical to [Uniq metadata schema](./uniq-metadata.md#json-schema)
+
+---
+title: 'Uniq Metadata'
+
+order: -99993
+---
+
+
+# Uniq metadata
+
+## Introduction
+
+Uniq metadata represents what this specific token is - it's name, description and attached media and data. When the token is issued you can attach a URI of this Uniq metadata to the token and this way you would create a link between on-chain token and off-chain metadata. Example of what this metadata could represent can be an image from a collection of various other images and in this case you would put this image as one of the `media` fields and fill out the name and description to give some flavour to the token.
+
+## Concepts
+
+Refer to this page for explanation on some concepts used in the metadata files
+
+> [Common metadata concepts](./common-metadata-concepts.md)
+
+## Metadata fields
+
+| Property Name     | Description                                                                                                                                                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| specVersion       | Defines the specification version for this metadata. The only allowed value is 1.0 for this version of specification                                                                                                             |
+| name              | Name of this token. Used for identification purposes so best to make it distinguishable from other tokens                                                                                                                        |
+| subName           | Additional flavor name used to describe this Uniq token                                                                                                                                                                          |
+| description       | Detailed explanation about what this token is. Description could include some trivia or details about how it can be sued                                                                                                         |
+| author            | Specifies who the author of this token is                                                                                                                                                                                        |
+| defaultLocale     | Specifies the locale of this token metadata. For this version the only allowed value is `en-US`.                                                                                                                                 |
+| media             | Contains the media used to display this token. Refer to [Metadata media](./common-metadata-concepts.md#metadata-media) for more details                                                                                          |
+| properties        | Arbitrary data that you can supply that does not fit any other category                                                                                                                                                          |
+| attributes        | Here you can specify a list of simple numerical or string attributes to go with the token. Allowed types for each of the attributes are: `boolean`, `string` and `number`                                                        |
+| dynamicAttributes | This field is represented as a single [dynamicResource](./common-metadata-concepts.md#dynamic-resource) and it is used to provide a URI to an external resource detailing the content of dynamic attributes for this token.      |
+| resources         | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a `staticResource` (details here [staticResource](./common-metadata-concepts.md#static-resource))            |
+| dynamicResources  | Allows additional dynamic media or reference data to be added as a part of the metadata. Each resource must be described as a `dynamicResource` (details here [dynamicResource](./common-metadata-concepts.md#dynamic-resource)) |
+
+The following fields are required to be specified:
+- `specVersion`
+- `name`
+- `defaultLocale`
+- `media`
+  - `product`
+    - `contentType`
+    - `uris`
+    - `integrity`
+      - `type`
+      - `hash`
+  - `square`
+    - `contentType`
+    - `uris`
+    - `integrity`
+      - `type`
+      - `hash`
+
+## Minimalistic example
+
+```JSON
+{
+    "specVersion":"1.0",
+    "name":"Uniq variant (#68)",
+    "defaultLocale":"en-US",
+    "media": {
+        "product": {
+            "contentType":"image/png",
+            "integrity": {
+                "type":"SHA256","hash":"76378a8e97f500dfd69fb9816189fb503a913e0f306a4307bc2d4d61ded8f89e"
+            },
+            "uris":["https://example.io/uniqs/68/76378a8e97f500dfd69fb9816189fb503a913e0f306a4307bc2d4d61ded8f89e.png"]
+        },
+        "square": {
+            "contentType":"image/png",
+            "integrity":{
+                "type":"SHA256","hash":"f41938bf16ed3e779b3de6c63e531bce84101947da49617ee6f6322ecadb1b0e"
+            },
+            "uris":["https://example.io/uniqs/68/f41938bf16ed3e779b3de6c63e531bce84101947da49617ee6f6322ecadb1b0e.png"]
+        }
+    }
+}
+```
+
+## JSON schema
+
+```JSON
+{
+    "type": "object",
+    "title": "TokenMetadata",
+    "description": "The NFT metadata",
+    "properties": {
+        "specVersion": {
+            "type": "string",
+            "description": "The version of the NFT metadata standard specification which the manifest uses. This enables the interpretation of the context. Compliant manifests MUST use a value of 0.1 when referring to this version of the specification."
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "Identifies the asset to which this NFT represents"
+        },
+        "subName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "A secondary name that identify a special flavor of the asset to which this NFT represents. For example “Limited Edition”"
+        },
+        "description": {
+            "type": "string",
+            "description": "Long description of the asset to which this NFT represents",
+            "maxLength": 4096
+        },
+        "author": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "description": "Specify the author(s) of the asset to which this NFT represents"
+        },
+        "defaultLocale": {
+            "type": "string",
+            "enum": ["en-US"],
+            "description": "Specify the local of this metadata. The value must be one of the locales from the list available here: https://github.com/unicode-org/cldr-json/blob/master/cldr-json/cldr-core/availableLocales.json"
+        },
+        "media": {
+            "description": "Specify the advertising content for this NFT",
+            "type": "object",
+            "properties": {
+                "product": { "$ref": "#/definitions/staticResource" },
+                "square": { "$ref": "#/definitions/staticResource" },
+                "hero": { "$ref": "#/definitions/staticResource" },
+                "gallery": {
+                    "description": "A list of path pointing to images, videos... relative from this manifest relative from this manifest.",
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/staticResource" }
+                }
+            },
+            "required": ["product", "square"],
+            "additionalProperties": false
+        },
+        "properties": {
+            "description": "Specify the properties for this NFT",
+            "type": "object",
+            "additionalProperties": true
+        },
+        "attributes": {
+            "description": "Specify the attributes for this NFT",
+            "type": "object",
+            "additionalProperties": {
+                "oneOf": [{ "type": "boolean" }, { "type": "string" }, { "type": "number" }]
+            }
+        },
+        "dynamicAttributes": { "$ref": "#/definitions/dynamicResource" },
+        "resources": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#/definitions/staticResource" }
+        },
+        "dynamicResources": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#/definitions/dynamicResource" }
+        }
+    },
+    "required": ["specVersion", "name", "defaultLocale", "media"],
+    "additionalProperties": false,
+    "definitions": {
+        "staticResource": {
+            "type": "object",
+            "title": "StaticResource",
+            "description": "A static resource provides a hash to check integrity",
+            "properties": {
+                "contentType": { "type": "string" },
+                "uris": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { "type": "string" }
+                },
+                "integrity": {
+                    "type": "object",
+                    "properties": {
+                        "type": { "type": "string", "enum": ["SHA256"] },
+                        "hash": {
+                            "type": "string",
+                            "description": "only 64 characters SHA256 hash is supported initially",
+                            "minLength": 64,
+                            "maxLength": 64,
+                            "pattern": "^([a-fA-F0-9]{2})+$"
+                        }
+                    },
+                    "required": ["type", "hash"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["contentType", "uris", "integrity"],
+            "additionalProperties": false
+        },
+        "dynamicResource": {
+            "type": "object",
+            "title": "DynamicResource",
+            "description": "A dynamic resource can be refreshed to discover changes",
+            "properties": {
+                "contentType": { "type": "string" },
+                "uris": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": { "type": "string" }
+                }
+            },
+            "required": ["contentType", "uris"],
+            "additionalProperties": false
+        }
+    }
+}
+```
+---
+title: 'Updating Metadata'
+
+order: -99992
+---
+
+# Updating uniqs
+
+An important aspect of the Ultra NFT standard is metadata updates. Game publishers should be able to change uniq's traits based on certain events in their games. On the other hand integrators should be able to verify its authenticity. Let's see how it works with the examples below:
+
+## Creating a factory & Issuing tokens
+
+Let's [`create`](../../../blockchain/contracts/nft-contract/nft-actions/create.b.md) a factory first and [`issue`](../../../blockchain/contracts/nft-contract/nft-actions/issue.b.md) a token:
+```sh
+# Create
+cleos push action eosio.nft.ft create.b '[
+  {
+    "memo": "",
+    "asset_manager": "ultra.nft.ft",
+    "asset_creator": "ultra",
+    "minimum_resell_price": null,
+    "resale_shares": [
+      {
+        "receiver": "ultra.nft.ft",
+        "basis_point": 1
+      }
+    ],
+    "mintable_window_start": "2021-05-31T00:00:00",
+    "mintable_window_end": null,
+    "trading_window_start": "2021-05-31T00:00:00",
+    "trading_window_end": null,
+    "recall_window_start": null,
+    "recall_window_end": null,
+    "max_mintable_tokens": 10000,
+    "lockup_time": null,
+    "conditionless_receivers": null,
+    "stat": 0,
+    "factory_uri": "ipfs://my_factory_uri",
+    "factory_hash": "475970a4b0016368d0503d1ce01577376f91f5a5ba63dd4353683bd95101b88d",
+    "authorized_minters": null,
+    "account_minting_limit": 100,
+    "transfer_window_start": null,
+    "transfer_window_end": null,
+    "maximum_uos_payment": null,
+    "default_token_uri": "ipfs://my_default_token",
+    "default_token_hash": "475970a4b0016368d0503d1ce01577376f91f5a5ba63dd4353683bd95101b88d",
+    "lock_hash": null
+  }
+]' -p ultra.nft.ft -p ultra
+# Issue
+cleos push action eosio.nft.ft issue.b '[
+  {
+    "to": "ultra",
+    "token_configs": [
+      {
+        "token_factory_id": 0,
+        "amount": 1,
+        "custom_data": ""
+      }
+    ],
+    "memo": "",
+    "authorizer": null,
+    "maximum_uos_payment": null,
+    "token_metadata": [
+      {
+        "meta_uri": "ipfs://uniq_uri",
+        "meta_hash":"475970a4b0016368d0503d1ce01577376f91f5a5ba63dd4353683bd95101b88d"
+      }
+    ]
+  }
+]' -p ultra.nft.ft
+
+```
+
+After a factory and token is minted we can look up their ids from `factory.b` and `token.b` tables respectively. Let's say they're both `0` for the sake of this tutorial.
+
+## Updating factory metadata
+
+If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](../../../blockchain/contracts/nft-contract/nft-actions/091_setmeta.b.md) to change the corresponding data:
+
+```sh
+cleos push action eosio.nft.ft setmeta.b '[
+  0,
+  "updating",
+  "ipfs://new_factory_uri",
+  "06528450506980cf5ab3a5cfeb870cb3109acd2fe6094c00d4e4ab31ac129b35"
+]' -p ultra.nft.ft
+```
+
+## Updating a default token
+
+Default token metadata is used as a fallback mechanism whenever there's no uri for a token. Here's how one updates on-chain data for it using [setdflttkn](../../../blockchain/contracts/nft-contract/nft-actions/setdflttkn.md) action:
+
+```sh
+cleos push action eosio.nft.ft setdflttkn '[
+  0,
+  "reuploading default token",
+  "https://s3...",
+  "fbbf2217571b6dbe2fca75b0fd3aebb5b4e247bc89e235d4d09d014bb855d1c9"
+]' -p ultra.nft.ft
+```
+
+## Update a uniq
+
+Updating uniq's is done with [`settknmeta`](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md) action:
+
+```sh
+cleos push action eosio.nft.ft settknmeta '[
+  0,
+  "ultra",
+  "update hash 2",
+  "ipfs://uniq_uri",
+  "cccf7bb05104ee6737d94a7f85b3cf4a9f44f67f2d198572c155721a07395613"
+]' -p ultra.nft.ft@active
+```
+
+It's important to reiterate that whenever you make any changes to metadata (including images updates) for a token/factory you should also update corresponding data onchain, i.e uris/hashes. Otherwise, integrators won't be able to pick up the changes.
+
+## Locking changes
+
+For certain usecases it might make sense to make a factory immutable. Luckily there's a [`lckfactory`](../../../blockchain/contracts/nft-contract/nft-actions/lckfactory.md) action which enables a manager to disable any content updates. This might be useful for an nft art gallery as it allows the users to be sure theirupdating_metadata.md artwork will never change.
+
+**THE CHANGE IS IRREVERSIBLE:**
+
+```sh
+cleos push action eosio.nft.ft lckfactory '[0]' -p ultra.nft.ft@active
+```
+
+Updating a token hash of factory `0` afterwards will fail:
+
+```sh
+cleos push action eosio.nft.ft settknmeta '[
+  0,
+  "ultra",
+  "update hash 2",
+  "ipfs://",
+  "cccf7bb05104ee6737d94a7f85b3cf4a9f44f67f2d198572c155721a07395613"
+]' -p ultra.nft.ft@active
+Error 10500149: token hash must be same value
+Error Details:
+assertion failure with message: token hash must be same value
+```
+---
+title: 'Validating Metadata'
+
+order: -99991
+---
+
+
+# Validating Metadata
+
+The factory metadata contains information about each file, including its integrity. This integrity is established by calculating a hash using the SHA256 algorithm, which is typically represented in hex format. Additionally, the type of hash used is usually SHA256 for uniqs created on Ultra.
+
+However, it is important to discuss the specific methods employed to generate these SHA256 values in the first place.
+
+## Why SHA256?
+
+SHA256 become a popular and widely adopted cryptographic hash function. 
+
+Its speed and efficiency are quite good when generating hash values.
+
+SHA256 is easily implementable in all programming languages with minimal effort.
+
+## Integrity Building Process
+
+1. Walk through each object in the metadata and determine if it is a `StaticResource`.
+
+```ts
+export interface StaticResource {
+    contentType: MimeTypes | null;
+    uris: string[];
+    integrity: {
+        type: 'SHA256';
+        hash: string;
+    } | null;
+}
+```
+
+2. If the `integrity` in a `StaticResource` is set to `null` then we need to generate it.
+3. We loop through each of the `uris` and generate a `hash` for each `uri` and append it to a single `string`.
+
+```ts
+let contentHashes = '';
+for (let i = 0; i < someData.uris.length; i++) {
+    const newHash = someHashBuilder(someData.uris[i]); // Usually checks if local or external
+    contentHashes += newHash;
+}
+```
+
+4. We generate a `SHA256` of the `contentHashes`.
+5. We append that `SHA256` hash and generate the `integrity` for that `StaticResource` in the file.
+6. Repeat until all `StaticResource` objects have integrity generated.
+7. Hash the contents of the metadata file (`json`) and that will be the `hash` that you pass to the chain.
+
+## Create HASH from File
+
+In most cases we use the standard `crypto` [library the comes with NodeJS](https://nodejs.org/api/crypto.html#class-hash).
+
+However there is a fairly simple process for generating the `hash` data.
+
+### TS/JS Example
+
+```ts
+const stream = fs.createReadStream(someFilePath);
+const hash = createHash('sha256', { encoding: 'hex' });
+stream.pipe(hash);
+
+await new Promise((resolve: Function) => {
+    stream.on('end', () => {
+        resolve();
+    });
+});
+
+return hash.read();
+```
+
+## Create HASH from External Content
+
+In some cases we have `external` content that needs to be hashed as well. This means that the file is already uploaded on an external server somewhere and we need to fetch the content and create a `hash` from that data.
+
+We **do not format** anything that comes back from a URL; we ensure that the response is okay and assume the content is correct.
+
+### TS/JS Example
+
+```ts
+const response = await fetch(url);
+if (!response.ok) {
+    return undefined;
+}
+
+const hash = createHash('sha256', { encoding: 'hex' });
+response.body.pipe(hash);
+
+await new Promise((resolve: Function) => {
+    response.body.on('end', () => {
+        resolve();
+    });
+});
+
+return hash.read();
+```
+
+## Single File Verification
+
+To verify a single `.json` file along with its data, it is advisable to use the hash that is available on-chain and compare it with the contents of the file. By hashing the contents of the `.json` file and verifying it against the chain, you can ensure the validity of the entire file and its contents. 
+
+However, if you require more extensive verification, you will need to inspect each `uri` and validate the contents of all `uris` that are present in `uris` property, and then follow the aforementioned steps to ensure the validity of the data.

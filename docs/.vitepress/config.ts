@@ -15,6 +15,7 @@ export default defineConfig({
     description: 'Blockchain Documentation for Ultra.io',
     ignoreDeadLinks: false,
     lastUpdated: true,
+    appearance: 'force-dark',
     cleanUrls: false,
     themeConfig: {
         nav,

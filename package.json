@@ -4,6 +4,7 @@
     "scripts": {
         "[-] Main Script for Realtime Updates": "",
         "dev": "vitepress dev docs",
+        "dev:ssl": "vitepress dev docs --ssl",
         "[-] Run Development Versions": "",
         "dev:experimental": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-experimental",
         "dev:staging": "npx tsx ./scripts/scaffold.ts && vitepress dev ./docs-staging",
@@ -17,16 +18,20 @@
         "[-] Preview Scaffolded Files ": "",
         "preview:experimental": "tsx ./scripts/scaffold.ts && npm run build:experimental && vitepress preview ./docs-experimental",
         "preview:staging": "tsx ./scripts/scaffold.ts && npm run build:staging && vitepress preview ./docs-staging",
-        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet"
+        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet",
+        "[-] Export to PDF": "",
+        "export-pdf": "press-export-pdf export ./docs"
     },
     "devDependencies": {
         "@types/node": "^20.9.0",
+        "@vitejs/plugin-basic-ssl": "^1.0.2",
         "tsx": "^4.1.4",
         "vitepress": "^1.0.0-rc.26",
         "vitepress-plugin-google-analytics": "^1.0.2",
         "vue": "^3.3.8"
     },
     "dependencies": {
+        "@wharfkit/antelope": "^1.0.2",
         "fast-glob": "^3.3.2",
         "gray-matter": "^4.0.3",
         "sitemap": "^7.1.1"

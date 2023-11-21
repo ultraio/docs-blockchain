@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress';
 import { fileURLToPath } from 'node:url';
+import basicSSL from '@vitejs/plugin-basic-ssl';
 
 import nav from './navbar';
 import { getSidebar } from './sidebar';
@@ -96,5 +97,6 @@ export default defineConfig({
         build: {
             chunkSizeWarningLimit: 1600,
         },
+        plugins: process.argv.includes('--ssl') ? [basicSSL()] : [],
     },
 });

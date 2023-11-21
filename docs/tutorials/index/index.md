@@ -16,6 +16,41 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
+        <td>How to generate a Keypair</td>
+        <td>Get a basic understand of private and public keys</td>
+        <td><a href="/tutorials/fundamentals/how-to-generate-a-keypair">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to create an Account</td>
+        <td>How to generate a development account on our testnet</td>
+        <td><a href="/tutorials/fundamentals/how-to-create-an-account">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to get Tokens</td>
+        <td>How to get tokens for interactions on the testnet</td>
+        <td><a href="/tutorials/fundamentals/how-to-get-tokens">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to read the Block Explorer</td>
+        <td>Learn how to use our block explorer for reading data</td>
+        <td><a href="/tutorials/fundamentals/how-to-read-the-block-explorer">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to setup the Ultra Wallet</td>
+        <td>Learn how to use our Ultra Wallet extension and set it up</td>
+        <td><a href="/tutorials/fundamentals/how-to-setup-the-wallet">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to get RAM</td>
+        <td>Use this tutorial to get RAM on the Testnet for your account</td>
+        <td><a href="/tutorials/fundamentals/how-to-get-ram">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to make a REST Request</td>
+        <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
+        <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
+    </tr>
+    <tr>
         <td>Learn the Basics</td>
         <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
         <td><a href="/tutorials/general/basics/index">Link</a></td>

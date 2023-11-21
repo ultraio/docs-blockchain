@@ -1,1 +1,0 @@
-import{u as t,d as e,A as o,M as l,v as u,C as r,O as i,N as _,z as d,B as c}from"./framework.a49639fc.js";const g=t({__name:"Staging",setup(f){let s=e(!1);return o(()=>{window&&(s.value=window.location.pathname.includes("/staging"))}),(a,p)=>{const n=l("ClientOnly");return u(),r(n,null,{default:i(()=>[_(s)?d(a.$slots,"default",{key:0}):c("",!0)]),_:3})}}});export{g as default};

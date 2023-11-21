@@ -1,7 +1,7 @@
 ---
 title: 'issue.b'
 order: 14
-deploy: ['staging', 'mainnet']
+
 ---
 
 # issue.b
@@ -34,7 +34,7 @@ The token is then created and whoever the **to** user is the token is emplaced i
 
 **Minting Limit**
 
-Minting limit is a new concept that was introduced in Release 27. It allows for token factories to limit the amount of tokens that can be minted to an individual account. Meaning, that if the **account_minting_limit** of a token factory is set to 5, then users may not purchase more than 5 tokens under that specific account.
+Minting limit is a new concept that was introduced in Release 27. It allows for uniq factories to limit the amount of tokens that can be minted to an individual account. Meaning, that if the **account_minting_limit** of a token factory is set to 5, then users may not purchase more than 5 tokens under that specific account.
 
 -   **account_minting_limit** of a token factory can be set/reset by calling `limitmint` action. It is null by default, which means the minting limit function is not applied to the factory.
 

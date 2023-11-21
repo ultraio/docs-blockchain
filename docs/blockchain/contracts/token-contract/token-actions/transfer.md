@@ -1,7 +1,7 @@
 ---
 title: 'transfer'
 order: 5
-deploy: ['staging', 'mainnet']
+
 ---
 
 # transfer

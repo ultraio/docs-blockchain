@@ -1,7 +1,7 @@
 ---
 title: 'open'
 order: 3
-deploy: ['staging', 'mainnet']
+
 ---
 
 # open

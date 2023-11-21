@@ -1,6 +1,6 @@
 ---
 title: 'newebact'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # newebact - create an EBA account

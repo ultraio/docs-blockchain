@@ -1,6 +1,6 @@
 ---
 title: '/get_table_by_scope'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # POST - /get_table_by_scope

@@ -1,7 +1,7 @@
 ---
 title: 'NFT Factory Groups'
 order: 2
-deploy: ['staging', 'mainnet']
+
 ---
 
 # NFT Factory Groups

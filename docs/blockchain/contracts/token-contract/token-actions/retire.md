@@ -1,7 +1,7 @@
 ---
 title: 'retire'
 order: 4
-deploy: ['staging', 'mainnet']
+
 ---
 
 # retire

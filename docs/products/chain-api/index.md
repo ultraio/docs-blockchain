@@ -1,6 +1,6 @@
 ---
 title: 'API'
-deploy: ['staging', 'mainnet']
+
 order: -99999
 ---
 

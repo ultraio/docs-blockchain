@@ -1,6 +1,6 @@
 ---
 title: 'Authentication'
-deploy: ['staging', 'mainnet']
+
 order: 1
 ---
 

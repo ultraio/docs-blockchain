@@ -1,6 +1,6 @@
 ---
 title: 'Getting Started'
-deploy: ['staging', 'mainnet']
+
 order: -9999
 outline: [0,4]
 ---

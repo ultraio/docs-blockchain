@@ -1,7 +1,7 @@
 ---
 title: 'refundram'
 order: 4
-deploy: ['staging', 'mainnet']
+
 ---
 
 # refundram - return RAM for a refund

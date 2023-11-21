@@ -1,6 +1,6 @@
 ---
 title: '1. Intro'
-deploy: ['staging', 'mainnet']
+
 outline: [0,5]
 order: -99
 prev: false

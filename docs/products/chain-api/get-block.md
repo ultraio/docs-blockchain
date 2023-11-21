@@ -1,6 +1,6 @@
 ---
 title: '/get_block'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # POST - /get_block

@@ -1,6 +1,6 @@
 ---
 title: 'Create a Contract'
-deploy: ['staging', 'mainnet']
+
 order: -99998
 oultine: [0, 4]
 ---

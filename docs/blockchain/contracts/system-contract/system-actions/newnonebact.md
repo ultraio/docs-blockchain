@@ -1,6 +1,6 @@
 ---
 title: 'newnonebact'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # newnonebact - create a non-EBA account

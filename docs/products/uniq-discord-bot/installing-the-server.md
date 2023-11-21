@@ -1,6 +1,6 @@
 ---
 title: 'Installing the Server'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: 3
 ---

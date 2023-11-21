@@ -1,7 +1,7 @@
 ---
 title: 'settrnfwin.a'
 order: 28
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 # settrnfwin.a - set transfer window

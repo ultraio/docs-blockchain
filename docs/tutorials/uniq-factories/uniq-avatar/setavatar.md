@@ -1,6 +1,6 @@
 ---
 title: 'The `setavatar` action'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: 2
 ---

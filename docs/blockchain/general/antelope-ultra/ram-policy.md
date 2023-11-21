@@ -1,6 +1,6 @@
 ---
 title: 'RAM Policy'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 order: -95
 ---

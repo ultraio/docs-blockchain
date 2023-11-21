@@ -1,6 +1,6 @@
 ---
 title: 'Nodeos Usage'
-deploy: ['staging', 'mainnet']
+
 order: 2
 outline: [0,4]
 ---

@@ -1,6 +1,6 @@
 ---
 title: '/get_currency_balance'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # POST - /get_currency_balance

@@ -1,7 +1,7 @@
 ---
 title: 'setconrecv'
 order: 21
-deploy: ['staging', 'mainnet']
+
 ---
 
 # setconrecv

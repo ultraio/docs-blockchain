@@ -1,7 +1,7 @@
 ---
 title: 'rmgrpfcts'
 order: 21
-deploy: ['staging', 'mainnet']
+
 ---
 
 # rmgrpfcts

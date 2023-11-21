@@ -1,6 +1,6 @@
 ---
 title: 'Running the Bot'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: 5
 ---

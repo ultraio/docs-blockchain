@@ -1,7 +1,7 @@
 ---
 title: 'Data Structures Overview'
 order: 6
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Data Structures Overview

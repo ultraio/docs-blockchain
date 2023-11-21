@@ -1,6 +1,6 @@
 ---
 title: 'allowpred'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # allowpred - setup a predicate

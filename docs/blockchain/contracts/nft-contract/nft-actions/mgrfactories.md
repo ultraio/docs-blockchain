@@ -1,12 +1,12 @@
 ---
 title: 'mgrfactories'
 order: 17
-deploy: ['staging', 'mainnet']
+
 ---
 
 # mgrfactories
 
-This action can be used to migrate token factories from v0 to v1 as continuous migration.
+This action can be used to migrate uniq factories from v0 to v1 as continuous migration.
 
 ## Parameter validation
 

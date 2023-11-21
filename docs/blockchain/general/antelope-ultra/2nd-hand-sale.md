@@ -1,6 +1,6 @@
 ---
 title: '2nd Hand Sale (Uniqs)'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: -92
 ---
@@ -22,7 +22,7 @@ An owner can also set up promoter share in the direct resell feature.
 -   Ultra can set up a global resale share that applies to any resale.
 
     -   By default it is 2%.
-    -   It can be updated to any value between 0% to 10%, **which will be applied to all existing token factories and new token factories**.
+    -   It can be updated to any value between 0% to 10%, **which will be applied to all existing uniq factories and new uniq factories**.
 
 ### Resale Shares(beneficiaries) set by creator and manager
 

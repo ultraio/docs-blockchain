@@ -1,7 +1,7 @@
 ---
 title: 'NFT Contract Overview'
 order: -99
-deploy: ['staging', 'mainnet']
+
 ---
 
 # NFT Overview
@@ -80,7 +80,7 @@ The token _Owner_ can **burn** tokens.
 
 An NFT _Owner_ can execute the **burn** action which removes the token from the resale marketplace (`resale.a`), removes the token from the _Owner_ account (`token.b`) and updates the token factory `existing_tokens_no` field (`factory.b`).
 
--   [burn - erase tokens from owners and token factories](./nft-actions/burn.md)
+-   [burn - erase tokens from owners and uniq factories](./nft-actions/burn.md)
 -   [factory.b](./nft-tables.md#factory-b)
 -   [token.b](./nft-tables.md#token-b)
 -   [resale.a](./nft-tables.md#resale-a)

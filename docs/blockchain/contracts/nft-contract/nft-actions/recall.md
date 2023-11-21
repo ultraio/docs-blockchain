@@ -1,7 +1,7 @@
 ---
 title: 'recall'
 order: 19
-deploy: ['staging', 'mainnet']
+
 ---
 
 # recall

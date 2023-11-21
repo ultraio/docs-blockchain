@@ -1,7 +1,7 @@
 ---
 title: 'lckfactory'
 order: 16
-deploy: ['staging', 'mainnet']
+
 ---
 
 # lckfactory

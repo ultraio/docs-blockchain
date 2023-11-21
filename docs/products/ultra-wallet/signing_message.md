@@ -1,6 +1,6 @@
 ---
 title: 'Signing a Message'
-deploy: ['staging', 'mainnet']
+
 order: 8
 outline: [0, 4]
 ---

@@ -1,6 +1,6 @@
 ---
 title: 'Using cleos'
-deploy: ['staging', 'mainnet']
+
 order: -99997
 oultine: [0, 4]
 ---

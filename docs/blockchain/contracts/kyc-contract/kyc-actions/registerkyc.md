@@ -1,6 +1,6 @@
 ---
 title: 'registerkyc'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # registerkyc

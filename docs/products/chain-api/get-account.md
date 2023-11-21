@@ -1,6 +1,6 @@
 ---
 title: '/get_account'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # POST - /get_account

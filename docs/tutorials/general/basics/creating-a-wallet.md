@@ -1,6 +1,6 @@
 ---
 title: 'Creating a Wallet'
-deploy: ['staging', 'mainnet']
+
 order: -99995
 oultine: [0, 4]
 ---

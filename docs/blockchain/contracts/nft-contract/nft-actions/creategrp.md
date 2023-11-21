@@ -1,7 +1,7 @@
 ---
 title: 'creategrp'
 order: 11
-deploy: ['staging', 'mainnet']
+
 ---
 
 # creategrp

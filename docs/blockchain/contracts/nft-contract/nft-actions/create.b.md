@@ -1,7 +1,7 @@
 ---
 title: 'create.b'
 order: 10
-deploy: ['staging', 'mainnet']
+
 ---
 
 # create.b
@@ -66,243 +66,33 @@ Minting limit can also be set at the same time, by being specified as account_mi
 
 Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
 
-<table>
-   <tr>
-      <th>Property Name</th>
-      <th>C++ Type</th>
-      <th>JavaScript Type</th>
-      <th>Required</th>
-      <th>Default (null input)</th>
-      <th>Remarks</th>
-      <th></th>
-   </tr>
-   <tr>
-      <td>memo</td>
-      <td>string</td>
-      <td>string</td>
-      <td>yes</td>
-      <td>no default</td>
-      <td>memo cannot have more than 256 bytes</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>asset_creator</td>
-      <td>name</td>
-      <td>string</td>
-      <td>yes</td>
-      <td>no default</td>
-      <td>asset_manager and asset_creator are required to sign this actionasset_manager will be the one who pays the RAM for the token factory storageasset_manager and asset_creator can be same accountasset_manager will be any valid account including ultra.nft.ft</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>asset_manager</td>
-      <td>name</td>
-      <td>string</td>
-      <td>yes</td>
-      <td>no default</td>
-      <td></td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>minimum_resell_price</td>
-      <td>asset</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Should be specified in UOS or USD.If set to null or 0, tokens can be transferred to other accounts with the transfer action, as long as token still in trading window and outside of lockup time. If set to > 0, the token can only be sold to others through the buy action. `conditionless_receivers` will ignore these restrictions when transferred</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>resale_shares</td>
-      <td>
-         vector::resale_share
-      </td>
-      <td>Array</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Each resale share has a `receiver` (C++ type: `name`, JS type: `string`) and `basis_point` (C++ type: uint16_t, JS type: `number`). `1` in `basis_point` mean `0.0001`, which means 0.01%. Total limit of resale shares: specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `max_factory_share_bp` (otherwise default of 7000 basis_point or 70%). Receiver can be duplicated</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>mintable_window_start</td>
-      <td>time_point_sec</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Input will be in UTC date up to seconds. For example: `'2021-06-01T00:00:00'`. Combination: `[no start, no end]` - forever mintable; `[no start, end]` - can only be minted before the ending date; `[start, no end]` - can only be minted after the starting date; `[start, end]` - can only be minted between the start and end dates. Conditions: If end date is set, it must be after the current block time; if start and end are both set, the end date must be after the start date</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>mintable_window_end</td>
-      <td>time_point_sec</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td></td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>trading_window_start</td>
-      <td>time_point_sec</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>There are 2 types of inputs available: `null`: will ignore this property. `UTC_date_string` exact date in UTC, up to seconds. For example: `'2021-06-01T00:00:00'`. Combination: `[no start, no end]` - forever tradable; `[no start, end]` - can only be traded before ending date; `[start, no end]` - can only be traded after starting date; `[start, end]` - can only be traded in between start and end date. Conditions: If both input is the same type a `time_point_sec`, end date must be larger than the start date.Where this is being checked: `buy`, `resell`, `transfer`. `conditionless_receivers` will ignore this when transferring tokens</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>trading_window_end</td>
-      <td>time_point_sec</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td></td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>recall_window_start</td>
-      <td>time_since_mint</td>
-      <td>number</td>
-      <td>no</td>
-      <td>null</td>
-      <td>There are 2 types of inputs available: `null`: will ignore this property; time from the token mint time. For example: `5`. In this example exactly 5 seconds after the mint time. Combination: `[no start, no end]` - not recallable; `[no start, end]` - can only be recalled before ending date `[start, no end]` - can only be recalled after starting date; `[start, end]` - can only be recalled in between start and end date. Conditions: If both input is the same type a `time_since_mint`, end date must be larger than the start date. Where this being checked: `recall`. NOTE: From Release 36, recall feature will be disabled by default when creating new factory, which meant create action will fail if `recall_window_start` or `recall_window_end` was inputted.</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>recall_window_end</td>
-      <td>time_since_mint</td>
-      <td>number</td>
-      <td>no</td>
-      <td>null</td>
-      <td></td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>max_mintable_tokens</td>
-      <td>uint64_t</td>
-      <td>number</td>
-      <td>no</td>
-      <td>null</td>
-      <td>`null` means this can be minted with an unlimited capacity; > 0 means the factory can only mint as many tokens as specified</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>lockup_time</td>
-      <td>uint32_t</td>
-      <td>number</td>
-      <td>no</td>
-      <td>0</td>
-      <td>Value is in secondsCannot resell or transfer this token when it’s still in lockup time, unless the token is transferred to a conditionless_receiver. NOTE: From Release 36, lockup feature will be disabled by default when creating new factory, which meant create action will fail if lockup_time was inputted.</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>conditionless_receivers</td>
-      <td>vector</td>
-      <td>Array</td>
-      <td>no</td>
-      <td>null</td>
-      <td>if set, all accounts must existwhen transferred to an account in the list, it will bypass checks for trading window and lockup time</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>stat</td>
-      <td>uint8_t</td>
-      <td>number</td>
-      <td>no</td>
-      <td>1</td>
-      <td>`0` - active token factories can do everything. `1` - inactive token factories can do everything, except mint. `2` - shutdown token factories can do everything, except mint, and activate.</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>factory_uri</td>
-      <td>string</td>
-      <td>string</td>
-      <td>yes</td>
-      <td>no default</td>
-      <td>base URI pointing to the metadata of the token factory. e.g. Ultra.io/meta/1234, redundancy.ultra.io/meta/1234. Values cannot be an empty string</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>factory_hash</td>
-      <td>checksum256</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Hash of factory meta data. Optional - simple SHA256 hash of metadata file to guarantee no external content changes</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>authorized_minters</td>
-      <td>minter_authorization_vector</td>
-      <td>Array</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Specifies accounts authorized to mint tokens from the token factory. minter_authorization_info is defined as a tuple of eosio::name (the account being authorized) and uint32_t (quantity that the authorized account can mint).</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>account_minting_limit</td>
-      <td>uint32_t</td>
-      <td>number</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Must be at least 1.Limits the amount of tokens that can be minted per eos account.Set to null to allow for unlimited tokens per eos account.</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>transfer_window_start</td>
-      <td>time_point_sec</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>There are 2 types of inputs available: `null`: will ignore this property; `UTC_date_string`: exact date in UTC, up to seconds. For example: '2021-06-01T00:00:00'. Combinations: `[no start, no end]` - forever transferrable; `[no start, end]` - can only be transferred before ending date; `[start, no end]` - can only be transferred after starting date; `[start, end]` - can only be transferred in between start and end date. Conditions: If both input is the same type a time_point_sec, end date must be larger than the start date. Where this is being checked: `transfer`</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>transfer_window_end</td>
-      <td>time_point_sec</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td></td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>maximum_uos_payment</td>
-      <td>asset</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Specifies the maximum amount of UOS that the caller can pay.</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>default_token_uri</td>
-      <td>string</td>
-      <td>string</td>
-      <td>yes</td>
-      <td>no default</td>
-      <td>URI pointing to the token metadata if there is no token-specific metadata. Must not be empty and can be either static or dynamic. More details [here](../../../guides/Uniq%20Variants/organizing-metadata.md)</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>default_token_hash</td>
-      <td>checksum256</td>
-      <td>string</td>
-      <td>no</td>
-      <td>null</td>
-      <td>Hash of static default token URI. It is optional to provide this and it should be a SHA256 of the content of default token URI. If default token URI is dynamic - specify the hash per token instead</td>
-      <td></td>
-   </tr>
-   <tr>
-      <td>lock_hash</td>
-      <td>bool</td>
-      <td>boolean</td>
-      <td>no</td>
-      <td>false</td>
-      <td>Whether to prevent changes to the hashes provided during the factory creation</td>
-   </tr>
-</table>                                                                                                                                                                       
+| Property Name           | C++ Type                    | JavaScript Type | Required | Default (null input) | Remarks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ----------------------- | --------------------------- | --------------- | -------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| memo                    | string                      | string          | yes      | no default           | memo cannot have more than 256 bytes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| asset_creator           | name                        | string          | yes      | no default           | asset_manager and asset_creator are required to sign this actionasset_manager will be the one who pays the RAM for the token factory storageasset_manager and asset_creator can be same accountasset_manager will be any valid account including ultra.nft.ft                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| asset_manager           | name                        | string          | yes      | no default           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| minimum_resell_price    | asset                       | string          | no       | null                 | Should be specified in UOS or USD.If set to null or 0, tokens can be transferred to other accounts with the transfer action, as long as token still in trading window and outside of lockup time. If set to > 0, the token can only be sold to others through the buy action. `conditionless_receivers` will ignore these restrictions when transferred                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| resale_shares           | vector::\<resale_share>     | Array           | no       | null                 | Each resale share has a `receiver` (C++ type: `name`, JS type: `string`) and `basis_point` (C++ type: uint16_t, JS type: `number`). `1` in `basis_point` mean `0.0001`, which means 0.01%. Total limit of resale shares: specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `max_factory_share_bp` (otherwise default of 7000 basis_point or 70%). Receiver can be duplicated                                                                                                                                                                                                                                                                                                                                                                                        |
+| mintable_window_start   | time_point_sec              | string          | no       | null                 | Input will be in UTC date up to seconds. For example: `'2021-06-01T00:00:00'`. Combination: `[no start, no end]` - forever mintable; `[no start, end]` - can only be minted before the ending date; `[start, no end]` - can only be minted after the starting date; `[start, end]` - can only be minted between the start and end dates. Conditions: If end date is set, it must be after the current block time; if start and end are both set, the end date must be after the start date                                                                                                                                                                                                                                                                                           |
+| mintable_window_end     | time_point_sec              | string          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| trading_window_start    | time_point_sec              | string          | no       | null                 | There are 2 types of inputs available: `null`: will ignore this property. `UTC_date_string` exact date in UTC, up to seconds. For example: `'2021-06-01T00:00:00'`. Combination: `[no start, no end]` - forever tradable; `[no start, end]` - can only be traded before ending date; `[start, no end]` - can only be traded after starting date; `[start, end]` - can only be traded in between start and end date. Conditions: If both input is the same type a `time_point_sec`, end date must be larger than the start date.Where this is being checked: `buy`, `resell`, `transfer`. `conditionless_receivers` will ignore this when transferring tokens                                                                                                                         |
+| trading_window_end      | time_point_sec              | string          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| recall_window_start     | time_since_mint             | number          | no       | null                 | There are 2 types of inputs available: `null`: will ignore this property; time from the token mint time. For example: `5`. In this example exactly 5 seconds after the mint time. Combination: `[no start, no end]` - not recallable; `[no start, end]` - can only be recalled before ending date `[start, no end]` - can only be recalled after starting date; `[start, end]` - can only be recalled in between start and end date. Conditions: If both input is the same type a `time_since_mint`, end date must be larger than the start date. Where this being checked: `recall`. NOTE: From Release 36, recall feature will be disabled by default when creating new factory, which meant create action will fail if `recall_window_start` or `recall_window_end` was inputted. |
+| recall_window_end       | time_since_mint             | number          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| max_mintable_tokens     | uint64_t                    | number          | no       | null                 | `null` means this can be minted with an unlimited capacity; > 0 means the factory can only mint as many tokens as specified                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| lockup_time             | uint32_t                    | number          | no       | 0                    | Value is in secondsCannot resell or transfer this token when it’s still in lockup time, unless the token is transferred to a conditionless_receiver. NOTE: From Release 36, lockup feature will be disabled by default when creating new factory, which meant create action will fail if lockup_time was inputted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| conditionless_receivers | vector                      | Array           | no       | null                 | if set, all accounts must existwhen transferred to an account in the list, it will bypass checks for trading window and lockup time                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| stat                    | uint8_t                     | number          | no       | 1                    | `0` - active uniq factories can do everything. `1` - inactive uniq factories can do everything, except mint. `2` - shutdown uniq factories can do everything, except mint, and activate.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| factory_uri             | string                      | string          | yes      | no default           | base URI pointing to the metadata of the token factory. e.g. Ultra.io/meta/1234, redundancy.ultra.io/meta/1234. Values cannot be an empty string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| factory_hash            | checksum256                 | string          | no       | null                 | Hash of factory meta data. Optional - simple SHA256 hash of metadata file to guarantee no external content changes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| authorized_minters      | minter_authorization_vector | Array           | no       | null                 | Specifies accounts authorized to mint tokens from the token factory. minter_authorization_info is defined as a tuple of eosio::name (the account being authorized) and uint32_t (quantity that the authorized account can mint).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| account_minting_limit   | uint32_t                    | number          | no       | null                 | Must be at least 1.Limits the amount of tokens that can be minted per eos account.Set to null to allow for unlimited tokens per eos account.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| transfer_window_start   | time_point_sec              | string          | no       | null                 | There are 2 types of inputs available: `null`: will ignore this property; `UTC_date_string`: exact date in UTC, up to seconds. For example: '2021-06-01T00:00:00'. Combinations: `[no start, no end]` - forever transferrable; `[no start, end]` - can only be transferred before ending date; `[start, no end]` - can only be transferred after starting date; `[start, end]` - can only be transferred in between start and end date. Conditions: If both input is the same type a time_point_sec, end date must be larger than the start date. Where this is being checked: `transfer`                                                                                                                                                                                            |
+| transfer_window_end     | time_point_sec              | string          | no       | null                 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| maximum_uos_payment     | asset                       | string          | no       | null                 | Specifies the maximum amount of UOS that the caller can pay.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| default_token_uri       | string                      | string          | yes      | no default           | URI pointing to the token metadata if there is no token-specific metadata. Must not be empty and can be either static or dynamic. More details [here](../../../guides/Uniq%20Variants/organizing-metadata.md)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| default_token_hash      | checksum256                 | string          | no       | null                 | Hash of static default token URI. It is optional to provide this and it should be a SHA256 of the content of default token URI. If default token URI is dynamic - specify the hash per token instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| lock_hash               | bool                        | boolean         | no       | false                | Whether to prevent changes to the hashes provided during the factory creation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 ## CLI - cleos
 

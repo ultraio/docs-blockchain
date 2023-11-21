@@ -1,6 +1,6 @@
 ---
 title: 'Keosd Usage'
-deploy: ['staging', 'mainnet']
+
 order: 1
 outline: [0,4]
 ---

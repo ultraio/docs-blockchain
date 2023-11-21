@@ -1,7 +1,7 @@
 ---
 title: 'undelegatebw'
 order: 8
-deploy: ['staging', 'mainnet']
+
 ---
 
 # undelegatebw - unstake tokens for POWER

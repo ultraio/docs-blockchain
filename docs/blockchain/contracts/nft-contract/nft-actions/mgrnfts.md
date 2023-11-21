@@ -1,7 +1,7 @@
 ---
 title: 'mgrnfts'
 order: 18
-deploy: ['staging', 'mainnet']
+
 ---
 
 # mgrnfts

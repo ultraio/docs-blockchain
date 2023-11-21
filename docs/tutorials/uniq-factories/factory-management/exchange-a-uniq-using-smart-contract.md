@@ -1,6 +1,6 @@
 ---
 title: 'Exchange a Uniq Using Smart Contract'
-deploy: ['staging', 'mainnet']
+
 order: 3
 ---
 

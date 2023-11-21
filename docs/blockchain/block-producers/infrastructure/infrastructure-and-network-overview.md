@@ -1,6 +1,6 @@
 ---
 title: 'Infrastructure and Network'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 order: -94
 ---

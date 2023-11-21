@@ -1,6 +1,6 @@
 ---
 title: '/get_abi'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 ---
 

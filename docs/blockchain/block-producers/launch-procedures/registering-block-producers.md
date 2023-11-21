@@ -1,6 +1,6 @@
 ---
 title: 'Registering Block Producers'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 order: -96
 ---

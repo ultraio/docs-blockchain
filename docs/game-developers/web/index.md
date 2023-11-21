@@ -1,6 +1,6 @@
 ---
 title: 'Ultra SSO integration guide'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 5]
 order: 1
 ---

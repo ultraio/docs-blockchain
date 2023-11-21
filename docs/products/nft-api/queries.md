@@ -1,6 +1,6 @@
 ---
 title: 'Queries'
-deploy: ['staging', 'mainnet']
+
 order: 3
 ---
 
@@ -18,8 +18,8 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                               | Description                                                             |
-|----------------------------------------------------|-------------------------------------------------------------------------|
+| Name                                            | Description                                                             |
+| ----------------------------------------------- | ----------------------------------------------------------------------- |
 | `blockStep` - [`BlockStep`](types.md#blockstep) | Filter on type of transaction. Irreversible by default if not provided. |
 | `id` - [`BigInt!`](types.md#bigint)             | On chain id of the uniq.                                                |
 
@@ -431,8 +431,8 @@ Returns a [`UniqFactoryList!`](types.md#uniqfactorylist)
 
 ##### Arguments
 
-| Name                                                            | Description                                                                                                    |
-|-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Name                                                         | Description                                                                                                    |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
 | `assetManager` - [`WalletId`](types.md#walletid)             | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
 | `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                       |
 
@@ -708,8 +708,8 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                   | Description                       |
-|----------------------------------------|-----------------------------------|
+| Name                                | Description                       |
+| ----------------------------------- | --------------------------------- |
 | `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq factory . |
 
 #### Example
@@ -982,8 +982,8 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                                       | Description                                                                                                    |
-|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Name                                                                    | Description                                                                                                    |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `blockStep` - [`BlockStep`](types.md#blockstep)                         | Filter on type of transaction. Irreversible by default if not provided.                                        |
 | `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
 | `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
@@ -1409,8 +1409,8 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                            | Description                                                                                               |
-|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| Name                                                         | Description                                                                                               |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
 | `blockStep` - [`BlockStep`](types.md#blockstep)              | Filter on type of transaction. Irreversible by default if not provided.                                   |
 | `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is owned by the user. |
 | `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                  |

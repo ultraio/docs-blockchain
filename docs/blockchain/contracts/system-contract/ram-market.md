@@ -1,7 +1,7 @@
 ---
 title: 'RAM Market'
 order: 3
-deploy: ['staging', 'mainnet']
+
 ---
 
 # RAM Market

@@ -1,6 +1,6 @@
 ---
 title: 'Docker Image Usage'
-deploy: ['staging', 'mainnet']
+
 order: -9997
 outline: [0,4]
 ---

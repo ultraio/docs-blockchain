@@ -1,6 +1,6 @@
 ---
 title: 'buyrambytes'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # buyrambytes - buy an exact amount RAM

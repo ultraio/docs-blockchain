@@ -1,11 +1,11 @@
 ---
-title: 'Your First Token Factory'
-deploy: ['staging', 'mainnet']
+title: 'Your First Uniq Factory'
+
 order: 5
 outline: [0, 4]
 ---
 
-# Your First Token Factory
+# Your First Uniq Factory
 
 ## Make sure you're ready
 

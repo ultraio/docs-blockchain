@@ -1,6 +1,6 @@
 ---
 title: 'buyram'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # buyram - buy RAM with UOS

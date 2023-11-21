@@ -1,6 +1,6 @@
 ---
 title: 'Endpoint Usage'
-deploy: ['staging', 'mainnet']
+
 order: -9993
 outline: [0,4]
 ---

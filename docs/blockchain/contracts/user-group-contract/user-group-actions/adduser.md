@@ -1,7 +1,7 @@
 ---
 title: 'adduser'
 order: 3
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 ## `adduser.a`
@@ -16,12 +16,12 @@ The `adduser.a` action is the first version of the adduser action in the Ultra b
 
 ### Action Parameters
 
-| Name       | C++ Type        | JavaScript Type | Remarks                                                                                                        |
-|------------|-----------------|-----------------|----------------------------------------------------------------------------------------------------------------|
-| `creator`  | `name`          | `String`        | The account that originally created the group.                                                                  |
-| `group_id` | `uint64_t`      | `Number/String` | The ID used to identify the group to which the users will be added.                                             |
-| `users`    | `vector<name>`  | `Array of String`| The user names to be added to the group.                                                                        |
-| `memo`     | `string`        | `String`        | A memo string.                                                                                                  |
+| Name       | C++ Type       | JavaScript Type   | Remarks                                                             |
+| ---------- | -------------- | ----------------- | ------------------------------------------------------------------- |
+| `creator`  | `name`         | `String`          | The account that originally created the group.                      |
+| `group_id` | `uint64_t`     | `Number/String`   | The ID used to identify the group to which the users will be added. |
+| `users`    | `vector<name>` | `Array of String` | The user names to be added to the group.                            |
+| `memo`     | `string`       | `String`          | A memo string.                                                      |
 
 **Note**:
 - The `creator` should be the original creator of the group specified by `group_id`.

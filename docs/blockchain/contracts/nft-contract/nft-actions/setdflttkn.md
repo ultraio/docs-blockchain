@@ -1,7 +1,7 @@
 ---
 title: 'setdflttkn'
 order: 24
-deploy: ['staging', 'mainnet']
+
 ---
 
 # setdflttkn

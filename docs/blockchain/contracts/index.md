@@ -1,6 +1,6 @@
 ---
 title: 'Smart Contracts'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # System Smart Contracts

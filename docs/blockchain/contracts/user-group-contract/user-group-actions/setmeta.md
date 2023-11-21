@@ -1,7 +1,7 @@
 ---
 title: 'setmeta'
 order: 2
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 ## `setmeta.a`
@@ -15,13 +15,13 @@ The `setmeta.a` action is the first version of the setmeta action for the Ultra 
 
 ### Action Parameters
 
-| Name       | C++ Type         | JavaScript Type | Remarks                                                                                                                              |
-|------------|------------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| `creator`  | `name`           | `String`        | The account that originally created the group.                                                                                        |
-| `group_id` | `uint64_t`       | `Number/String` | The ID of the group to be modified.                                                                                                   |
-| `meta_uri` | `optional<string>`| `String/Null`   | URI pointing to the group's off-chain metadata.                                                                                       |
-| `meta_hash`| `optional<checksum256>`| `String/Null` | Hash of the group's metadata.                                                                                                         |
-| `memo`     | `string`         | `String`        | A memo string.                                                                                                                        |
+| Name        | C++ Type                | JavaScript Type | Remarks                                         |
+| ----------- | ----------------------- | --------------- | ----------------------------------------------- |
+| `creator`   | `name`                  | `String`        | The account that originally created the group.  |
+| `group_id`  | `uint64_t`              | `Number/String` | The ID of the group to be modified.             |
+| `meta_uri`  | `optional<string>`      | `String/Null`   | URI pointing to the group's off-chain metadata. |
+| `meta_hash` | `optional<checksum256>` | `String/Null`   | Hash of the group's metadata.                   |
+| `memo`      | `string`                | `String`        | A memo string.                                  |
 
 **Note**: 
 - The `meta_uri` and `meta_hash` can be null or an empty string, except that the combination of a null/empty `meta_uri` and a non-null/non-empty `meta_hash` is not allowed.

@@ -1,6 +1,6 @@
 ---
 title: 'Useful Links'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Useful Links

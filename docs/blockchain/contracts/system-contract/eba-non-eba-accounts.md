@@ -1,7 +1,7 @@
 ---
 title: 'EBA and non-EBA Accounts'
 order: 1
-deploy: ['staging', 'mainnet']
+
 ---
 
 # EBA and non-EBA Accounts

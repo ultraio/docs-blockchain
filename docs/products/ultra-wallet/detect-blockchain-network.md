@@ -1,6 +1,6 @@
 ---
 title: 'Detecting the Blockchain Network'
-deploy: ['staging', 'mainnet']
+
 order: 5
 outline: [0, 4]
 ---

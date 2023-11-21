@@ -1,6 +1,6 @@
 ---
 title: '3. Smart Contract Compiling'
-deploy: ['staging', 'mainnet']
+
 outline: [0,5]
 order: -97
 ---

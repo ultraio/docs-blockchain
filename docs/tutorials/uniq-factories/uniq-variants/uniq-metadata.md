@@ -1,6 +1,6 @@
 ---
 title: 'Uniq Metadata'
-deploy: ['staging', 'mainnet']
+
 order: -99993
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: 'delprchsreq.a'
 order: 33
-deploy: ['experimental']
+
 ---
 
 # delprchsreq.a

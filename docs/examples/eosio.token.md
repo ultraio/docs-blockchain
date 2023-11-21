@@ -1,6 +1,6 @@
 ---
 title: 'eosio.token example contract'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 ---
 

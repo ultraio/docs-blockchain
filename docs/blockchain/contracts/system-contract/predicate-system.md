@@ -1,7 +1,7 @@
 ---
 title: 'Predicate System'
 order: 4
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Predicate System

@@ -1,7 +1,7 @@
 ---
 title: 'KYC - Know Your Client'
 order: 2
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Know Your Client

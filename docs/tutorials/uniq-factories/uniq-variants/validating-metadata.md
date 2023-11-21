@@ -1,6 +1,6 @@
 ---
 title: 'Validating Metadata'
-deploy: ['staging', 'mainnet']
+
 order: -99991
 ---
 

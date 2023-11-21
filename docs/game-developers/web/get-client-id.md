@@ -1,6 +1,6 @@
 ---
 title: 'Requesting a client_id'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 5]
 order: 6
 next: false

@@ -1,6 +1,6 @@
 ---
 title: '5. Create a Transaction'
-deploy: ['staging', 'mainnet']
+
 outline: [0,5]
 order: -95
 ---

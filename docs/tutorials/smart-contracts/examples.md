@@ -1,6 +1,6 @@
 ---
 title: '6. Code Examples'
-deploy: ['staging', 'mainnet']
+
 outline: [0,5]
 order: -94
 next: false

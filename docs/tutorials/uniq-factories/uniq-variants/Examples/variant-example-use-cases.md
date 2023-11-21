@@ -1,6 +1,6 @@
 ---
 title: 'Variant Example Use Cases'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Variant example use cases

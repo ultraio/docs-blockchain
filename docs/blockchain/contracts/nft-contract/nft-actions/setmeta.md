@@ -1,7 +1,7 @@
 ---
 title: 'setmeta'
 order: 22
-deploy: ['staging', 'mainnet']
+
 ---
 
 # setmeta

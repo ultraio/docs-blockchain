@@ -1,7 +1,7 @@
 ---
 title: 'issue'
 order: 2
-deploy: ['staging', 'mainnet']
+
 ---
 
 # issue

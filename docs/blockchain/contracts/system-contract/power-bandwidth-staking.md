@@ -1,7 +1,7 @@
 ---
 title: 'Power Bandwidth Staking'
 order: 5
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Power Bandwidth Staking

@@ -1,7 +1,7 @@
 ---
 title: 'revokepred'
 order: 6
-deploy: ['staging', 'mainnet']
+
 ---
 
 # revokepred - reset a predicate

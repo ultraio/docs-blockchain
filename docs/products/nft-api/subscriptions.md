@@ -1,6 +1,6 @@
 ---
 title: 'Subscriptions'
-deploy: ['staging', 'mainnet']
+
 order: 4
 ---
 
@@ -19,8 +19,8 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                                | Description                                                                                                    |
-|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Name                                             | Description                                                                                                    |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
 | `assetManager` - [`WalletId`](types.md#walletid) | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
 
 #### Example
@@ -293,8 +293,8 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                                                       | Description                                                                                                    |
-|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Name                                                                    | Description                                                                                                    |
+| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `blockStep` - [`BlockStep`](types.md#blockstep)                         | Filter on type of transaction. Irreversible by default if not provided.                                        |
 | `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
 | `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
@@ -716,8 +716,8 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                               | Description                                                                                                 |
-|----------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| Name                                            | Description                                                                                                 |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `blockStep` - [`BlockStep`](types.md#blockstep) | Filter on type of transaction. Irreversible by default if not provided.                                     |
 | `ids` - [`[BigInt!]`](types.md#bigint)          | Filter from a list of uniq id. Can be used to know with a list of uniq witch one is related to the factory. |
 | `walletId` - [`WalletId!`](types.md#walletid)   | Wallet id of the user.                                                                                      |

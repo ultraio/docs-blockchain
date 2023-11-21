@@ -1,6 +1,6 @@
 ---
 title: 'Request Fungible Token'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: -99
 ---

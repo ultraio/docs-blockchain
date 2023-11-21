@@ -1,6 +1,6 @@
 ---
 title: 'Setup Instructions'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: 2
 ---

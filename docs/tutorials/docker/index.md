@@ -1,6 +1,6 @@
 ---
 title: 'Overview'
-deploy: ['staging', 'mainnet']
+
 order: -99999
 ---
 

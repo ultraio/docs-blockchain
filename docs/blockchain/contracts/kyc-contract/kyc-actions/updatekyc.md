@@ -1,6 +1,6 @@
 ---
 title: 'updatekyc'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # updatekyc

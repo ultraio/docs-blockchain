@@ -1,7 +1,7 @@
 ---
 title: 'NFT Tables'
 order: 1
-deploy: ['staging', 'mainnet']
+
 ---
 
 # NFT Tables
@@ -13,7 +13,7 @@ deploy: ['staging', 'mainnet']
 -   Scope: `eosio.nft.ft`
 -   Key: `id`
 
-The table contains token factories settings and the operational info.
+The table contains uniq factories settings and the operational info.
 
 | Fields                  | Type                              | Description                                                                                                                              |
 | ----------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -53,7 +53,7 @@ Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv,
 -   Scope: `eosio.nft.ft`
 -   Key: `id`
 
-The table contains token factories settings and the operational info.
+The table contains uniq factories settings and the operational info.
 
 ::: warning
 Deprecated. Refer to `factory.b` instead
@@ -208,7 +208,7 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 -   Scope: `token factory ID`
 -   Key: `authorized_minter`
 
-The table stores information about token minters permitted by token factories asset managers or other authorized minters to issue tokens.
+The table stores information about token minters permitted by uniq factories asset managers or other authorized minters to issue tokens.
 
 | Fields            | Type        | Description                                          |
 | ----------------- | ----------- | ---------------------------------------------------- |
@@ -373,7 +373,7 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"e
 -   Scope: `eosio.nft.ft`
 -   Key: N/A
 
-The table stores information about whether the creation of token factories by accounts other than Ultra is allowed
+The table stores information about whether the creation of uniq factories by accounts other than Ultra is allowed
 
 | Fields        | Type | Description                                                                       |
 | ------------- | ---- | --------------------------------------------------------------------------------- |
@@ -554,10 +554,10 @@ The tables below describe the structure and usage of each of the fields inside `
 
 ### `purchase_option_with_uniqs` type
 
-| Field | Type                        | Description                                                                                                                                                |
-| ---------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| transfer_tokens_receiver_account   | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
-| factories                          | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
+| Field                            | Type                        | Description                                                                                                                                                |
+| -------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transfer_tokens_receiver_account | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
+| factories                        | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
 
 ### `uniqs_count` type
 

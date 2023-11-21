@@ -1,6 +1,6 @@
 ---
 title: 'Installing the extension'
-deploy: ['staging', 'mainnet']
+
 order: 2
 outline: [0, 4]
 ---

@@ -1,5 +1,5 @@
 ---
-deploy: ['experimental', 'staging', 'mainnet']
+
 title: 'Ultra.io'
 layout: home
 headline: "Build on Ultra"

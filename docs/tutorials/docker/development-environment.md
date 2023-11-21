@@ -1,6 +1,6 @@
 ---
 title: 'Development Environment Setup'
-deploy: ['staging', 'mainnet']
+
 order: -9998
 outline: [0,4]
 ---

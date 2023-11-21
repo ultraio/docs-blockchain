@@ -1,7 +1,7 @@
 ---
 title: 'limitmint'
 order: 15
-deploy: ['staging', 'mainnet']
+
 ---
 
 # limitmint

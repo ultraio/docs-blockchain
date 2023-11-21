@@ -1,6 +1,6 @@
 ---
 title: 'Launching an Instance'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 order: -98
 ---

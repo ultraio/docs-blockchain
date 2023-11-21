@@ -1,7 +1,7 @@
 ---
 title: 'cancelresell'
 order: 7
-deploy: ['staging', 'mainnet']
+
 ---
 
 # cancelresell

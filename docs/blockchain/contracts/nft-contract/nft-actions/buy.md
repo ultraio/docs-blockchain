@@ -1,7 +1,7 @@
 ---
 title: 'buy'
 order: 6
-deploy: ['staging', 'mainnet']
+
 ---
 
 # buy

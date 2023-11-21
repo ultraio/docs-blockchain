@@ -1,7 +1,7 @@
 ---
 title: 'clrmintst'
 order: 8
-deploy: ['staging', 'mainnet']
+
 ---
 
 # clrmintst

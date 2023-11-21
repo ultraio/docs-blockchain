@@ -16,9 +16,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/general/faucet'),
             collapsed: false,
         },
+    ],
+    '/tutorials/docker': [
         {
             text: 'Docker',
-            items: getMarkdownFiles('/tutorials/general/docker'),
+            items: getMarkdownFiles('/tutorials/docker'),
             collapsed: false,
         },
     ],
@@ -30,7 +32,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/uniq-factories': [
         {
-            text: 'Token Factories',
+            text: 'Uniq Factories',
             items: [
                 {
                     text: 'Overview',
@@ -39,8 +41,8 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Build a Token Factory',
-            items: getMarkdownFiles('/tutorials/uniq-factories/building-token-factories'),
+            text: 'Build a Uniq Factory',
+            items: getMarkdownFiles('/tutorials/uniq-factories/building-uniq-factories'),
             collapsed: false,
         },
         {

@@ -1,6 +1,6 @@
 ---
 title: 'Creating a Testnet Account'
-deploy: ['staging', 'mainnet']
+
 order: -99994
 oultine: [0, 4]
 ---

@@ -1,7 +1,7 @@
 ---
 title: 'System Contract Overview'
 order: -99
-deploy: ['staging', 'mainnet']
+
 ---
 
 # System Contract Overview

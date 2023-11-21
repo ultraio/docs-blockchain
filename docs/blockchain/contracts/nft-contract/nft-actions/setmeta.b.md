@@ -1,7 +1,7 @@
 ---
 title: 'setmeta.b'
 order: 23
-deploy: ['staging', 'mainnet']
+
 ---
 
 # setmeta.b - set token factory metadata uri and hash v1

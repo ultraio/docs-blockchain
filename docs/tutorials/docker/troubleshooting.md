@@ -1,6 +1,6 @@
 ---
 title: 'Troubleshooting Docker Image'
-deploy: ['staging', 'mainnet']
+
 order: 99999
 outline: [0,4]
 ---

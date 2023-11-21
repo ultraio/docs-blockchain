@@ -82,7 +82,7 @@ ie.
 ---
 title: 'Example Markdown File'
 order: -999
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Example Markdown File

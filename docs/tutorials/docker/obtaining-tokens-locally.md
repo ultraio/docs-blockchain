@@ -1,6 +1,6 @@
 ---
 title: 'Obtaining Tokens Locally'
-deploy: ['staging', 'mainnet']
+
 order: -9989
 outline: [0,4]
 ---

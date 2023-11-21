@@ -1,6 +1,6 @@
 ---
 title: 'How to add custom networks'
-deploy: ['staging', 'mainnet']
+
 order: 12
 outline: [0, 4]
 ---

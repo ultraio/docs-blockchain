@@ -1,7 +1,7 @@
 ---
 title: 'rmuser'
 order: 4
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 ## `rmuser.a`
@@ -16,12 +16,12 @@ The `rmuser.a` action is the first version of the `rmuser` action in the Ultra b
 
 ### Action Parameters
 
-| Name       | C++ Type        | JavaScript Type | Remarks                                                                                                  |
-|------------|-----------------|-----------------|----------------------------------------------------------------------------------------------------------|
-| `creator`  | `name`          | `String`        | The account that originally created the group.                                                            |
-| `group_id` | `uint64_t`      | `Number/String` | The ID used to identify the group to remove the user from.                                                |
-| `users`    | `vector<name>`  | `Array of String`| The names of the users to be removed from the group.                                                      |
-| `memo`     | `string`        | `String`        | A memo string.                                                                                            |
+| Name       | C++ Type       | JavaScript Type   | Remarks                                                    |
+| ---------- | -------------- | ----------------- | ---------------------------------------------------------- |
+| `creator`  | `name`         | `String`          | The account that originally created the group.             |
+| `group_id` | `uint64_t`     | `Number/String`   | The ID used to identify the group to remove the user from. |
+| `users`    | `vector<name>` | `Array of String` | The names of the users to be removed from the group.       |
+| `memo`     | `string`       | `String`          | A memo string.                                             |
 
 **Note**:
 - The `creator` should be the original creator of the group specified by `group_id`.

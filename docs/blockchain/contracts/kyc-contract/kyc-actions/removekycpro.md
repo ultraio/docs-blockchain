@@ -1,6 +1,6 @@
 ---
 title: 'removekycpro'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # removekycpro

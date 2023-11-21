@@ -1,7 +1,7 @@
 ---
 title: 'addgrpfcts'
 order: 2
-deploy: ['staging', 'mainnet']
+
 ---
 
 # addgrpfcts

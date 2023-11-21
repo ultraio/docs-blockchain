@@ -1,7 +1,7 @@
 ---
 title: 'deletegrp'
 order: 12
-deploy: ['staging', 'mainnet']
+
 ---
 
 # deletegrp

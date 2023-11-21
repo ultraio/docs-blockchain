@@ -1,7 +1,7 @@
 ---
 title: 'activers'
 order: 1
-deploy: ['staging', 'mainnet']
+
 ---
 
 # activers

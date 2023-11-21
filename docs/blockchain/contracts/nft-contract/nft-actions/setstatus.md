@@ -1,7 +1,7 @@
 ---
 title: 'setstatus'
 order: 28
-deploy: ['staging', 'mainnet']
+
 ---
 
 # setstatus

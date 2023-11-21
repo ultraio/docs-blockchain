@@ -1,6 +1,6 @@
 ---
 title: 'Cleos Usage'
-deploy: ['staging', 'mainnet']
+
 order: 0
 outline: [0,4]
 ---

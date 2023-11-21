@@ -1,6 +1,6 @@
 ---
 title: 'Import your account’s private key'
-deploy: ['staging', 'mainnet']
+
 order: 11
 outline: [0, 4]
 ---

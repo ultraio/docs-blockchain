@@ -1,6 +1,6 @@
 ---
 title: 'Actions & Transactions'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 order: -98
 ---

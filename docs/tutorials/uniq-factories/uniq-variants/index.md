@@ -1,6 +1,6 @@
 ---
 title: 'Uniq Variants'
-deploy: ['staging', 'mainnet']
+
 order: -99999
 ---
 

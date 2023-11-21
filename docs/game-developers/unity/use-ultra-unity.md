@@ -1,6 +1,6 @@
 ---
 title: 'Using the Ultra Unity Plugin'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 5]
 order: 3
 ---

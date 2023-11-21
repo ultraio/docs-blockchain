@@ -1,6 +1,6 @@
 ---
 title: '/get_table_rows'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # POST - /get_table_rows

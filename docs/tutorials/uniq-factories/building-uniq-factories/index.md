@@ -1,11 +1,11 @@
 ---
 title: 'Introduction'
-deploy: ['staging', 'mainnet']
+
 order: 1
 outline: [0, 4]
 ---
 
-# Building Token Factories
+# Building Uniq Factories
 
 ## Introduction
 

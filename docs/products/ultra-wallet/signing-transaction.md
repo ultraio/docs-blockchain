@@ -1,6 +1,6 @@
 ---
 title: 'Signing a Transaction'
-deploy: ['staging', 'mainnet']
+
 order: 7
 outline: [0, 4]
 ---

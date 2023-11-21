@@ -1,7 +1,7 @@
 ---
 title: 'create'
 order: 1
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 ## `create.a`
@@ -16,12 +16,12 @@ The `create.a` action is the first version of the create action for the Ultra bl
 
 ### Action Parameters
 
-| Name       | C++ Type         | JavaScript Type | Remarks                                                                                                                                                                     |
-|------------|------------------|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `creator`  | `name`           | `String`        | The account that creates the group.                                                                                                                                          |
-| `meta_uri` | `optional<string>`| `String/Null`   | URI pointing to the group's off-chain metadata.                                                                                                                              |
-| `meta_hash`| `optional<checksum256>`| `String/Null` | Hash of the group's metadata.                                                                                                                                                |
-| `memo`     | `string`         | `String`        | A memo string.                                                                                                                                                               |
+| Name        | C++ Type                | JavaScript Type | Remarks                                         |
+| ----------- | ----------------------- | --------------- | ----------------------------------------------- |
+| `creator`   | `name`                  | `String`        | The account that creates the group.             |
+| `meta_uri`  | `optional<string>`      | `String/Null`   | URI pointing to the group's off-chain metadata. |
+| `meta_hash` | `optional<checksum256>` | `String/Null`   | Hash of the group's metadata.                   |
+| `memo`      | `string`                | `String`        | A memo string.                                  |
 
 **Note**: The `meta_uri` and `meta_hash` can be null or an empty string, except that the combination of a null/empty `meta_uri` and a non-null/non-empty `meta_hash` is not allowed.
 

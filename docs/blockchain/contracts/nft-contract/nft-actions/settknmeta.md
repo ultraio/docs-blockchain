@@ -1,7 +1,7 @@
 ---
 title: 'settknmeta'
 order: 26
-deploy: ['staging', 'mainnet']
+
 ---
 
 # settknmeta

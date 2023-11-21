@@ -1,6 +1,6 @@
 ---
 title: '2. Smart Contract Setup'
-deploy: ['staging', 'mainnet']
+
 outline: [0,5]
 order: -98
 ---

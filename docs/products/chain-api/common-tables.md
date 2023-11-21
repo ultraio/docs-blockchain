@@ -1,6 +1,6 @@
 ---
 title: 'Common Table Lookups'
-deploy: ['staging', 'mainnet']
+
 order: -99998
 ---
 

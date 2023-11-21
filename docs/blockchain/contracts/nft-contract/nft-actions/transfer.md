@@ -1,7 +1,7 @@
 ---
 title: 'transfer'
 order: 29
-deploy: ['staging', 'mainnet']
+
 ---
 
 # transfer
@@ -34,7 +34,7 @@ This process is **repeated for each token**.
 
 **Notifications**
 
-`require_recipient` is done for `from` account, `to` account and for asset managers of corresponding token factories
+`require_recipient` is done for `from` account, `to` account and for asset managers of corresponding uniq factories
 
 ## Action Parameters
 

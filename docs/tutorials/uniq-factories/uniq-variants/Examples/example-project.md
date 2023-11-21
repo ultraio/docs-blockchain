@@ -1,6 +1,6 @@
 ---
 title: 'Example Metadata Project'
-deploy: ['staging', 'mainnet']
+
 ---
 
 

@@ -1,7 +1,7 @@
 ---
 title: 'setprchsreq.a'
 order: 32
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 # setprchsreq.a
@@ -47,7 +47,7 @@ The factory manager can specify purchase options for users. Note that currently 
 
 `promoter_basis_point` is used to specify how much % of a sale a promoter will get.
 
-`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed token factories. They will be burned, transferred or checked as per `strategy` setting.
+`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
 
 `sale_shares` is used to set royalties.
 

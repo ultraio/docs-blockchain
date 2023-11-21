@@ -1,6 +1,6 @@
 ---
 title: 'Developer resources'
-deploy: ['staging', 'mainnet']
+
 order: 15
 outline: [0, 4]
 ---

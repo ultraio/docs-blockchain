@@ -1,6 +1,6 @@
 ---
 title: 'Testnet Faucet Guide'
-deploy: ['staging', 'mainnet']
+
 outline: [0,4]
 order: -99
 ---

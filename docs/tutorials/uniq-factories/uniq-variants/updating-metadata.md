@@ -1,6 +1,6 @@
 ---
 title: 'Updating Metadata'
-deploy: ['staging', 'mainnet']
+
 order: -99992
 ---
 

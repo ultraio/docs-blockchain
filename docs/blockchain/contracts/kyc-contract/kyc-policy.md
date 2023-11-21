@@ -1,7 +1,7 @@
 ---
 title: 'KYC Policy'
 order: -99
-deploy: ['staging', 'mainnet']
+
 ---
 
 # KYC Policy

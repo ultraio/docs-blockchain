@@ -1,6 +1,6 @@
 ---
 title: 'Starting a Local Chain'
-deploy: ['staging', 'mainnet']
+
 order: -99998
 oultine: [0, 4]
 ---

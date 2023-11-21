@@ -1,6 +1,6 @@
 ---
 title: 'issue Smart Contract Example'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Uniq variants - On issue.b smart contract example

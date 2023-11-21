@@ -1,7 +1,7 @@
 ---
 title: 'purchase.a'
 order: 31
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 # purchase.a
@@ -43,7 +43,7 @@ In some cases a token factory may require certain uniqs to exist in the user inv
 
 Think of it like a pre-requisite or an entry ticket to purchasing other uniqs.
 
-When a uniq is being purchased it goes through our `verify_user_uniqs` function that looks into the buyer's inventory and verifies that the token factories required uniqs matches the user supplied uniqs. The function checks that the `user supplied uniqs` from the user matches the `factory required uniqs`. The function checks that the user is passing uniqs that have the correct token factory id, and checks that the user **is not** passing irrelavant uniqs.
+When a uniq is being purchased it goes through our `verify_user_uniqs` function that looks into the buyer's inventory and verifies that the uniq factories required uniqs matches the user supplied uniqs. The function checks that the `user supplied uniqs` from the user matches the `factory required uniqs`. The function checks that the user is passing uniqs that have the correct token factory id, and checks that the user **is not** passing irrelavant uniqs.
 
 It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
 
@@ -83,9 +83,9 @@ Internally we are constructing a vector of which `token_ids` to be transferred.
 
 `user_uniqs` is a vector of `provided_user_uniqs`, which has the following structure
 
-| Property Name | C++ Type | JavaScript Type | Description                                                                                                                     |
-| ------------- | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                               |
+| Property Name | C++ Type | JavaScript Type | Description                                                                                                                      |
+| ------------- | -------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                                |
 | strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a) for allowed values and usage |
 
 

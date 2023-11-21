@@ -1,7 +1,7 @@
 ---
 title: 'Token Tables'
 order: 1
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Token Tables

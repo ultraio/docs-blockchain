@@ -1,6 +1,6 @@
 ---
 title: 'delegatebw'
-deploy: ['staging', 'mainnet']
+
 ---
 
 # delegatebw - stake tokens for POWER

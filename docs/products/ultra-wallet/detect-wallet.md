@@ -1,6 +1,6 @@
 ---
 title: 'Detecting the Ultra Wallet'
-deploy: ['staging', 'mainnet']
+
 order: 4
 outline: [0, 4]
 ---

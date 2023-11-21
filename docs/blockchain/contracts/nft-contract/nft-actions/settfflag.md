@@ -1,12 +1,12 @@
 ---
 title: 'settfflag'
 order: 27
-deploy: ['staging', 'mainnet']
+
 ---
 
 # settfflag
 
-Allow ultra.nft.ft account to open the NFT standard to let any account create and manage token factories
+Allow ultra.nft.ft account to open the NFT standard to let any account create and manage uniq factories
 
 ## Technical Behavior
 

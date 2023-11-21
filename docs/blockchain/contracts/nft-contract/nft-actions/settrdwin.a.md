@@ -1,7 +1,7 @@
 ---
 title: 'settrdwin.a'
 order: 27
-deploy: ['experimental', 'staging', 'mainnet']
+
 ---
 
 # settrdwin.a - set trading window

@@ -1,6 +1,6 @@
 ---
 title: 'The `clearavatar` action'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 4]
 order: 3
 ---

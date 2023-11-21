@@ -1,7 +1,7 @@
 ---
 title: 'updategrp'
 order: 30
-deploy: ['staging', 'mainnet']
+
 ---
 
 # updategrp

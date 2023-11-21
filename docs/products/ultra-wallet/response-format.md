@@ -1,6 +1,6 @@
 ---
 title: 'Response interface'
-deploy: ['staging', 'mainnet']
+
 order: 3
 outline: [0, 4]
 ---

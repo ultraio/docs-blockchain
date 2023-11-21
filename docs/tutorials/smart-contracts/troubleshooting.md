@@ -1,6 +1,6 @@
 ---
 title: '7. Troubleshooting Deployment'
-deploy: ['staging', 'mainnet']
+
 order: -93
 outline: [0,5]
 ---

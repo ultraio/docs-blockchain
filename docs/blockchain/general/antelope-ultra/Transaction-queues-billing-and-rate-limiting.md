@@ -1,6 +1,6 @@
 ---
 title: 'Transaction Queues, Rate-limit, and Billing'
-deploy: ['experimental', 'staging', 'mainnet']
+
 outline: [0, 4]
 order: -94
 ---

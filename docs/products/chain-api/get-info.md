@@ -1,6 +1,6 @@
 ---
 title: '/get_info'
-deploy: ['staging', 'mainnet']
+
 order: -99
 ---
 

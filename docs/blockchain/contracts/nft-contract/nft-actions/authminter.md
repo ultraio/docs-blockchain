@@ -1,7 +1,7 @@
 ---
 title: 'authminter'
 order: 3
-deploy: ['staging', 'mainnet']
+
 ---
 
 # authminter

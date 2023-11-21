@@ -1,6 +1,6 @@
 ---
 title: 'Creating Metadata'
-deploy: ['staging', 'mainnet']
+
 order: 4
 outline: [0, 4]
 ---
@@ -15,13 +15,13 @@ Ultra has a specific format for how we expect metadata to be organized.
 
 ## Using the Metadata Tool
 
-The metadata tool simplifies the process for creating complicated token factories and associating tokens with those factories. This tool allows the user to specify token factory specifications and corresponding token(s) specifications in an easy to use CSV template.
+The metadata tool simplifies the process for creating complicated uniq factories and associating tokens with those factories. This tool allows the user to specify token factory specifications and corresponding token(s) specifications in an easy to use CSV template.
 
 This tool takes CSVs and media files (Uniq images, videos and other supported media files) as input, converts to files to JSON objects, validates the JSON data, generates sha256 hashes of the JSON objects and outputs the generated JSON files.
 
 ![Metadata Tool](/images/token-factories/metadatatool.png)
 
-**Note that the tool itself does not interact with the blockchain; rather, it simplifies the process of creating complicated token factories and the associated tokens.**
+**Note that the tool itself does not interact with the blockchain; rather, it simplifies the process of creating complicated uniq factories and the associated tokens.**
 
 ## Obtaining the Metadata tool
 

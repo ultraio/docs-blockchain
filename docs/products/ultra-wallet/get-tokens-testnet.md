@@ -1,6 +1,6 @@
 ---
 title: 'How to get tokens on Testnet'
-deploy: ['staging', 'mainnet']
+
 order: 13
 outline: [0, 4]
 ---

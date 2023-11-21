@@ -1,7 +1,7 @@
 ---
 title: 'burn'
 order: 5
-deploy: ['staging', 'mainnet']
+
 ---
 
 # burn
@@ -37,7 +37,7 @@ Try to think of the action parameters as a **JSON Object** when reading this tab
 
 **Notifications**
 
-`require_recipient` is done for `owner` account and for asset managers of corresponding token factories
+`require_recipient` is done for `owner` account and for asset managers of corresponding uniq factories
 
 ### V0
 

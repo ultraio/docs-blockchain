@@ -1,6 +1,6 @@
 ---
 title: 'Products'
-deploy: ['staging', 'mainnet']
+
 outline: [0, 5]
 order: 0
 ---

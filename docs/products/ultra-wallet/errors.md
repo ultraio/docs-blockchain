@@ -1,6 +1,6 @@
 ---
 title: 'Errors'
-deploy: ['staging', 'mainnet']
+
 order: 10
 outline: [0, 4]
 ---

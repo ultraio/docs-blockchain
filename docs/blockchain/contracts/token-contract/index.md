@@ -1,7 +1,7 @@
 ---
 title: 'Token Contract Overview'
 order: -99
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Token Contract

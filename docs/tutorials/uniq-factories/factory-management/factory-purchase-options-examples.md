@@ -1,6 +1,6 @@
 ---
 title: 'Factory Purchase Options Examples'
-deploy: ['staging', 'mainnet']
+
 order: 2
 ---
 

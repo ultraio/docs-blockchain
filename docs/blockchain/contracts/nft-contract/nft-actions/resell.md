@@ -1,7 +1,7 @@
 ---
 title: 'resell'
 order: 20
-deploy: ['staging', 'mainnet']
+
 ---
 
 # resell

@@ -1,7 +1,7 @@
 ---
 title: 'setnftmgrflg'
 order: 25
-deploy: ['staging', 'mainnet']
+
 ---
 
 # setnftmgrflg

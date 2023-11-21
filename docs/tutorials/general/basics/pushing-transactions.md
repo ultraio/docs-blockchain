@@ -1,6 +1,6 @@
 ---
 title: 'Pushing Transactions'
-deploy: ['staging', 'mainnet']
+
 order: -99996
 oultine: [0, 4]
 ---

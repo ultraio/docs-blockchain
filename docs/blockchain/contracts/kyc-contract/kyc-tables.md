@@ -1,7 +1,7 @@
 ---
 title: 'KYC Tables'
 order: 1
-deploy: ['staging', 'mainnet']
+
 ---
 
 # KYC Tables

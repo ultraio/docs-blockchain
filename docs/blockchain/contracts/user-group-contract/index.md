@@ -1,6 +1,6 @@
 ---
 title: 'User Groups Overview'
-deploy: ['experimental', 'staging', 'mainnet']
+
 outline: [0, 4]
 order: -99
 ---

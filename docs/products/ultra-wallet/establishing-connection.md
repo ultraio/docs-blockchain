@@ -1,6 +1,6 @@
 ---
 title: 'Establishing a Connection'
-deploy: ['staging', 'mainnet']
+
 order: 6
 outline: [0, 4]
 ---

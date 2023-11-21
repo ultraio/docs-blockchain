@@ -1,7 +1,7 @@
 ---
 title: 'authmint.b'
 order: 4
-deploy: ['staging', 'mainnet']
+
 ---
 
 # authmint.b

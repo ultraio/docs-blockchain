@@ -1,7 +1,7 @@
 ---
 title: 'close'
 order: -99
-deploy: ['staging', 'mainnet']
+
 ---
 
 # close

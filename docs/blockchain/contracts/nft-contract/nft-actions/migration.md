@@ -1,7 +1,7 @@
 ---
 title: 'Migration Behavior'
 order: -99
-deploy: ['staging', 'mainnet']
+
 ---
 
 # Migration Behavior

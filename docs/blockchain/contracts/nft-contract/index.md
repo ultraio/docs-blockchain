@@ -130,7 +130,7 @@ The **setmeta.b** action lets the _Asset Manager_ to set the token factory metad
 
 The _Asset Manager_ can set the token factory conditionless receivers.
 
-The **setconrecv** action allows the _Asset Manager_ to set the token factory conditional receivers - the accounts that can receive NFTs without checking for mintable window, lockup and other limitations. The action updats the `factory.b` table.
+The **setconrecv** action allows the _Asset Manager_ to set the token factory conditional receivers - the accounts that can receive NFTs without checking for mintable window, lockup and other limitations. The action updates the `factory.b` table.
 
 -   [setconrecv - set conditionless receivers](./nft-actions/setconrecv.md)
 -   [factory.b](./nft-tables.md#factory-b)

@@ -11,8 +11,25 @@ order: 1
 
 First-hand factory purchase options allow users to receive Uniqs from the factory directly without requiring you to manually issue Uniqs to the users. Various configuration options can be set when creating the purchase option for your factory, and in addition to that each factory can have multiple purchase options available. The usage of the actions to create and utilize purchase options is provided below.
 
--   [setprchsreq.a - set purchase requirement](../../contracts/nft-contract/nft-actions/setprchsreq.a.md)
--   [purchase.a - purchase a token](../../contracts/nft-contract/nft-actions/purchase.a.md)
+<Mainnet>
+
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+
+</Mainnet>
+
+<Staging>
+
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
+
+</Staging>
+
+<Experimental>
+
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
+
+</Experimental>
+
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
 
 The first-hand purchase options provide following benefits to you
 - No need for factory manager input to issue a token to the user
@@ -39,7 +56,7 @@ There are various use cases that are covered by the first-hand purchase feature.
 
 ### First-hand purchase directly from Uniq factory
 
-All use cases above are accessible using the `setprchsreq.a` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
+All use cases above are accessible using the <Mainnet>`setprchsreq.a`</Mainnet><Staging>`setprchsreq.b`</Staging><Experimental>`setprchsreq.b`</Experimental> action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
 
 ### Swap Uniqs
 

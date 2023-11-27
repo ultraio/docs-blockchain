@@ -119,6 +119,21 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: false,
         },
     ],
+    '/tutorials/projects': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Vite, Vue, and Ultra Wallet',
+            items: getMarkdownFiles('/tutorials/projects/vite-vue-ultra-wallet'),
+        },
+    ],
     '/tutorials/smart-contracts': [
         {
             text: 'Tutorials',

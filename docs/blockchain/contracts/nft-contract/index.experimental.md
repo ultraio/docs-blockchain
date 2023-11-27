@@ -143,24 +143,7 @@ The <Mainnet>**setprchsreq.a**</Mainnet><Staging>**setprchsreq.b**</Staging><Exp
 
 Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
 
-<Mainnet>
-
--   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
-
-</Mainnet>
-
-<Staging>
-
 -   [setprchsreq.b - set purchase requirement](./nft-actions/setprchsreq.b.md)
-
-</Staging>
-
-<Experimental>
-
--   [setprchsreq.b - set purchase requirement](./nft-actions/setprchsreq.b.md)
-
-</Experimental>
-
 -   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
 -   [purchase.a - purchase a token](./nft-actions/purchase.a.md)
 -   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)

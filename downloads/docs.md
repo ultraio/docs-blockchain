@@ -19645,6 +19645,8 @@ oultine: [0, 4]
 
 General tutorials to help feed your curiosity.
 
+## Fundamentals
+
 <table>
     <tr>
         <td>Tutorial Name</td>
@@ -19686,6 +19688,67 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
     </tr>
+</table>
+
+## Projects
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Vite, Vue and Ultra Wallet</td>
+        <td>Learn how to build a basic web application with vite, vue, and the ultra wallet.</td>
+        <td><a href="/tutorials/projects/vite-vue-ultra-wallet/index">Link</a></td>
+    </tr>
+</table>
+
+## Smart Contracts
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Build Smart Contracts</td>
+        <td>Learn how to build your first smart contract utilizing C++ that compiles into WebAssembly on Ultra.</td>
+        <td><a href="/tutorials/smart-contracts/index">Link</a></td>
+    </tr>
+</table>
+
+## Uniq Factories
+
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Build a Uniq Factory</td>
+        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
+        <td><a href="/tutorials/uniq-factories/building-uniq-factories/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Uniq Avatars</td>
+        <td>Learn how to manage your uniq avatar as a user</td>
+        <td><a href="/tutorials/uniq-factories/uniq-avatar/index">Link</a></td>
+    </tr>
+</table>
+
+## Other
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
     <tr>
         <td>Learn the Basics</td>
         <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
@@ -19706,25 +19769,279 @@ General tutorials to help feed your curiosity.
         <td>Learn how to obtain test network tokens</td>
         <td><a href="/tutorials/general/faucet/index">Link</a></td>
     </tr>
-    <tr>
-        <td>Build Smart Contracts</td>
-        <td>Learn how to build your first smart contract on Ultra</td>
-        <td><a href="/tutorials/smart-contracts/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Build a Uniq Factory</td>
-        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
-        <td><a href="/tutorials/uniq-factories/building-uniq-factories/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Uniq Avatars</td>
-        <td>Learn how to manage your uniq avatar as a user</td>
-        <td><a href="/tutorials/uniq-factories/uniq-avatar/index">Link</a></td>
-    </tr>
 </table>
 
 
 
+---
+title: 'Wallet Connection'
+order: -7
+oultine: [0, 4]
+---
+
+# Wallet Connection
+
+In our previous step we ensured that the wallet is connecting to our browser instance. Now let's connect to the extension.
+
+## Begin Connection
+
+What we are going to do now is add in some boilerplate code to get the wallet application to work with Ultra.
+
+This code performs the following functions:
+
+1. They click login and the ultra wallet prompts them to login.
+2. After connecting, their `blockchainid` is stored.
+3. Their `username` is then updated in the main window and shown to the user.
+4. They may now click `logout` at any time to disconnect the wallet.
+
+```html
+<script setup>
+import { ref } from 'vue';
+
+// Stores the username instance
+let username = ref(undefined);
+
+// Toggles to true when the login failed
+let failedLogin = ref(false);
+
+// Handles when the user clicks login
+async function beginLogin() {
+    try {
+        const response = await ultra.connect();
+        username.value = response.data.blockchainid;
+    } catch (err) {
+        console.error(err);
+        failedLogin.value = true;
+    }
+}
+
+// Handles when the user clicks logout
+async function logout() {
+    try {
+        await ultra.disconnect();
+        username.value = undefined;
+        failedLogin.value = false;
+    } catch (err) {}
+}
+</script>
+
+<template>
+    <div>
+        <h2 v-if="!failedLogin">{{ username ? username : 'Please Login...' }}</h2>
+        <h2 v-else>Failed to Login...</h2>
+        <br />
+        <button v-if="!username" @click="beginLogin">Login</button>
+        <button v-else @click="logout">Logout</button>
+    </div>
+</template>
+
+<style scoped></style>
+```
+
+## Final Product
+
+Below are some basic images of what you should expect as a final product from this tutorial. If you wish to expand further and perform transactions, check out the [Ultra Wallet Product Documentation](../../../products/ultra-wallet/index.md).
+
+![](./images/connection-waiting.png)
+![](./images/connection-done.png)
+---
+title: 'Getting Started'
+order: -9
+oultine: [0, 4]
+---
+
+# Before Starting
+
+Install the programs below, most if not all of them are required.
+
+- Google Chrome, or Chromium Equivalent
+- [Ultra Wallet Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+- [NodeJS](https://nodejs.org/en/download)
+- [VSCode Editor, IDE](https://code.visualstudio.com/)
+
+## Setup
+
+Open up a command line interface in the location where you want to start building a project. For this tutorial we are doing it on a separate drive in a folder called projects.
+
+Run the following command, and type (y) to confirm.
+
+```
+npm create vite@latest
+```
+
+![](./images/vitepress-create-proceed.png)
+
+![](./images/vitepress-create-after.png)
+
+As you can see, I've created a project utilizing `Vue` with `JavaScript` as the main programming language.
+
+The project title is `ultra-project`.
+
+We now we need to run the commands `vite` printed out to the console.
+
+```sh
+cd ultra-project
+npm install
+npm run dev
+```
+
+If successful we should see a new empty project in our browser of choice.
+
+![](./images/vitepress-server-started.png)
+
+If we navigate to the URL printed in the terminal in our browser, you should see a page greeting us.
+
+![](./images/vitepress-new-app.png)
+
+Success! Let's move on to the next steps.
+---
+title: 'Intro to Vite & Vue'
+order: -10
+oultine: [0, 4]
+---
+
+# Intro to Vite & Vue
+
+This tutorial will help you understand how to setup your own web application to build a website that interfaces with smart contracts.
+
+We'll be targetting Vue as our frontend framework of choice.
+
+## What is Vite?
+
+[Vite is a build tool](https://vitejs.dev/) that works with some of the most popular frameworks such as:
+
+- Vue
+- React
+- Preact
+- Lit
+- Svelte
+- Solid
+- Qwik
+
+Utilizing vite is a no brainer for modern frontend applications today.
+
+## What is Ultra Wallet
+
+Ultra wallet is a [**Google Chrome Extension**](https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln) that allows a user to login to their Ultra account to sign transactions, messages, and more.
+
+## Goal
+
+You will get a working frontend application that utilizes the ultra wallet.
+---
+title: 'Wallet Setup'
+order: -8
+oultine: [0, 4]
+---
+
+# Wallet Setup
+
+Setting up the ultra wallet for your application is as simple as reading `window.ultra`. However, we have a few modifications we need to do to `Vite` so we can connect to the Ultra Extension in our browser.
+
+## Open Your Project
+
+In the previous steps we created a project called `ultra-project`.
+
+We are now going to open that project in an IDE of our choice, we'll be using `VSCode` for this tutorial.
+
+![](./images/vscode-init-project.png)
+
+As you can see we have everything we need here.
+
+- Project files on the left
+- Terminal for running commands on the bottom
+    - If this isn't opened just click Terminal in the menu at the top. Sometimes it's under the `...` menu.
+- Editor where the larger `VSCode` logo is.
+
+## Basic SSL Installation
+
+We need to install an HTTPs server for Vite in order to properly preview and work with the ultra wallet. Let's do that right away.
+
+Run the following command in terminal:
+
+```
+npm i -D @vitejs/plugin-basic-ssl
+```
+
+![](./images/install-basic-ssl.png)
+
+This will add a new development package dependency.
+
+### Edit `vite.config.js`
+
+Modify your configuration to instantiate the `basicSSL` plugin inside of the `plugins` array.
+
+```js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import BasicSSL from '@vitejs/plugin-basic-ssl'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [vue(), BasicSSL()],
+})
+```
+
+### Run `npm run dev`
+
+Open your browser to the `URL` that is printed in your terminal, **while you are editing files the browser will automatically refresh**.
+
+You should see your browser complaining about it not being private, this will not matter as we are developing locally.
+
+::: warning
+When you deploy your website to the world, you should secure it with HTTP(s) by utilizing a certificate provider.
+:::
+
+You can move past this by going to `advanced` and proceeding even though it is not safe.
+
+![](./images/ignore-chrome-certificate.png)
+
+## Edit `src/App.vue`
+
+We are going to modify this main file and remove all the extras tags and data inside, and apply a simple boilerplate so we can see the changes directly.
+
+**App.vue**
+```tsx
+<script setup>
+import { ref } from 'vue';
+
+const greetingMessage = ref('My Ultra App');
+</script>
+
+<template>
+  <div>
+    <h2>{{ greetingMessage }}</h2>
+  </div>
+</template>
+
+<style scoped>
+/** Leave this if you want to add some style later */
+</style>
+
+```
+
+### Checking Wallet Instance
+
+One of the first things we are going to do is check if the `ultra` variable is available inside of `window`.
+
+What better way than to simply log `window.ultra` to console.
+
+In **App.vue** `script` section add the following:
+
+```tsx
+<script setup>
+import { ref } from 'vue';
+
+const greetingMessage = ref('My Ultra App');
+
+console.log(window.ultra);
+</script>
+```
+
+Check your browser's console (F12) and see if an `object` prints out.
+
+![](./images/ultra-wallet-present.png)
+
+Looks good, let's move on to the next section.
 ---
 title: '3. Smart Contract Compiling'
 

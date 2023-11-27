@@ -9,6 +9,8 @@ oultine: [0, 4]
 
 General tutorials to help feed your curiosity.
 
+## Fundamentals
+
 <table>
     <tr>
         <td>Tutorial Name</td>
@@ -50,6 +52,67 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
     </tr>
+</table>
+
+## Projects
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Vite, Vue and Ultra Wallet</td>
+        <td>Learn how to build a basic web application with vite, vue, and the ultra wallet.</td>
+        <td><a href="/tutorials/projects/vite-vue-ultra-wallet/index">Link</a></td>
+    </tr>
+</table>
+
+## Smart Contracts
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Build Smart Contracts</td>
+        <td>Learn how to build your first smart contract utilizing C++ that compiles into WebAssembly on Ultra.</td>
+        <td><a href="/tutorials/smart-contracts/index">Link</a></td>
+    </tr>
+</table>
+
+## Uniq Factories
+
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Build a Uniq Factory</td>
+        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
+        <td><a href="/tutorials/uniq-factories/building-uniq-factories/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Uniq Avatars</td>
+        <td>Learn how to manage your uniq avatar as a user</td>
+        <td><a href="/tutorials/uniq-factories/uniq-avatar/index">Link</a></td>
+    </tr>
+</table>
+
+## Other
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
     <tr>
         <td>Learn the Basics</td>
         <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
@@ -69,21 +132,6 @@ General tutorials to help feed your curiosity.
         <td>Get Test Network Tokens</td>
         <td>Learn how to obtain test network tokens</td>
         <td><a href="/tutorials/general/faucet/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Build Smart Contracts</td>
-        <td>Learn how to build your first smart contract on Ultra</td>
-        <td><a href="/tutorials/smart-contracts/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Build a Uniq Factory</td>
-        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
-        <td><a href="/tutorials/uniq-factories/building-uniq-factories/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Uniq Avatars</td>
-        <td>Learn how to manage your uniq avatar as a user</td>
-        <td><a href="/tutorials/uniq-factories/uniq-avatar/index">Link</a></td>
     </tr>
 </table>
 

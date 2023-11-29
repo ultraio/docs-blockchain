@@ -5318,7 +5318,7 @@ await api.transact({
   actions: [
     {
       account: "eosio.nft.ft",
-      name: "setmeta.b",
+      name: "settknmeta",
       authorization: [{ actor: "manager.acc", permission: "active" }],
       data: {
         token_id: 1,

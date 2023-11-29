@@ -2,7 +2,7 @@ import{_ as s,c as a,o as n,L as t}from"./chunks/framework.YmJWI2yl.js";const h=
 <span class="line"><span style="color:#E1E4E8;">  actions: [</span></span>
 <span class="line"><span style="color:#E1E4E8;">    {</span></span>
 <span class="line"><span style="color:#E1E4E8;">      account: </span><span style="color:#9ECBFF;">&quot;eosio.nft.ft&quot;</span><span style="color:#E1E4E8;">,</span></span>
-<span class="line"><span style="color:#E1E4E8;">      name: </span><span style="color:#9ECBFF;">&quot;setmeta.b&quot;</span><span style="color:#E1E4E8;">,</span></span>
+<span class="line"><span style="color:#E1E4E8;">      name: </span><span style="color:#9ECBFF;">&quot;settknmeta&quot;</span><span style="color:#E1E4E8;">,</span></span>
 <span class="line"><span style="color:#E1E4E8;">      authorization: [{ actor: </span><span style="color:#9ECBFF;">&quot;manager.acc&quot;</span><span style="color:#E1E4E8;">, permission: </span><span style="color:#9ECBFF;">&quot;active&quot;</span><span style="color:#E1E4E8;"> }],</span></span>
 <span class="line"><span style="color:#E1E4E8;">      data: {</span></span>
 <span class="line"><span style="color:#E1E4E8;">        token_id: </span><span style="color:#79B8FF;">1</span><span style="color:#E1E4E8;">,</span></span>
@@ -20,7 +20,7 @@ import{_ as s,c as a,o as n,L as t}from"./chunks/framework.YmJWI2yl.js";const h=
 <span class="line"><span style="color:#24292E;">  actions: [</span></span>
 <span class="line"><span style="color:#24292E;">    {</span></span>
 <span class="line"><span style="color:#24292E;">      account: </span><span style="color:#032F62;">&quot;eosio.nft.ft&quot;</span><span style="color:#24292E;">,</span></span>
-<span class="line"><span style="color:#24292E;">      name: </span><span style="color:#032F62;">&quot;setmeta.b&quot;</span><span style="color:#24292E;">,</span></span>
+<span class="line"><span style="color:#24292E;">      name: </span><span style="color:#032F62;">&quot;settknmeta&quot;</span><span style="color:#24292E;">,</span></span>
 <span class="line"><span style="color:#24292E;">      authorization: [{ actor: </span><span style="color:#032F62;">&quot;manager.acc&quot;</span><span style="color:#24292E;">, permission: </span><span style="color:#032F62;">&quot;active&quot;</span><span style="color:#24292E;"> }],</span></span>
 <span class="line"><span style="color:#24292E;">      data: {</span></span>
 <span class="line"><span style="color:#24292E;">        token_id: </span><span style="color:#005CC5;">1</span><span style="color:#24292E;">,</span></span>

@@ -25,20 +25,12 @@ Always use `experimental` for general document writing. The files update instant
 -   If you create any new pages you will need to stop vitepress, and restart the preview.
 -   You can actively preview changes to a single document in the browser while a dev command is running, meaning the page auto-refreshes.
 
-### All Files
+### Experimental
 
-**This has live updates, and renders all files.**
+**This Has Live Updates**
 
 ```
 npm run dev
-```
-
-### Experimental
-
-**This does not update live**
-
-```
-npm run dev:experimental
 ```
 
 ### Staging
@@ -65,47 +57,13 @@ Builds a static version of the website that can be deployed anywhere.
 npm run build:all
 ```
 
-# Extended Functionality
-
-## File Environment Extension Guide
+## File Deployment Guide
 
 Deployments are based on the name.
 
-Any file without the extension `.experimental.md` or `.mainnet.md` or `.staging.md` will only be deployed to their respective environments.
+Any file without the extension `.mainnet.md` or `.staging.md` will be available in all versions.
 
-If the file **does not contain** any of the above extensions, it will be deployed to all environments.
-
-### A Note About Links
-
-When you are linking an `environment extension` file, **DO NOT APPEND** `staging`, `mainnet`, or `experimental`.
-
-This means if you have a file named `test.experimental.md`, you should link it as the following:
-
-```
-[My Test File](./test.md);
-```
-
-## Environment Sections
-
-If you need one file in `docs` to have specific content for a specific `environment` you can use these tags as long as the changes **do not include** an `environment extension link`.
-
-They support `inline` as well.
-
-**You cannot use links inside of these sections, they are meant for small text edits.**
-
-```html
-<Experimental>
-Only shows in experimental
-</Experimental>
-
-<Staging>
-Only shows in staging
-</Staging>
-
-<Mainnet>
-Only shows in mainnet
-</Mainnet>
-```
+If you want to only deploy a specific file version on mainnet, append `.mainnet.md` to the file name.
 
 ## File Order Guide
 
@@ -124,9 +82,30 @@ ie.
 ---
 title: 'Example Markdown File'
 order: -999
+
 ---
 
 # Example Markdown File
 
 Placeholder
+```
+
+## Environment Sections
+
+If you need one file in `docs` to have specific content for a specific `environment` you can use these tags.
+
+They support `inline` as well.
+
+```html
+<Experimental>
+Only shows in experimental
+</Experimental>
+
+<Staging>
+Only shows in staging
+</Staging>
+
+<Mainnet>
+Only shows in mainnet
+</Mainnet>
 ```

@@ -139,10 +139,13 @@ The **setconrecv** action allows the _Asset Manager_ to set the token factory co
 
 The _Asset Manager_ can add the factory first-hand purchase requirements
 
-The <Mainnet>**setprchsreq.a**</Mainnet><Staging>**setprchsreq.b**</Staging><Experimental>**setprchsreq.b**</Experimental> action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
+The **setprchsreq.a**/**setprchsreq.b** action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
+
+**setprchsreq.a** action is deprecated, we recommend using **setprchsreq.b** action.
 
 Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
 
+-   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
 -   [setprchsreq.b - set purchase requirement](./nft-actions/setprchsreq.b.md)
 -   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
 -   [purchase.a - purchase a token](./nft-actions/purchase.a.md)

@@ -30,9 +30,9 @@ This action is used to purchase uniqs directly from a token factory.
 
 10. Increment the number of tokens purchased for the given user
 
-11. If a purchase option has been configured with `group_restriction` via the `setprchsreq.b` action, the `purchase.a` action will take these restrictions into account before allowing the purchase to proceed.
+11. If a purchase option has been configured with `group_restriction` via the `setprchsreq.a`/`setprchsreq.b` action, the `purchase.a` action will take these restrictions into account before allowing the purchase to proceed.
 
-> **Note**: For details on how to configure `group_restriction` through `setprchsreq.b`, please refer to [setprchsreq.b Documentation](./setprchsreq.b.md).
+> **Note**: For details on how to configure `group_restriction` through `setprchsreq.a`/`setprchsreq.b`, please refer to [setprchsreq.a](./setprchsreq.a.md)/[setprchsreq.b](./setprchsreq.b.md).
 
 If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If no promoter is specified then default promoter will be used and is specified by Ultra in `saleshrlmcfg` table under a scope of `0` in `default_promoter`.
 

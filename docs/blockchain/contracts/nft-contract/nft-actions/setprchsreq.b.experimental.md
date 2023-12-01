@@ -1,20 +1,14 @@
 ---
-title: 'setprchsreq.a'
+title: 'setprchsreq.b'
 order: 32
 
 ---
 
-# setprchsreq.a
+# setprchsreq.b
 
 This action is used to set purchase requirements for a token factory.
 
 Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
-
-<Mainnet>
-::: warning
-This action is currently disabled.
-:::
-</Mainnet>
 
 ::: warning
 Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
@@ -55,7 +49,7 @@ If RAM price is greater than `maximum_uos_payment` transaction reverts.
 
 If token factory is inactive transaction reverts as well.
 
-`group_restriction` is an optional parameter that accepts a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
+`group_restriction` is an optional parameter that accepts a string representation of group ID restrictions, which is internally converted to a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
 
 * The lower 60 bits represent the group ID.
 * The upper 4 bits are reserved for logical operators.
@@ -128,7 +122,7 @@ By understanding this formalization, you can ensure a clear and standardized way
 | purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
 | sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
 | maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
-| group_restriction          | optional<uint64_t_vector>           | Array / null    | Vector of 64-bit integers specifying logical restrictions based on group membership. Follows specific logical operator rules as outlined above.                                                                                                      |
+| group_restriction          | optional<uint64_t_vector>           | Array / null    | String representation specifying logical restrictions based on group membership, which will be converted to Vector of 64-bit integers that follows specific logical operator rules as outlined above.                                               |
 | purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
 | purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
 | memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
@@ -143,7 +137,13 @@ Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
 
 ### Example Usage of the parameter ```"group_restriction"```
 
-The logical operators' values are defined as
+```"group_restriction"``` consists of group ID strings concatenated by the logical operators specified by special characters as 
+
+- **OR**: "|" (Vertical Line)
+- **NEGATION**: "~" (Tilde)
+- **AND**: "&" (Ampersand)
+
+The internal logical operators' 64-bit values are defined as
 - **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
 - **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
 - **AND**: 0, This is implicit. It can be ignored since it's 0.
@@ -155,41 +155,41 @@ The logical operators' values are defined as
 
 #### Use cases
 1. no group requriement.
-    - parameter value ``` "group_restriction": [] ```
+    - parameter value ``` "group_restriction": ``` ""
 2. users belong to Group1 and Group2 can purchase from this option
     - logical expression: Group1 & Group2
-    - parameter calculation
+    - parameter value:  ``` "group_restriction": ``` "1&2"
+    - internal 64-bit integers' vector representation 
         * = [Group1_ID, Group2_ID]
         * = [1,2]
-    - parameter value:  ``` "group_restriction": [1, 2] ```
 3. users belong to either Group1 or Group2 can purchase form this option
     - logical expression: Group1 | Group2
-    - parameter calculation
+    - parameter value  ``` "group_restriction": ``` "1|2"
+    - internal 64-bit integers' vector representation 
         * = [Group1_ID, OR + Group2_ID]
         * = [1, 1152921504606846976 + 2]
         * = [1, 1152921504606846978]
-    - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
 4. users not belong to Group1 but belong to Group2 can purchase form this option
     - logical expression: ~Group1 & Group2
-    - parameter calculation
+    - parameter value  ``` "group_restriction": ``` "~1&2"
+    - internal 64-bit integers' vector representation 
         * = [NEGATION + Group1_ID, Group2_ID]
         * = [2305843009213693952 + 1, 2]
         * = [2305843009213693953, 2]
-    - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
 5. users not belong to Group1 or not Group2 can purchase form this option
     - logical expression: ~Group1 | ~Group2
-    - parameter calculation:
+    - parameter value  ``` "group_restriction": ``` "~1|~2"
+    - internal 64-bit integers' vector representation 
         * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
         * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
         * = [2305843009213693953, 3458764513820540930]
-    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540930] ```
 
 
 
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 1,
@@ -206,7 +206,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
     },
     "sale_shares": [],
     "maximum_uos_payment": "2.00000000 UOS",
-    "group_restriction": [2305843009213693953, 3458764513820540930],
+    "group_restriction": "~1|~2",
     "purchase_window_start": "2023-09-18T13:21:10.724",
     "purchase_window_end": "2023-11-18T13:21:10.724",
     "memo": ""
@@ -222,7 +222,7 @@ await api.transact(
         actions: [
             {
                 account: 'eosio.nft.ft',
-                name: 'setprchsreq.a',
+                name: 'setprchsreq.b',
                 authorization: [{ actor: 'factory.manager', permission: 'active' }],
                 data: {
                     purchase_option: {
@@ -243,7 +243,7 @@ await api.transact(
                         },
                         sale_shares: [],
                         maximum_uos_payment: '2.00000000 UOS',
-                        group_restriction: [2305843009213693953, 3458764513820540930],
+                        group_restriction: "~1|~2",
                         purchase_window_start: "2023-09-18T13:21:10.724",
                         purchase_window_end: "2023-11-18T13:21:10.724",
                         memo: '',

@@ -2126,11 +2126,317 @@ The **setconrecv** action allows the _Asset Manager_ to set the token factory co
 
 The _Asset Manager_ can add the factory first-hand purchase requirements
 
+The **setprchsreq.a**/**setprchsreq.b** action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
+
+**setprchsreq.a** action is deprecated, we recommend using **setprchsreq.b** action.
+
+Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
+
+-   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](./nft-actions/setprchsreq.b.md)
+-   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
+-   [purchase.a - purchase a token](./nft-actions/purchase.a.md)
+-   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)
+
+---
+title: 'NFT Contract Overview'
+order: -99
+
+---
+
+# NFT Overview
+
+The abbreviation ‘NFT’ stands for Non-Fungible Token which means that NFT is a unit of data stored on a blockchain that can be sold or traded like other tokens. Unlike other tokens all NFTs are unique and one NFT cannot be replaced with another. That is why NFTs are often called `Uniqs`. In this document the NFTs can also be referred to as tokens.
+
+The Ultra's `eosio.nft.ft` smart contract defines a set of data structures (multi index tables, singletons) and a set of blockchain actions to manipulate the data structures. Both the data structures and the actions implement the supported set of NFT Use cases.
+
+## Info
+
+NFT use cases describe what different users can do with NFTs. The text in **bold** represents actions, the text in _italic_ represents blockchain accounts and the `highlighted` text represents the related data structures or data structure elements. Please refer to the action description or data structure overview to obtain more information.
+
+## Token Factory Creation
+
+**PLEASE NOTE:** _Recall and Lockup feature will be disabled by default which means when creating new token factory, action will fail if you put any value for recall window or lockup time. This note will be removed when these features are enabled again._
+
+The _Asset Creator_ and the _Asset Manager_ can **create.b** a token factory.
+
+To issue a token, a token factory should be created first. For this version of `eosio.nft.ft` only _Ultra_ can be the _Asset Creator_ and the _Asset Manager_. A token factory is a set of blockchain data which provides settings for the NFTs issued with the factory. During the creation process it is required to set up several token parameters which control the NFTs parameters and the lifecycle - the NFTs off-chain metadata, minimum prices, reselling timeframes etc. All these data is stored in the `factory.b` table.
+
+-   [create.b - create token factory](./nft-actions/create.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Issuing
+
+The _Asset Manager_ can **issue.b** a token either to the _Asset Manager_ or to another _Account_.
+
+The NFT issuance requires setting several parameters like the receiving _Account_ and the amount of tokens. The issued NFTs receive a global unique ID and a token factory recorded serial (ordinal) number. The issued token is recorded into the _Account_'s `token.b` table. The **issue.b** action reads and updates the data in the `factory.b` table.
+
+-   [issue.b - issue tokens with token factory](./nft-actions/issue.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+
+## Transferring
+
+The token _Owner_ can **transfer** tokens to another _Account_.
+
+An NFT _Owner_ can **transfer** their tokens to another _Account_. If the _Account_ is listed on the `conditionless_receivers` array of the token factory, no transfer checks are done. Otherwise the action is checked against the trading window and lock time limitations. The tables affected are `token.b` scoped to the sender and receiver accounts. The `factory.b` is read to obtain limitations.
+
+-   [transfer - hand tokens over to another user](./nft-actions/transfer.md)
+-   [token.b](./nft-tables.md#token-b)
+
+## Selling
+
+The token _Owner_ can **resell** tokens.
+
+An NFT _Owner_ can **resell** their tokens on the resale marketplace specifying the desirable price. A resale promoter fee can be specified, the resale promoter will receive a fraction of the received funds. This action is a subject to the trading window, minimal resale price and the lockup checks. The token ownership is verified using the `token.b` table. The resale marketplace table is `resale.a`.
+
+-   [resell - place tokens for sale on resell marketplace](./nft-actions/resell.md)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.b](./nft-tables.md#resale-a)
+
+## Buying
+
+An _Account_ can **buy** a token ownership.
+
+A blockchain _Account_ can **buy** a token from the resale marketplace. This action is a subject to the trading window checks. The global and the token factory specific resale shares as well as the resale promoter are dealt with when the paid funds are transferred from the buer to the seller. The token is deduced from the _Seller_'s `token.b` and added to the _Buyer_'s `token.b`. The `factory.b` and `resale.a` are read to obtain the tradeable window, promoter and the shares info.
+
+-   [buy - purchase token on resale marketplace](./nft-actions/buy.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Cancelling resell
+
+The token _Owner_ can **cancelresell** tokens.
+
+This action is only removes the token from the resale marketplace. The resale marketplace table is `resale.a`.
+
+-   [cancelresell - cancel token resell](./nft-actions/cancelresell.md)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Burning
+
+The token _Owner_ can **burn** tokens.
+
+An NFT _Owner_ can execute the **burn** action which removes the token from the resale marketplace (`resale.a`), removes the token from the _Owner_ account (`token.b`) and updates the token factory `existing_tokens_no` field (`factory.b`).
+
+-   [burn - erase tokens from owners and uniq factories](./nft-actions/burn.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## NFT Service Use Cases
+
+## Recalling
+
+The _Asset Manager_ can **recall** tokens from an _Account_ in case of fraudulent action or erroneous issue.
+
+During the recall time window the _Asset Manager_ can recall tokens from an _Account_ in case of fraudulent action or erroneous issue or other cases that require tokens ownership be returned to the _Asset Manager_. If the token being recalled has entered the resell marketplace, the reselling of such token is canceled. The **recall** action affects `factory.b`, `resale.a` and `token.b` tables.
+
+-   [recall - cancel resell, return tokens to factory manager](./nft-actions/recall.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Authorizing Another Minter
+
+The _Asset Manager_ or an _Authorized Minter_ can authorize another _Minter_ to issue tokens with a token factory with the **authminter** action.
+
+Initially the _Asset Manager_ can delegate their ability to issue NFTs to some other account _Authorized Minter_ limited to issue up to the quantity of tokens. An _Authorized Minter_ can re-delegate a part of their quantity to another _Authorized Minter_. The `factory.a` table is read and `authmintr.a` table is modified during this action.
+
+-   [authmint.b - authorize an account to be able to mint tokens](./nft-actions/authmint.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [authmintr.a](./nft-tables.md#authmintrs-a)
+
+## Controlling Token Factory Lifecycle
+
+The _Asset Manager_ can stop issuing with or decommission a token factory.
+
+The **setstatus** action lets the _Asset Manager_ to control the lifecycle of the token factory. Only the `factory.b` table is involved.
+
+-   [setstatus - set token factory state](./nft-actions/setstatus.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Updating the Token Factory Metadata
+
+The _Asset Manager_ can update the token factory metadata.
+
+The **setmeta.b** action lets the _Asset Manager_ to set the token factory metadata updating the `factory.b` table.
+
+-   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Setting the conditionless receivers
+
+The _Asset Manager_ can set the token factory conditionless receivers.
+
+The **setconrecv** action allows the _Asset Manager_ to set the token factory conditional receivers - the accounts that can receive NFTs without checking for mintable window, lockup and other limitations. The action updates the `factory.b` table.
+
+-   [setconrecv - set conditionless receivers](./nft-actions/setconrecv.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Adding factory purchase options
+
+The _Asset Manager_ can add the factory first-hand purchase requirements
+
 The **setprchsreq.a** action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
 
 Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
 
 -   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
+-   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
+-   [purchase.a - purchase a token](./nft-actions/purchase.a.md)
+-   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)
+
+---
+title: 'NFT Contract Overview'
+order: -99
+
+---
+
+# NFT Overview
+
+The abbreviation ‘NFT’ stands for Non-Fungible Token which means that NFT is a unit of data stored on a blockchain that can be sold or traded like other tokens. Unlike other tokens all NFTs are unique and one NFT cannot be replaced with another. That is why NFTs are often called `Uniqs`. In this document the NFTs can also be referred to as tokens.
+
+The Ultra's `eosio.nft.ft` smart contract defines a set of data structures (multi index tables, singletons) and a set of blockchain actions to manipulate the data structures. Both the data structures and the actions implement the supported set of NFT Use cases.
+
+## Info
+
+NFT use cases describe what different users can do with NFTs. The text in **bold** represents actions, the text in _italic_ represents blockchain accounts and the `highlighted` text represents the related data structures or data structure elements. Please refer to the action description or data structure overview to obtain more information.
+
+## Token Factory Creation
+
+**PLEASE NOTE:** _Recall and Lockup feature will be disabled by default which means when creating new token factory, action will fail if you put any value for recall window or lockup time. This note will be removed when these features are enabled again._
+
+The _Asset Creator_ and the _Asset Manager_ can **create.b** a token factory.
+
+To issue a token, a token factory should be created first. For this version of `eosio.nft.ft` only _Ultra_ can be the _Asset Creator_ and the _Asset Manager_. A token factory is a set of blockchain data which provides settings for the NFTs issued with the factory. During the creation process it is required to set up several token parameters which control the NFTs parameters and the lifecycle - the NFTs off-chain metadata, minimum prices, reselling timeframes etc. All these data is stored in the `factory.b` table.
+
+-   [create.b - create token factory](./nft-actions/create.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Issuing
+
+The _Asset Manager_ can **issue.b** a token either to the _Asset Manager_ or to another _Account_.
+
+The NFT issuance requires setting several parameters like the receiving _Account_ and the amount of tokens. The issued NFTs receive a global unique ID and a token factory recorded serial (ordinal) number. The issued token is recorded into the _Account_'s `token.b` table. The **issue.b** action reads and updates the data in the `factory.b` table.
+
+-   [issue.b - issue tokens with token factory](./nft-actions/issue.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+
+## Transferring
+
+The token _Owner_ can **transfer** tokens to another _Account_.
+
+An NFT _Owner_ can **transfer** their tokens to another _Account_. If the _Account_ is listed on the `conditionless_receivers` array of the token factory, no transfer checks are done. Otherwise the action is checked against the trading window and lock time limitations. The tables affected are `token.b` scoped to the sender and receiver accounts. The `factory.b` is read to obtain limitations.
+
+-   [transfer - hand tokens over to another user](./nft-actions/transfer.md)
+-   [token.b](./nft-tables.md#token-b)
+
+## Selling
+
+The token _Owner_ can **resell** tokens.
+
+An NFT _Owner_ can **resell** their tokens on the resale marketplace specifying the desirable price. A resale promoter fee can be specified, the resale promoter will receive a fraction of the received funds. This action is a subject to the trading window, minimal resale price and the lockup checks. The token ownership is verified using the `token.b` table. The resale marketplace table is `resale.a`.
+
+-   [resell - place tokens for sale on resell marketplace](./nft-actions/resell.md)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.b](./nft-tables.md#resale-a)
+
+## Buying
+
+An _Account_ can **buy** a token ownership.
+
+A blockchain _Account_ can **buy** a token from the resale marketplace. This action is a subject to the trading window checks. The global and the token factory specific resale shares as well as the resale promoter are dealt with when the paid funds are transferred from the buer to the seller. The token is deduced from the _Seller_'s `token.b` and added to the _Buyer_'s `token.b`. The `factory.b` and `resale.a` are read to obtain the tradeable window, promoter and the shares info.
+
+-   [buy - purchase token on resale marketplace](./nft-actions/buy.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Cancelling resell
+
+The token _Owner_ can **cancelresell** tokens.
+
+This action is only removes the token from the resale marketplace. The resale marketplace table is `resale.a`.
+
+-   [cancelresell - cancel token resell](./nft-actions/cancelresell.md)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Burning
+
+The token _Owner_ can **burn** tokens.
+
+An NFT _Owner_ can execute the **burn** action which removes the token from the resale marketplace (`resale.a`), removes the token from the _Owner_ account (`token.b`) and updates the token factory `existing_tokens_no` field (`factory.b`).
+
+-   [burn - erase tokens from owners and uniq factories](./nft-actions/burn.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## NFT Service Use Cases
+
+## Recalling
+
+The _Asset Manager_ can **recall** tokens from an _Account_ in case of fraudulent action or erroneous issue.
+
+During the recall time window the _Asset Manager_ can recall tokens from an _Account_ in case of fraudulent action or erroneous issue or other cases that require tokens ownership be returned to the _Asset Manager_. If the token being recalled has entered the resell marketplace, the reselling of such token is canceled. The **recall** action affects `factory.b`, `resale.a` and `token.b` tables.
+
+-   [recall - cancel resell, return tokens to factory manager](./nft-actions/recall.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [token.b](./nft-tables.md#token-b)
+-   [resale.a](./nft-tables.md#resale-a)
+
+## Authorizing Another Minter
+
+The _Asset Manager_ or an _Authorized Minter_ can authorize another _Minter_ to issue tokens with a token factory with the **authminter** action.
+
+Initially the _Asset Manager_ can delegate their ability to issue NFTs to some other account _Authorized Minter_ limited to issue up to the quantity of tokens. An _Authorized Minter_ can re-delegate a part of their quantity to another _Authorized Minter_. The `factory.a` table is read and `authmintr.a` table is modified during this action.
+
+-   [authmint.b - authorize an account to be able to mint tokens](./nft-actions/authmint.b.md)
+-   [factory.b](./nft-tables.md#factory-b)
+-   [authmintr.a](./nft-tables.md#authmintrs-a)
+
+## Controlling Token Factory Lifecycle
+
+The _Asset Manager_ can stop issuing with or decommission a token factory.
+
+The **setstatus** action lets the _Asset Manager_ to control the lifecycle of the token factory. Only the `factory.b` table is involved.
+
+-   [setstatus - set token factory state](./nft-actions/setstatus.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Updating the Token Factory Metadata
+
+The _Asset Manager_ can update the token factory metadata.
+
+The **setmeta.b** action lets the _Asset Manager_ to set the token factory metadata updating the `factory.b` table.
+
+-   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Setting the conditionless receivers
+
+The _Asset Manager_ can set the token factory conditionless receivers.
+
+The **setconrecv** action allows the _Asset Manager_ to set the token factory conditional receivers - the accounts that can receive NFTs without checking for mintable window, lockup and other limitations. The action updates the `factory.b` table.
+
+-   [setconrecv - set conditionless receivers](./nft-actions/setconrecv.md)
+-   [factory.b](./nft-tables.md#factory-b)
+
+## Adding factory purchase options
+
+The _Asset Manager_ can add the factory first-hand purchase requirements
+
+The **setprchsreq.a**/**setprchsreq.b** action allows the _Asset Manager_ to set a purchase requirement for the factory which can then be used by any user to purchase a token from the factory directly using **purchase.a** action.
+
+**setprchsreq.a** action is deprecated, we recommend using **setprchsreq.b** action.
+
+Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
+
+-   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](./nft-actions/setprchsreq.b.md)
 -   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
 -   [purchase.a - purchase a token](./nft-actions/purchase.a.md)
 -   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)
@@ -4151,10 +4457,299 @@ This action is used to purchase uniqs directly from a token factory.
 
 10. Increment the number of tokens purchased for the given user
 
+11. If a purchase option has been configured with `group_restriction` via the `setprchsreq.a`/`setprchsreq.b` action, the `purchase.a` action will take these restrictions into account before allowing the purchase to proceed.
+
+> **Note**: For details on how to configure `group_restriction` through `setprchsreq.a`/`setprchsreq.b`, please refer to [setprchsreq.a](./setprchsreq.a.md)/[setprchsreq.b](./setprchsreq.b.md).
+
+If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If no promoter is specified then default promoter will be used and is specified by Ultra in `saleshrlmcfg` table under a scope of `0` in `default_promoter`.
+
+### Supplying Uniqs for Purchases
+
+In some cases a token factory may require certain uniqs to exist in the user inventory table to enable the user to purchase a uniq.
+
+Think of it like a pre-requisite or an entry ticket to purchasing other uniqs.
+
+When a uniq is being purchased it goes through our `verify_user_uniqs` function that looks into the buyer's inventory and verifies that the uniq factories required uniqs matches the user supplied uniqs. The function checks that the `user supplied uniqs` from the user matches the `factory required uniqs`. The function checks that the user is passing uniqs that have the correct token factory id, and checks that the user **is not** passing irrelavant uniqs.
+
+It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
+
+Strategy meaning: `0` just check ownership of the provided nft, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
+
+All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
+
+### Burning Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `1` it will automatically perform an inline call to the `burn` action and pass over any tokens that need to be burned.
+
+Internally we are constructing a vector of which `token_ids` to be burned.
+
+### Transferring Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `2` it will automatically perform an inline call to the `transfer` action and pass over any tokens that need to be transferred.
+
+The transferred uniqs will automatically be moved to the `transfer_tokens_receiver_account` that was setup during the purchase requirements setup.
+
+Internally we are constructing a vector of which `token_ids` to be transferred.
+
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name    | C++ Type                            | JavaScript Type | Description                                                                                                                                                                         |
+| ---------------- | ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t                            | number          | ID of a token factory to purchase from                                                                                                                                              |
+| index            | uint64_t                            | number          | Index of purchase option to use                                                                                                                                                     |
+| max_price        | asset                               | string          | Maximum amount of UOS you allow to be withdrawn from your account. If price is set in USD this will prevent transaction from overcharging you in case USD price goes down           |
+| buyer            | eosio::name                         | string          | Account that will pay UOS and/or Uniqs for this purchase                                                                                                                            |
+| receiver         | eosio::asset                        | string          | Account that will receive the Uniq from this purchase                                                                                                                               |
+| promoter_id      | std::optional\<eosio::name>         | string / null   | Optional promoter of the purchase transaction. If no promoter is provided then the default promoter specified in `saleshrlmcfg` (scope `0`) will be used if present                 |
+| user_uniqs       | std::optional\<provided_user_uniqs> | Array / null    | List of uniqs the buyer is willing to provide for this purchase option to either be taken from him or to just verify their presence. Refer to `provided_user_uniqs` breakdown below |
+| memo             | std::string                         | string          | A short operation description                                                                                                                                                       |
+
+`user_uniqs` is a vector of `provided_user_uniqs`, which has the following structure
+
+| Property Name | C++ Type | JavaScript Type | Description                                                                                                                      |
+| ------------- | -------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                                |
+| strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a) for allowed values and usage |
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "token_receiver_account",
+    "promoter_id": "",
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 77,
+        "strategy": 2
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [{
+      account: 'eosio.nft.ft',
+      name: 'purchase.a',
+      authorization: [{ actor: 'alice', permission: 'active' }],
+      data: {
+        purchase: {
+          token_factory_id: 100,
+          index: 1,
+          max_price: "100.00000000 UOS",
+          buyer: "alice",
+          receiver: "token_receiver_account",
+          promoter_id: "",
+          user_uniqs: {
+            tokens: [{
+              token_id: 77,
+              strategy: 2
+            }]
+          },
+          memo: ""
+        }
+      },
+    }],
+  }, {
+    blocksBehind: 3,
+    expireSeconds: 30,
+  }
+);
+```
+
+---
+title: 'purchase.a'
+order: 31
+
+---
+
+# purchase.a
+
+This action is used to purchase uniqs directly from a token factory.
+
+## Technical Behavior
+
+1. User provides information about the Uniq they wish to purchase
+
+2. Verify that the Uniq has a purchase requirement
+
+3. Obtain the price of the Uniq and convert to UOS
+
+4. Verify that if the purchase requirement requires additional uniqs that the uniqs passed are relevant to the purchase requirement
+
+5. Additional transfer, and burning actions may be used on individual uniqs during the verification process. They are kept if the transaction fails
+
+6. Distribute shares based on purchase requirements, done through inline calls
+
+7. Send protocol fee. Amount and account are configured under `global.share` table scope `0`, done through inline calls
+
+8. Send remainder of shares to the factory manager, done through inline calls
+
+9. Issue the token to the user. **Note**: minting a Uniq requires additional UOS paid by the factory manager. Refer for details to [issue.b - issue tokens with token factory](./issue.b.md)
+
+10. Increment the number of tokens purchased for the given user
+
 11. If a purchase option has been configured with `group_restriction` via the `setprchsreq.a` action, the `purchase.a` action will take these restrictions into account before allowing the purchase to proceed.
 
-> **Note**: For details on how to configure `group_restriction` through `setprchsreq.a`, please refer to [setprchsreq.a Documentation](./setprchsreq.a.md).
+> **Note**: For details on how to configure `group_restriction` through `setprchsreq.a`, please refer to [setprchsreq.a](./setprchsreq.a.md).
 
+If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If no promoter is specified then default promoter will be used and is specified by Ultra in `saleshrlmcfg` table under a scope of `0` in `default_promoter`.
+
+### Supplying Uniqs for Purchases
+
+In some cases a token factory may require certain uniqs to exist in the user inventory table to enable the user to purchase a uniq.
+
+Think of it like a pre-requisite or an entry ticket to purchasing other uniqs.
+
+When a uniq is being purchased it goes through our `verify_user_uniqs` function that looks into the buyer's inventory and verifies that the uniq factories required uniqs matches the user supplied uniqs. The function checks that the `user supplied uniqs` from the user matches the `factory required uniqs`. The function checks that the user is passing uniqs that have the correct token factory id, and checks that the user **is not** passing irrelavant uniqs.
+
+It also ensures that the strategy that is being passed for each uniq matches the strategy used by the factory for the specific token factory id.
+
+Strategy meaning: `0` just check ownership of the provided nft, `1` burn the uniq and `2` transferring the uniq out of the user inventory.
+
+All of these strategies, and individual uniqs can be chosen by the user to ensure they are removing the uniq they want to remove, rather than risking a more 'rare' uniq that they want to keep.
+
+### Burning Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `1` it will automatically perform an inline call to the `burn` action and pass over any tokens that need to be burned.
+
+Internally we are constructing a vector of which `token_ids` to be burned.
+
+### Transferring Uniqs on Purchase
+
+During the purchase if a uniq has a strategy of `2` it will automatically perform an inline call to the `transfer` action and pass over any tokens that need to be transferred.
+
+The transferred uniqs will automatically be moved to the `transfer_tokens_receiver_account` that was setup during the purchase requirements setup.
+
+Internally we are constructing a vector of which `token_ids` to be transferred.
+
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name    | C++ Type                            | JavaScript Type | Description                                                                                                                                                                         |
+| ---------------- | ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t                            | number          | ID of a token factory to purchase from                                                                                                                                              |
+| index            | uint64_t                            | number          | Index of purchase option to use                                                                                                                                                     |
+| max_price        | asset                               | string          | Maximum amount of UOS you allow to be withdrawn from your account. If price is set in USD this will prevent transaction from overcharging you in case USD price goes down           |
+| buyer            | eosio::name                         | string          | Account that will pay UOS and/or Uniqs for this purchase                                                                                                                            |
+| receiver         | eosio::asset                        | string          | Account that will receive the Uniq from this purchase                                                                                                                               |
+| promoter_id      | std::optional\<eosio::name>         | string / null   | Optional promoter of the purchase transaction. If no promoter is provided then the default promoter specified in `saleshrlmcfg` (scope `0`) will be used if present                 |
+| user_uniqs       | std::optional\<provided_user_uniqs> | Array / null    | List of uniqs the buyer is willing to provide for this purchase option to either be taken from him or to just verify their presence. Refer to `provided_user_uniqs` breakdown below |
+| memo             | std::string                         | string          | A short operation description                                                                                                                                                       |
+
+`user_uniqs` is a vector of `provided_user_uniqs`, which has the following structure
+
+| Property Name | C++ Type | JavaScript Type | Description                                                                                                                      |
+| ------------- | -------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| token_id      | uint64_t | number          | ID of the Uniq owned by the buyer                                                                                                |
+| strategy      | uint8_t  | number          | What the buyer allows to happen to this token. Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a) for allowed values and usage |
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "token_receiver_account",
+    "promoter_id": "",
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 77,
+        "strategy": 2
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact({
+    actions: [{
+      account: 'eosio.nft.ft',
+      name: 'purchase.a',
+      authorization: [{ actor: 'alice', permission: 'active' }],
+      data: {
+        purchase: {
+          token_factory_id: 100,
+          index: 1,
+          max_price: "100.00000000 UOS",
+          buyer: "alice",
+          receiver: "token_receiver_account",
+          promoter_id: "",
+          user_uniqs: {
+            tokens: [{
+              token_id: 77,
+              strategy: 2
+            }]
+          },
+          memo: ""
+        }
+      },
+    }],
+  }, {
+    blocksBehind: 3,
+    expireSeconds: 30,
+  }
+);
+```
+
+---
+title: 'purchase.a'
+order: 31
+
+---
+
+# purchase.a
+
+This action is used to purchase uniqs directly from a token factory.
+
+## Technical Behavior
+
+1. User provides information about the Uniq they wish to purchase
+
+2. Verify that the Uniq has a purchase requirement
+
+3. Obtain the price of the Uniq and convert to UOS
+
+4. Verify that if the purchase requirement requires additional uniqs that the uniqs passed are relevant to the purchase requirement
+
+5. Additional transfer, and burning actions may be used on individual uniqs during the verification process. They are kept if the transaction fails
+
+6. Distribute shares based on purchase requirements, done through inline calls
+
+7. Send protocol fee. Amount and account are configured under `global.share` table scope `0`, done through inline calls
+
+8. Send remainder of shares to the factory manager, done through inline calls
+
+9. Issue the token to the user. **Note**: minting a Uniq requires additional UOS paid by the factory manager. Refer for details to [issue.b - issue tokens with token factory](./issue.b.md)
+
+10. Increment the number of tokens purchased for the given user
+
+11. If a purchase option has been configured with `group_restriction` via the `setprchsreq.a`/`setprchsreq.b` action, the `purchase.a` action will take these restrictions into account before allowing the purchase to proceed.
+
+> **Note**: For details on how to configure `group_restriction` through `setprchsreq.a`/`setprchsreq.b`, please refer to [setprchsreq.a](./setprchsreq.a.md)/[setprchsreq.b](./setprchsreq.b.md).
 
 If promoter_id is set, the account will be added to resale shares list and will have the payment distributed accordingly. If no promoter is specified then default promoter will be used and is specified by Ultra in `saleshrlmcfg` table under a scope of `0` in `default_promoter`.
 
@@ -4827,11 +5422,9 @@ This action is used to set purchase requirements for a token factory.
 
 Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
 
-<Mainnet>
 ::: warning
-This action is currently disabled.
+This action is deprecated, we recommend using [setprchsreq.b action](./setprchsreq.b.md).
 :::
-</Mainnet>
 
 ::: warning
 Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
@@ -5061,6 +5654,1046 @@ await api.transact(
                         sale_shares: [],
                         maximum_uos_payment: '2.00000000 UOS',
                         group_restriction: [2305843009213693953, 3458764513820540930],
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
+                        memo: '',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setprchsreq.a'
+order: 32
+
+---
+
+# setprchsreq.a
+
+This action is used to set purchase requirements for a token factory.
+
+Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
+
+::: warning
+This action is currently disabled.
+:::
+
+::: warning
+Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
+:::
+
+## Technical Behavior
+
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
+
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   NFT RAM payment size: **2060 bytes**
+
+            - estimated for `purchase_option_with_uniqs` and `group_restriction` of 64
+
+        -   RAM price: **0.15 USD/KB**
+
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 2060B/1024B \* 0.15USD/KB ~ 0.3$ = 0.3 UOS
+
+`token_factory_id` - token factory managed by a factory manager.
+
+`index` - purchase requirements index. starts with 0.
+
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
+
+`purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
+
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get.
+
+`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
+
+`sale_shares` is used to set royalties.
+
+If RAM price is greater than `maximum_uos_payment` transaction reverts.
+
+If token factory is inactive transaction reverts as well.
+
+`group_restriction` is an optional parameter that accepts a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
+
+* The lower 60 bits represent the group ID.
+* The upper 4 bits are reserved for logical operators.
+
+Logical Operators
+The logical operators are defined as bitwise flags in the following manner:
+
+```scss
+#define OR        0X1000'0000'0000'0000   // 0: AND, 1: OR
+#define NEGATION  0X2000'0000'0000'0000   // 0: No negation, 1: Negation
+```
+
+* `4th Bit (OR Operator)`: If this bit is set, it indicates the OR operator. Otherwise, it defaults to the AND operator.
+* `3rd Bit (NEGATION Operator)`: If this bit is set, it indicates that the NEGATION should be applied to the group ID.
+
+The expression is evaluated from left to right, and parentheses are not used. Logical operators take into account starting from the second group ID in the sequence.
+
+For example, a `group_restriction` vector like `<OR + NOT + group1, AND + group2>` would be evaluated as `(NOT group1 AND group2)`. This means the condition will pass if the user is not a member of `group1` AND is a member of `group2`.
+
+Longer expression example for a `group_restriction` vector of `<OR + NOT + group1, AND + group2, OR + NOT + group3, OR + group4, AND + NOT + group5>`, the logical expression becomes:
+
+```css
+(NOT group1 AND group2) OR (NOT group3) OR (group4 AND NOT group5)
+```
+
+This means the condition will pass if:
+
+* The user is not a member of `group1` AND is a member of `group2`, OR
+* The user is not a member of `group3`, OR
+* The user is a member of `group4` AND not a member of `group5`.
+
+
+Formalization of Logical Expression Evaluation
+
+To formalize the evaluation process, let's consider the `group_restriction` vector as `G = [g1, g2, g3, ..., gn]`, where each `gi` is a 64-bit integer that encodes both the logical operator and the group ID.
+
+The corresponding logical expression `L` can be represented as:
+
+```scss
+L = O1(g1) OP2 O2(g2) OP3 O3(g3) ... OPn On(gn)
+
+```
+
+Where:
+
+* `Oi(gi)` checks whether a user belongs to the group `gi` if there is no NEGATION bit, otherwise, it checks whether a user **does not** belong to the group `gi`.
+* `OPi` is the logical operator (AND/OR) determined by the OR bit in `gi`, taking effect starting from `i=2` to `n`.
+
+Notes:
+
+* `Oi(gi)` will return either `group_i` or `NOT group_i` based on the presence of the NEGATION bit.
+* `OPi` will return either `AND` or `OR` depending on the presence of the OR bit.
+* While the expression `L` is evaluated from left to right, it also adheres to operator precedence rules: AND operations have higher precedence than OR operations, similar to standard Boolean logic. This means that all AND operations will be executed first, followed by the OR operations.
+
+By understanding this formalization, you can ensure a clear and standardized way to construct and evaluate the logical expression `L` based on the `group_restriction` vector `G`.
+
+`memo` - a string of no more than 256 characters. useful for parsing on a backend.
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name              | C++ Type                            | JavaScript Type | Description                                                                                                                                                                                                                                          |
+| -------------------------- | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id           | uint64_t                            | number          | ID of the factory to add (or update) purchase option to                                                                                                                                                                                              |
+| index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
+| price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
+| purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                                                                                                                                |
+| purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
+| sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
+| maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
+| group_restriction          | optional<uint64_t_vector>           | Array / null    | Vector of 64-bit integers specifying logical restrictions based on group membership. Follows specific logical operator rules as outlined above.                                                                                                      |
+| purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
+| purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
+| memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
+
+**purchase_requirement_with_uniqs option breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+**uniqs_count type breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+### Example Usage of the parameter ```"group_restriction"```
+
+The logical operators' values are defined as
+- **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
+- **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
+- **AND**: 0, This is implicit. It can be ignored since it's 0.
+- **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
+
+ Let's say we have two user groups
+ - Group1_ID = 1
+ - Group2_ID = 2
+
+#### Use cases
+1. no group requriement.
+    - parameter value ``` "group_restriction": [] ```
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
+    - parameter calculation
+        * = [Group1_ID, Group2_ID]
+        * = [1,2]
+    - parameter value:  ``` "group_restriction": [1, 2] ```
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2
+    - parameter calculation
+        * = [Group1_ID, OR + Group2_ID]
+        * = [1, 1152921504606846976 + 2]
+        * = [1, 1152921504606846978]
+    - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2
+    - parameter calculation
+        * = [NEGATION + Group1_ID, Group2_ID]
+        * = [2305843009213693952 + 1, 2]
+        * = [2305843009213693953, 2]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2
+    - parameter calculation:
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
+        * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
+        * = [2305843009213693953, 3458764513820540930]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540930] ```
+
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 1,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+      "transfer_tokens_receiver_account": null,
+      "factories": [{
+        "token_factory_id": 42,
+        "count": 3,
+        "strategy": 0
+      }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": "2.00000000 UOS",
+    "group_restriction": [2305843009213693953, 3458764513820540930],
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
+    "memo": ""
+  }
+]' -p factory.manager
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setprchsreq.a',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    purchase_option: {
+                        token_factory_id: 100,
+                        index: 1,
+                        price: '50.00000000 UOS',
+                        purchase_limit: 1,
+                        promoter_basis_point: 100,
+                        purchase_option_with_uniqs: {
+                            transfer_tokens_receiver_account: null,
+                            factories: [
+                                {
+                                    token_factory_id: 42,
+                                    count: 3,
+                                    strategy: 0,
+                                },
+                            ],
+                        },
+                        sale_shares: [],
+                        maximum_uos_payment: '2.00000000 UOS',
+                        group_restriction: [2305843009213693953, 3458764513820540930],
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
+                        memo: '',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setprchsreq.a'
+order: 32
+
+---
+
+# setprchsreq.a
+
+This action is used to set purchase requirements for a token factory.
+
+Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
+
+::: warning
+This action is deprecated, we recommend using [setprchsreq.b action](./setprchsreq.b.md).
+:::
+
+::: warning
+Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
+:::
+
+## Technical Behavior
+
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
+
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   NFT RAM payment size: **2060 bytes**
+
+            - estimated for `purchase_option_with_uniqs` and `group_restriction` of 64
+
+        -   RAM price: **0.15 USD/KB**
+
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 2060B/1024B \* 0.15USD/KB ~ 0.3$ = 0.3 UOS
+
+`token_factory_id` - token factory managed by a factory manager.
+
+`index` - purchase requirements index. starts with 0.
+
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
+
+`purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
+
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get.
+
+`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
+
+`sale_shares` is used to set royalties.
+
+If RAM price is greater than `maximum_uos_payment` transaction reverts.
+
+If token factory is inactive transaction reverts as well.
+
+`group_restriction` is an optional parameter that accepts a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
+
+* The lower 60 bits represent the group ID.
+* The upper 4 bits are reserved for logical operators.
+
+Logical Operators
+The logical operators are defined as bitwise flags in the following manner:
+
+```scss
+#define OR        0X1000'0000'0000'0000   // 0: AND, 1: OR
+#define NEGATION  0X2000'0000'0000'0000   // 0: No negation, 1: Negation
+```
+
+* `4th Bit (OR Operator)`: If this bit is set, it indicates the OR operator. Otherwise, it defaults to the AND operator.
+* `3rd Bit (NEGATION Operator)`: If this bit is set, it indicates that the NEGATION should be applied to the group ID.
+
+The expression is evaluated from left to right, and parentheses are not used. Logical operators take into account starting from the second group ID in the sequence.
+
+For example, a `group_restriction` vector like `<OR + NOT + group1, AND + group2>` would be evaluated as `(NOT group1 AND group2)`. This means the condition will pass if the user is not a member of `group1` AND is a member of `group2`.
+
+Longer expression example for a `group_restriction` vector of `<OR + NOT + group1, AND + group2, OR + NOT + group3, OR + group4, AND + NOT + group5>`, the logical expression becomes:
+
+```css
+(NOT group1 AND group2) OR (NOT group3) OR (group4 AND NOT group5)
+```
+
+This means the condition will pass if:
+
+* The user is not a member of `group1` AND is a member of `group2`, OR
+* The user is not a member of `group3`, OR
+* The user is a member of `group4` AND not a member of `group5`.
+
+
+Formalization of Logical Expression Evaluation
+
+To formalize the evaluation process, let's consider the `group_restriction` vector as `G = [g1, g2, g3, ..., gn]`, where each `gi` is a 64-bit integer that encodes both the logical operator and the group ID.
+
+The corresponding logical expression `L` can be represented as:
+
+```scss
+L = O1(g1) OP2 O2(g2) OP3 O3(g3) ... OPn On(gn)
+
+```
+
+Where:
+
+* `Oi(gi)` checks whether a user belongs to the group `gi` if there is no NEGATION bit, otherwise, it checks whether a user **does not** belong to the group `gi`.
+* `OPi` is the logical operator (AND/OR) determined by the OR bit in `gi`, taking effect starting from `i=2` to `n`.
+
+Notes:
+
+* `Oi(gi)` will return either `group_i` or `NOT group_i` based on the presence of the NEGATION bit.
+* `OPi` will return either `AND` or `OR` depending on the presence of the OR bit.
+* While the expression `L` is evaluated from left to right, it also adheres to operator precedence rules: AND operations have higher precedence than OR operations, similar to standard Boolean logic. This means that all AND operations will be executed first, followed by the OR operations.
+
+By understanding this formalization, you can ensure a clear and standardized way to construct and evaluate the logical expression `L` based on the `group_restriction` vector `G`.
+
+`memo` - a string of no more than 256 characters. useful for parsing on a backend.
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name              | C++ Type                            | JavaScript Type | Description                                                                                                                                                                                                                                          |
+| -------------------------- | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id           | uint64_t                            | number          | ID of the factory to add (or update) purchase option to                                                                                                                                                                                              |
+| index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
+| price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
+| purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                                                                                                                                |
+| purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
+| sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
+| maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
+| group_restriction          | optional<uint64_t_vector>           | Array / null    | Vector of 64-bit integers specifying logical restrictions based on group membership. Follows specific logical operator rules as outlined above.                                                                                                      |
+| purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
+| purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
+| memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
+
+**purchase_requirement_with_uniqs option breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+**uniqs_count type breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+### Example Usage of the parameter ```"group_restriction"```
+
+The logical operators' values are defined as
+- **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
+- **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
+- **AND**: 0, This is implicit. It can be ignored since it's 0.
+- **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
+
+ Let's say we have two user groups
+ - Group1_ID = 1
+ - Group2_ID = 2
+
+#### Use cases
+1. no group requriement.
+    - parameter value ``` "group_restriction": [] ```
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
+    - parameter calculation
+        * = [Group1_ID, Group2_ID]
+        * = [1,2]
+    - parameter value:  ``` "group_restriction": [1, 2] ```
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2
+    - parameter calculation
+        * = [Group1_ID, OR + Group2_ID]
+        * = [1, 1152921504606846976 + 2]
+        * = [1, 1152921504606846978]
+    - parameter value  ``` "group_restriction": [1, 1152921504606846978] ```
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2
+    - parameter calculation
+        * = [NEGATION + Group1_ID, Group2_ID]
+        * = [2305843009213693952 + 1, 2]
+        * = [2305843009213693953, 2]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 2] ```
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2
+    - parameter calculation:
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
+        * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
+        * = [2305843009213693953, 3458764513820540930]
+    - parameter value  ``` "group_restriction": [2305843009213693953, 3458764513820540930] ```
+
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setprchsreq.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 1,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+      "transfer_tokens_receiver_account": null,
+      "factories": [{
+        "token_factory_id": 42,
+        "count": 3,
+        "strategy": 0
+      }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": "2.00000000 UOS",
+    "group_restriction": [2305843009213693953, 3458764513820540930],
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
+    "memo": ""
+  }
+]' -p factory.manager
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setprchsreq.a',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    purchase_option: {
+                        token_factory_id: 100,
+                        index: 1,
+                        price: '50.00000000 UOS',
+                        purchase_limit: 1,
+                        promoter_basis_point: 100,
+                        purchase_option_with_uniqs: {
+                            transfer_tokens_receiver_account: null,
+                            factories: [
+                                {
+                                    token_factory_id: 42,
+                                    count: 3,
+                                    strategy: 0,
+                                },
+                            ],
+                        },
+                        sale_shares: [],
+                        maximum_uos_payment: '2.00000000 UOS',
+                        group_restriction: [2305843009213693953, 3458764513820540930],
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
+                        memo: '',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setprchsreq.b'
+order: 32
+
+---
+
+# setprchsreq.b
+
+This action is used to set purchase requirements for a token factory.
+
+Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
+
+::: warning
+Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
+:::
+
+## Technical Behavior
+
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
+
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   NFT RAM payment size: **2060 bytes**
+
+            - estimated for `purchase_option_with_uniqs` and `group_restriction` of 64
+
+        -   RAM price: **0.15 USD/KB**
+
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 2060B/1024B \* 0.15USD/KB ~ 0.3$ = 0.3 UOS
+
+`token_factory_id` - token factory managed by a factory manager.
+
+`index` - purchase requirements index. starts with 0.
+
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
+
+`purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
+
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get.
+
+`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
+
+`sale_shares` is used to set royalties.
+
+If RAM price is greater than `maximum_uos_payment` transaction reverts.
+
+If token factory is inactive transaction reverts as well.
+
+`group_restriction` is an optional parameter that accepts a string representation of group ID restrictions, which is internally converted to a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
+
+* The lower 60 bits represent the group ID.
+* The upper 4 bits are reserved for logical operators.
+
+Logical Operators
+The logical operators are defined as bitwise flags in the following manner:
+
+```scss
+#define OR        0X1000'0000'0000'0000   // 0: AND, 1: OR
+#define NEGATION  0X2000'0000'0000'0000   // 0: No negation, 1: Negation
+```
+
+* `4th Bit (OR Operator)`: If this bit is set, it indicates the OR operator. Otherwise, it defaults to the AND operator.
+* `3rd Bit (NEGATION Operator)`: If this bit is set, it indicates that the NEGATION should be applied to the group ID.
+
+The expression is evaluated from left to right, and parentheses are not used. Logical operators take into account starting from the second group ID in the sequence.
+
+For example, a `group_restriction` vector like `<OR + NOT + group1, AND + group2>` would be evaluated as `(NOT group1 AND group2)`. This means the condition will pass if the user is not a member of `group1` AND is a member of `group2`.
+
+Longer expression example for a `group_restriction` vector of `<OR + NOT + group1, AND + group2, OR + NOT + group3, OR + group4, AND + NOT + group5>`, the logical expression becomes:
+
+```css
+(NOT group1 AND group2) OR (NOT group3) OR (group4 AND NOT group5)
+```
+
+This means the condition will pass if:
+
+* The user is not a member of `group1` AND is a member of `group2`, OR
+* The user is not a member of `group3`, OR
+* The user is a member of `group4` AND not a member of `group5`.
+
+
+Formalization of Logical Expression Evaluation
+
+To formalize the evaluation process, let's consider the `group_restriction` vector as `G = [g1, g2, g3, ..., gn]`, where each `gi` is a 64-bit integer that encodes both the logical operator and the group ID.
+
+The corresponding logical expression `L` can be represented as:
+
+```scss
+L = O1(g1) OP2 O2(g2) OP3 O3(g3) ... OPn On(gn)
+
+```
+
+Where:
+
+* `Oi(gi)` checks whether a user belongs to the group `gi` if there is no NEGATION bit, otherwise, it checks whether a user **does not** belong to the group `gi`.
+* `OPi` is the logical operator (AND/OR) determined by the OR bit in `gi`, taking effect starting from `i=2` to `n`.
+
+Notes:
+
+* `Oi(gi)` will return either `group_i` or `NOT group_i` based on the presence of the NEGATION bit.
+* `OPi` will return either `AND` or `OR` depending on the presence of the OR bit.
+* While the expression `L` is evaluated from left to right, it also adheres to operator precedence rules: AND operations have higher precedence than OR operations, similar to standard Boolean logic. This means that all AND operations will be executed first, followed by the OR operations.
+
+By understanding this formalization, you can ensure a clear and standardized way to construct and evaluate the logical expression `L` based on the `group_restriction` vector `G`.
+
+`memo` - a string of no more than 256 characters. useful for parsing on a backend.
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name              | C++ Type                            | JavaScript Type | Description                                                                                                                                                                                                                                          |
+| -------------------------- | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id           | uint64_t                            | number          | ID of the factory to add (or update) purchase option to                                                                                                                                                                                              |
+| index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
+| price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
+| purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                                                                                                                                |
+| purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
+| sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
+| maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
+| group_restriction          | optional<uint64_t_vector>           | Array / null    | String representation specifying logical restrictions based on group membership, which will be converted to Vector of 64-bit integers that follows specific logical operator rules as outlined above.                                               |
+| purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
+| purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
+| memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
+
+**purchase_requirement_with_uniqs option breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+**uniqs_count type breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+### Example Usage of the parameter ```"group_restriction"```
+
+```"group_restriction"``` consists of group ID strings concatenated by the logical operators specified by special characters as 
+
+- **OR**: "|" (Vertical Line)
+- **NEGATION**: "~" (Tilde)
+- **AND**: "&" (Ampersand)
+
+The internal logical operators' 64-bit values are defined as
+- **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
+- **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
+- **AND**: 0, This is implicit. It can be ignored since it's 0.
+- **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
+
+ Let's say we have two user groups
+ - Group1_ID = 1
+ - Group2_ID = 2
+
+#### Use cases
+1. no group requriement.
+    - parameter value ``` "group_restriction": ``` ""
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
+    - parameter value:  ``` "group_restriction": ``` "1&2"
+    - internal 64-bit integers' vector representation 
+        * = [Group1_ID, Group2_ID]
+        * = [1,2]
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2
+    - parameter value  ``` "group_restriction": ``` "1|2"
+    - internal 64-bit integers' vector representation 
+        * = [Group1_ID, OR + Group2_ID]
+        * = [1, 1152921504606846976 + 2]
+        * = [1, 1152921504606846978]
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2
+    - parameter value  ``` "group_restriction": ``` "~1&2"
+    - internal 64-bit integers' vector representation 
+        * = [NEGATION + Group1_ID, Group2_ID]
+        * = [2305843009213693952 + 1, 2]
+        * = [2305843009213693953, 2]
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2
+    - parameter value  ``` "group_restriction": ``` "~1|~2"
+    - internal 64-bit integers' vector representation 
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
+        * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
+        * = [2305843009213693953, 3458764513820540930]
+
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 1,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+      "transfer_tokens_receiver_account": null,
+      "factories": [{
+        "token_factory_id": 42,
+        "count": 3,
+        "strategy": 0
+      }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": "2.00000000 UOS",
+    "group_restriction": "~1|~2",
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
+    "memo": ""
+  }
+]' -p factory.manager
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setprchsreq.b',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    purchase_option: {
+                        token_factory_id: 100,
+                        index: 1,
+                        price: '50.00000000 UOS',
+                        purchase_limit: 1,
+                        promoter_basis_point: 100,
+                        purchase_option_with_uniqs: {
+                            transfer_tokens_receiver_account: null,
+                            factories: [
+                                {
+                                    token_factory_id: 42,
+                                    count: 3,
+                                    strategy: 0,
+                                },
+                            ],
+                        },
+                        sale_shares: [],
+                        maximum_uos_payment: '2.00000000 UOS',
+                        group_restriction: "~1|~2",
+                        purchase_window_start: "2023-09-18T13:21:10.724",
+                        purchase_window_end: "2023-11-18T13:21:10.724",
+                        memo: '',
+                    },
+                },
+            },
+        ],
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'setprchsreq.b'
+order: 32
+
+---
+
+# setprchsreq.b
+
+This action is used to set purchase requirements for a token factory.
+
+Tokens purchased will be issued to the receiver account using [issue.b](./issue.b.md) action. Factory manager pays for minting the token
+
+::: warning
+Be mindful of the price you set for purchasing uniqs. If the price is too low and there are no restrictions for users to purchase uniqs using this purchase option then it may be abused to purchase many uniqs very cheap and then burn them. Associated cost to mint a token is on token factory manager
+:::
+
+## Technical Behavior
+
+The factory manager can specify purchase options for users. Note that currently they have to use the same action for both creation and modification of purchase requirements.
+
+-   If **asset_manager** is an account other than `ultra.nft.ft`, the cost of a factory creation is paid to `eosio.nftram` and it will be locked up in the purchase option.
+
+    -   First, the cost in USD is (factory RAM payment size) \* (RAM price), where
+
+        -   NFT RAM payment size: **2060 bytes**
+
+            - estimated for `purchase_option_with_uniqs` and `group_restriction` of 64
+
+        -   RAM price: **0.15 USD/KB**
+
+    -   The cost is paid in UOS. The action uses `1 MINUTE` conversion rate in USD/UOS from `eosio.oracle` contract. Assuming UOS price of 1\$ the cost per purchase requirement is:
+        > 2060B/1024B \* 0.15USD/KB ~ 0.3$ = 0.3 UOS
+
+`token_factory_id` - token factory managed by a factory manager.
+
+`index` - purchase requirements index. starts with 0.
+
+`price` - price per uniq. Should be specified in either `UOS` or `USD`. Together with `purchase_option_with_uniqs` this is what a user provides to mint a uniq. If `price` is set to 0 then either `purchase_limit` should be set or `purchase_option_with_uniqs` should require some token to be burnt or transferred.
+
+`purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
+
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get.
+
+`purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
+
+`sale_shares` is used to set royalties.
+
+If RAM price is greater than `maximum_uos_payment` transaction reverts.
+
+If token factory is inactive transaction reverts as well.
+
+`group_restriction` is an optional parameter that accepts a string representation of group ID restrictions, which is internally converted to a vector of 64-bit integers. This vector is designed to apply logical restrictions based on the group IDs that users belong to. The structure of each 64-bit integer is as follows:
+
+* The lower 60 bits represent the group ID.
+* The upper 4 bits are reserved for logical operators.
+
+Logical Operators
+The logical operators are defined as bitwise flags in the following manner:
+
+```scss
+#define OR        0X1000'0000'0000'0000   // 0: AND, 1: OR
+#define NEGATION  0X2000'0000'0000'0000   // 0: No negation, 1: Negation
+```
+
+* `4th Bit (OR Operator)`: If this bit is set, it indicates the OR operator. Otherwise, it defaults to the AND operator.
+* `3rd Bit (NEGATION Operator)`: If this bit is set, it indicates that the NEGATION should be applied to the group ID.
+
+The expression is evaluated from left to right, and parentheses are not used. Logical operators take into account starting from the second group ID in the sequence.
+
+For example, a `group_restriction` vector like `<OR + NOT + group1, AND + group2>` would be evaluated as `(NOT group1 AND group2)`. This means the condition will pass if the user is not a member of `group1` AND is a member of `group2`.
+
+Longer expression example for a `group_restriction` vector of `<OR + NOT + group1, AND + group2, OR + NOT + group3, OR + group4, AND + NOT + group5>`, the logical expression becomes:
+
+```css
+(NOT group1 AND group2) OR (NOT group3) OR (group4 AND NOT group5)
+```
+
+This means the condition will pass if:
+
+* The user is not a member of `group1` AND is a member of `group2`, OR
+* The user is not a member of `group3`, OR
+* The user is a member of `group4` AND not a member of `group5`.
+
+
+Formalization of Logical Expression Evaluation
+
+To formalize the evaluation process, let's consider the `group_restriction` vector as `G = [g1, g2, g3, ..., gn]`, where each `gi` is a 64-bit integer that encodes both the logical operator and the group ID.
+
+The corresponding logical expression `L` can be represented as:
+
+```scss
+L = O1(g1) OP2 O2(g2) OP3 O3(g3) ... OPn On(gn)
+
+```
+
+Where:
+
+* `Oi(gi)` checks whether a user belongs to the group `gi` if there is no NEGATION bit, otherwise, it checks whether a user **does not** belong to the group `gi`.
+* `OPi` is the logical operator (AND/OR) determined by the OR bit in `gi`, taking effect starting from `i=2` to `n`.
+
+Notes:
+
+* `Oi(gi)` will return either `group_i` or `NOT group_i` based on the presence of the NEGATION bit.
+* `OPi` will return either `AND` or `OR` depending on the presence of the OR bit.
+* While the expression `L` is evaluated from left to right, it also adheres to operator precedence rules: AND operations have higher precedence than OR operations, similar to standard Boolean logic. This means that all AND operations will be executed first, followed by the OR operations.
+
+By understanding this formalization, you can ensure a clear and standardized way to construct and evaluate the logical expression `L` based on the `group_restriction` vector `G`.
+
+`memo` - a string of no more than 256 characters. useful for parsing on a backend.
+
+## Action Parameters
+
+**Action Interface**
+
+| Property Name              | C++ Type                            | JavaScript Type | Description                                                                                                                                                                                                                                          |
+| -------------------------- | ----------------------------------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id           | uint64_t                            | number          | ID of the factory to add (or update) purchase option to                                                                                                                                                                                              |
+| index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
+| price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
+| purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                                                                                                                                |
+| purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
+| sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
+| maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
+| group_restriction          | optional<uint64_t_vector>           | Array / null    | String representation specifying logical restrictions based on group membership, which will be converted to Vector of 64-bit integers that follows specific logical operator rules as outlined above.                                               |
+| purchase_window_start      | std::optional\<time_point_sec>      | string / null   | Start time of purchase window (optional)                                                                                                                                                                                                             |
+| purchase_window_end        | std::optional\<time_point_sec>      | string / null   | End time of purchase window (optional)                                                                                                                                                                                                               |
+| memo                       | std::string                         | string          | A short operation description                                                                                                                                                                                                                        |
+
+**purchase_requirement_with_uniqs option breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+**uniqs_count type breakdown**
+
+Refer to [fctrprchs.a](../nft-tables.md#fctrprchs-a)
+
+### Example Usage of the parameter ```"group_restriction"```
+
+```"group_restriction"``` consists of group ID strings concatenated by the logical operators specified by special characters as 
+
+- **OR**: "|" (Vertical Line)
+- **NEGATION**: "~" (Tilde)
+- **AND**: "&" (Ampersand)
+
+The internal logical operators' 64-bit values are defined as
+- **OR**: 0X1000'0000'0000'0000, or 1152921504606846976 in decimal.
+- **NEGATION**: 0X2000'0000'0000'0000, or 2305843009213693952 in decimal.
+- **AND**: 0, This is implicit. It can be ignored since it's 0.
+- **NO NEGATION**: 0, This is also implicit. It can also be ignored since it's 0.
+
+ Let's say we have two user groups
+ - Group1_ID = 1
+ - Group2_ID = 2
+
+#### Use cases
+1. no group requriement.
+    - parameter value ``` "group_restriction": ``` ""
+2. users belong to Group1 and Group2 can purchase from this option
+    - logical expression: Group1 & Group2
+    - parameter value:  ``` "group_restriction": ``` "1&2"
+    - internal 64-bit integers' vector representation 
+        * = [Group1_ID, Group2_ID]
+        * = [1,2]
+3. users belong to either Group1 or Group2 can purchase form this option
+    - logical expression: Group1 | Group2
+    - parameter value  ``` "group_restriction": ``` "1|2"
+    - internal 64-bit integers' vector representation 
+        * = [Group1_ID, OR + Group2_ID]
+        * = [1, 1152921504606846976 + 2]
+        * = [1, 1152921504606846978]
+4. users not belong to Group1 but belong to Group2 can purchase form this option
+    - logical expression: ~Group1 & Group2
+    - parameter value  ``` "group_restriction": ``` "~1&2"
+    - internal 64-bit integers' vector representation 
+        * = [NEGATION + Group1_ID, Group2_ID]
+        * = [2305843009213693952 + 1, 2]
+        * = [2305843009213693953, 2]
+5. users not belong to Group1 or not Group2 can purchase form this option
+    - logical expression: ~Group1 | ~Group2
+    - parameter value  ``` "group_restriction": ``` "~1|~2"
+    - internal 64-bit integers' vector representation 
+        * = [NEGATION + Group1_ID, OR + NEGATION + Group2_ID]
+        * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
+        * = [2305843009213693953, 3458764513820540930]
+
+
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 1,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+      "transfer_tokens_receiver_account": null,
+      "factories": [{
+        "token_factory_id": 42,
+        "count": 3,
+        "strategy": 0
+      }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": "2.00000000 UOS",
+    "group_restriction": "~1|~2",
+    "purchase_window_start": "2023-09-18T13:21:10.724",
+    "purchase_window_end": "2023-11-18T13:21:10.724",
+    "memo": ""
+  }
+]' -p factory.manager
+```
+
+## JavaScript - eosjs
+
+```js
+await api.transact(
+    {
+        actions: [
+            {
+                account: 'eosio.nft.ft',
+                name: 'setprchsreq.b',
+                authorization: [{ actor: 'factory.manager', permission: 'active' }],
+                data: {
+                    purchase_option: {
+                        token_factory_id: 100,
+                        index: 1,
+                        price: '50.00000000 UOS',
+                        purchase_limit: 1,
+                        promoter_basis_point: 100,
+                        purchase_option_with_uniqs: {
+                            transfer_tokens_receiver_account: null,
+                            factories: [
+                                {
+                                    token_factory_id: 42,
+                                    count: 3,
+                                    strategy: 0,
+                                },
+                            ],
+                        },
+                        sale_shares: [],
+                        maximum_uos_payment: '2.00000000 UOS',
+                        group_restriction: "~1|~2",
                         purchase_window_start: "2023-09-18T13:21:10.724",
                         purchase_window_end: "2023-11-18T13:21:10.724",
                         memo: '',
@@ -6183,7 +7816,7 @@ The table stores information about the utilization of RAM vault per account with
 | purchase_window_end        | std::optional\<eosio::time_point_sec>           | Optional end of the purchase window. Cannot purchase using this option after the end                                                               |
 | group_restriction          | std::optional\<uint64_t_vector>                 | Optional user group requirement can be specified                                                                                                   |
 
-Most relevant actions: `setprchsreq.a`, `delprchsreq.a`, `purchase.a`
+Most relevant actions: `setprchsreq.a`, `setprchsreq.b`, `delprchsreq.a`, `purchase.a`
 
 -   `cleos` Query Example
 
@@ -8007,11 +9640,39 @@ In this system, failed transactions are added to blocks. Other nodeos validate a
 
 Failures are treated differently. A transaction with an invalid signature or insufficient authority will always be rejected immediately, instead of included in a block and getting billed. Some failures will also be given a second chance to run, like transactions that hit the block deadline.
 
+<Staging>
+
+## Failed Transactions and Subjective Billing
+
+After failed transaction billing was implemented, subjective billing was reconsidered and it turned out that both functions work either alone or at the same time, provided that double billing issue where subjective billing may be applied twice, is solved. Objective and subjective billing will bill users in speculative mode. Objective billing will be dropped when the speculative block is dropped, whereas subjective billing will persist as usual. To solve double billing, a small internal strucure was implemened to cache subjective billing info per block, which will be used to correct double billing.
+
+</Staging>
+
+<Experimental>
+
+## Failed Transactions and Subjective Billing
+
+After failed transaction billing was implemented, subjective billing was reconsidered and it turned out that both functions work either alone or at the same time, provided that double billing issue where subjective billing may be applied twice, is solved. Objective and subjective billing will bill users in speculative mode. Objective billing will be dropped when the speculative block is dropped, whereas subjective billing will persist as usual. To solve double billing, a small internal strucure was implemened to cache subjective billing info per block, which will be used to correct double billing.
+
+</Experimental>
+
 ## Current Status
+
+<Staging>
 
 ::: info
 While the rate limit queue, failed transaction billing, and subjective billing can operate concurrently, subjective billing is currently deactivated.
 :::
+
+</Staging>
+
+<Experimental>
+
+::: info
+While the rate limit queue, failed transaction billing, and subjective billing can operate concurrently, subjective billing is currently deactivated.
+:::
+
+</Experimental>
 
 It remains an option for future activation. Chain usage will also be collected and leveraged by BPs for greylisting/blacklisting any account with malicious behavior via a decentralized and automatic mechanism in the future.
 
@@ -21301,6 +22962,363 @@ order: 2
 Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
 
 -   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
+
+::: info
+Please keep in mind that the factory IDs, token IDs, user group IDs, and account names used throughout this page are not real and must be replaced with the actual data you are interested in.
+:::
+
+::: warning
+Since `setprchsreq.a` action is deprecated, we will use `setprchsreq.b` action in the following examples.
+:::
+
+## Simple UOS/USD pricing
+
+This example utilizes the `price` field to set the price to 50 UOS
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+To be able to purchase from such factory you utilize `purchase.a` action
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+This example utilizes the `price` field to set the price to 5 USD
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "5.00000000 USD",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing using the option that has USD pricing you still provide `max_price` in UOS. The conversion from the USD price into appropriate UOS price will be done automatically.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Limited purchase quantity
+
+Setting `purchase_limit` is optional, and it allows to restrict the total number of tokens that can be purchased using this option. The limit applies to the single option itself and not the accounts that purchase from your factory. So if you set the `purchase_limit` to 10 it means that one account can purchase 10 tokens or five accounts can purchase 2 tokens or ten accounts can purchase 1 token and anything in between.
+
+After exceeding the `purchase_limit`, no one will be able to use this specific purchase option and you either need to create a new purchase option or update an existing one to increase the `purchase_limit` (history for the number of Uniqs purchased is preserved).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 10,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+## Exclusive access to purchase option via Uniq ownership
+
+`purchase_option_with_uniqs` is a more advanced use case where you are able to link the purchase option to other factories. The example below requires the user to own 1 Uniq from factory with ID 42. If the user owns it then he will be able to use this purchase option, the token from factory 42 will be left untouched. Note how `strategy` is set to 0 ([0 means "check"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": null,
+        "factories": [{
+            "token_factory_id": 42,
+            "count": 1,
+            "strategy": 0
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing, the transaction needs to specify which token exactly the user shows as a proof of satisfying condition of ownership for the token from factory 42. In this case, assume token 77 was minted from factory 42.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 77,
+        "strategy": 0
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Exclusive access to purchase option via user groups
+
+Alternative condition for allowing direct purchases from the factory can be the usage of user groups ([covered here](../../../blockchain/contracts/user-group-contract/index.md)). In this case user must belong to certain group(s) or not be a part of a specific group(s).
+
+Example below covers the simplest case where a user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage, reference the action documentation: [setprchsreq.b user groups support](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md#example-usage-of-the-parameter-group-restriction)
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": "11&12",
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing no extra input is required from the user, the verification of group's membership will be verified by the smart contract automatically
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Using purchase option for swapping
+
+"Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44, no additional UOS payment needed. Note how `strategy` is set to 1 ([1 means "burn"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "0.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": null,
+        "factories": [{
+            "token_factory_id": 43,
+            "count": 1,
+            "strategy": 1
+        },{
+            "token_factory_id": 44,
+            "count": 1,
+            "strategy": 1
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+Purchasing from such a purchase option requires the user to specify which Uniqs the user is willing to be given up. Here, assumes token 123 is from factory 43 and token 124 is from factory 44. Note how the `strategy` matches the value of the purchase option.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "0.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 123,
+        "strategy": 1
+      },{
+        "token_id": 124,
+        "strategy": 1
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Using purchase option for exchange
+
+Exchanging a Uniq is similar to swapping it but this time instead of a user losing access to his Uniq and burning a Uniq it will simply be transferred to a dedicated account. This may be useful in case Uniqs have valuable metadata attached to them, and you will later utilize those Uniqs in some other scenario. The example below configures the receiver of transferred Uniqs as `1aa2aa3aa4aa` account, and it also must be a Uniq from factory 45 to be able to use this purchase option. Specifying `transfer_tokens_receiver_account` is mandatory in such scenario. Note how `strategy` is set to 2 ([2 means "transfer"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "0.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": "1aa2aa3aa4aa",
+        "factories": [{
+            "token_factory_id": 45,
+            "count": 1,
+            "strategy": 2
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+Purchasing using the above option is similar to previous examples. User needs to specify which Uniq will be used during the purchase and this Uniq will be transferred to `1aa2aa3aa4aa` at the end. The `strategy`, again, should match the `strategy` specified in the purchase option itself.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "0.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 125,
+        "strategy": 2
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+---
+title: 'Factory Purchase Options Examples'
+
+order: 2
+---
+
+
+# Factory Purchase Options Examples
+
+Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
+
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
 -   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
 
 ::: info
@@ -21640,6 +23658,364 @@ cleos push action eosio.nft.ft purchase.a '[
 ]' -p alice
 ```
 :::
+
+---
+title: 'Factory Purchase Options Examples'
+
+order: 2
+---
+
+
+# Factory Purchase Options Examples
+
+Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
+
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
+
+::: info
+Please keep in mind that the factory IDs, token IDs, user group IDs, and account names used throughout this page are not real and must be replaced with the actual data you are interested in.
+:::
+
+::: warning
+Since `setprchsreq.a` action is deprecated, we will use `setprchsreq.b` action in the following examples.
+:::
+
+## Simple UOS/USD pricing
+
+This example utilizes the `price` field to set the price to 50 UOS
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+To be able to purchase from such factory you utilize `purchase.a` action
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+This example utilizes the `price` field to set the price to 5 USD
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "price": "5.00000000 USD",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing using the option that has USD pricing you still provide `max_price` in UOS. The conversion from the USD price into appropriate UOS price will be done automatically.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 1,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Limited purchase quantity
+
+Setting `purchase_limit` is optional, and it allows to restrict the total number of tokens that can be purchased using this option. The limit applies to the single option itself and not the accounts that purchase from your factory. So if you set the `purchase_limit` to 10 it means that one account can purchase 10 tokens or five accounts can purchase 2 tokens or ten accounts can purchase 1 token and anything in between.
+
+After exceeding the `purchase_limit`, no one will be able to use this specific purchase option and you either need to create a new purchase option or update an existing one to increase the `purchase_limit` (history for the number of Uniqs purchased is preserved).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": 10,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+## Exclusive access to purchase option via Uniq ownership
+
+`purchase_option_with_uniqs` is a more advanced use case where you are able to link the purchase option to other factories. The example below requires the user to own 1 Uniq from factory with ID 42. If the user owns it then he will be able to use this purchase option, the token from factory 42 will be left untouched. Note how `strategy` is set to 0 ([0 means "check"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": null,
+        "factories": [{
+            "token_factory_id": 42,
+            "count": 1,
+            "strategy": 0
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing, the transaction needs to specify which token exactly the user shows as a proof of satisfying condition of ownership for the token from factory 42. In this case, assume token 77 was minted from factory 42.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 77,
+        "strategy": 0
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Exclusive access to purchase option via user groups
+
+Alternative condition for allowing direct purchases from the factory can be the usage of user groups ([covered here](../../../blockchain/contracts/user-group-contract/index.md)). In this case user must belong to certain group(s) or not be a part of a specific group(s).
+
+Example below covers the simplest case where a user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage, reference the action documentation: [setprchsreq.b user groups support](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md#example-usage-of-the-parameter-group-restriction)
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "50.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": null,
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": "11&12",
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+When purchasing no extra input is required from the user, the verification of group's membership will be verified by the smart contract automatically
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "100.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": null,
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Using purchase option for swapping
+
+"Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44, no additional UOS payment needed. Note how `strategy` is set to 1 ([1 means "burn"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "0.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": null,
+        "factories": [{
+            "token_factory_id": 43,
+            "count": 1,
+            "strategy": 1
+        },{
+            "token_factory_id": 44,
+            "count": 1,
+            "strategy": 1
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+Purchasing from such a purchase option requires the user to specify which Uniqs the user is willing to be given up. Here, assumes token 123 is from factory 43 and token 124 is from factory 44. Note how the `strategy` matches the value of the purchase option.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "0.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 123,
+        "strategy": 1
+      },{
+        "token_id": 124,
+        "strategy": 1
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
+## Using purchase option for exchange
+
+Exchanging a Uniq is similar to swapping it but this time instead of a user losing access to his Uniq and burning a Uniq it will simply be transferred to a dedicated account. This may be useful in case Uniqs have valuable metadata attached to them, and you will later utilize those Uniqs in some other scenario. The example below configures the receiver of transferred Uniqs as `1aa2aa3aa4aa` account, and it also must be a Uniq from factory 45 to be able to use this purchase option. Specifying `transfer_tokens_receiver_account` is mandatory in such scenario. Note how `strategy` is set to 2 ([2 means "transfer"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
+
+::: details setprchsreq.b
+```sh
+cleos push action eosio.nft.ft setprchsreq.b '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "price": "0.00000000 UOS",
+    "purchase_limit": null,
+    "promoter_basis_point": 100,
+    "purchase_option_with_uniqs": {
+        "transfer_tokens_receiver_account": "1aa2aa3aa4aa",
+        "factories": [{
+            "token_factory_id": 45,
+            "count": 1,
+            "strategy": 2
+        }]
+    },
+    "sale_shares": [],
+    "maximum_uos_payment": null,
+    "group_restriction": null,
+    "purchase_window_start": null,
+    "purchase_window_end": null,
+    "memo": ""
+  }
+]' -p factory.manager
+```
+:::
+
+Purchasing using the above option is similar to previous examples. User needs to specify which Uniq will be used during the purchase and this Uniq will be transferred to `1aa2aa3aa4aa` at the end. The `strategy`, again, should match the `strategy` specified in the purchase option itself.
+
+::: details purchase.a
+```sh
+cleos push action eosio.nft.ft purchase.a '[
+  {
+    "token_factory_id": 100,
+    "index": 0,
+    "max_price": "0.00000000 UOS",
+    "buyer": "alice",
+    "receiver": "alice",
+    "promoter_id": null,
+    "user_uniqs": {
+      "tokens": [{
+        "token_id": 125,
+        "strategy": 2
+      }]
+    },
+    "memo": ""
+  }
+]' -p alice
+```
+:::
+
 ---
 title: 'Factory Purchase Options'
 
@@ -21653,8 +24029,58 @@ order: 1
 
 First-hand factory purchase options allow users to receive Uniqs from the factory directly without requiring you to manually issue Uniqs to the users. Various configuration options can be set when creating the purchase option for your factory, and in addition to that each factory can have multiple purchase options available. The usage of the actions to create and utilize purchase options is provided below.
 
--   [setprchsreq.a - set purchase requirement](../../contracts/nft-contract/nft-actions/setprchsreq.a.md)
--   [purchase.a - purchase a token](../../contracts/nft-contract/nft-actions/purchase.a.md)
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
+
+The first-hand purchase options provide following benefits to you
+- No need for factory manager input to issue a token to the user
+- Flexible pricing and conditions: can utilize other factories as a condition and can interact with [user groups contract](../../../blockchain/contracts/user-group-contract/index.md)
+- Configurable accessibility time window which does not require you to manually disable ability to purchase Uniqs
+
+## Purchase option use cases
+
+There are various use cases that are covered by the first-hand purchase feature. The list below covers the most common ones that are supported:
+- Specifying fixed UOS or USD price to purchase from factory
+    - To have both prices available simultaneously, you can simply create two purchase options
+- Restricting the number of Uniqs that can be bought from the specific purchase option
+    - To globally limit the number that can be purchased (minted in this case) you have to specify it during the token factory creation
+- Splitting the purchase revenue between multiple recipients
+    - Note that protocol fee still applies and the split only occurs for UOS or USD amounts
+- Limiting the availability window when Uniqs can be purchased
+    - You can set a campaign to open at a later date and have a fixed date when it will end (or no end date at all)
+- Specifying the price using Uniqs from other factories
+    - Allows user to exchange or swap Uniqs
+- Verify eligibility using Uniqs from other factories or user groups
+    - Those are read-only operations, so user does not lose Uniqs or membership of the user group
+- Migrating Uniqs of the factory to a new one which has desired alternative values set
+    - Since some of the values inside the factory cannot be changed after creation that can be an alternative solution to effectively provide the option to users to migrate to a new factory with alternative values
+
+### First-hand purchase directly from Uniq factory
+
+All use cases above are accessible using the `setprchsreq.a`/`setprchsreq.b` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
+
+### Swap Uniqs
+
+In certain situations you may need a more granular condition set which is not provided by the first-hand purchase feature. Since the range of possible conditions you may desire is vast we only limited the feature to the most common ones. For any more advanced usage you should consider utilizing a smart contract instead.
+
+Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage
+
+---
+title: 'Factory Purchase Options'
+
+order: 1
+---
+
+
+# Factory Purchase Options
+
+## Overview of factory purchase options feature
+
+First-hand factory purchase options allow users to receive Uniqs from the factory directly without requiring you to manually issue Uniqs to the users. Various configuration options can be set when creating the purchase option for your factory, and in addition to that each factory can have multiple purchase options available. The usage of the actions to create and utilize purchase options is provided below.
+
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
 
 The first-hand purchase options provide following benefits to you
 - No need for factory manager input to issue a token to the user
@@ -21688,6 +24114,57 @@ All use cases above are accessible using the `setprchsreq.a` action and examples
 In certain situations you may need a more granular condition set which is not provided by the first-hand purchase feature. Since the range of possible conditions you may desire is vast we only limited the feature to the most common ones. For any more advanced usage you should consider utilizing a smart contract instead.
 
 Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage
+
+---
+title: 'Factory Purchase Options'
+
+order: 1
+---
+
+
+# Factory Purchase Options
+
+## Overview of factory purchase options feature
+
+First-hand factory purchase options allow users to receive Uniqs from the factory directly without requiring you to manually issue Uniqs to the users. Various configuration options can be set when creating the purchase option for your factory, and in addition to that each factory can have multiple purchase options available. The usage of the actions to create and utilize purchase options is provided below.
+
+-   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
+-   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
+
+The first-hand purchase options provide following benefits to you
+- No need for factory manager input to issue a token to the user
+- Flexible pricing and conditions: can utilize other factories as a condition and can interact with [user groups contract](../../../blockchain/contracts/user-group-contract/index.md)
+- Configurable accessibility time window which does not require you to manually disable ability to purchase Uniqs
+
+## Purchase option use cases
+
+There are various use cases that are covered by the first-hand purchase feature. The list below covers the most common ones that are supported:
+- Specifying fixed UOS or USD price to purchase from factory
+    - To have both prices available simultaneously, you can simply create two purchase options
+- Restricting the number of Uniqs that can be bought from the specific purchase option
+    - To globally limit the number that can be purchased (minted in this case) you have to specify it during the token factory creation
+- Splitting the purchase revenue between multiple recipients
+    - Note that protocol fee still applies and the split only occurs for UOS or USD amounts
+- Limiting the availability window when Uniqs can be purchased
+    - You can set a campaign to open at a later date and have a fixed date when it will end (or no end date at all)
+- Specifying the price using Uniqs from other factories
+    - Allows user to exchange or swap Uniqs
+- Verify eligibility using Uniqs from other factories or user groups
+    - Those are read-only operations, so user does not lose Uniqs or membership of the user group
+- Migrating Uniqs of the factory to a new one which has desired alternative values set
+    - Since some of the values inside the factory cannot be changed after creation that can be an alternative solution to effectively provide the option to users to migrate to a new factory with alternative values
+
+### First-hand purchase directly from Uniq factory
+
+All use cases above are accessible using the `setprchsreq.a`/`setprchsreq.b` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
+
+### Swap Uniqs
+
+In certain situations you may need a more granular condition set which is not provided by the first-hand purchase feature. Since the range of possible conditions you may desire is vast we only limited the feature to the most common ones. For any more advanced usage you should consider utilizing a smart contract instead.
+
+Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage
+
 ---
 title: 'Uniq Factories'
 

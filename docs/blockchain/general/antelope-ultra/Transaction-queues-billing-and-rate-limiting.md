@@ -45,10 +45,38 @@ In this system, failed transactions are added to blocks. Other nodeos validate a
 
 Failures are treated differently. A transaction with an invalid signature or insufficient authority will always be rejected immediately, instead of included in a block and getting billed. Some failures will also be given a second chance to run, like transactions that hit the block deadline.
 
+<Staging>
+
+## Failed Transactions and Subjective Billing
+
+After failed transaction billing was implemented, subjective billing was reconsidered and it turned out that both functions work either alone or at the same time, provided that double billing issue where subjective billing may be applied twice, is solved. Objective and subjective billing will bill users in speculative mode. Objective billing will be dropped when the speculative block is dropped, whereas subjective billing will persist as usual. To solve double billing, a small internal strucure was implemened to cache subjective billing info per block, which will be used to correct double billing.
+
+</Staging>
+
+<Experimental>
+
+## Failed Transactions and Subjective Billing
+
+After failed transaction billing was implemented, subjective billing was reconsidered and it turned out that both functions work either alone or at the same time, provided that double billing issue where subjective billing may be applied twice, is solved. Objective and subjective billing will bill users in speculative mode. Objective billing will be dropped when the speculative block is dropped, whereas subjective billing will persist as usual. To solve double billing, a small internal strucure was implemened to cache subjective billing info per block, which will be used to correct double billing.
+
+</Experimental>
+
 ## Current Status
+
+<Staging>
 
 ::: info
 While the rate limit queue, failed transaction billing, and subjective billing can operate concurrently, subjective billing is currently deactivated.
 :::
+
+</Staging>
+
+<Experimental>
+
+::: info
+While the rate limit queue, failed transaction billing, and subjective billing can operate concurrently, subjective billing is currently deactivated.
+:::
+
+</Experimental>
 
 It remains an option for future activation. Chain usage will also be collected and leveraged by BPs for greylisting/blacklisting any account with malicious behavior via a decentralized and automatic mechanism in the future.

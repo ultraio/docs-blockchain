@@ -13,20 +13,6 @@ import { DefaultTheme } from 'vitepress';
  * @return {(string[] | null)}
  */
 export function getMarkdownFiles(folderPath: string, basePath = '/docs'): DefaultTheme.SidebarItem[] {
-    if (__filename.includes('docs-')) {
-        if (__filename.includes('docs-experimental')) {
-            basePath = '/docs-experimental'
-        }
-
-        if (__filename.includes('docs-staging')) {
-            basePath = '/docs-staging'
-        }
-
-        if (__filename.includes('docs-mainnet')) {
-            basePath = '/docs-mainnet'
-        }
-    }
-    
     // Example: /home/stuyk/ultra/docs-blockchain + basePath + folderPath
     const baseFolderPath = process.cwd().replace(/\\/gm, '/') + basePath;
     const folderToRead = baseFolderPath + folderPath;

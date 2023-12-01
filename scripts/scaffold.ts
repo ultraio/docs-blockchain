@@ -17,6 +17,8 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
     // Copy All Files
     fs.cpSync('docs', docsFolder, { recursive: true, force: true });
 
+    console.log(docsFolder);
+
     let configData = fs.readFileSync(`${docsFolder}/.vitepress/config.ts`, 'utf-8');
     if (docsFolder.includes('staging')) {
         configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/staging/'");
@@ -33,25 +35,20 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
     const files = fg.globSync(`${docsFolder}/**/*`);
     files.sort();
 
+    const regexr = new RegExp(/.*\.(mainnet|staging)\./g);
+
     // Overwrite environment specific files
     for (let filePath of files) {
         if (!filePath.includes('.md')) {
             continue;
         }
 
-        const splitFile = filePath.split('/');
-        const lastPaths = splitFile[splitFile.length - 1].split('.');
-
-        // Skip files without potential environment variable
-        if (lastPaths.length <= 2) {
+        if (!regexr.test(filePath)) {
             continue;
         }
 
-        const envName = lastPaths[lastPaths.length - 2];
-        if (envName !== environment) {
-            if (envName.includes('staging') || envName.includes('mainnet') || envName.includes('experimental')) {
-                fs.rmSync(filePath);
-            }
+        if (!filePath.includes(`${environment}.md`)) {
+            fs.rmSync(filePath);
             continue;
         }
 

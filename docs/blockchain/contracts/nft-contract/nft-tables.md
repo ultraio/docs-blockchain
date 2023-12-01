@@ -537,7 +537,7 @@ The table stores information about the utilization of RAM vault per account with
 | purchase_window_end        | std::optional\<eosio::time_point_sec>           | Optional end of the purchase window. Cannot purchase using this option after the end                                                               |
 | group_restriction          | std::optional\<uint64_t_vector>                 | Optional user group requirement can be specified                                                                                                   |
 
-Most relevant actions: `setprchsreq.a`, `setprchsreq.b`, `delprchsreq.a`, `purchase.a`
+Most relevant actions: `setprchsreq.a`, `delprchsreq.a`, `purchase.a`
 
 -   `cleos` Query Example
 

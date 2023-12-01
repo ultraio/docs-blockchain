@@ -527,14 +527,15 @@ The table stores information about the utilization of RAM vault per account with
 | -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | id                         | uint64_t                                        | ID of this purchase requirement                                                                                                                    |
 | price                      | asset                                           | Price of the uniq specified in UOS or USD                                                                                                          |
-| purchase_limit             | uint32_t                                        | Total number of uniqs purchased through this option                                                                                                |
-| purchased_tokens_no        | eosio::checksum256                              | Hash of the factory group metadata                                                                                                                 |
-| promoter_basis_point       | uint16_t                                        | UOS share received by the promoter with each purchase done for this option. Specified in basis points                                              |
+| purchase_limit             | uint32_t                                        | Max number of uniqs that can be purchased with this purchase option                                                                                |
+| purchased_tokens_no        | uint16_t                                        | Number of uniqs that were already purchased using this option (Default: 0)                                                                         |
+| promoter_basis_point       | uint16_t                                        | UOS share received by the promoter with each purchase done for this option. Specified in basis points. 1 means 0.01%                               |
 | purchase_option_with_uniqs | std::optional\<purchase_requirement_with_uniqs> | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories |
 | sale_shares                | std::vector\<sale_share>                        | A vector of [account, share] pairs setting the share each account receives during the purchase                                                     |
 | uos_payment                | int64_t                                         | UOS payment charged during the creation of the purchase option                                                                                     |
 | purchase_window_start      | std::optional\<eosio::time_point_sec>           | Optional start of the purchase window. Cannot purchase using this option until the start                                                           |
 | purchase_window_end        | std::optional\<eosio::time_point_sec>           | Optional end of the purchase window. Cannot purchase using this option after the end                                                               |
+| group_restriction          | std::optional\<uint64_t_vector>                 | Optional user group requirement can be specified                                                                                                   |
 
 Most relevant actions: `setprchsreq.a`, `setprchsreq.b`, `delprchsreq.a`, `purchase.a`
 

@@ -16,13 +16,23 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Basics',
-            items: getMarkdownFiles('/tutorials/general/basics'),
+            text: 'Fundamentals',
+            items: getMarkdownFiles('/tutorials/fundamentals'),
             collapsed: true,
         },
         {
-            text: 'Fundamentals',
-            items: getMarkdownFiles('/tutorials/fundamentals'),
+            text: 'Projects',
+            items: [
+                {
+                    text: 'Vite, Vue, and Ultra Wallet',
+                    items: getMarkdownFiles('/tutorials/projects/vite-vue-ultra-wallet'),
+                },
+            ],
+            collapsed: true,
+        },
+        {
+            text: 'Basics',
+            items: getMarkdownFiles('/tutorials/general/basics'),
             collapsed: true,
         },
         {

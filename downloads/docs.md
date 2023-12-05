@@ -9098,6 +9098,7 @@ The `adduser.a` action is the first version of the adduser action in the Ultra b
 
 - The creator of the group can add new users to it.
 - The `nr_users` field in `groups.a` table is incremented by the number of users added.
+- The creator account pays the RAM usage to store the user entry in the users.a table.
 - The action will fail if any of the user names have already been added to the group.
 
 ### Action Parameters

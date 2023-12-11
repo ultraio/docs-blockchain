@@ -3,7 +3,7 @@ title: '/get_table_rows'
 
 ---
 
-# POST - /get_table_rows
+# POST - /v1/chain/get_table_rows
 
 Returns rows in a table given a code, table, and a scope. Rows will return empty if there is no table available under that table, or scope.
 

@@ -14,6 +14,8 @@ _It is recommended to use a package such as [@ultraos/ultra-api-lib](https://www
 
 ## Producer Endpoints
 
+These endpoints all support `/v1` API calls.
+
 **Main Network (Production)**
 
 Chain ID:
@@ -49,3 +51,17 @@ Chain ID:
 ```
 http://ultra.api.eosnation.io/v1/chain/get_info
 ```
+
+## Hyperion Endpoints
+
+These allow for a `/v2` API call, useful for `get-transaction` API endpoint
+
+**Main Network (Production)**
+
+- https://ultra.eosusa.io
+- https://api.ultra.eossweden.org
+
+**Test Networking (Staging)**
+
+- https://api.testnet.ultra.eossweden.org
+- https://test.ultra.eosusa.io

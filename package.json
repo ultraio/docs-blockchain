@@ -21,12 +21,12 @@
         "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet"
     },
     "devDependencies": {
-        "@types/node": "^20.9.0",
+        "@types/node": "^20.10.4",
         "@vitejs/plugin-basic-ssl": "^1.0.2",
-        "tsx": "^4.1.4",
-        "vitepress": "^1.0.0-rc.26",
+        "tsx": "^4.6.2",
+        "vitepress": "^1.0.0-rc.31",
         "vitepress-plugin-google-analytics": "^1.0.2",
-        "vue": "^3.3.8"
+        "vue": "^3.3.11"
     },
     "dependencies": {
         "@wharfkit/antelope": "^1.0.2",

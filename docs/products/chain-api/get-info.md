@@ -4,7 +4,7 @@ title: '/get_info'
 order: -99
 ---
 
-# GET - /get_info
+# GET - /v1/chain/get_info
 
 A good way to get information about the chain including a unique identifier for the chain, current head block number, etc.
 

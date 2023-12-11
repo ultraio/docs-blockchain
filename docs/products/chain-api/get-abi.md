@@ -4,7 +4,7 @@ title: '/get_abi'
 outline: [0,4]
 ---
 
-# POST - /get_abi
+# POST - /v1/chain/get_abi
 
 Returns information about a smart contract's available actions, tables, etc. This is really useful for creating data validation off-chain for forms when having a user create a transaction based on manual entries.
 

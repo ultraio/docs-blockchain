@@ -3,7 +3,7 @@ title: '/get_account'
 
 ---
 
-# POST - /get_account
+# POST - /v1/chain/get_account
 
 Returns account information for a given blockchain account name.
 

@@ -3,7 +3,7 @@ title: '/get_block'
 
 ---
 
-# POST - /get_block
+# POST - /v1/chain/get_block
 
 Returns information about a block.
 

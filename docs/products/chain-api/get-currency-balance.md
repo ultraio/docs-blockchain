@@ -3,7 +3,7 @@ title: '/get_currency_balance'
 
 ---
 
-# POST - /get_currency_balance
+# POST - /v1/chain/get_currency_balance
 
 Returns the current currency balance for a given token contract, account, and a token symbol.
 

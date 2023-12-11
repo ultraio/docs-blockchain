@@ -3,7 +3,7 @@ title: '/get_table_by_scope'
 
 ---
 
-# POST - /get_table_by_scope
+# POST - /v1/chain/get_table_by_scope
 
 Returns tables available and their given scopes for a specific contract account name. Useful for seeing what entries made it into a table and the amount of rows in that table.
 

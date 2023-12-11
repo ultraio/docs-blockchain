@@ -1,1 +1,0 @@
-import{d as t,h as a,j as r,l as o,r as s,e as l}from"./framework.vEmsHuDM.js";const m=t({__name:"Experimental",setup(d){let e=a(!1);return r(()=>{window&&(e.value=window.location.pathname.includes("/experimental"))}),(n,u)=>o(e)?s(n.$slots,"default",{key:0}):l("",!0)}});export{m as default};

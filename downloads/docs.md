@@ -12883,7 +12883,7 @@ title: '/get_abi'
 outline: [0,4]
 ---
 
-# POST - /get_abi
+# POST - /v1/chain/get_abi
 
 Returns information about a smart contract's available actions, tables, etc. This is really useful for creating data validation off-chain for forms when having a user create a transaction based on manual entries.
 
@@ -12967,7 +12967,7 @@ title: '/get_account'
 
 ---
 
-# POST - /get_account
+# POST - /v1/chain/get_account
 
 Returns account information for a given blockchain account name.
 
@@ -13077,7 +13077,7 @@ title: '/get_block'
 
 ---
 
-# POST - /get_block
+# POST - /v1/chain/get_block
 
 Returns information about a block.
 
@@ -13135,7 +13135,7 @@ title: '/get_currency_balance'
 
 ---
 
-# POST - /get_currency_balance
+# POST - /v1/chain/get_currency_balance
 
 Returns the current currency balance for a given token contract, account, and a token symbol.
 
@@ -13182,7 +13182,7 @@ title: '/get_info'
 order: -99
 ---
 
-# GET - /get_info
+# GET - /v1/chain/get_info
 
 A good way to get information about the chain including a unique identifier for the chain, current head block number, etc.
 
@@ -13229,7 +13229,7 @@ title: '/get_table_by_scope'
 
 ---
 
-# POST - /get_table_by_scope
+# POST - /v1/chain/get_table_by_scope
 
 Returns tables available and their given scopes for a specific contract account name. Useful for seeing what entries made it into a table and the amount of rows in that table.
 
@@ -13304,7 +13304,7 @@ title: '/get_table_rows'
 
 ---
 
-# POST - /get_table_rows
+# POST - /v1/chain/get_table_rows
 
 Returns rows in a table given a code, table, and a scope. Rows will return empty if there is no table available under that table, or scope.
 
@@ -13463,6 +13463,95 @@ curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Conten
 	]"
 />
 ---
+title: '/get_transaction'
+
+---
+
+# GET - /v2/history/get_transaction
+
+::: warning
+
+This request requires an endpoint with Hyperion available. Check [Hyperion Endpoints](./index.md#hyperion-endpoints) to ensure you are using the correct one.
+
+:::
+
+Returns all transaction infromation for a given `transaction id` from an endpoint that is running a [Hyperion Endpoint](./index.md#hyperion-endpoints)
+
+### Request
+
+```
+curl -X GET https://ultra.eosusa.io/v2/history/get_transaction?id=dd02fa177852034e75c664a180aa3c02f4706c616f18a05ad09c798d93fd3be2
+```
+
+### Response
+
+::: details Response
+```typescript
+{
+	"query_time_ms": 1.601,
+	"executed": true,
+	"cache_expires_in": 3591,
+	"trx_id": "dd02fa177852034e75c664a180aa3c02f4706c616f18a05ad09c798d93fd3be2",
+	"lib": 156429132,
+	"cached_lib": false,
+	"actions": [
+		{
+			"action_ordinal": 1,
+			"creator_action_ordinal": 0,
+			"act": {
+				"account": "eosio.oracle",
+				"name": "pushrate",
+				"authorization": [
+					{
+						"actor": "ultra.oracle",
+						"permission": "pushrate"
+					}
+				],
+				"data": {
+					"exchange": "ubitmax",
+					"rates": [
+						{
+							"timestamp": "1702313012",
+							"price": "0.25198000 DUOS"
+						}
+					],
+					"volume": "214550.93620000 USD"
+				}
+			},
+			"@timestamp": "2023-12-11T16:43:50.000",
+			"block_num": 156429209,
+			"block_id": "0952eb993f9bec8de17e98ab36cdc62b0864644cb2b0979aa1bbc5eac2d7fb5c",
+			"producer": "eosioubisoft",
+			"trx_id": "dd02fa177852034e75c664a180aa3c02f4706c616f18a05ad09c798d93fd3be2",
+			"global_sequence": 334847694,
+			"cpu_usage_us": 228,
+			"net_usage_words": 75,
+			"signatures": [
+				"SIG_K1_K4fFawjHMqx69uQevoiprN4tKPRr43QHJPDeCXAcHncNiy87Uy6yovZ2PFMH88ip8ZBwWG3abXGtYXLTjqXdSVXa7EFQdJ"
+			],
+			"code_sequence": 15,
+			"abi_sequence": 15,
+			"act_digest": "A798CE26B18DD51734F4E183F84502FDBE38E6A07CA5CC3120CED9B83B26E85A",
+			"receipts": [
+				{
+					"receiver": "eosio.oracle",
+					"global_sequence": "334847694",
+					"recv_sequence": "177618958",
+					"auth_sequence": [
+						{
+							"account": "ultra.oracle",
+							"sequence": "177618965"
+						}
+					]
+				}
+			],
+			"timestamp": "2023-12-11T16:43:50.000"
+		}
+	]
+}
+```
+:::
+---
 title: 'API'
 
 order: -99999
@@ -13477,6 +13566,8 @@ Endpoints are available for retrieving data, submitting transactions, and execut
 _It is recommended to use a package such as [@ultraos/ultra-api-lib](https://www.npmjs.com/package/@ultraos/ultra-api-lib) for handling transactions or more complex API calls._
 
 ## Producer Endpoints
+
+These endpoints all support `/v1` API calls.
 
 **Main Network (Production)**
 
@@ -13514,6 +13605,19 @@ Chain ID:
 http://ultra.api.eosnation.io/v1/chain/get_info
 ```
 
+## Hyperion Endpoints
+
+These allow for a `/v2` API call, useful for `get-transaction` API endpoint
+
+**Main Network (Production)**
+
+- https://ultra.eosusa.io
+- https://api.ultra.eossweden.org
+
+**Test Networking (Staging)**
+
+- https://api.testnet.ultra.eossweden.org
+- https://test.ultra.eosusa.io
 ---
 title: 'Introduction'
 

@@ -58,6 +58,10 @@ const navbar: DefaultTheme.NavItem[] = [
             { text: 'Contracts', link: '/blockchain/contracts/index' },
         ],
     },
+    {
+        text: 'Feedback',
+        link: '/feedback/index',
+    },
 ];
 
 export default navbar;

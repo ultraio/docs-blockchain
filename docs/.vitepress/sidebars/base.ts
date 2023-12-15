@@ -436,6 +436,12 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
     ],
+    '/feedback/index': [
+        {
+            text: 'Feedback',
+            items: getMarkdownFiles('/feedback'),
+        },
+    ],
 };
 
 export default sidebar;

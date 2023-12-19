@@ -41,12 +41,3 @@ The plugin has been created and tested with Unity 2021.
 We provide an example project which you can download and explore. It not only uses the Ultra Unity Plugin, but also integrates
 
 [Bombers Example Project](https://github.com/ultraio/unity-bombers)
-
-We need to cover:
-
--   What is the Unity plugin
--   What does the Unity plugin do?
--   where to get the unity plugin
--   how to install it
--   how to use it to connect to the ultra client
-    -   what do you need? (auth links, client_id)

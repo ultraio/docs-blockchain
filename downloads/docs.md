@@ -12324,15 +12324,6 @@ We provide an example project which you can download and explore. It not only us
 
 [Bombers Example Project](https://github.com/ultraio/unity-bombers)
 
-We need to cover:
-
--   What is the Unity plugin
--   What does the Unity plugin do?
--   where to get the unity plugin
--   how to install it
--   how to use it to connect to the ultra client
-    -   what do you need? (auth links, client_id)
-
 ---
 title: 'Using the Ultra Unity Plugin'
 

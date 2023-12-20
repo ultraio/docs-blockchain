@@ -1,10 +1,10 @@
 ---
-title: 'release'
+title: 'Release Notes'
 deploy: ['staging', 'mainnet']
 order: 1
 ---
 
-# Release notes
+# Release Notes
 
 We're thrilled to announce the release of new version of the NFT API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
 

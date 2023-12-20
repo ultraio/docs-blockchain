@@ -1,6 +1,6 @@
 ---
 title: 'Introduction'
-
+deploy: ['staging', 'mainnet']
 order: -9999
 ---
 
@@ -18,7 +18,7 @@ The NFTAPI is based on [graphql](https://graphql.org/), which is a schema-based 
 
 ## Why would someone need the NFTAPI?
 
-It’s currently hard to get specific current data about stuff that we consider central to our ecosystem. This means that Users, Uniq Factories, the Uniqs that they mint, and the metadata associated with them are hard to access.
+It’s currently hard to get specific current data about stuff that we consider central to our ecosystem. This means that Users, Token Factories, the Uniqs that they mint, and the metadata associated with them are hard to access.
 
 The NFTAPI makes it easy for developers to integrate and use NFT data.
 
@@ -28,7 +28,7 @@ The NFTAPI is targeted towards (surprise, surprise) NFT data.
 
 Some stuff that is now simple to do with access to the NFTAPI:
 
--   Get a list of all Uniq Factories IDs
+-   Get a list of all Token Factories IDs
 -   Get a specific Token Factory based on an ID
 -   Get a specific Uniq based on an ID
 -   Get a specific Token Factory based on the Uniq ID

@@ -1,7 +1,7 @@
 ---
 title: 'Queries'
-
-order: 3
+deploy: ['staging', 'mainnet']
+order: 4
 ---
 
 # Queries
@@ -18,24 +18,17 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                            | Description                                                             |
-| ----------------------------------------------- | ----------------------------------------------------------------------- |
-| `blockStep` - [`BlockStep`](types.md#blockstep) | Filter on type of transaction. Irreversible by default if not provided. |
-| `id` - [`BigInt!`](types.md#bigint)             | On chain id of the uniq.                                                |
+| Name                                   | Description              |
+|----------------------------------------|--------------------------|
+| `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq. |
 
 #### Example
 
 ##### Query
 
 ``` js
-query Uniq(
-  $blockStep: BlockStep,
-  $id: BigInt!
-) {
-  uniq(
-    blockStep: $blockStep,
-    id: $id
-  ) {
+query Uniq($id: BigInt!) {
+  uniq(id: $id) {
     factory {
       accountMintingLimit
       assetCreator
@@ -226,9 +219,8 @@ query Uniq(
           }
         }
         shares {
-          account
           basisPoints
-          ratio
+          receiver
         }
       }
       status
@@ -347,30 +339,15 @@ query Uniq(
       onSaleDate
       price {
         amount
-        creators {
-          amount
-          basisPoints
-          ratio
-        }
         currency {
           code
           symbol
         }
-        owner {
-          amount
-          basisPoints
-          ratio
-        }
-        platform {
-          amount
-          basisPoints
-          ratio
-        }
-        promoter {
-          amount
-          basisPoints
-          ratio
-        }
+      }
+      promoterBasisPoints
+      shares {
+        basisPoints
+        receiver
       }
     }
     serialNumber
@@ -392,7 +369,7 @@ query Uniq(
 ##### Variables
 
 ``` js
-{"blockStep": "IRREVERSIBLE", "id": 987}
+{"id": 987}
 ```
 
 ##### Response
@@ -431,8 +408,8 @@ Returns a [`UniqFactoryList!`](types.md#uniqfactorylist)
 
 ##### Arguments
 
-| Name                                                         | Description                                                                                                    |
-| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Name                                                            | Description                                                                                                    |
+|-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | `assetManager` - [`WalletId`](types.md#walletid)             | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
 | `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                       |
 
@@ -639,9 +616,8 @@ query UniqFactories(
           }
         }
         shares {
-          account
           basisPoints
-          ratio
+          receiver
         }
       }
       status
@@ -688,7 +664,7 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
@@ -708,8 +684,8 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                | Description                       |
-| ----------------------------------- | --------------------------------- |
+| Name                                   | Description                       |
+|----------------------------------------|-----------------------------------|
 | `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq factory . |
 
 #### Example
@@ -908,9 +884,8 @@ query UniqFactory($id: BigInt!) {
         }
       }
       shares {
-        account
         basisPoints
-        ratio
+        receiver
       }
     }
     status
@@ -969,6 +944,42 @@ query UniqFactory($id: BigInt!) {
 
 [Queries](#group-Operations-Queries)
 
+## `uniqGlobalShares`
+
+##### Response
+
+Returns [`[UniqSaleShare!]!`](types.md#uniqsaleshare)
+
+#### Example
+
+##### Query
+
+``` js
+query UniqGlobalShares {
+  uniqGlobalShares {
+    basisPoints
+    receiver
+  }
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqGlobalShares": [
+      {
+        "basisPoints": 123,
+        "receiver": "aa1aa2aa3ag4"
+      }
+    ]
+  }
+}
+```
+
+[Queries](#group-Operations-Queries)
+
 ## `uniqsOfFactory`
 
 ##### Description
@@ -982,9 +993,8 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                                    | Description                                                                                                    |
-| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `blockStep` - [`BlockStep`](types.md#blockstep)                         | Filter on type of transaction. Irreversible by default if not provided.                                        |
+| Name                                                                       | Description                                                                                                    |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
 | `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
 | `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination to apply. Please refer to pagination section.                                                       |
@@ -996,14 +1006,12 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ``` js
 query UniqsOfFactory(
-  $blockStep: BlockStep,
   $factoryId: BigInt!,
   $ids: [BigInt!],
   $pagination: PaginationInput,
   $serialRange: UniqSerialRangeInput
 ) {
   uniqsOfFactory(
-    blockStep: $blockStep,
     factoryId: $factoryId,
     ids: $ids,
     pagination: $pagination,
@@ -1200,9 +1208,8 @@ query UniqsOfFactory(
             }
           }
           shares {
-            account
             basisPoints
-            ratio
+            receiver
           }
         }
         status
@@ -1321,30 +1328,15 @@ query UniqsOfFactory(
         onSaleDate
         price {
           amount
-          creators {
-            amount
-            basisPoints
-            ratio
-          }
           currency {
             code
             symbol
           }
-          owner {
-            amount
-            basisPoints
-            ratio
-          }
-          platform {
-            amount
-            basisPoints
-            ratio
-          }
-          promoter {
-            amount
-            basisPoints
-            ratio
-          }
+        }
+        promoterBasisPoints
+        shares {
+          basisPoints
+          receiver
         }
       }
       serialNumber
@@ -1373,7 +1365,6 @@ query UniqsOfFactory(
 
 ``` js
 {
-  "blockStep": "IRREVERSIBLE",
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
@@ -1409,9 +1400,9 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                         | Description                                                                                               |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| `blockStep` - [`BlockStep`](types.md#blockstep)              | Filter on type of transaction. Irreversible by default if not provided.                                   |
+| Name                                                            | Description                                                                                               |
+|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| `factoryIds` - [`[BigInt!]`](types.md#bigint)                | Filter from a list of uniq factory id.                                                                    |
 | `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is owned by the user. |
 | `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                  |
 | `walletId` - [`WalletId!`](types.md#walletid)                | Wallet id of the user.                                                                                    |
@@ -1422,13 +1413,13 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ``` js
 query UniqsOfWallet(
-  $blockStep: BlockStep,
+  $factoryIds: [BigInt!],
   $ids: [BigInt!],
   $pagination: PaginationInput,
   $walletId: WalletId!
 ) {
   uniqsOfWallet(
-    blockStep: $blockStep,
+    factoryIds: $factoryIds,
     ids: $ids,
     pagination: $pagination,
     walletId: $walletId
@@ -1624,9 +1615,8 @@ query UniqsOfWallet(
             }
           }
           shares {
-            account
             basisPoints
-            ratio
+            receiver
           }
         }
         status
@@ -1745,30 +1735,15 @@ query UniqsOfWallet(
         onSaleDate
         price {
           amount
-          creators {
-            amount
-            basisPoints
-            ratio
-          }
           currency {
             code
             symbol
           }
-          owner {
-            amount
-            basisPoints
-            ratio
-          }
-          platform {
-            amount
-            basisPoints
-            ratio
-          }
-          promoter {
-            amount
-            basisPoints
-            ratio
-          }
+        }
+        promoterBasisPoints
+        shares {
+          basisPoints
+          receiver
         }
       }
       serialNumber
@@ -1797,7 +1772,7 @@ query UniqsOfWallet(
 
 ``` js
 {
-  "blockStep": "IRREVERSIBLE",
+  "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
   "walletId": "aa1aa2aa3ag4"
@@ -1812,7 +1787,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }

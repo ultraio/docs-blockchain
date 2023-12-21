@@ -1,7 +1,7 @@
 ---
 title: 'Authentication'
-
-order: 1
+deploy: ['staging', 'mainnet']
+order: 2
 ---
 
 # Authentication

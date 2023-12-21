@@ -1,12 +1,15 @@
 ---
 title: 'Subscriptions'
-
-order: 4
+deploy: ['staging', 'mainnet']
+order: 5
 ---
 
 # Subscriptions
 
 ## `uniqFactories`
+
+Use uniqFactorySnapshots instead. This subscription will be removed in a
+next version.
 
 ##### Description
 
@@ -19,8 +22,8 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                             | Description                                                                                                    |
-| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| Name                                                | Description                                                                                                    |
+|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | `assetManager` - [`WalletId`](types.md#walletid) | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
 
 #### Example
@@ -219,9 +222,8 @@ subscription UniqFactories($assetManager: WalletId) {
         }
       }
       shares {
-        account
         basisPoints
-        ratio
+        receiver
       }
     }
     status
@@ -280,7 +282,507 @@ subscription UniqFactories($assetManager: WalletId) {
 
 [Subscriptions](#group-Operations-Subscriptions)
 
+## `uniqFactorySnapshots`
+
+##### Description
+
+Subscribes on uniq factory snapshots. A snapshot is fired when a state
+change occurs. Provides efficient state synchronization feature based on
+cursors with position reset strategy.
+
+##### Response
+
+Returns a [`UniqFactorySnapshot!`](types.md#uniqfactorysnapshot)
+
+##### Arguments
+
+| Name                                                                                 | Description                                                                                                                               |
+|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | The optional stream cursor to resume snapshots position after. If the given cursor is unreachable, the given positionStrategy is applied. |
+| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | The stream position strategy to apply if no cursor provided or the given cursor is unreachable.                                           |
+
+#### Example
+
+##### Query
+
+``` js
+subscription UniqFactorySnapshots(
+  $cursor: StreamCursor,
+  $positionStrategy: StreamPositionStrategy!
+) {
+  uniqFactorySnapshots(
+    cursor: $cursor,
+    positionStrategy: $positionStrategy
+  ) {
+    cursor
+    id
+    position
+    state {
+      accountMintingLimit
+      assetCreator
+      assetManager
+      conditionlessReceivers
+      defaultUniqMetadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            key
+            value {
+              description
+              dynamic
+              name
+              type
+            }
+          }
+          description
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        locked
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintableWindow {
+        endDate
+        startDate
+      }
+      resale {
+        minimumPrice {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        shares {
+          basisPoints
+          receiver
+        }
+      }
+      status
+      stock {
+        authorized
+        existing
+        maxMintable
+        mintable
+        minted
+      }
+      tradingWindow {
+        endDate
+        startDate
+      }
+      transferWindow {
+        endDate
+        startDate
+      }
+      type
+    }
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "cursor": "0",
+  "positionStrategy": "EARLIEST"
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqFactorySnapshots": {
+      "cursor": "0",
+      "id": 987,
+      "position": "CURSOR",
+      "state": UniqFactory
+    }
+  }
+}
+```
+
+[Subscriptions](#group-Operations-Subscriptions)
+
+## `uniqSnapshots`
+
+##### Description
+
+Subscribes on uniq snapshots. A snapshot is fired when a state change
+occurs. Provides efficient state synchronization feature based on
+cursors with position reset strategy.
+
+##### Response
+
+Returns a [`UniqSnapshot!`](types.md#uniqsnapshot)
+
+##### Arguments
+
+| Name                                                                                 | Description                                                                                                                               |
+|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | The optional stream cursor to resume snapshots position after. If the given cursor is unreachable, the given positionStrategy is applied. |
+| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | The stream position strategy to apply if no cursor provided or the given cursor is unreachable.                                           |
+
+#### Example
+
+##### Query
+
+``` js
+subscription UniqSnapshots(
+  $cursor: StreamCursor,
+  $positionStrategy: StreamPositionStrategy!
+) {
+  uniqSnapshots(
+    cursor: $cursor,
+    positionStrategy: $positionStrategy
+  ) {
+    cursor
+    id
+    position
+    state {
+      factory {
+        assetCreator
+        assetManager
+        id
+        maxMintableUniqs
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+      id
+      metadata {
+        cachedSource {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        content {
+          attributes {
+            descriptor {
+              description
+              dynamic
+              name
+              type
+            }
+            key
+            value
+          }
+          description
+          dynamicAttributes {
+            contentType
+            uris
+          }
+          dynamicResources {
+            key
+            value {
+              contentType
+              uris
+            }
+          }
+          medias {
+            gallery {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            hero {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            product {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            square {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          name
+          properties
+          resources {
+            key
+            value {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+          }
+          subName
+        }
+        source {
+          contentType
+          integrity {
+            hash
+            type
+          }
+          uri
+        }
+        status
+      }
+      mintDate
+      owner
+      resale {
+        onSaleDate
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        shares {
+          basisPoints
+          receiver
+        }
+      }
+      serialNumber
+      tradingPeriod {
+        duration
+        endDate
+        startDate
+      }
+      transferPeriod {
+        duration
+        endDate
+        startDate
+      }
+      type
+    }
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "cursor": "0",
+  "positionStrategy": "EARLIEST"
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqSnapshots": {
+      "cursor": "0",
+      "id": 987,
+      "position": "CURSOR",
+      "state": UniqState
+    }
+  }
+}
+```
+
+[Subscriptions](#group-Operations-Subscriptions)
+
 ## `uniqsOfFactory`
+
+Use uniqSnapshots instead. This subscription will be removed in a next
+version.
 
 ##### Description
 
@@ -293,9 +795,8 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                                                    | Description                                                                                                    |
-| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `blockStep` - [`BlockStep`](types.md#blockstep)                         | Filter on type of transaction. Irreversible by default if not provided.                                        |
+| Name                                                                       | Description                                                                                                    |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
 | `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
 | `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter from a range of serial number.                                                                          |
@@ -306,13 +807,11 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ``` js
 subscription UniqsOfFactory(
-  $blockStep: BlockStep,
   $factoryId: BigInt!,
   $ids: [BigInt!],
   $serialRange: UniqSerialRangeInput
 ) {
   uniqsOfFactory(
-    blockStep: $blockStep,
     factoryId: $factoryId,
     ids: $ids,
     serialRange: $serialRange
@@ -507,9 +1006,8 @@ subscription UniqsOfFactory(
           }
         }
         shares {
-          account
           basisPoints
-          ratio
+          receiver
         }
       }
       status
@@ -628,30 +1126,15 @@ subscription UniqsOfFactory(
       onSaleDate
       price {
         amount
-        creators {
-          amount
-          basisPoints
-          ratio
-        }
         currency {
           code
           symbol
         }
-        owner {
-          amount
-          basisPoints
-          ratio
-        }
-        platform {
-          amount
-          basisPoints
-          ratio
-        }
-        promoter {
-          amount
-          basisPoints
-          ratio
-        }
+      }
+      promoterBasisPoints
+      shares {
+        basisPoints
+        receiver
       }
     }
     serialNumber
@@ -674,7 +1157,6 @@ subscription UniqsOfFactory(
 
 ``` js
 {
-  "blockStep": "IRREVERSIBLE",
   "factoryId": 987,
   "ids": [987],
   "serialRange": UniqSerialRangeInput
@@ -706,6 +1188,9 @@ subscription UniqsOfFactory(
 
 ## `uniqsOfWallet`
 
+Use uniqSnapshots instead. This subscription will be removed in a next
+version.
+
 ##### Description
 
 This subscription is used to recover user-specific uniqs.
@@ -716,11 +1201,11 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                            | Description                                                                                                 |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `blockStep` - [`BlockStep`](types.md#blockstep) | Filter on type of transaction. Irreversible by default if not provided.                                     |
-| `ids` - [`[BigInt!]`](types.md#bigint)          | Filter from a list of uniq id. Can be used to know with a list of uniq witch one is related to the factory. |
-| `walletId` - [`WalletId!`](types.md#walletid)   | Wallet id of the user.                                                                                      |
+| Name                                             | Description                                                                                                 |
+|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `factoryIds` - [`[BigInt!]`](types.md#bigint) | Filter from a list of uniq factory id.                                                                      |
+| `ids` - [`[BigInt!]`](types.md#bigint)        | Filter from a list of uniq id. Can be used to know with a list of uniq witch one is related to the factory. |
+| `walletId` - [`WalletId!`](types.md#walletid) | Wallet id of the user.                                                                                      |
 
 #### Example
 
@@ -728,12 +1213,12 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ``` js
 subscription UniqsOfWallet(
-  $blockStep: BlockStep,
+  $factoryIds: [BigInt!],
   $ids: [BigInt!],
   $walletId: WalletId!
 ) {
   uniqsOfWallet(
-    blockStep: $blockStep,
+    factoryIds: $factoryIds,
     ids: $ids,
     walletId: $walletId
   ) {
@@ -927,9 +1412,8 @@ subscription UniqsOfWallet(
           }
         }
         shares {
-          account
           basisPoints
-          ratio
+          receiver
         }
       }
       status
@@ -1048,30 +1532,15 @@ subscription UniqsOfWallet(
       onSaleDate
       price {
         amount
-        creators {
-          amount
-          basisPoints
-          ratio
-        }
         currency {
           code
           symbol
         }
-        owner {
-          amount
-          basisPoints
-          ratio
-        }
-        platform {
-          amount
-          basisPoints
-          ratio
-        }
-        promoter {
-          amount
-          basisPoints
-          ratio
-        }
+      }
+      promoterBasisPoints
+      shares {
+        basisPoints
+        receiver
       }
     }
     serialNumber
@@ -1094,7 +1563,7 @@ subscription UniqsOfWallet(
 
 ``` js
 {
-  "blockStep": "IRREVERSIBLE",
+  "factoryIds": [987],
   "ids": [987],
   "walletId": "aa1aa2aa3ag4"
 }

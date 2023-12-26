@@ -1,0 +1,42 @@
+## Creating Files Repositories
+
+1.  Go to the Game dev center of your game,
+2.  In the left menu go in File Management → File Repository section
+3.  Click on **“CREATE NEW WINDOWS FILES REPOSITORY”**
+
+![fr-1](/images/gdc/fr-1.png) 
+> A View of the Files Repository section of the File Manager
+
+Pro Tips:
+
+> Ultra’s distribution technology has been built to support cross platform publishing. Future updates will include MacOS and Linux support. In the meantime you can already use cross platform repositories. Cross platform repositories can be used to store platform-independent files such as mp3, PNGs, etc. They are convenient for Language packs or DLCs you’d upload only one time and are usable on all platforms. For the sake of simplicity, in this tutorial we will assume your game only works on windows and will only create windows repositories as a result.
+> 
+> You need at least one Core Game Files repository to assemble and publish a game build.
+>
+> Internal repository names are for internal use only, they will never be visible to the public. We recommend you to choose distinct names to help you later remember what kind of files it contains. Examples:
+> -   Standard files
+> -   Standard with mods
+> -   Censored files
+> -   Chinese version
+> -   Compiling server 2 output
+> -   Light build
+> -   Paris office
+> -   ...
+
+4.  After Clicking on “CREATE NEW WINDOWS FILES REPOSITORY” , a window will show up:
+![fr-2](/images/gdc/fr-2.png)
+> The Create new windows Files Repository window
+![fr-3](/images/gdc/fr-3.png)
+> Opened dropdown menu showing various types of repositories
+
+A drop down menu allows you to choose what type of repository you want to create.
+
+5.  Select Game: Game core game Files
+6.  Fill in the field to give this repository an internal repository name.
+7.  Press the **“Create Files Repository”**
+8.  Repeat this but this time let’s make 1 DLC repositories and 2 language packs repositories. When you are done, it should look similar to this:
+
+![fr-4](/images/gdc/fr-4.png)
+> A list of repositories of a game. Notice at this point there are 0 versions everywhere because we’ve haven’t uploaded anything in them.
+
+We are now ready to upload your game files!

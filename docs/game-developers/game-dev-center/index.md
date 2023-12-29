@@ -6,6 +6,8 @@ order: 1
 
 # Game Developer Center
 
+The Game Development Center (or GDC for short) is where everything involved in the set up and publication of your games' store pages can be found. Whether it's adding the assets to display on the store, uploading your games' files, integrating our Unity or Unreal plugin, all will take place on the GDC.
+
 ## Overview
 
 Before we start with a step by step guide on how to upload your game on Ultra, we will start with a high level overview of Ultra’s unique product distribution technology. Unlike other game distribution platforms, on Ultra, product ownership is represented on the blockchain.

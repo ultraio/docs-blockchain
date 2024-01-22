@@ -996,8 +996,8 @@ Returns a [`UniqList!`](types.md#uniqlist)
 | Name                                                                       | Description                                                                                                    |
 |----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
 | `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination to apply. Please refer to pagination section.                                                       |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq which one is related to the factory. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination to apply. Please refer to the pagination section.                                                       |
 | `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter by a range of serial number.                                                                            |
 
 #### Example
@@ -1403,8 +1403,8 @@ Returns a [`UniqList!`](types.md#uniqlist)
 | Name                                                            | Description                                                                                               |
 |-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | `factoryIds` - [`[BigInt!]`](types.md#bigint)                | Filter from a list of uniq factory id.                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is owned by the user. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                  |
+| `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq which one is owned by the user. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to the pagination section.                                                  |
 | `walletId` - [`WalletId!`](types.md#walletid)                | Wallet id of the user.                                                                                    |
 
 #### Example

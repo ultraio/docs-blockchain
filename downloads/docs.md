@@ -7847,7 +7847,71 @@ The tables below describe the structure and usage of each of the fields inside `
 | count            | uint32_t | How many tokens are needed from the specified factory                                                                                                                                                                                                                                                                               |
 | strategy         | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the tokens is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
 
+### `group_restriction` type
 
+By default, regardless of which action version is used, `group_restriction` will be saved as vector of 64-bit integers. This might be hard to read since it includes logical expression with the value. For example: `2305843009213693953` means `NOT 1` or `~1`.
+
+To be displayed as human-readable values, we recommend you implement some conversion on your side. Here is our small JavaScript example to convert 64-bit integer to readable string. You can run the included demo with `node user-group-converter.js`.
+
+```js
+// user-group-converter.js
+const { isBigUint64Array } = require("util/types")
+
+const OR_MASK       = 0x1000000000000000n   // 0: AND, 1: OR (= 1152921504606846976)
+const NEGATION_MASK = 0x2000000000000000n   // 0: No Negation, 1: Negation (= 2305843009213693952)
+const GROUP_ID_MASK = ~(OR_MASK + NEGATION_MASK)
+
+/* RULES
+- 1st element in group restriction array should not contain OR or AND
+- Combination rules: [OR] + [NEGATION] + [group_id]
+    + &[group_id]   = 0                     + 0                     + [group_id]
+    + |[group_id]   = 1152921504606846976   + 0                     + [group_id]
+    + ~[group_id]   = 0                     + 2305843009213693952   + [group_id]
+    + |~[group_id]  = 1152921504606846976   + 2305843009213693952   + [group_id]
+*/
+
+const expression_to_string = (group, firstIndex = false) => {
+    var result = ""
+    
+    // OR Extraction
+    if (!firstIndex) {
+        if ((group & OR_MASK) == OR_MASK)
+            result += "|" // OR
+        else
+            result += "&" // AND
+    }
+
+    // NEGATION Extraction
+    if ((group & NEGATION_MASK) == NEGATION_MASK)
+        result += "~" // NOT
+
+    // Group ID Extraction
+    result += group & GROUP_ID_MASK
+    
+    return result;
+}
+
+const convert_group_restrictions = (groupRestrictions) => {
+
+    var result = ""
+
+    if (!isBigUint64Array(groupRestrictions) || groupRestrictions.length == 0)
+        return result
+    
+    for (var i = 0; i < groupRestrictions.length; ++i) {
+        result += expression_to_string(groupRestrictions[i], i == 0);
+    }
+
+    return result
+}
+
+const demo = () => {
+    const groups = new BigUint64Array([2305843009213693953n, 2n, 3458764513820540931n]) // = "~1&2|~3"
+    console.log(convert_group_restrictions(groups))
+}
+
+demo()
+```
 ---
 title: 'Data Structures Overview'
 order: 6

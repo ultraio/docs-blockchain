@@ -71,7 +71,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Smart Contracts',
+            text: 'Token Swap',
             items: getMarkdownFiles('/tutorials/token-swap'),
             collapsed: true,
         },

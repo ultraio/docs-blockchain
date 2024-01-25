@@ -93,40 +93,40 @@ Minting limit is a new concept that was introduced in Release 27. It allows for 
 
 Try to think of the action parameters as a **JSON Object** when reading this table. There will be a **JavaScript** example of the action below this table.
 
-| Property Name       | C++ Type                       | JavaScript Type       |
-| ------------------- | ------------------------------ | --------------------- |
-| to                  | name                           | string                |
-| token_configs       | vector token_config            | Array                 |
-| memo                | string                         | string                |
-| authorizer          | optional name                  | string can be omitted |
-| maximum_uos_payment | optional asset                 | string can be omitted |
-| token_metadata      | optional vector token_metadata | Array                 |
+| Property Name       | C++ Type                                                               | JavaScript Type                          |
+| ------------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
+| to                  | eosio::name                                                            | string                                   |
+| token_configs       | std::vector\<token_config>                                             | Array                                    |
+| memo                | std::string                                                            | string                                   |
+| authorizer          | std::optional\<eosio::name>                                            | string (must be provided, can be `null`) |
+| maximum_uos_payment | std::optional\<eosio::asset>                                           | string (must be provided, can be `null`) |
+| token_metadata      | eosio::binary_extension\<std::optional\<std::vector\<token_metadata>>> | Array (can be omitted or be `null`)      |
 
 **Token Config Interface**
 
-| Property Name    | C++ Type | JavaScript Type |
-| ---------------- | -------- | --------------- |
-| token_factory_id | uint64_t | number          |
-| amount           | uint32_t | number          |
-| custom_data      | string   | string          |
+| Property Name    | C++ Type    | JavaScript Type |
+| ---------------- | ----------- | --------------- |
+| token_factory_id | uint64_t    | number          |
+| amount           | uint32_t    | number          |
+| custom_data      | std::string | string          |
 
 **Token Metadata Interface**
 
-| Property Name | C++ Type             | JavaScript Type |
-| ------------- | -------------------- | --------------- |
-| meta_uri      | optional string      | string          |
-| meta_hash     | optional checksum256 | string          |
+| Property Name | C++ Type                    | JavaScript Type |
+| ------------- | --------------------------- | --------------- |
+| meta_uri      | std::optional\<std::string> | string          |
+| meta_hash     | std::optional\<checksum256> | string          |
 
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft issue.b '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 5, "amount": 1, "custom_data": ""}], "token_metadata":[{"meta_uri": "some-uri", "meta_hash": "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539"}], "memo": "token time" }]' -p factory.manager@active
+cleos push action eosio.nft.ft issue.b '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 5, "amount": 1, "custom_data": ""}], "memo": "token time", "authorizer": null, "maximum_uos_payment": "10.00000000 UOS" }]' -p factory.manager@active
 ```
 
--   with **authorizer**
+-   with **authorizer and token_metadata**
 
 ```bash
-cleos push action eosio.nft.ft issue.b '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 2, "amount": 1, "custom_data": ""}], "token_metadata":[{"meta_uri": "some-uri", "meta_hash": "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539"}], "memo": "token time", "authorizer": "auth.minter.account" }]' -p auth.minter.account@active
+cleos push action eosio.nft.ft issue.b '[{ "to": "to.user.acc", "token_configs": [{"token_factory_id": 2, "amount": 1, "custom_data": ""}], "token_metadata":[{"meta_uri": "some-uri", "meta_hash": "d5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539"}], "memo": "token time", "authorizer": "auth.minter.account", "maximum_uos_payment": null }]' -p auth.minter.account@active
 ```
 
 ## JavaScript - eosjs
@@ -148,14 +148,10 @@ await api.transact(
                                 amount: 1,
                                 custom_data: '',
                             },
-                        ],
-                        token_metadata: [
-                            {
-                                meta_uri: 'some-uri',
-                                meta_hash: 'd5768f8e2a7b1a8a9774dfb538e0a1928d0d9ac5f08bd781c21459b4308dc539',
-                            },
-                        ],
+                        ]
                         memo: 'token time',
+                        authorizer: null,
+                        maximum_uos_payment: '10.00000000 UOS'
                     },
                 },
             },
@@ -168,7 +164,7 @@ await api.transact(
 );
 ```
 
--   with **authorizer**
+-   with **authorizer and token_metadata**
 
 ```js
 await api.transact(
@@ -196,6 +192,7 @@ await api.transact(
                         ],
                         memo: 'token time',
                         authorizer: 'auth.minter.account',
+                        maximum_uos_payment: null
                     },
                 },
             },

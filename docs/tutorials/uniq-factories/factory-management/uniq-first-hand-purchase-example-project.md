@@ -19,7 +19,7 @@ Code is available here: https://github.com/ultraio/example-first-hand-purchase
 
 - If your project requires users to be able to get Uniqs in any way without having a backend then this example project can benefit you as it operates as a static website and interacts with Ultra Blockchain directly.
 
-- Since some of the settings of token factories are fixed during creation and cannot be changed you could utilize first-hand purchase functionality to let users exchange their token from existing factory to a new factory. This new factory could have different values for immutable settings (such as transferability window or tradeability window) and by exchanging a token you will effectively change those values.
+- Since some of the settings of Uniq factories are fixed during creation and cannot be changed you could utilize first-hand purchase functionality to let users exchange their Uniqs from existing factory to a new factory. This new factory could have different values for immutable settings (such as transferability window or tradeability window) and by exchanging a Uniq you will effectively change those values.
 
 ## How it works
 

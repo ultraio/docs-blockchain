@@ -1,13 +1,13 @@
 ---
-title: 'Uniq Swap Example Project'
+title: 'Uniq First-Hand Purchase Example Project'
 
 order: 4
 ---
 
 
-# Uniq Swap Example Project
+# Uniq First-Hand Purchase Example Project
 
-This page covers an example project that lets users swap their Uniqs using first hand purchase functionality. For installation instructions refer to the repository itself.
+This page covers an example project that lets users buy, swap or exchange their Uniqs using first hand purchase functionality. For installation instructions refer to the repository itself.
 
 Code is available here: https://github.com/ultraio/example-first-hand-purchase
 
@@ -18,6 +18,8 @@ Code is available here: https://github.com/ultraio/example-first-hand-purchase
 - Parts of the implementation can be extracted and reused as needed or you can simply update the code to your needs and deploy it as is.
 
 - If your project requires users to be able to get Uniqs in any way without having a backend then this example project can benefit you as it operates as a static website and interacts with Ultra Blockchain directly.
+
+- Since some of the settings of token factories are fixed during creation and cannot be changed you could utilize first-hand purchase functionality to let users exchange their token from existing factory to a new factory. This new factory could have different values for immutable settings (such as transferability window or tradeability window) and by exchanging a token you will effectively change those values.
 
 ## How it works
 

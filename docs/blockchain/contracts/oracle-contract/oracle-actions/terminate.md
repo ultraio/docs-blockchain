@@ -6,25 +6,29 @@ order: 99
 
 # terminate
 
-This action issues to `to` account a `quantity` of tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+Terminates the oracle contract removing all the stored data and returning to original state.
 
--   Parameters
+## Technical Behavior
 
-| Fields     | Type         | Description                                                       |
-| ---------- | ------------ | ----------------------------------------------------------------- |
-| `to`       | eosio::name  | The account to issue tokens to, it must be the same as the issuer |
-| `quantity` | eosio::asset | The amount of tokens to be issued                                 |
-| `memo`     | string       | The memo string to accompany the transaction                      |
+Will remove all table entries for `oraclestate`, `feeddata`, `feedcompl`, `finalrates` and `finalaverage` tables. This means that oracle must be initialized again after this action is executed as no data is preserved.
 
-Required Permissions: `issuer`
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
 
--   `cleos` Example
+## Action Parameters
 
-```shell script
-cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p eosio
+This action does not accept any parameters.
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle terminate '[]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -32,19 +36,15 @@ cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p e
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'issue',
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
                     authorization: [
                         {
-                            actor: 'eosio',
+                            actor: 'ultra.oracle',
                             permission: 'active',
                         },
                     ],
-                    data: {
-                        to: 'eosio',
-                        quantity: '100.00000000 UOS',
-                        memo: 'init',
-                    },
+                    data: {},
                 },
             ],
         },

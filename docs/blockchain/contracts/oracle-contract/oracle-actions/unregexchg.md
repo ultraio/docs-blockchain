@@ -6,25 +6,29 @@ order: 2
 
 # unregexchg
 
-This action issues to `to` account a `quantity` of tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+Unregister an existing exchange from the oracle contract.
 
--   Parameters
+## Technical Behavior
 
-| Fields     | Type         | Description                                                       |
-| ---------- | ------------ | ----------------------------------------------------------------- |
-| `to`       | eosio::name  | The account to issue tokens to, it must be the same as the issuer |
-| `quantity` | eosio::asset | The amount of tokens to be issued                                 |
-| `memo`     | string       | The memo string to accompany the transaction                      |
+Removes the exchange data from the `feeddata` table.
 
-Required Permissions: `issuer`
+Will also update `oraclestate` singleton to have new total number of registered conversion rate sources.
 
--   `cleos` Example
+## Action Parameters
 
-```shell script
-cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p eosio
+| Fields     | Type | Description                                 |
+| ---------- | ---- | ------------------------------------------- |
+| `exchange` | name | Name of the existing exchange to unregister |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle unregexchg '["ugateio"]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -32,18 +36,16 @@ cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p e
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'issue',
+                    account: 'eosio.oracle',
+                    name: 'unregexchg',
                     authorization: [
                         {
-                            actor: 'eosio',
+                            actor: 'ultra.oracle',
                             permission: 'active',
                         },
                     ],
                     data: {
-                        to: 'eosio',
-                        quantity: '100.00000000 UOS',
-                        memo: 'init',
+                        exchange: 'ugateio'
                     },
                 },
             ],

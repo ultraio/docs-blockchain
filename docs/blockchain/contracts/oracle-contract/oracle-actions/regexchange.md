@@ -6,26 +6,29 @@ order: 1
 
 # regexchange
 
-Allows `issuer` account to create a token in supply of `maximum_supply`. If validation is successful a new entry in `stat` table for token symbol scope gets created.
+Registers a new exchange in the oracle contract.
 
--   Parameters
+## Technical Behavior
 
-| Fields           | Type         | Description                                  |
-| ---------------- | ------------ | -------------------------------------------- |
-| `issuer`         | eosio::name  | The account that creates the token           |
-| `maximum_supply` | eosio::asset | The maximum supply set for the token created |
+Adds a new exchange to the `feeddata` table and initializes the cache to write conversion rates into during `pushrate`.
 
-Required Permissions: `eosio.token`
+Will also update `oraclestate` singleton to have new total number of registered conversion rate sources.
 
--   `cleos` Example
+## Action Parameters
 
-```shell script
-cleos push action eosio.token create '["eosio", "1000000000.00000000 UOS"]' -p eosio.token
-# For unlimited supply
-cleos push action eosio.token create '["eosio", "0.00000000 UOS"]' -p eosio.token@owner
+| Fields     | Type | Description                          |
+| ---------- | ---- | ------------------------------------ |
+| `exchange` | name | Name of the new exchange to register |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle regexchange '["ugateio"]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -33,17 +36,16 @@ cleos push action eosio.token create '["eosio", "0.00000000 UOS"]' -p eosio.toke
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'create',
+                    account: 'eosio.oracle',
+                    name: 'regexchange',
                     authorization: [
                         {
-                            actor: 'eosio.token',
-                            permission: 'owner',
+                            actor: 'ultra.oracle',
+                            permission: 'active',
                         },
                     ],
                     data: {
-                        issuer: 'eosio',
-                        maximum_supply: '1000000000.00000000 UOS',
+                        exchange: 'ugateio'
                     },
                 },
             ],

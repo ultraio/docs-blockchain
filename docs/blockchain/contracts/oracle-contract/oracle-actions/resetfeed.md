@@ -6,25 +6,33 @@ order: 7
 
 # resetfeed
 
-This action issues to `to` account a `quantity` of tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+Resets the feed data cache by scope.
 
--   Parameters
+## Technical Behavior
 
-| Fields     | Type         | Description                                                       |
-| ---------- | ------------ | ----------------------------------------------------------------- |
-| `to`       | eosio::name  | The account to issue tokens to, it must be the same as the issuer |
-| `quantity` | eosio::asset | The amount of tokens to be issued                                 |
-| `memo`     | string       | The memo string to accompany the transaction                      |
+For specified exchange will reset the `feeddata` table entry.
 
-Required Permissions: `issuer`
+When resetting the feed data the weight of the exchange (24 hours trading volume) will be set to 0 and all rates stored in `rates` array will also be set to 0.
 
--   `cleos` Example
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
 
-```shell script
-cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p eosio
+## Action Parameters
+
+| Fields     | Type                 | Description                                                                                                                                            |
+| ---------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `exchange` | std::optional\<name> | Name of the registered exchange which will be used as a scope for `feeddata` table. If `null` is provided it will instead use all registered exchanges |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle resetfeed '["ugateio"]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -32,18 +40,16 @@ cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p e
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'issue',
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
                     authorization: [
                         {
-                            actor: 'eosio',
+                            actor: 'ultra.oracle',
                             permission: 'active',
                         },
                     ],
                     data: {
-                        to: 'eosio',
-                        quantity: '100.00000000 UOS',
-                        memo: 'init',
+                        exchange: 'ugateio'
                     },
                 },
             ],

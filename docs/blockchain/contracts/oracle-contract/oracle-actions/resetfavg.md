@@ -6,25 +6,33 @@ order: 9
 
 # resetfavg - reset final average
 
-This action issues to `to` account a `quantity` of tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+Resets the final moving average by scope.
 
--   Parameters
+## Technical Behavior
 
-| Fields     | Type         | Description                                                       |
-| ---------- | ------------ | ----------------------------------------------------------------- |
-| `to`       | eosio::name  | The account to issue tokens to, it must be the same as the issuer |
-| `quantity` | eosio::asset | The amount of tokens to be issued                                 |
-| `memo`     | string       | The memo string to accompany the transaction                      |
+For specified `finalaverage` table scope the action will reset the moving average stored under this scope.
 
-Required Permissions: `issuer`
+When resetting the final average all values stored inside it will be set to 0 (`price`, `timestamp` and `moving_window_counter`).
 
--   `cleos` Example
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
 
-```shell script
-cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p eosio
+## Action Parameters
+
+| Fields        | Type     | Description                                                                                                                     |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `time_symbol` | std::optional\<symbol> | Symbol indicating the scope of the `finalaverage` table to reset. Must be either `4,SECONDS`, `4,MINUTES`, `4,HOURS` or `4,DAYS`. If `null` is specified instead all the possible scopes will be reset at once |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle purgefrates '["4,MINUTES"]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -32,18 +40,16 @@ cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p e
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'issue',
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
                     authorization: [
                         {
-                            actor: 'eosio',
+                            actor: 'ultra.oracle',
                             permission: 'active',
                         },
                     ],
                     data: {
-                        to: 'eosio',
-                        quantity: '100.00000000 UOS',
-                        memo: 'init',
+                        time_symbol: '4,MINUTES'
                     },
                 },
             ],

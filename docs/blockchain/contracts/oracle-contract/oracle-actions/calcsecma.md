@@ -10,7 +10,7 @@ Recalculates seconds level moving average. Refer to [this tutorial page](../../.
 
 ## Technical Behavior
 
-Instantly recalculates seconds level moving average in case it is outdated and there are new rates to recalculate it from.
+Immediately recalculates seconds level moving average in case it is outdated and there are new rates to recalculate it from.
 
 `moving_average_setting` must be a previously registered seconds level moving average (from scope `SECONDS` (or equivalent `.1docnmjch2p3`) of `finalaverage`).
 
@@ -45,7 +45,7 @@ cleos push action eosio.oracle calcsecma '["5.0000 SECONDS"]' -p your_user_accou
                         },
                     ],
                     data: {
-                        moving_average_setting: "5.0000 SECONDS"
+                        moving_average_setting: '5.0000 SECONDS'
                     },
                 },
             ],

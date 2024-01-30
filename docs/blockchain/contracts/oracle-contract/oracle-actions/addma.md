@@ -58,7 +58,7 @@ cleos push action eosio.oracle addma '[["60.0000 MINUTES", "12.5000 HOURS"]]' -p
                         },
                     ],
                     data: {
-                        final_moving_average_settings: ["60.0000 MINUTES", "12.5000 HOURS"]
+                        final_moving_average_settings: ['60.0000 MINUTES', '12.5000 HOURS']
                     },
                 },
             ],

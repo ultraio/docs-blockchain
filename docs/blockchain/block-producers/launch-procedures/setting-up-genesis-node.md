@@ -204,7 +204,7 @@ cleos push action eosio resvrambytes '["1073741824"]' -p ultra
 At this point, we will need to register accounts for our Block Producer partners. Our Block Producer partners will need to provide their account names as well as their public key. We will use the system contract to make new accounts from this point forward.
 
 ```typescript
-cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.0000 UOS" --stake-cpu "0.0000 UOS" --gift-ram-kbytes 4k -p ultra
+cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.00000000 UOS" --stake-cpu "0.00000000 UOS" --gift-ram-kbytes 4k -p ultra
 ```
 
 ## Resigning Genesis Account to Block Producers

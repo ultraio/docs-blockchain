@@ -6,25 +6,33 @@ order: 8
 
 # resetfrates - reset final rates
 
-This action issues to `to` account a `quantity` of tokens. `to` token balance will be opened if it does not exist and `eosio.token` will pay for RAM usage.
+Resets the final rates cache and moving average by scope.
 
--   Parameters
+## Technical Behavior
 
-| Fields     | Type         | Description                                                       |
-| ---------- | ------------ | ----------------------------------------------------------------- |
-| `to`       | eosio::name  | The account to issue tokens to, it must be the same as the issuer |
-| `quantity` | eosio::asset | The amount of tokens to be issued                                 |
-| `memo`     | string       | The memo string to accompany the transaction                      |
+For specified scope will reset the `finalrates` table entry.
 
-Required Permissions: `issuer`
+When resetting the final rates entry the action will set the index pointing to the current value to out-of-bounds value (default), will clear the averaged rates and will also reset the rolling moving average.
 
--   `cleos` Example
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
 
-```shell script
-cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p eosio
+## Action Parameters
+
+| Fields  | Type                     | Description                                                                                                                                         |
+| ------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scope` | std::optional\<uint64_t> | Level of `finalrates` table to reset. 0 - seconds, 1 - minutes, 2 - hours, 3 - days. If `null` is provided it will instead reset all scopes at once |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle resetfrates '[1]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -32,18 +40,16 @@ cleos push action eosio.token issue '["eosio", "100.00000000 UOS", "init"]' -p e
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'issue',
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
                     authorization: [
                         {
-                            actor: 'eosio',
+                            actor: 'ultra.oracle',
                             permission: 'active',
                         },
                     ],
                     data: {
-                        to: 'eosio',
-                        quantity: '100.00000000 UOS',
-                        memo: 'init',
+                        scope: 1
                     },
                 },
             ],

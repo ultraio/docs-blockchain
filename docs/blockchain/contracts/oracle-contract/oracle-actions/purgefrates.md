@@ -6,24 +6,27 @@ order: 4
 
 # purgefrates - purge final rates
 
-The opposite for create action, if all validations succeed, it debits the `stat` table supply amount.
+Clears all the entries from specified scope of `finalrates` table.
 
--   Parameters
+## Technical Behavior
 
-| Fields     | Type         | Description                                  |
-| ---------- | ------------ | -------------------------------------------- |
-| `quantity` | eosio::asset | The quantity of tokens to retire             |
-| `memo`     | string       | The memo string to accompany the transaction |
+Will remove all the rates from `finalrates` and reset the index pointing to the latest entry. Size of the `rates` cache will be left unchanged.
 
-Required Permissions: `issuer`
+## Action Parameters
 
--   `cleos` Example
+| Fields  | Type     | Description                                                                                                                     |
+| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `scope` | uint64_t | Scope of `finalrates` table. Value corrseponds to one of the possible time units: 0 - seconds, 1 - minutes, 2 - hours, 3 - days |
 
-```shell script
-cleos push action eosio.token retire '["100.00000000 UOS", "burn"]' -p eosio
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle purgefrates '[0]' -p ultra.oracle
 ```
 
--   `eos-js` Example
+## JavaScript - eosjs
 
 ```typescript
 (async () => {
@@ -31,17 +34,16 @@ cleos push action eosio.token retire '["100.00000000 UOS", "burn"]' -p eosio
         {
             actions: [
                 {
-                    account: 'eosio.token',
-                    name: 'retire',
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
                     authorization: [
                         {
-                            actor: 'eosio',
+                            actor: 'ultra.oracle',
                             permission: 'active',
                         },
                     ],
                     data: {
-                        quantity: '100.00000000 UOS',
-                        memo: 'burn',
+                        scope: 0
                     },
                 },
             ],

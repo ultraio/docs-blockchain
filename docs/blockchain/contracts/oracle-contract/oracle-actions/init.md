@@ -10,12 +10,11 @@ Initializes tables and values for oracle contract to be able to start normal ope
 
 ## Technical Behavior
 
-uint8_t interval, uint32_t cache_window, std::vector<uint32_t> final_price_table_size,
-         std::vector<asset> final_moving_average_settings, uint32_t ultra_comprehensive_rate_weight
+Will initialize `oraclestate` singleton and `feeddata`, `finalrates` and `finalaverage` tables.
 
-Instantly recalculates seconds level moving average in case it is outdated and there are new rates to recalculate it from.
+Values for `interval`, `cache_window` and `ultra_comprehensive_rate_weight` provided will be ignored but must be specified in the interface.
 
-`moving_average_setting` must be a previously registered seconds level moving average (from scope `SECONDS` (or equivalent `.1docnmjch2p3`) of `finalaverage`).
+`final_price_table_size` must have 4 elements, each corresponding to a different time unit (seconds, minutes, hours and days).
 
 ## Action Parameters
 
@@ -55,7 +54,7 @@ cleos push action eosio.oracle init '[1, 60, [240, 360, 240, 365], ["1.0000 MINU
                         interval: 1,
                         cache_window: 60,
                         final_price_table_size: [240, 360, 240, 365],
-                        final_moving_average_settings: ["1.0000 MINUTES","60.0000 MINUTES","24.0000 HOURS","7.0000 DAYS","14.0000 DAYS"],
+                        final_moving_average_settings: ['1.0000 MINUTES','60.0000 MINUTES','24.0000 HOURS','7.0000 DAYS','14.0000 DAYS'],
                         ultra_comprehensive_rate_weight: 0
                     },
                 },

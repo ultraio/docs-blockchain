@@ -15,9 +15,9 @@ To see details about the way oracle calculates the conversion rate and moving av
 For broader overview visit [oracle tables structure page](../../blockchain/contracts/oracle-contract/oracle-tables.md)
 
 When working with oracle you will most likely be interested in one of the 3 following tables:
-- `finalaverage`
-- `lastknwnrate`
-- `finalrates`
+- [`finalaverage`](../../blockchain/contracts/oracle-contract/oracle-tables.md#finalaverage)
+- [`lastknwnrate`](../../blockchain/contracts/oracle-contract/oracle-tables.md#lastknwnrate)
+- [`finalrates`](../../blockchain/contracts/oracle-contract/oracle-tables.md#finalrates)
 
 ### Using finalaverage
 

@@ -6,42 +6,26 @@ oultine: [0,5]
 
 # How to validate and refresh moving average
 
-Creating an account for development with Ultra.io is situational. You only need a developer account if you're dealing with smart contracts, and transactions. In that case continue forward with this brief tutorial.
+Conversion rates received from the oracle have a timestamp associated with them. It is important to always validate that timestamp to make sure the rates are not outdated and represent a reasonable up-to-date conversion rate.
 
-## Video Tutorial
+## When the moving average can be considered valid
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zOmt-aYUJjI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+Depending on your business use case you may consider different conditions for when to consider the moving average valid or not. The two key metrics you could utilize are as follows:
+- Timestamp of the moving average (or a conversion rate)
+- Number of samples used to calculate the specific moving average
 
-## Generate a Key Pair
+For timestamp you must be cautious of the fact that oracle updates conversion rates and moving averages only at the end of the minute / hour or day. For seconds level moving average there is a manual trigger explained in the next section. This means that if you look at the 1 minute moving average it will be updated once a minute, 60 minutes moving average - also once a minute (note that oracle makes a distinction here between 60 minutes and 1 hour), 1 hour moving average - once an hour.
 
-First you'll need need a private and public key. If you're going into production, do not use this key generator. See [how to generate a keypair](./how-to-generate-a-keypair.md) for additional information.
+Simple guideline for timestamp you could follow is to double the unit of time used by the moving average (e.g. 2 minutes, 2 hours or 2 days). NFT contract for example allows moving averages to be up to 30 minutes old.
 
-After obtaining a keypair, write it down somewhere safe. You are going to need it later.
+Property `moving_window_counter` inside moving average data structure stores the number of entries used to calculate the moving average. If you compare it against the expected number (divide `param` of the moving average by 10000 to get the expected window size) you should be able to have a metric to determine if there were any gaps in the conversion rates stream. Note that this property may change over time so we advise it to only use as a reference and not as a strict value to build the rules around.
 
-<KeyGenerator />
+## Updating seconds level moving average
 
-## Visit Test Network Faucet
+For details on using the action see [`calcsecma`](../../blockchain/contracts/oracle-contract/oracle-actions/calcsecma.md)
 
-Visit the link below to open our faucet application.
+During normal oracle operation the moving average at the seconds level is not updated automatically and no Ultra smart contract is currently relying on them. You can manually issue the `calcsecma` from any account you have to recalculate them (thus updating the conversion rate and the timestamp inside `finalaverage` table).
 
-* https://faucet.testnet.app.ultra.io
+Moving averages located at other scopes of the `finalaverage` table are updated automatically when new rates appear in the oracle. There is no need or way for you to update them yourself.
 
-1. Click `Account Creator`
-2. Paste your `Public Key` in the owner and active fields
-3. Fill the Captcha
-4. Click Create Account
-5. Write down the **Account Name** that was returned
-
-![](./images/create-account.png)
-
-![](./images/account-name.png)
-
-## Lookup Your Account
-
-Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
-
-<AccountLookupTestnet />
-
-## All Done!
-
-You now have a development account for our test network.
+In case the moving averages provided are not enough please give us a feedback using the [feedback form](../../feedback/index.md)

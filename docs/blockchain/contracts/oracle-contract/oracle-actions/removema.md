@@ -12,6 +12,8 @@ Removes existing moving averages from the oracle contract.
 
 Moving averages specified must be previously registered using [`addma`](./addma.md).
 
+Table entries will be removed from `finalaverage` table.
+
 ## Action Parameters
 
 | Fields                          | Type                       | Description                                |

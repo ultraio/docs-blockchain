@@ -12,6 +12,10 @@ Clears all the entries from specified scope of `finalrates` table.
 
 Will remove all the rates from `finalrates` and reset the index pointing to the latest entry. Size of the `rates` cache will be left unchanged.
 
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
+
 ## Action Parameters
 
 | Fields  | Type     | Description                                                                                                                     |

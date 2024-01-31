@@ -14,6 +14,8 @@ Adds a new exchange to the `feeddata` table and initializes the cache to write c
 
 Will also update `oraclestate` singleton to have new total number of registered conversion rate sources.
 
+Total number of registered exchanges is limited to a 100 to prevent accidentally causing overflow during oracle moving average calculations.
+
 ## Action Parameters
 
 | Fields     | Type | Description                          |

@@ -814,7 +814,7 @@ Ultra will then create the Block Producers' accounts with the Block Producer’s
 Once this is done; Ultra can use the following command to create an account for them.
 
 ```typescript
-cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.0000 UOS" --stake-cpu "0.0000 UOS" --gift-ram-kbytes <determine_kbytes_to_buy> -p ultra --ultra-id <ultra_id>
+cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.00000000 UOS" --stake-cpu "0.00000000 UOS" --gift-ram-kbytes <determine_kbytes_to_buy> -p ultra --ultra-id <ultra_id>
 ```
 
 Block Producers must be registered through Ultra and will need to synchronize their chains up with the genesis nodeos. Once synchronized and the Block Producer is receiving blocks successfully, they can request for Ultra to register them on the network.
@@ -1078,7 +1078,7 @@ cleos push action eosio resvrambytes '["1073741824"]' -p ultra
 At this point, we will need to register accounts for our Block Producer partners. Our Block Producer partners will need to provide their account names as well as their public key. We will use the system contract to make new accounts from this point forward.
 
 ```typescript
-cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.0000 UOS" --stake-cpu "0.0000 UOS" --gift-ram-kbytes 4k -p ultra
+cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.00000000 UOS" --stake-cpu "0.00000000 UOS" --gift-ram-kbytes 4k -p ultra
 ```
 
 ## Resigning Genesis Account to Block Producers
@@ -7929,6 +7929,959 @@ const demo = () => {
 
 demo()
 ```
+---
+title: 'How does oracle contract calculate UOS conversion rate'
+order: 1
+oultine: [0,5]
+---
+
+# How does oracle contract calculate UOS conversion rate
+
+On-chain UOS conversion oracle contract is required to process conversion rates from multiple possible registered exchanges and needs to provide accurate information and on top of that needs to be resilient to gaps in data and potential deviation.
+
+## Updating `feeddata` of associated exchange
+
+When `pushrate` action is executed the oracle will update the `feeddata` table to add the new rate pushed by the exchange to the cache. Each exchange has a dedicated cache for rates which is later used for calculating the moving averages.
+
+## Calculating moving average for `finalrates` table
+
+When UTC minute changes (so 60 seconds have passed) the oracle will finalize the accumulated rates when the next `pushrate` occurs.
+
+During the finalization process the oracle will perform outlier detection for the rates received from exchanges and will calculate the weighted average based on the 24 hours trading volume of each exchange. Calculated value in this way is considered a 1 minute moving average and is inserted into the `finalrates` table for level 1 (minutes) and will update the `rolling_moving_average` stored there.
+
+Oracle utilizes median absolute deviation algorithm to detect and reject outliers from the available set of conversion rates from different exchanges.
+
+Another finalization step occurs at the end of each UTC hour and day. The oracle will use the moving average stored in `rolling_moving_average` for level 1 (minutes) of `finalrates` table to update the level 2 (hours) of `finalrates` table each hour. And it will do a similar update between level 2 (hours) and level 3 (days) at the end of each day. In the process the rates and `rolling_moving_average` of the `finalrates` table will be update.
+
+For each exchange oracle stores 2 sets of 60 seconds worth of conversion rates. After the finalization the `feeddata` table will be updated to delete the oldest set of rates (located at the bottom half of the 120 elements array).
+
+## Updating moving averages stored in `finalaverage` table
+
+During each finalization step done by the oracle (either for minutes, hours or days levels) the oracle will additionally update moving averages stored in `finalaverage` table at the associated level. This means that when level 1 of `finalrates` is updated the `finalaverage` table at the scope of `MINUTES` will also be updated. Similar for 2 - `HOURS` and 3 - `DAYS`.
+
+## Handling gaps in data
+
+In case there were no rates provided to the oracle contract the next time any rate appears from any of the exchanges the oracle will perform the calculations based on the available rates only. In case there is not enough rates to calculate the 1 minute average - it will be skipped. Similar thing is done for hours and days - in case there is a large gap in data the moving averages will be left unchanged.
+
+You can utilize the timestamp to figure out how old the moving average is and whether you can consider it up-to-date or outdated. For more details see [this section](../../../tutorials/oracle/how-to-validate-and-refresh-moving-average.md#when-the-moving-average-can-be-considered-valid)
+
+## Updating seconds moving averages on demand
+
+To trigger the update it is necessary to manually execute the [`calcsecma`](./oracle-actions/calcsecma.md) action.
+
+When the action is executed it will retrieve the most recent rates from the `feeddata` table for all exchanges, will perform outlier detection and will calculate the weighted average based on the 24 hours trading volume for each exchange. This step is done for multiple `feeddata` entries based on the window size of the moving average that is updated.
+
+After the update the moving average stored at the `SECONDS` level of the `finalaverage` table will be updated.
+---
+title: 'Oracle Contract Overview'
+order: -99
+
+---
+
+# Oracle Contract
+
+## Overview
+
+`eosio.oracle` contract is responsible for processing conversion rates from USD to UOS, calculating moving averages for this conversion and storing it inside on-chain tables.
+
+Oracle infrastructure is owned and managed by Ultra but anyone else can freely access the conversion rates stored in the tables to utilize in your own business logic.
+
+## Contract features
+
+- Supports multiple exchanges to process rates from
+- Exchanges weighted based on the 24 hours trading volume
+- Outlier detection removes likely anomalies from the conversion rates
+- Supports variety of moving averages with windows ranging from couple seconds up to a couple of days
+- Each conversion rate and moving average has an associated timestamp for validation purposes
+
+## Tutorials
+
+- [UOS conversion rate is calculation](./how-does-oracle-contract-calculate-uos-conversion-rate.md)
+    - Read this guide to better understand how the USD to UOS conversion rate is calculated
+- [Reading UOS conversion rate](../../../tutorials/oracle/how-to-get-uos-conversion-rate.md)
+    - This tutorial covers how to access and read conversion rates and averages from the Oracle contract
+- [Validating moving averages](../../../tutorials/oracle/how-to-validate-and-refresh-moving-average.md)
+    - This page covers the validation and seconds level moving average refresh operation
+- [Oracle contract tables](./oracle-tables.md)
+    - If you already went through the tutorial to access conversion rates from the Oracle contract then you can also refer to this page for deeper understanding of the contract table structure
+
+## Use Cases
+
+Oracle contract is used or can be used in following scenarios
+
+- Any contract logic that requires converting USD to UOS
+- Any contract logic that requires the trend or average data for UOS price
+- BP payouts for blocks produced
+- NFT first-hand and second-hand pricing calculation that is done through USD and converted to UOS
+- NFT RAM payment conversion from bytes to USD to UOS
+- Non-EBA account creation price conversion from USD to UOS
+---
+title: 'addma'
+order: 3
+
+---
+
+# addma - add moving average
+
+Registers new moving averages to the oracle contract.
+
+## Technical Behavior
+
+Moving average must be specified as a 4 digit precision asset with following symbol codes allowed:
+
+- `SECONDS`
+- `MINUTES`
+- `HOURS`
+- `DAYS`
+
+Window size cannot exceed the table size configured during initialization.
+
+If the fractional part of the moving average is 0 then it will be used to calculate the SMA with specified number of time units (e.g. 60 minutes SMA, 12 hours SMA, etc.)
+
+If the fractional part of the moving average is not 0 then it will be considered as EMA, the fractional part will be used as alpha parameter of EMA (e.g. 12.5000 hours EMA is an EMA with alpha parameter of 0.5, the decimal part 12 is mostly ignored)
+
+::: warning
+EMA is currently not used and will likely be deprecated and removed
+:::
+
+## Action Parameters
+
+| Fields                          | Type                       | Description                             |
+| ------------------------------- | -------------------------- | --------------------------------------- |
+| `final_moving_average_settings` | std::vector\<eosio::asset> | List of new moving averages to register |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle addma '[["60.0000 MINUTES", "12.5000 HOURS"]]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'addma',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        final_moving_average_settings: ['60.0000 MINUTES', '12.5000 HOURS']
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'calcsecma'
+order: 6
+
+---
+
+# calcsecma - calculate seconds moving average
+
+Recalculates seconds level moving average. Refer to [this tutorial page](../../../../tutorials/oracle/how-to-validate-and-refresh-moving-average.md) to read on use case for this action.
+
+## Technical Behavior
+
+Immediately recalculates seconds level moving average in case it is outdated and there are new rates to recalculate it from.
+
+`moving_average_setting` must be a previously registered seconds level moving average (from scope `SECONDS` (or equivalent `.1docnmjch2p3`) of `finalaverage`).
+
+## Action Parameters
+
+| Fields                   | Type         | Description                           |
+| ------------------------ | ------------ | ------------------------------------- |
+| `moving_average_setting` | eosio::asset | Second level moving average to update |
+
+Required Permissions: none
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle calcsecma '["5.0000 SECONDS"]' -p your_user_account
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'calcsecma',
+                    authorization: [
+                        {
+                            actor: 'your_user_account',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        moving_average_setting: '5.0000 SECONDS'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'init'
+order: 0
+
+---
+
+# init - initialize oracle contract
+
+Initializes tables and values for oracle contract to be able to start normal operation.
+
+## Technical Behavior
+
+Will initialize `oraclestate` singleton and `feeddata`, `finalrates` and `finalaverage` tables.
+
+Values for `interval`, `cache_window` and `ultra_comprehensive_rate_weight` provided will be ignored but must be specified in the interface.
+
+`final_price_table_size` must have 4 elements, each corresponding to a different time unit (seconds, minutes, hours and days).
+
+## Action Parameters
+
+| Fields                            | Type                       | Description                                                                                                                                                           |
+| --------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `interval`                        | uint8_t                    | Will be forced to be 1. This means that rates are expected to be pushed to the oracle once every 1 second                                                             |
+| `cache_window`                    | uint32_t                   | Will be forced to be 60. This means that for each exchange 60 seconds of rates will be stored in a rotating bucket                                                    |
+| `final_price_table_size`          | std::vector\<eosio::asset> | Cache size for individual oracle time unit levels (first element is for seconds level, second for minutes, third for hours, fourth for days). Capped at 365 per level |
+| `final_moving_average_settings`   | std::vector\<eosio::asset> | List of moving averages to register by default. Refer to [addma](./addma.md) for details                                                                              |
+| `ultra_comprehensive_rate_weight` | uint32_t                   | Unused, but must be provided                                                                                                                                          |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle init '[1, 60, [240, 360, 240, 365], ["1.0000 MINUTES","60.0000 MINUTES","24.0000 HOURS","7.0000 DAYS","14.0000 DAYS"], 1]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'init',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        interval: 1,
+                        cache_window: 60,
+                        final_price_table_size: [240, 360, 240, 365],
+                        final_moving_average_settings: ['1.0000 MINUTES','60.0000 MINUTES','24.0000 HOURS','7.0000 DAYS','14.0000 DAYS'],
+                        ultra_comprehensive_rate_weight: 0
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'purgefrates'
+order: 4
+
+---
+
+# purgefrates - purge final rates
+
+Clears all the entries from specified scope of `finalrates` table.
+
+## Technical Behavior
+
+Will remove all the rates from `finalrates` and reset the index pointing to the latest entry. Size of the `rates` cache will be left unchanged.
+
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
+
+## Action Parameters
+
+| Fields  | Type     | Description                                                                                                                     |
+| ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `scope` | uint64_t | Scope of `finalrates` table. Value corrseponds to one of the possible time units: 0 - seconds, 1 - minutes, 2 - hours, 3 - days |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle purgefrates '[0]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        scope: 0
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'pushrate'
+order: 5
+
+---
+
+# pushrate
+
+Pushes a new USD to UOS exchange rate and latest 24 hours trading volume information to the oracle contract.
+
+## Technical Behavior
+
+Exchange used in the action must be one of the registered exchanges (see [regexchange](./regexchange.md)).
+
+Timestamp for exchange rate must be at most 120 seconds older or 15 seconds ahead of the current chain time.
+
+The action will update `feeddata` entry for the specified exchange writing the information about the new rate pushed. Will also update `oraclestate` to indicate the new latest rate timestamp and `lastknwnrate` singleton in case rate received is newer than the previous one.
+
+In case the new rate has different UTC minute compared to the latest rate the finalization procedure will start which will calculate the SMA for 1 minute period using all the rates supplied in the last 60 seconds. All minute level averages defined in `finalaverage` table will also be updated. Similar procedure occurs when different UTC hour or UTC day starts.
+
+For more details on logic and calculations see [this page](../how-does-oracle-contract-calculate-uos-conversion-rate.md)
+
+## Action Parameters
+
+| Fields     | Type               | Description                                                                                                                                                               |
+| ---------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `exchange` | name               | Name of the exchange registered in the oracle contract                                                                                                                    |
+| `rates`    | std::vector\<rate> | Exchange rate received from the exchange. Must have a single value                                                                                                        |
+| `volume`   | eosio::asset       | 24 hour trading volume for only the specified exchange. Symbol must match `trading_volume_symbol` in [`oraclestate`](../oracle-tables.md#oraclestate) (8 digit USD by default) |
+
+`rate` type is defined as follows:
+
+| `rate` fields | Type         | Description                                                                                                                                         |
+| ------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `timestamp`   | uint64_t     | UTC timestamp of the rate received from the exchange. Specified in seconds                                                                          |
+| `price`       | eosio::asset | UOS to USD conversion rate. Symbol must match `trading_volume_symbol` in [`oraclestate`](../oracle-tables.md#oraclestate) (8 digit DUOS by default) |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle pushrate '["ugateio", [[1706615754, "0.17900000 DUOS"]], "50149.76699157 USD"]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'pushrate',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        exchange: 'ugateio',
+                        rates: [{timestamp: 1706615754, price: '0.17900000 DUOS'}],
+                        volume: '50149.76699157 USD'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'regexchange'
+order: 1
+
+---
+
+# regexchange
+
+Registers a new exchange in the oracle contract.
+
+## Technical Behavior
+
+Adds a new exchange to the `feeddata` table and initializes the cache to write conversion rates into during `pushrate`.
+
+Will also update `oraclestate` singleton to have new total number of registered conversion rate sources.
+
+Total number of registered exchanges is limited to a 100 to prevent accidentally causing overflow during oracle moving average calculations.
+
+## Action Parameters
+
+| Fields     | Type | Description                          |
+| ---------- | ---- | ------------------------------------ |
+| `exchange` | name | Name of the new exchange to register |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle regexchange '["ugateio"]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'regexchange',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        exchange: 'ugateio'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'removema'
+order: 4
+
+---
+
+# removema - remove moving average
+
+Removes existing moving averages from the oracle contract.
+
+## Technical Behavior
+
+Moving averages specified must be previously registered using [`addma`](./addma.md).
+
+Table entries will be removed from `finalaverage` table.
+
+## Action Parameters
+
+| Fields                          | Type                       | Description                                |
+| ------------------------------- | -------------------------- | ------------------------------------------ |
+| `final_moving_average_settings` | std::vector\<eosio::asset> | List of existing moving averages to remove |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle addma '[["60.0000 MINUTES", "12.5000 HOURS"]]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'addma',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        final_moving_average_settings: ['60.0000 MINUTES', '12.5000 HOURS']
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'resetfavg'
+order: 9
+
+---
+
+# resetfavg - reset final average
+
+Resets the final moving average by scope.
+
+## Technical Behavior
+
+For specified `finalaverage` table scope the action will reset the moving average stored under this scope.
+
+When resetting the final average all values stored inside it will be set to 0 (`price`, `timestamp` and `moving_window_counter`).
+
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
+
+## Action Parameters
+
+| Fields        | Type     | Description                                                                                                                     |
+| ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `time_symbol` | std::optional\<symbol> | Symbol indicating the scope of the `finalaverage` table to reset. Must be either `4,SECONDS`, `4,MINUTES`, `4,HOURS` or `4,DAYS`. If `null` is specified instead all the possible scopes will be reset at once |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle purgefrates '["4,MINUTES"]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        time_symbol: '4,MINUTES'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'resetfeed'
+order: 7
+
+---
+
+# resetfeed
+
+Resets the feed data cache by scope.
+
+## Technical Behavior
+
+For specified exchange will reset the `feeddata` table entry.
+
+When resetting the feed data the weight of the exchange (24 hours trading volume) will be set to 0 and all rates stored in `rates` array will also be set to 0.
+
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
+
+## Action Parameters
+
+| Fields     | Type                 | Description                                                                                                                                            |
+| ---------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `exchange` | std::optional\<name> | Name of the registered exchange which will be used as a scope for `feeddata` table. If `null` is provided it will instead use all registered exchanges |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle resetfeed '["ugateio"]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        exchange: 'ugateio'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'resetfrates'
+order: 8
+
+---
+
+# resetfrates - reset final rates
+
+Resets the final rates cache and moving average by scope.
+
+## Technical Behavior
+
+For specified scope will reset the `finalrates` table entry.
+
+When resetting the final rates entry the action will set the index pointing to the current value to out-of-bounds value (default), will clear the averaged rates and will also reset the rolling moving average.
+
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
+
+## Action Parameters
+
+| Fields  | Type                     | Description                                                                                                                                         |
+| ------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `scope` | std::optional\<uint64_t> | Level of `finalrates` table to reset. 0 - seconds, 1 - minutes, 2 - hours, 3 - days. If `null` is provided it will instead reset all scopes at once |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle resetfrates '[1]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        scope: 1
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'terminate'
+order: 99
+
+---
+
+# terminate
+
+Terminates the oracle contract removing all the stored data and returning to original state.
+
+## Technical Behavior
+
+Will remove all table entries for `oraclestate`, `feeddata`, `feedcompl`, `finalrates` and `finalaverage` tables. This means that oracle must be initialized again after this action is executed as no data is preserved.
+
+::: info
+This action is meant to be used for diagnostics, debugging or fixing purposes only. It should not be used during normal oracle operation.
+:::
+
+## Action Parameters
+
+This action does not accept any parameters.
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle terminate '[]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'purgefrates',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {},
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'unregexchg'
+order: 2
+
+---
+
+# unregexchg
+
+Unregister an existing exchange from the oracle contract.
+
+## Technical Behavior
+
+Removes the exchange data from the `feeddata` table.
+
+Will also update `oraclestate` singleton to have new total number of registered conversion rate sources.
+
+## Action Parameters
+
+| Fields     | Type | Description                                 |
+| ---------- | ---- | ------------------------------------------- |
+| `exchange` | name | Name of the existing exchange to unregister |
+
+Required Permissions: `ultra.oracle`
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.oracle unregexchg '["ugateio"]' -p ultra.oracle
+```
+
+## JavaScript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.oracle',
+                    name: 'unregexchg',
+                    authorization: [
+                        {
+                            actor: 'ultra.oracle',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        exchange: 'ugateio'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+---
+title: 'Oracle Tables'
+order: 0
+
+---
+
+# Oracle Tables
+
+## feeddata
+
+-   Table: `feeddata`
+-   Code: `eosio.oracle`
+-   Scope: `eosio.oracle`
+-   Key: `source`
+
+The table contains conversion rate cache and weight for individual exchanges.
+
+| Fields      | Type                   | Description                                                                                                                                                 |
+| ----------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| source      | name                   | Name of the registered exchange                                                                                                                             |
+| rates       | std::vector\<uint64_t> | Cached rates pushed by this exchange. Value stored is `amount` from the conversion rate `asset` type                                                        |
+| weight      | uint64_t               | Weight of the exchange for the purpose of calculating weighted average between exchanges. It is equal to the last 24 hours trading volume for this exchange |
+| source_type | uint8_t                | Unused                                                                                                                                                      |
+
+Most relevant actions: **regexchange, unregexchg**
+
+## oraclestate
+
+-   Table: `oraclestate`
+-   Code: `eosio.oracle`
+-   Scope: `eosio.oracle`
+
+This singleton contains common values used by oracle during it's operation.
+
+| Fields                          | Type     | Description                                                                                  |
+| ------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
+| conversion_rate_symbol          | symbol   | Symbol used for conversion rates `asset` type pushed by exchanges. Default value is `8,DUOS` |
+| trading_volume_symbol           | symbol   | Symbol used for validation of the 24 hours trading volume asset. Default value is `8,USD`    |
+| latest_timestamp                | uint64_t | Stores the most recent timestamp extracted from the rates pushed by the exchanges            |
+| interval                        | uint8_t  | Interval enforced between rates pushed to the oracle. Forced to be 1 during initialization   |
+| cache_window                    | uint8_t  | Time window for exchanges/source to push the rates. Forced to be 60 during initialization    |
+| registered_sources              | uint32_t | Total number of exchange/sources registered                                                  |
+| ultra_comprehensive_rate_weight | uint32_t | Unusued |
+
+Most relevant actions: **init**
+
+## feedcompl
+
+This table is deprecated and is not currently in use.
+
+## finalaverage
+
+-   Table: `finalaverage`
+-   Code: `eosio.oracle`
+-   Scope: `time symbol_code`
+-   Key: `param`
+
+The table contains moving averages for specified time units and windows.
+
+Possible scopes for `finalaverage table`
+- `SECONDS` (or `.1docnmjch2p3`)
+- `MINUTES` (or `.1doep2pdt4oh`)
+- `HOURS` (or `.....oumepboc`)
+- `DAYS` (or `......2nf5.o4`)
+
+| Fields                | Type     | Description                                                                                          |
+| --------------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| average               | rate     | Calculated moving average with a timestamp corresponding to the latest update                        |
+| is_valid_deprecated   | bool     | Unused                                                                                               |
+| param                 | uint64_t | Stores the window size and EMA alpha coefficient. See [addma](./oracle-actions/addma.md) for details |
+| moving_window_counter | uint8_t  | Incremental counter which is used to track how many values were accumulated by the moving average    |
+| unit                  | uint8_t  | Unused. Forced to be 1 |
+
+Most relevant actions: **pushrate**
+
+## finalrates
+
+-   Table: `finalrates`
+-   Code: `eosio.oracle`
+-   Scope: `0 (seconds) / 1 (minutes) / 2 (hours) / 3 (days)`
+
+The table contains intermediate values and calculated moving averages to be used for updating `finalaverage` table entries.
+
+| Fields                 | Type                | Description                                                                                                                                                                                                                                                         |
+| ---------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| index                  | uint64_t            | Index pointing to the latest value in the `rates` vector that was updated                                                                                                                                                                                           |
+| rates                  | std::vector\<urate> | Cached rates calculated based on rates pushed by exchanges or calculated from `rolling_moving_average` of the previous scope of `finalrates`. Value stored is a pair of the timestamp of calculated conversion rate and associated price stored as unsigned integer |
+| rolling_moving_average | moving_average_impl | Refer to `finalaverage` table to see the structure of this type. This moving average is used to populate the `rates` vector of `finalrates` with scope one higher than the current one                                                                              |
+
+Most relevant actions: **pushrate**
+
+## lastknwnrate
+
+-   Table: `lastknwnrate`
+-   Code: `eosio.oracle`
+-   Scope: `eosio.oracle`
+
+Stores the latest conversion rate pushed from any exchange.
+
+| Fields      | Type        | Description                                                                                                             |
+| ----------- | ----------- | ----------------------------------------------------------------------------------------------------------------------- |
+| source      | eosio::name | Name of the exchange that was the last to push the new rate                                                             |
+| latest_rate | rate        | Pair of `asset` storing the conversion rate of USD to UOS and a `uint64_t` UTC timestamp when this last rate was pushed |
+
 ---
 title: 'Data Structures Overview'
 order: 6
@@ -22315,6 +23268,264 @@ General tutorials to help feed your curiosity.
 
 
 ---
+title: 'How to get UOS conversion rate'
+order: 0
+oultine: [0,5]
+---
+
+# How to get UOS conversion rate
+
+Oracle contract allows to retrieve USD to UOS conversion rates from the chain or utilize it in your smart contract to perform the necessary logic. This tutorial will explain those two use cases and provide examples on how to get the conversion rate.
+
+To see details about the way oracle calculates the conversion rate and moving averages see [this page](../../blockchain/contracts/oracle-contract/how-does-oracle-contract-calculate-uos-conversion-rate.md)
+
+## General layout of the oracle data
+
+For broader overview visit [oracle tables structure page](../../blockchain/contracts/oracle-contract/oracle-tables.md)
+
+When working with oracle you will most likely be interested in one of the 3 following tables:
+- [`finalaverage`](../../blockchain/contracts/oracle-contract/oracle-tables.md#finalaverage)
+- [`lastknwnrate`](../../blockchain/contracts/oracle-contract/oracle-tables.md#lastknwnrate)
+- [`finalrates`](../../blockchain/contracts/oracle-contract/oracle-tables.md#finalrates)
+
+### Using finalaverage
+
+`finalaverage` should be used in case you want to utilize one of the available moving averages already calculated by the oracle contract. For the list of available moving averages see: [for seconds](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=SECONDS&tableName=finalaverage), [for minutes](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=MINUTES&tableName=finalaverage), [for hours](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=HOURS&tableName=finalaverage), [for days](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=SECONDS&tableName=finalaverage).
+
+To know the actual window utilized by moving averages in the data you see you need to take the `Param` value (e.g. 600000) and divide it by 10000 (so 60). And if then check the scope you used to find this moving average (e.g. `MINUTES`). So in the example provided it means the moving average is calculated over the window of 60 minutes.
+
+When you've found the moving average you are interested in then just utilize the `average` field stored in the table to get USD to UOS conversion rate (denoted as DUOS symbol) and the associated timestamp.
+
+### Using lastknwnrate
+
+`lastknwnrate` stores a single latest rate received by the oracle contract. It can be useful in case you want to have a quick reference regarding the conversion rate and don't specifically want to know the average over a period of time or look through all the possible exchange that are pushing the rates.
+
+[View in block explorer](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=eosio.oracle&tableName=lastknwnrate)
+
+### Using finalrates
+
+`finalrates` contains some of the historical information about the conversion rates and it is useful in case you need the previous values for 1 minute, 1 hour or 1 day moving average.
+
+The scope used for `finalrates` table determines the unit of time you are looking at: [1 - minutes](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=1&tableName=finalrates), [2 - hours](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=2&tableName=finalrates), [3 - days](https://explorer.mainnet.ultra.io/account/eosio.oracle/tables?scope=1&tableName=finalrates).
+
+Then you can utilize the `rates` field to get the UOS conversion rate. Note that to convert the `price` stored here you will need to divide it by 100000000 (8 zeros). For minutes scope the `rates` are stored in intervals of 60 seconds (so it is an average over the past 60 seconds as well), for hours scope - 60 minutes, for days scope - 24 hours.
+
+## Get conversion rate using cleos (ang jq for parsing)
+
+For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
+
+```bash
+cleos -u https://ultra.api.eosnation.io get table eosio.oracle MINUTES finalaverage | jq '.rows[0].average.price'
+```
+
+For `lastknwnrate` table
+
+```bash
+cleos -u https://ultra.api.eosnation.io get table eosio.oracle eosio.oracle lastknwnrate | jq '.rows[0].latest_rate.price'
+```
+
+For `finalrates` table (can use 1, 2 or 3)
+
+```bash
+cleos -u https://ultra.api.eosnation.io get table eosio.oracle 1 finalrates | jq '.rows[0].rates'
+```
+
+## Get conversion rate using Wharfkit
+
+For `finalaverage` table. Since Wharfkit does not properly support `time_symbol` as a scope you will need to use values converted to a `name` type. Refer to [this page](../../blockchain/contracts/oracle-contract/oracle-tables.md#finalaverage) for the list of scopes.
+
+```ts
+const contract = await kit.load("eosio.oracle")
+const rows = await contract.table("finalaverage").query({scope:".1doep2pdt4oh"}).next()
+```
+
+For `lastknwnrate` table
+
+```ts
+const contract = await kit.load("eosio.oracle")
+const rows = await contract.table("lastknwnrate").query().all()
+```
+
+For `finalrates` table (can use 1, 2 or 3)
+
+```ts
+const contract = await kit.load("eosio.oracle")
+const rows = await contract.table("finalrates").query({scope:1}).next()
+```
+
+## Get conversion rate using HTTP
+
+For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
+
+```js
+const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+    method:"POST",
+    body:JSON.stringify({
+        json: true,
+        code: 'eosio.oracle',
+        table: 'finalaverage',
+        scope: 'MINUTES'
+    })
+}).then(x => x.json());
+```
+
+For `lastknwnrate` table
+
+```js
+const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+    method:"POST",
+    body:JSON.stringify({
+        json: true,
+        code: 'eosio.oracle',
+        table: 'lastknwnrate',
+        scope: 'eosio.oracle'
+    })
+}).then(x => x.json());
+```
+
+For `finalrates` table (can use 1, 2 or 3)
+
+```js
+const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+    method:"POST",
+    body:JSON.stringify({
+        json: true,
+        code: 'eosio.oracle',
+        table: 'finalrates',
+        scope: 1
+    })
+}).then(x => x.json());
+```
+
+## Get conversion rate inside the smart contract
+
+::: details Data structures used for deserialization
+```cpp
+using namespace std;
+using namespace eosio;
+
+const static symbol null_symbol = symbol("NULL", 0);
+const static asset null_asset = asset(0, null_symbol);
+
+static constexpr symbol seconds_symbol = symbol("SECONDS", 4);
+static constexpr symbol minutes_symbol = symbol("MINUTES", 4);
+static constexpr symbol hours_symbol = symbol("HOURS", 4);
+static constexpr symbol days_symbol = symbol("DAYS", 4);
+
+struct rate {
+    uint64_t    timestamp = 0;
+    asset       price = null_asset;
+
+    EOSLIB_SERIALIZE(rate, (timestamp)(price))
+};
+
+struct urate {
+    uint64_t timestamp = 0;
+    uint64_t price = 0;
+
+    EOSLIB_SERIALIZE(urate, (timestamp)(price))
+};
+
+struct feed_data {
+    name                    source;
+    std::vector<uint64_t>   rates;
+    uint64_t                weight = 0;
+    uint8_t                 source_type = 0;
+
+    EOSLIB_SERIALIZE(feed_data, (source)(rates)(weight)(source_type))
+};
+
+struct moving_average_impl {
+    rate        average = {.price = asset(0, null_symbol), .timestamp = 0};
+    bool        is_valid_deprecated = false;
+    uint64_t    param = 0;
+    uint8_t     moving_window_counter = 0;
+    uint8_t     unit = 1;
+
+    static uint64_t get_primary_key(uint8_t unit, uint64_t param) {
+        return param;
+    }
+    uint64_t primary_key() const { return get_primary_key(unit, param); }
+
+    EOSLIB_SERIALIZE(moving_average_impl, (average)(is_valid_deprecated)(param)(moving_window_counter)(unit))
+};
+typedef eosio::multi_index<name("finalaverage"), moving_average_impl> final_moving_average_table;
+
+struct final_rates_data {
+    uint64_t             index;
+    std::vector<urate>   rates;
+    moving_average_impl  rolling_moving_average;
+
+    EOSLIB_SERIALIZE(final_rates_data, (index)(rates)(rolling_moving_average))
+};
+typedef eosio::singleton<name("finalrates"), final_rates_data> final_rates_singleton;
+
+struct last_known_rate {
+    name source;
+    rate latest_rate = {.price = asset(0, null_symbol), .timestamp = 0};
+
+    EOSLIB_SERIALIZE(last_known_rate, (source)(latest_rate))
+};
+typedef eosio::singleton<name("lastknwnrate"), last_known_rate> last_known_rate_singleton;
+```
+:::
+
+For `finalaverage` table (can use `seconds_symbol`, `minutes_symbol`, `hours_symbol`, `days_symbol`)
+
+```cpp
+final_moving_average_table _final_moving_average(name("eosio.oracle"), seconds_symbol.code().raw());
+final_moving_average_table::const_iterator final_moving_avg_itr = _final_moving_average.find(moving_average_impl::get_primary_key(5 * 10000)); // 5.0000 SECONDS
+// can also iterate over all possible entries
+for(auto itr = _final_moving_average.begin(); itr != _final_moving_average.end(); ++itr) {
+    auto rate& r = itr->average;
+}
+```
+
+For `lastknwnrate` table
+
+```cpp
+last_known_rate_singleton last_known_rate_s(name("eosio.oracle"), name("eosio.oracle").value);
+auto latest_rate = last_known_rate_s.get_or_default().latest_rate;
+```
+
+For `finalrates` table (can use 1, 2 or 3)
+
+```cpp
+final_rates_singleton final_rates_s(name("eosio.oracle"), 1);
+auto rates = final_rates_s.get_or_default().rates;
+```
+---
+title: 'How to validated and refresh moving average'
+order: 1
+oultine: [0,5]
+---
+
+# How to validate and refresh moving average
+
+Conversion rates received from the oracle have a timestamp associated with them. It is important to always validate that timestamp to make sure the rates are not outdated and represent a reasonable up-to-date conversion rate.
+
+## When the moving average can be considered valid
+
+Depending on your business use case you may consider different conditions for when to consider the moving average valid or not. The two key metrics you could utilize are as follows:
+- Timestamp of the moving average (or a conversion rate)
+- Number of samples used to calculate the specific moving average
+
+For timestamp you must be cautious of the fact that oracle updates conversion rates and moving averages only at the end of the minute / hour or day. For seconds level moving average there is a manual trigger explained in the next section. This means that if you look at the 1 minute moving average it will be updated once a minute, 60 minutes moving average - also once a minute (note that oracle makes a distinction here between 60 minutes and 1 hour), 1 hour moving average - once an hour.
+
+Simple guideline for timestamp you could follow is to double the unit of time used by the moving average (e.g. 2 minutes, 2 hours or 2 days). NFT contract for example allows moving averages to be up to 30 minutes old.
+
+Property `moving_window_counter` inside moving average data structure stores the number of entries used to calculate the moving average. If you compare it against the expected number (divide `param` of the moving average by 10000 to get the expected window size) you should be able to have a metric to determine if there were any gaps in the conversion rates stream. Note that this property may change over time so we advise it to only use as a reference and not as a strict value to build the rules around.
+
+## Updating seconds level moving average
+
+For details on using the action see [`calcsecma`](../../blockchain/contracts/oracle-contract/oracle-actions/calcsecma.md)
+
+During normal oracle operation the moving average at the seconds level is not updated automatically and no Ultra smart contract is currently relying on them. You can manually issue the `calcsecma` from any account you have to recalculate them (thus updating the conversion rate and the timestamp inside `finalaverage` table).
+
+Moving averages located at other scopes of the `finalaverage` table are updated automatically when new rates appear in the oracle. There is no need or way for you to update them yourself.
+
+In case the moving averages provided are not enough please give us a feedback using the [feedback form](../../feedback/index.md)
+---
 title: 'Wallet Connection'
 order: -7
 oultine: [0, 4]
@@ -22671,7 +23882,7 @@ ultratest -Dsn
 
 3. Create new account
 ```
-cleos create account ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
+cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
 ```
 
 4. Deploy your contract using instructions below

@@ -9,10 +9,11 @@ let BASE_URL = '/';
 
 const description =
     'Documentation for the Ultra.io Blockchain and various other APIs. Learn about our blockchain, uniqs, technology, and much more.';
+const UltraHomePath = '/components/UltraHome.vue';
 
 // URLs generated on Windows will be invalid
-// Detect if the URL generated is in the format X:\ or X:/ and when creating a config return a different home component path 
-const isWindowsPathing = fileURLToPath(new URL('/components/UltraHome.vue', import.meta.url)).match(/[a-zA-Z]:[\\\/]/) != null;
+// Detect if the URL generated is in the format X:\ or X:/ and when creating a config return a different home component path
+const isWindowsPathing = fileURLToPath(new URL(UltraHomePath, import.meta.url)).match(/[a-zA-Z]:[\\\/]/) != null;
 
 export default defineConfig({
     base: BASE_URL,
@@ -94,7 +95,7 @@ export default defineConfig({
             alias: [
                 {
                     find: /^.*\/VPHome\.vue$/,
-                    replacement: isWindowsPathing ? '/components/UltraHome.vue' : fileURLToPath(new URL('/components/UltraHome.vue', import.meta.url)),
+                    replacement: isWindowsPathing ? UltraHomePath : fileURLToPath(new URL(UltraHomePath, import.meta.url)),
                 },
             ],
         },

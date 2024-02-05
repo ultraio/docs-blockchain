@@ -43,7 +43,7 @@ ultratest -Dsn
 
 3. Create new account
 ```
-cleos create account ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
+cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
 ```
 
 4. Deploy your contract using instructions below

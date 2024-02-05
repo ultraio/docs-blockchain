@@ -30,7 +30,7 @@ Ultra will then create the Block Producers' accounts with the Block Producer’s
 Once this is done; Ultra can use the following command to create an account for them.
 
 ```typescript
-cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.0000 UOS" --stake-cpu "0.0000 UOS" --gift-ram-kbytes <determine_kbytes_to_buy> -p ultra --ultra-id <ultra_id>
+cleos system newaccount ultra <account_name> <public_key> --transfer --stake-net "0.00000000 UOS" --stake-cpu "0.00000000 UOS" --gift-ram-kbytes <determine_kbytes_to_buy> -p ultra --ultra-id <ultra_id>
 ```
 
 Block Producers must be registered through Ultra and will need to synchronize their chains up with the genesis nodeos. Once synchronized and the Block Producer is receiving blocks successfully, they can request for Ultra to register them on the network.

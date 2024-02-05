@@ -71,8 +71,13 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Smart Contracts',
+            text: 'Token Swap',
             items: getMarkdownFiles('/tutorials/token-swap'),
+            collapsed: true,
+        },
+        {
+            text: 'Oracle',
+            items: getMarkdownFiles('/tutorials/oracle'),
             collapsed: true,
         },
     ],
@@ -210,8 +215,23 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Smart Contracts',
+            text: 'Token Swap',
             items: getMarkdownFiles('/tutorials/token-swap'),
+        },
+    ],
+    '/tutorials/oracle': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Oracle',
+            items: getMarkdownFiles('/tutorials/oracle'),
         },
     ],
     // ################
@@ -430,6 +450,18 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
                 {
                     text: 'Actions',
                     items: getMarkdownFiles('/blockchain/contracts/user-group-contract/user-group-actions'),
+                    collapsed: true,
+                },
+            ],
+            collapsed: true,
+        },
+        {
+            text: 'Oracle Contract',
+            items: [
+                ...getMarkdownFiles('/blockchain/contracts/oracle-contract'),
+                {
+                    text: 'Actions',
+                    items: getMarkdownFiles('/blockchain/contracts/oracle-contract/oracle-actions'),
                     collapsed: true,
                 },
             ],

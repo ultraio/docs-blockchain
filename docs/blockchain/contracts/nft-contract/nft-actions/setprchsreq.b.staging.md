@@ -184,7 +184,11 @@ The internal logical operators' 64-bit values are defined as
         * = [2305843009213693952 + 1, 1152921504606846976 + 2305843009213693952 + 2]
         * = [2305843009213693953, 3458764513820540930]
 
+## Integrating first-hand purchase into your own solution
 
+We offer a sample project showcasing the utilization of first-hand purchase functionality. This enables users to exchange their Uniqs and/or UOS for other Uniqs. Feel free to clone, fork, or customize this solution according to your requirements.
+
+For details refer to [this page](../../../../tutorials/uniq-factories/factory-management/uniq-first-hand-purchase-example-project.md)
 
 ## CLI - cleos
 

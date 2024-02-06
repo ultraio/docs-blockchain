@@ -776,11 +776,11 @@
                         },
                         "maximum_uos_payment": {
                             "friendlyName": "Maximum UOS payment",
-                            "description": "Optional, maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage",
+                            "description": "Optional, maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage"
                         },
                         "group_restriction": {
                             "friendlyName": "Group restriction",
-                            "description": "Optional, user group restrictions for this purchase option. See documentation for details",
+                            "description": "Optional, user group restrictions for this purchase option. See documentation for details"
                         },
                         "purchase_window_start": {
                             "friendlyName": "Purchase window start",

@@ -703,6 +703,178 @@
                     }
                 }
             }
+        },
+        "setprchsreq.b": {
+            "friendlyName": "Set first-hand purchase requirement",
+            "description": "The factory manager can specify purchase options for users",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/setprchsreq.b",
+            "fields": {
+                "purchase_option": {
+                    "friendlyName": "Set purchase requirement wrapper",
+                    "fields": {
+                        "token_factory_id": {
+                            "friendlyName": "Token factory ID",
+                            "description": "ID of the token factory to assign first-hand purchase option"
+                        },
+                        "index": {
+                            "friendlyName": "Purchase option index",
+                            "description": "Index of the new or updated first-hand purchase option"
+                        },
+                        "price": {
+                            "friendlyName": "Purchase price",
+                            "description": "Price of the first-hand purchase in UOS or USD"
+                        },
+                        "purchase_limit": {
+                            "friendlyName": "Purchase limit",
+                            "description": "Optional, maximum number of Uniqs that can be purchased from this purchase option"
+                        },
+                        "promoter_basis_point": {
+                            "friendlyName": "Promoter basis point",
+                            "description": "UOS share received by the promoter with each purchase done for this option. Specified in basis points"
+                        },
+                        "purchase_option_with_uniqs": {
+                            "friendlyName": "Purchase option with Uniqs",
+                            "description": "Optional, require user to own Uniqs from specific factories or to pay with Uniqs from specific factories",
+                            "fields": {
+                                "transfer_tokens_receiver_account": {
+                                    "friendlyName": "Transfer tokens receiver account",
+                                    "description": "This account will receive Uniqs if any of the purchase requirement with Uniqs include transfer (2) strategy"
+                                },
+                                "factories": {
+                                    "friendlyName": "Required factories",
+                                    "description": "List of purchase requirements using Uniqs from other factories",
+                                    "fields": {
+                                        "token_factory_id": {
+                                            "friendlyName": "Token factory ID",
+                                            "description": "Require user to own or burn/transfer Uniqs from this factory"
+                                        },
+                                        "count": {
+                                            "friendlyName": "Count",
+                                            "description": "Number of Uniqs required"
+                                        },
+                                        "strategy": {
+                                            "friendlyName": "Strategy",
+                                            "description": "How to process tokens from the specified factory. Can be either check (use 0), burn (use 1), transfer (use 2)"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "sale_shares": {
+                            "friendlyName": "Sale shares",
+                            "description": "Share which each account receives during the purchase",
+                            "fields": {
+                                "receiver": {
+                                    "friendlyName": "Receiver",
+                                    "description": "Sale share receiver account"
+                                },
+                                "basis_point": {
+                                    "friendlyName": "Basis points",
+                                    "description": "Sale share commission specified in basis points"
+                                }
+                            }
+                        },
+                        "maximum_uos_payment": {
+                            "friendlyName": "Maximum UOS payment",
+                            "description": "Optional, maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage",
+                        },
+                        "group_restriction": {
+                            "friendlyName": "Group restriction",
+                            "description": "Optional, user group restrictions for this purchase option. See documentation for details",
+                        },
+                        "purchase_window_start": {
+                            "friendlyName": "Purchase window start",
+                            "description": "Optional, the starting date for purchase window"
+                        },
+                        "purchase_window_end": {
+                            "friendlyName": "Purchase window end",
+                            "description": "Optional, the ending date for purchase window"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
+        },
+        "delprchsreq.a": {
+            "friendlyName": "Delete first-hand purchase requirement",
+            "description": "Deletes an existing purchase option of the factory with specified token_factory_id and purchase option with specified index",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/delprchsreq.a",
+            "fields": {
+                "token_factory_id": {
+                    "friendlyName": "Token factory ID",
+                    "description": "ID of the token factory which has first-hand purchase option assigned to it"
+                },
+                "index": {
+                    "friendlyName": "Purchase option index",
+                    "description": "Index of an existing first-hand purchase option"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
+        },
+        "purchase.a": {
+            "friendlyName": "Purchase Uniqs directly",
+            "description": "Makes a first-hand purchase from one of the purchase options of the factory",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/purchase.a",
+            "fields": {
+                "purchase": {
+                    "friendlyName": "Purchase wrapper",
+                    "fields": {
+                        "token_factory_id": {
+                            "friendlyName": "Token factory ID",
+                            "description": "ID of a token factory to purchase from"
+                        },
+                        "index": {
+                            "friendlyName": "Index",
+                            "description": "Index of first-hand purchase option to use"
+                        },
+                        "max_price": {
+                            "friendlyName": "Maximum UOS payment",
+                            "description": "Maximum amount of UOS you allow to be withdrawn from your account"
+                        },
+                        "buyer": {
+                            "friendlyName": "Buyer",
+                            "description": "Account that will pay UOS and/or Uniqs for this purchase"
+                        },
+                        "receiver": {
+                            "friendlyName": "Receiver",
+                            "description": "Account that will receive the Uniq from this purchase"
+                        },
+                        "promoter_id": {
+                            "friendlyName": "Promoter",
+                            "description": "Optional, promoter of the purchase transaction"
+                        },
+                        "user_uniqs": {
+                            "friendlyName": "Provided user Uniqs",
+                            "description": "List of Uniqs the buyer is willing to provide for this purchase option",
+                            "fields": {
+                                "tokens": {
+                                    "friendlyName": "Uniqs",
+                                    "fields": {
+                                        "token_id": {
+                                            "friendlyName" : "Uniq ID",
+                                            "description": "ID of the Uniq owned by buyer account which will be used to satisfy the purchase option requirement"
+                                        },
+                                        "strategy": {
+                                            "friendlyName": "Strategy",
+                                            "description": "How to process the token. Can be either check (use 0), burn (use 1), transfer (use 2). Must match the purchase option requirement"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -12747,295 +12747,122 @@ Thank you for sharing your valuable feedback with us! Your insights are crucial 
 }
 </style>
 ---
-title: 'Creating Uniq Factories'
-
-order: 10
----
-
-# Creating Uniq Factories
-
-## Overview
-
-The Token factory is the place where you will mint your game as an item (token) in the Ultra ecosystem. You will be able to set all your commercial requirements and token rules into the Store token factory. Set a game for internal usage or to organize a restricted close beta (both planned). Every token factory and token will be represented in our platform through a token ID card, which will contain all token functionalities and is contextualized all over the platform.
-
-Additionally, this is where you will set all the rules for your game lifecycle. Once done, everyone who buys from this factory will receive a token bound by these rules. Currently, our uniq factories are only able to create an atomic token.
-
-What are tokens? A token is an immutable unit of your content, it follows the rules set of the emitting token factory. Which will give access to the content that it contains. Uniq factories have a real numeric version of your retail game, which provides you more features and more control on your side. There are different types of uniq factories such as Game, Demo, DLC, etc… This will help you to create, search for them. Token factory status helps you to keep track of them along their lifecycle.
-
-The following is the lifecycle statuses of a token factory Draft, ready to publish, publish, expired (not available yet), unpublish (not available yet)
-
-An atomic token: is a type of token that will give specific content access defined by the selected branch to a player. This is only the first type of token but we are planning to add more in the future to give you more flexibility and open new business opportunities through
-
-Game package: is a single token that gives access to a game several different contents to a user(Example: Game with DLC on a single token). Such as bundles and packs that can be sold together as tokens
-
-## Creating Uniq Factories
-
-This type of token factory is dedicated to content you will sell in the ultra store. You are currently able to create games, demos, and DLC tokens that have their own preset rules.
-
--   Games: You can freely configure your game without restriction.
--   DLC: You can freely configure your game without restriction.
--   DEMO: A Demo is a Free content and non-tradable.
--   Language pack: Not available yet
--   Dedicated server: Not available yet
-
-Reminder: To create a token factory you should have published an assembly build. You will only be able to see published content in the store token factory.
-
-### Create a Store token factory
-
-Click on “Create a new token factory”
-
-![tf-1](/images/gdc/tf-1.png)
-
-### Set your factory name
-
-Note:
-
--   this name will be visible by your customer
--   You can start your factory from scratch or you can create a factory from an existing one to keep the same settings, you can edit this after.
-
-![tf-2](/images/gdc/tf-2.png)
-
--   If you are starting from scratch then you need to choose the type of token you want to use.
--   Click on Create to start the creation of your token
--   Congratulations, at this point your token is now created, you can come back to finish it later.
-
-![tf-3](/images/gdc/tf-3.png)
-
-### Set Store token factory
-
--   If you left you token factory in an incomplete state then you can retrieve it from the list
-
-![tf-4](/images/gdc/tf-4.png)
-
--   To access the editing section and continue setting your token, drag your token in the list and click on “Edit Factory”
--   The starting page is the main information page you will be able to set the following information:
-
--   Token name, that should represent the uniqueness of your token, example: standard/gold… edition
--   A short description (only one language localization is available)
--   A small picture which will be the representation of the content in the platform
--   The image used in the background of your token id card
--   The default language contained in this token
-
-Note: On the side, you will find a card which contains a summary of your factory settings, this info will evolve as your setup progresses.
-
-![tf-5](/images/gdc/tf-5.png)
-
--   Then type the content description then you will be able to set the content you want to put inside the token factory or change the type of token factory.
-
-Note: Only the published assemble build content is displayed here.
-
-![tf-6](/images/gdc/tf-6.png)
-
--   The Geofencing section allows you to set what region your token factory and token will be available, based on the user location. This allows you to select the entire world, regions, countries that you want your content to be available for users to view, buy and play. Selecting countries is fully customizable. Users that are not within the available area will not be able to view the content in the store.
-
-Note:
-
--   There is a search field to find countries.
--   Be careful once a token factory is published geofencing is not editable
-
-![tf-7](/images/gdc/tf-7.png)
-
--   Then set the Price of the content and the Revenue share distribution
-
-    You have two choices: Free or Paid content.
-
-    If you set a price then you need to select the revenue share distribution. Ultra always takes a 15% commission. It is up to you to distribute the remaining 85%. Currently you can only distribute between you and promoters. More options will be available in the future.
-
-    If you select free there are no other settings on this page.
-
-Note:
-
--   If you select free this implies that your token is not tradable (In other words your user will not be able to resell this free token)
--   Promoter will be rewarded after a purchase
--   Currently you can’t set a promoter
-
-![tf-8](/images/gdc/tf-8.png)
-
-### Tradability and resellability
-
-You have two choices: Tradable and nontradable
-
-**Non tradable** will prevent your token from appearing in the second hand market. More settings are required for this page.
-
-**Tradable** will unlock the settings to set the tradability rules. This will open your token to be used in the second hand market but following the rules you set. Caution once published the rules are immutable so choose them carefully.
-
--   You can set a minimum resale price to prevent your game from being sold under a certain price.
--   You can set the revenue share to be earned from the second hand market, you can either set a fixed price or a % of the selling price set by the customer. Note: To set a fixed amount you need to choose a minimum resale price
--   Setting a time restriction is optional. Time restrictions define when the content is tradable. You can select a start date and the end date is optional.
-
-![tf-9](/images/gdc/tf-9.png)
-
-![tf-10](/images/gdc/tf-10.png)
-
--   **Availability and quantity restrictions are not available yet** In this section, you can set when your game will become playable after a pre-sale or limited time beta.
--   **Media** In this section, you can put up to 8 pictures to advertise your token(product) so your content will be more appealing in the store and across the whole ultra platform. These pictures are associated with your token in order to make the content more personalized and unique.
-
-![tf-11](/images/gdc/tf-11.png)
-
-![tf-12](/images/gdc/tf-12.png)
-
-Congratulations! your token is now ready to be published. You can view the token on the side menu section, which is continuously updated through the creation process from an empty token to a published token.
-
-![tf-14](/images/gdc/tf-14.png)
-
--   Preview is now available with your token, to view what it will look like in Ultra. In addition now you can publish your token on the store page.
-
-![tf-15](/images/gdc/tf-15.png)
-
-![tf-16](/images/gdc/tf-16.png)
-
-![tf-17](/images/gdc/tf-17.png)
-
----
-title: 'Note to Editors'
+title: 'GDC Access'
 
 order: 2
----
-
-# Note to Editors
-
-## File Manager
-
-The File Manager section in the Game Developer Center (GDC) allows you to package files from your games into separate products which can then be associate to tokens gamers can purchase or get for free such as:
-
--   YourGame Standard Edition
--   YourGame DLC Mission Pack1
--   YourGame French Language Pack
--   YourGame Demo
--   YourGame Dedicated Server
-
-The File Manager works hand in hand with FileBeam, Ultra’s file uploading application, which, by means of a configuration file, allows you to upload your game files in different file repositories on Ultra’s servers.
-
-## Uploading your Game
-
-Uploading your game in different file repositories is useful for various use cases such as:
-
--   You might want to separately sell DLCs which are not part of your original product file collection such as new maps, new game modes or new skins.
--   By splitting language related files, Ultra is able to serve only relevant voice, texture and video files to your customers, reducing their downloading time considerably. For example, Russian gamers are only interested in Russian language files, downloading Chinese or French voices, videos or textures is likely unnecessary. **(coming soon)**
-
--   NOTE: Ultra Game’s library will allow gamers to manually choose to download any language you provide in the product they purchased **(coming soon)**
-
-The File Manager is composed of the following two sections:
-
--   **Files Repositories:** It is where you will create file repositories who will contain your game files. You can create different types of file repositories in which you can upload different types of files from your game such as Core game files, DLC files and Language pack files. Every time a file repository is created, a unique Repository ID is automatically assigned to it. Repository IDs are used to let you tell FileBeam in what repositories different files should be uploaded.
--   **Assemble Game Builds:** It is where you will select different repositories containing files you uploaded to assemble a version of a product build.
-
--   A version of a Product build is what you will promote to a branch of a Product. For example you can promote YourGame build V3 to the Beta Branch Of the Game Standard Edition product.
-
-To sell a product on Ultra games, you will at least need one product build assigned to a branch.
-
----
-title: 'Getting Access'
-
-order: 3
 ---
 
 # Getting Access
 
 You need to be a registered developer to get access to Ultra’s Game Developer Center.
 
-1.  Download the ultra web installer
-2.  Register your Ultra account.
-3.  Submit your Ultra Developer application:
-4.  Required docs and info: Email address, Company information
-5.  Send it all by email to [privacy@ultra.io](mailto:privacy@ultra.io) [gdc@ultra.io](mailto:gdc@ultra.io)
+1.   Download the [Ultra web installer](https://ultra.io/download)
+2.   Register your Ultra account.
+3.   Submit your Ultra Developer application:
+      1. Gather any relevant docs and info: Email address, Company information, and anything else you consider relevant.
+      2. Send it all by email to [partnerships@ultra.io](mailto:partnerships@ultra.io)
 
-Once we validate your application you will receive a confirmation email.
+Once we validate your application you will receive a confirmation email. When this happens, you should close Ultra if it was open and restart it.
 
-Close Ultra if it was open and restart it.
+A new dimension should now be displayed, which will contain a series of apps including Ultra’s Game Developer Center (GDC)
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/4c5b27fb-fd93-4213-a2d0-1e4ab537d94c)
+> A View of the developer dimension containing the GDC app
 
-A new dimension should now be displayed, which will contain a series of apps including Ultra’s “Game Developer Center” (GDC)
+## Managing your company
 
-![gdc-1](/images/gdc/gdc-1.webp) A View of the developer dimension containing the Game dev center app
+When your application is reviewed and approved, a company account will be created for you. Any number of games and members can be under the same company.
 
-It’s possible to provide access to the GDC to other company members by:
+On the topic of members, there are three separate roles for them:
 
-1.  Ask your friend to download Ultra and register one account
-2.  Open the GDC app
-3.  Go to
+-   Company owner: it has total control over both games and other members of the same company. Its permissions can't be changed by other members. At the moment, it can't be changed.
+-   Company admin: it has the same level of control as the company owner, but it can be demoted or removed by the owner.
+-   Company member: it can create and make changes to game pages, but it can't publish them.
 
-![gdc-2](/images/gdc/gdc-2.webp) A View of the company member section of the Game Developer Center (GDC)
+To add someone to your company, follow these steps:
 
-1.  Add your friend’s email address
+1.   Ask the future member to register an Ultra account
+2.   Open the client and access the GDC from an owner or admin account
+3.   Navigate to the Company Members section and click on "Add a user"
+5.   Enter the user's email address. If you wish to add several people at once, simply click on "Add User Email" as many times as necessary.
+7.   Press "Add Users to the Company"
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/c1ee455f-89bf-4302-88d4-116011fdd9d8)
+> A View of the company member section of the Game Developer Center (GDC)
 
 ---
-title: 'About Game Builds'
+title: 'Declaring a Game'
 
-order: 4
+order: 3
+---
+
+# Declaring a Game
+
+Game developers often have more than one game under their belt and for that reason, we organised Ultra’s GDC in such a way that each game has its own “publishing environment” where you conveniently can set everything related to that particular game such as:
+
+-   The game's store page
+-   Game file management
+-   Game uniq factories
+-   Game SDK functionalities
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/53a475ee-3f4c-48ee-bd47-8893b5cd18a3)
+> A View of the Game Dev Center
+
+Declaring a new game is as easy as pressing the 'Create a new game' button and giving it a name. However, don’t worry, your game won’t be visible to the public unless you publish your game store page.
+
+## Filling out the Store Page
+
+Before you are able to make your game visible to end-users, you will need to at least publish the store page. In order to do this, all of the necessary details and assets required **must** be filled out. If anything that is required is missing, you will not be able to publish the game store page.
+
+As the Store Page and it's sub-sections are self-explanatory, we will not go into detail about them, however, there are a few points that are worth pointing out:
+
+-   You can preview how your game's store page will look once published at any time, even if the page is not finished yet. Simply click on "Preview" on the bottom left corner.
+-   All of the details and assets under this section can be editted even after the page has been published.
+-   When the page is already published, any new changes need to be saved and then published. **Just saving a change won't make it visible to users**.
+-   Youtube links need to be a full length URL, i.e., `https://www.youtube.com/watch?v=XXXXXXXXX` and not `https://youtu.be/XXXXXXXXX`
+
+---
+title: 'File Repositories'
+
+order: 5
 ---
 
 # Overview
 
-Game builds are actually a combination of one or more repositories containing files. In other words Create repositories => Upload files in repositories => Assemble different repositories to create a build
+Files repositories will contain your game files for any product you wish to ship to users. You can create different types of file repositories in which you can upload different types of files from your game. such as Core game files, DLC files, Language pack files, etc. Every time a file repository is created, a unique Repository ID is automatically assigned to it. Repository IDs are used for filebeam to identify where to send the files you're uploading.
 
-Ultra lets you create different types of file repositories in which you’ll upload different parts of your game files:
+Every time you create a repository, Ultra will automatically assign it a repository ID, which looks like this: WINCOREG91a7f553-5dd7-4078-813d-b5064629d527. In addition, whenever you upload files to a repository, Ultra will create a new version of that repository while keeping the old one.
 
--   **Core game files:** Contains the game executable and most of the game files.
--   **Game DLC:** additional content you want to distribute separately such as new maps, skins, music, ...
--   **Core demo game files:** Contains all the files necessary to download and play a demo of your game.
--   **Game language packs:** files related to a specific language such as sounds, movies and textures you believe is unnecessary to send to users who don’t talk the language **(Coming soon).**
--   **Game dedicated server:** Files necessary to run a dedicated server of your game. This allows anyone, even if they don’t own the game, to download and run a dedicated server **(Coming soon).**
+Ultra’s versioned repositories are what will enable you to:
 
-Every time you create a repository, Ultra will automatically assign it a repository ID.
-
-A repository ID looks like this: WINCOREG91a7f553-5dd7-4078-813d-b5064629d527
-
-Repository IDs are used to let you tell File Beam in what repositories different files should be uploaded.
-
-Every time you upload files with File Beam to a repository, Ultra will create a new version of that repository while keeping the old one.
-
-Ultra’s versioned repositories is what will enable you to:
-
-1.  Easily apply updates to your customers files.
+1.  Easily apply updates to your customer's files.
 2.  Roll back to a previous version if there are issues with your latest build
 3.  Operate multiple builds simultaneously through branching. For example, operate a Beta branch and a Master Branch of the same product simultaneously.
-4.  Automate a CI/CD pipeline ([https://en.wikipedia.org/wiki/CI/CD](https://en.wikipedia.org/wiki/CI/CD))
-
-Important to know:
-
-Including a DLC repository in a build doesn’t mean the buyer of the game will receive this DLC! It only means the files contained in the DLC repository version you associated with this build are compatible with this build. In other words, the buyer will still have to separately buy the DLC to get it, and when he buys it, Ultra’s file distribution system will know what DLC repository version to download for this particular game build version.
-
-In the future you’ll be able to “bundle” DLCs tokens with your Game tokens. In the meantime, if you want gamers to get DLCs as part of the game they buy, upload them in your game’s core game files repository.
-
-When you include a Language pack version in a build, the buyer of this build will have the ability to download it if he wants it. If you want to separately sell a language pack you need to upload the language pack in a DLC repository and sell it as a DLC.
-
-Ultra’s distribution technology has been built for cross platform publishing. While at this point, we only support the Windows platform, future updates will include MacOS and Linux support
-
----
 
 ## Creating Files Repositories
 
-1.  Go to the Game dev center of your game,
-2.  In the left menu go in File Management → File Repository section
+1.  Go to the GDC and access your game,
+2.  In the left menu, go in File Management → File Repository section
 3.  Click on **“CREATE NEW WINDOWS FILES REPOSITORY”**
 
-![fr-1](/images/gdc/fr-1.png) A View of the Files Repository section of the File Manager
+![Untitled](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/426f0c53-9c76-4fa2-9025-b79acf2c2b4e)
 
-Pro Tip:
+4.  After clicking on “CREATE NEW WINDOWS FILES REPOSITORY”, a window will show up, where a drop down menu will allow you to choose what type of repository you want to create:
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/ad2adf2c-41dd-4ef8-a02f-21933490b7ac)
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/e6529d5d-a3aa-4b2e-bebf-abc63365f123)
+5.  Select **Game: Game Core Game Files**
+6.  Fill in the field to give this repository an internal repository name.
+7.  Press **Create Files Repository**
+8.  Repeat this but this time let’s make 1 DLC repositories and 2 language packs repositories. When you are done, it should look similar to this:
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/6f381b09-63d0-4316-841a-a2260d69eaca)
+> A list of repositories of a game. Notice at this point there are 0 versions everywhere because we have not uploaded anything in them.
+
+### Pro Tips:
 
 Ultra’s distribution technology has been built to support cross platform publishing. Future updates will include MacOS and Linux support. In the meantime you can already use cross platform repositories. Cross platform repositories can be used to store platform-independent files such as mp3, PNGs, etc. They are convenient for Language packs or DLCs you’d upload only one time and are usable on all platforms. For the sake of simplicity, in this tutorial we will assume your game only works on windows and will only create windows repositories as a result.
 
-1.  After Clicking on “CREATE NEW WINDOWS FILES REPOSITORY” , a modal will show up:
-
-![fr-2](/images/gdc/fr-2.png) The Create new windows Files Repository Modal
-
-![fr-3](/images/gdc/fr-3.png) Opened dropdown menu showing various types of repositories
-
-A drop down menu allows you to choose what type of repository you want to create.
-
-1.  Select Game: Game core game Files
-
-Pro Tip:
-
-You at least need one Core Game Files to assemble and publish a game build.
-
-1.  Fill in the field to give this repository an internal repository name.
-2.  Press the **“Create Files Repository”**
-
-Pro Tip:
+You need at least one Core Game Files repository to assemble and publish a game build.
 
 Internal repository names are for internal use only, they will never be visible to the public. We recommend you to choose distinct names to help you later remember what kind of files it contains. Examples:
-
 -   Standard files
 -   Standard with mods
 -   Censored files
@@ -13045,212 +12872,364 @@ Internal repository names are for internal use only, they will never be visible 
 -   Paris office
 -   ...
 
-1.  Repeat this but this time let’s make 1 DLC repositories and 2 language packs repositories. When you are done, it should look similar to this:
-
-![fr-4](/images/gdc/fr-4.png) A list of repositories of a game. Notice at this point there are 0 versions everywhere because we’ve haven’t uploaded anything in them.
-
 We are now ready to upload your game files!
-
----
-title: 'Declaring a Game'
-
-order: 5
----
-
-# Declaring a Game
-
-Game developers have often more than 1 game under their belt and for that reason, we organised Ultra’s GDC in such a way that each game has its own “publishing environment” where you conveniently can set everything related to that particular game such as:
-
--   The game store page
--   Manage the game files
--   Set the game uniq factories
--   Manage the game’s SDK functionalities
-
-![gdc-3](/images/gdc/gdc-3.webp) A View of the Game dev center
-
-Declaring a new game is as easy as pressing the Create new game button and giving it a name. Note: Don’t worry, your game won’t be visible to the public unless you publish your game store page.
 
 ---
 title: 'Filebeam'
 
-order: 6
+order: 5
 ---
 
 # Overview
 
 FileBeam is a Python application that lets you upload your games files in appropriate repositories.
 
-New repositories are only created when one or more new files you uploaded in them have changed. In other words if your language pack or if your DLC files haven’t changed, no new repository versions will be created.
+New repository versions are only created when one or more new files you uploaded in them have changed. In other words if your language pack or if your DLC files haven’t changed, no new repository versions will be created.
 
-## Uploading files with FileBeam
+## Quick setup
 
-![fb-1](/images/gdc/fb-1.png)
+### Setting up the SSN upload
 
--   Copy it, by clicking on the copy icon you will need it later on.
--   Then open this file in a text editor: C:\\Users\\duclo\\AppData\\Local\\UltraOS\\Application\\2.10.3.144\\sdk-direct6\\DIRECT6\\ultra_auth.json
--   Then set your GDC account password and then save the file.
+1. Copy the repository ID that you want to use by clicking on the copy icon.
+2. Create a .json (name isn’t relevant) file with the following structure:
 
-![fb-2](/images/gdc/fb-2.png)
+```
+[
+    {
+        "repositoryName": "WINCOREGf7c6c76f-d9c7-4056-8563-xxxxxxxxxxxxx",
+        "source": "C:/UltraGames/YourGame/"
+    }
+]
+```
+3. Replace the repositoryName with the repository ID you copied earlier and the source path with the path to the folder containing the content you wish to upload.
 
--   Next, paste the file repository ID to name the repository in the script. We use here “WINDLCa8df6455-1c24-4b71-82c6-9d0c4ceb98bd” but it needs to correspond to the real ID of your file repository, otherwise, the end-users will be unable to download the content.
--   Then set the local repository path where the game files are stored. It is named the source in the script. Here we use C:\\Users\\”username”\\Desktop\\”Game file”\\
--   Then navigate to: UltraOS\\Application\\x.xx.x.xxx\\sdk-direct6\\DIRECT6\\deploy\\, example:
+Pro tips:
 
-```sh
-cd UltraOS\Application\x.xx.x.xxx\sdk-direct6\DIRECT6\deploy\
+> Pay attention to these details, otherwise, the upload will fail.
+> -   Make sure to have an executable file.
+> -   Use only forward slashes in the file path.
+> -   Include a slash at the end of the file path, before the quotation marks.
+> -   Include a comma at the end of each line if the next line also has text.
+> -   If you’re uploading to several repositories at once, include a comma after the closing curly bracket of each repository, except after the last repository.
+
+### Running filebeam
+
+To do this, you need to use an account that is either the company owner or has Admin permissions within the company. Other accounts will see an error message when trying to execute the filebeam script.
+
+1. On the CMD tool of your choice, run this command to go to the folder containing the upload script:
+```
+cd %localappdata%\Ultra_{env}\sdk-direct6\DIRECT6\deploy\
+```
+2. Then run this command to start the upload:
+```
+..\..\setup\python38\python.exe filebeam.py --email=your_account@email.com --repositories_config=C:\Ultra_Games\Repo\repo_config.json
+```
+3. Enter your password, which won't be visible.
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/a42efda0-3584-440a-ad05-ac560d9b3ab3)
+    -   If your game's executables haven't been signed and protected with Ultra's DRM, you will be prompted to define if the repository should be flagged as protected or unprotected.
+        -   If your game is F2P and doesn't require any DRM protection, you can mark it as unprotected.
+        -   If your game is paid and it hasn't been signed, please contact [developers@ultra.io](mailto:developers@ultra.io) for assistance.
+5. Wait for the upload to complete, then refresh the page in the GDC. A new version of the repository should be added, and you can verify that IDs are identical.
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/8af2be15-bd14-4350-a2c4-8a77ad59a39c)
+![asdasd](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/51fce4ad-abdd-4f5e-8bf8-352c11a718d5)
+
+Congratulations, your first file has been uploaded on Ultra!
+
+## Detailed configuration
+
+### Creating the repositories_config.json file
+
+The repositories_config.json (name can be changed) file is used to list all the repositories to deploy with their sources and their filters.
+
+-   repositoryName: the repository name to deploy. This field is **required**
+-   source: the path to the content of the repository to deploy. This field is **required**
+-   exclude: folders and files to exclude during deployment. This field is **optional**
+-   include: folders and files to include during deployment. This field is **optional**
+
+```
+[
+    {
+        "repositoryName": "WINCOREGbc2d6283-f9f5-4be8-840a-7ea46c156760",
+        "source": "C:/tools/DIRECT6/samples/source/",
+        "exclude": "subfolder/*;!subfolder/test.txt"
+    },
+    {
+        "repositoryName": "WINDLC2d6ca298-dd0d-48f9-bfc7-6ee54c6d6003",
+        "source": "C:/tools/DIRECT6/samples/source_dcl1/",
+        "include": "subfolder*;!*.txt"
+    },
+    {
+        "repositoryName": "WINDLC61949bbf-b7a6-4a99-a4aa-a3cf81b96aa0",
+        "source": "C:/tools/DIRECT6/samples/source_dcl2/"
+    }
+]
 ```
 
-Then with all those parameters set, run the script (NOTE: Source Directory doesn’t support space in the path)
+### Configuring Exclude and Include Filters
 
-```sh
-\python.exe ./release_upload.py --email="yourGDCAccount@ultra.io" --sourceDirectory=C:\\Users\\Arnaud\\Desktop\\WarcraftIII\\ --repositoryName="WINCOREG58dc2209-0cfa-492a-8777-a35fc99802f4"
+This functionality allows you to deploy a specified set of files and folders from a source directory containing a larger set of files or, on the contrary, exclude a set of files.
+
+Arguments and Information:
+-   Wildcard character: *
+-   Wildcard negation character: !
+-   Files and folders are separated by a semicolon: ;
+-   Path to files and folders are relative to the specified source path
+-   In case of a conflict, files in the exclude filter will override those in the in include filter
+
+The script filebeam.py relies on the Solid State Networks Direct 6 SDK to deploy on the Ultra platform. This SDK does NOT scan through
+your entire source paths in search of all the files that you have included or excluded in your filter list, therefore they will not display an error
+when files or folders are missing. The missing files or folders will be ignored so deployment continues uninterrupted by incorrect filters.
+
+### Examples
+
+**Exclude Folder Sample**
+
+This filter will exclude the languages directory, but include every other file and folder
+```
+exclude=languages/*
 ```
 
-Then add your password in the console:
+#### Exclude All Files in Folder Except for One Specified File
 
-![fb-4](/images/gdc/fb-4.png)
+This filter will exclude all files in the languages directory except for en-us.json.
+```
+exclude=languages/*;!languages/en-us.json
+```
 
-Once the upload is finished, a message will be displayed in the console.
+#### Include only files with a specific extension
 
-![fb-5](/images/gdc/fb-5.png)
+This filter will include ONLY files that end with the .jpg extension, regardless of which folder they are found in
+Include Specified Folders and a Specifed Filename Format
+```
+include=*.jpg
+```
 
-Then refresh the page in the GDC, a new version of the repository should be available. You can do this by verifying that the IDs are identical.
+#### Include Specified Folders and a Specifed Filename Format
 
-![fb-6](/images/gdc/fb-6.png)
+This filter will include ONLY the named folders, and files whose name begin with "file"
+```
+include="dedicated server/*;dlc/*;file*"
+```
 
-Congratulations, your first file has been uploaded on Ultra
+#### Include Specified Folder but Exclude a Specified Subdirectory of that Folder
+
+This filter will include the named folder, its files and subdirectories except for the the "gotham" subdirectory
+```
+include=dlc/* --exclude=dlc/gotham/*
+```
+Another method for accomplishing the same filter using wildcard negation:
+```
+include=dlc/*;!dlc/gotham/*
+```
+
+### Checking Filter Output
+
+To check the contents of the files in your release and whether your filters worked the way you expected them to, open the metafile associated with your release. A copy of the last metafile created is stored under %HOMEPATH%\AppData\Local\Ultra\sdkdirect6\metafiles\repositoryName. In this example the repositoryName=llama-game o we will get the meatfile.json under %HOMEPATH%\AppData\Local\Ultra\sdk-direct6\metafiles\llama-game
+
+### Executing Filebeam
+
+| Parameter | Type/Usage | Description |
+| ---- | ---- | :----: |
+| email  | string  | email of the ultra user |
+| repositories_config | path | Path to the repositories configuration file |
+| --cicd | boolean | If added, automatically set to true. The script will get the password of the ultra user directly in the file ultra_auth.json. Convenient for CICD pipeline. Cannot be used if your otp device is active |
+| --drm | boolean | If added, automatically set to true. Then the script will get the password of the ultra user directly in the file ultra_auth.json. Convenient for CICD pipeline. Cannot be used if your otp device is active |
+
 
 ---
-title: 'Assemble Game Builds'
+title: 'Game Builds'
 
-order: 7
+order: 6
 ---
 
 # Overview
 
-Every time you run FileBeam and upload files, the repositories receiving files will have their repository version number incremented.
+Game builds can be a combination of one or more repositories containing files. In other words, the process to manage the files your users will need is:
+Create repositories => Upload files to repositories => Assemble a build using the repositories
 
-Many game developers release a game and later add additional DLCs, this will make the new DLC version number diverge from other repositories versions.
+Ultra lets you create different types of file repositories in which you’ll upload different parts of your game files:
 
-For example Core Game Files v4 and DLC MissionPack1 V1 have different version numbers even though the files contained in them actually are meant to work together.
-
-In some cases, you will find translation errors in your game which you might want to fix in one particular language pack. Updating your language pack will cause its repository version to have a different version number than your other repositories.
-
-For these types of reasons, in Ultra, a game build is a collection of various repositories who often have different version numbers and that’s perfectly fine.
-
-The “Assembling game builds” section in the File manager, is where you create game builds by assembling different repositories versions into a working build ready to be distributed to gamers.
-
-![agb-1](/images/gdc/agb-1.png) Different game build versions are actually made out of different repositories versions
-
-Once you have a “game build version” you can assign it a Branch.
-
-For example: MyGame Standard Edition promotes Game Build V3 as its Beta branch.
-
-![agb-2](/images/gdc/agb-2.png) On the left, the build V1 is promoted as master branch of My Game Standard Edition, on the right the build V2 is promoted to the master branch
-
-In the picture above the build V1 is promoted as master branch of “My Game : Standard Edition” As soon as you promote build V2 as master branch, all gamers who had V1 installed will have their game updated to V2 automatically. Also, from here on, anyone who purchases the game will directly get V2.
-
-In short the workflow looks like this:
-
-Upload file update in a repository => A new repository version is automatically created => Assemble a new build selecting the new repository version => A new build version is created => Promote the new build version to a desired branch (beta or Master branch) => gamers receive update.
-
-### Pro Tip
-
-To own a game’s beta or master branch, you need to own a game token that grants you the beta or master branch of that game. The process of linking ownership of a game build’s branch to a token people can own is done by setting up a token factory in the token factory section of the GDC.
-
-It is possible to sell games cheaper in markets with lower purchasing powers by creating a specific build that only includes the country’s language pack. For example, create a “My Game Chinese build” then assemble the core game files, DLCs and only the chinese language pack. This will ensure non chinese players won’t buy this cheaper Chinese game version because it won’t include English or other languages they need.
-
-### Important to know
-
-Including a DLC repository in a build doesn’t mean the buyer of the game will receive this DLC! It only means the files contained in the DLC repository version you associated with this build are compatible with this build. In other words, the buyer will still have to separately buy the DLC to get it, and when he buys it, Ultra’s file distribution system will know what DLC repository version to download for this particular game build version.
-
-In the future you’ll be able to “bundle” DLCs tokens with Game tokens, allowing you to sell your game containing DLCs. In the meantime, if you want gamers to get DLCs as part of the game they buy, upload DLC files in your core game files repository.
-
-When you include a Language pack version in a build, the buyer of this build will have the ability to download it if he wants it. If you want to separately sell a language pack you need to upload the language pack in a DLC repository and sell it as a DLC.
+-   **Core game files:** Contains the game executable and most of the game files.
+-   **Game DLC:** additional content you want to distribute separately such as new maps, skins, music, etc.
+-   **Core demo game files:** Contains all the files necessary to download and play a demo of your game.
+-   **Game language packs:** files related to a specific language such as sounds, movies and textures you believe is unnecessary to send to users who don’t talk the language **(Coming soon).**
+-   **Game dedicated server:** Files necessary to run a dedicated server of your game. This allows anyone, even if they don’t own the game, to download and run a dedicated server **(Coming soon).**
 
 ## Assembling a Game Build
 
-Before we can assemble a game build version, we first need to create one game build.
+In order to assemble any kind of build, you will first need to have created a repository of the corresponding type, and uploaded files to it.
 
-Click on Create new game build
+Before we can assemble a game build version, we first need to create a game build.
 
-![agb-3](/images/gdc/agb-3.png)
+1.  Click on Create new game build
+2.  Select the OS you want your game built on (**Linux and MacOS support planned**)
+3.  Set the Internal Game build name.
+4.  Select a repository and one of its versions.
+   
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/41ff1220-eb33-4836-9d03-777f2685134d)
 
-1.  Select the OS you want your game build on (Support for MacOS and Linux coming soon)
-2.  Set the Internal Game build name.
-3.  Then select a core game file repository version
+7.  Specify the executable file to run the game, whether it’s for 32 bits, 64 bits, or both.
+   
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/27ec3e43-ad69-4295-81ec-0cb22874c2e5)
 
-![agb-4](/images/gdc/agb-4.png)
+10.  If there are additional sets of files, such as DLCs, you can select which of them should be compatible with the build you're assemnbling.
+11.  Create the game build.
+    
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/17e5de82-fdb5-4c50-93a0-ec74666fc4e1)
 
-Note: If you can’t select a core game file you made it's because you haven’t uploaded anything in it yet.
+Now you should be done with assembling the game build, you can determine whether this build version is a **Master** branch (intended for public release) or **Beta** branch (as mentioned before, this is still not available).
 
-Click on create a build.
+Congratulations! Your build is now created and ready to be delivered to users.
 
-![agb-5](/images/gdc/agb-5.png)
+### Important things to know
 
-Congratulations your build is now created!
+-   Whenever you run Filebeam and upload files, the repositories receiving files will have their repository version number incremented. At the same time, whenever you assemble a new version of your game build, its version number will increase. **These increments are not linked**, as illustrated in the following image
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/68b10868-c627-41c2-923c-fc730196c647)
 
----
+-   On the topic of branches, below is an example of how they might be used. On the left, the build V1 is promoted as master branch of My Game Standard Edition, on the right the build V2 is promoted to the master branch. **Beta branches coming Soon**
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/65dc8046-910f-4be6-bd87-f8af2411644c)
 
----
-title: 'Create a Compatibility Matrix'
+-   Following the example above, as soon as build V2 is promoted as the master branch, all users who had V1 installed will see an update button on their library and will not be able to launch it until it's updated. In addition, anyone who installs the game will directly get V2 files from here on.
 
-order: 8
----
+-   Including a DLC repository in a build doesn’t mean the buyer of the game will receive this DLC. It only means the files contained in the DLC repository version you associated with this build are compatible with it. The buyer will still have to separately buy the DLC to get it, and when they buy it, Ultra’s file distribution system will know what DLC repository version to download for this particular game build version.
 
-# Create a Compatibility Matrix
+-   In the future you’ll be able to “bundle” DLCs tokens with Game tokens, allowing you to sell your game containing DLCs. In the meantime, if you want gamers to get DLCs as part of the game they buy, upload DLC files in your core game files repository.
 
-Click on Assemble compatibility matrix
-
-![agb-6](/images/gdc/agb-6.png)
-
-Then select a core game file version
-
-![agb-7](/images/gdc/agb-7.png)
-
-1.  Click on next to go on the next step.
-2.  Then put your exe path on at least one version 32/64 bits
-3.  Click on next to go on to the final step
-
-![agb-8](/images/gdc/agb-8.png)
-
-Then you can finally set your compatible content on the compatibility matrix. If you do not have compatible content you can skip this step by clicking on create..
-
-Note:
-
--   You can't have a duplicate of an Assemble build.
--   If you remove compatible content from your previous assembled build compatibility matrix we will gently inform you that you perhaps made a mistake, no worries you still have the option to save in this case to set a new assembled build.
--   Once created an assembled assembly can not be deleted.
-
-![agb-9](/images/gdc/agb-9.png)
-
-Congratulations! You have created your first Assembled compatibility matrix
+-   When you include a Language pack version in a build, the buyer of this build will have the ability to download it if they wish. If you want to separately sell a language pack you need to upload the language pack in a DLC repository and sell it as a DLC.
 
 ---
-title: 'Set a Branch and Publish'
 
-order: 9
+---
+title: 'Game Uniq Factories'
+
+order: 7
 ---
 
-# Set a Branch and Publish
+# Game Uniq Factories
 
-Click on Add, to see the available branches
+## Overview
 
-Note:
+The Uniq factory is the place where you will mint your game as an item (Uniq) in the Ultra ecosystem. You will be able to set all your commercial requirements and uniq rules into the Store Token Factory, like setting a game for internal usage or to organize a restricted close beta (both planned). Every uniq factory and uniq will be represented in our platform through a uniq ID card, which will contain all uniq functionalities and is contextualized all over the platform.
 
--   You can have multiple branches on the same assemble version
--   You can’t have the same branch on multiple assemble build versions
--   When you publish a branch, you must select one of your assemble versions
+Additionally, this is where you will set all the rules for your game lifecycle. Once done, everyone who buys from this factory will receive a token bound by these rules. Currently, our uniq factories are only able to create an atomic token.
 
-If the branch was never published you can remove it by passing it over the button and clicking on the plus icon.
+### Uniqs / Tokens
 
-After making changes save it by clicking on “Save Changes”.
+A uniq is an immutable unit of your content, it follows the rules set of the emitting uniq factory. This uniq will give access to the content that its linked repository contains. Uniq factories have a real numeric version of your retail game, which provides you more features and more control on your side. Additionally, there are different types of uniq factories such as Game, Demo, DLC, etc…
 
-Now you can publish your build by clicking on publish.
+The following is the lifecycle statuses of a uniq factory:
+-   Draft
+-   Ready to publish
+-   Published
+-   Expired (not available yet)
+-   Unpublished (not available yet)
+-   Disabled
 
-![agb-10](/images/gdc/agb-10.png)
+**Atomic token**: A type of uniq that will give specific content access defined by the selected branch to a player. This is only the first type of token but we are planning to add more in the future to give you more flexibility and open new business opportunities.
 
-Congratulations you have published your first build, now all the content is in the publish section, configure the compatibility matrix on the token factory section.
+**Game package**: A single uniq that gives a user access to a game's contents (Example: Game with DLC on a single token). Bundles and packs that can be sold together as uniqs this way.
+
+## Uniq Factories
+
+You are currently able to create games, demos, and DLC uniqs that have their own preset rules.
+
+-   Games: You can freely configure your game without restriction.
+-   DLC: You can freely configure your game without restriction.
+-   DEMO: Not available yet.
+-   Language pack: Not available yet.
+-   Dedicated server: Not available yet.
+
+Reminder: To create a uniq factory you should have published an assembly build first, then linked it to the token factory.
+
+### Creating a "Store token factory"
+
+Click on “Create a new token factory”
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/3a2a5480-ad1b-4bbe-bbc1-e059ca792a7f)
+
+-   This name will be visible to end users
+-   You can start your factory from scratch or you can create a factory from an existing one to copy its settings, which you can then edit.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/136a6a6f-e7cb-4450-a04a-e8509169e45a)
+
+-   If you are starting from scratch then you need to choose the type of uniq you want to use.
+-   Click on "Create" to start the creation of your uniq.
+-   Congratulations, at this point your uniq factory is now created (although not published), you can come back to finish it later.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/667e3444-fb9e-43ec-850e-aff0c10f93d3)
+
+#### Configure the Store token factory
+
+-   If you left your uniq factory in an incomplete state, you can retrieve it from the list and continue setting it up by clicking on "Edit Factory"
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/113ff0f5-028a-448a-bd00-f13c7698043a)
+
+-   The starting "Main Information" page holds following details:
+    -   Token name, which should represent the version of your uniq. For example: Standard Edition, GOTY edition, etc.
+    -   A short description (only one language localization is available).
+    -   A small picture which will be the representation of the content in the platform.
+    -   The image used in the background of your uniq id card.
+    -   The default language contained in this uniq.
+    -   Note: this section is not editable once published.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/a9812a97-df3a-4d12-bd17-076bf9522b6b)
+
+-   Within the "Type & Content" section, you will be able to change the type of uniq factory you're creating, as well as link the game build you want to provide access to.
+    -   Only the published game builds are displayed here.
+    -   Note: this section is not editable once published.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/20402ad9-a87f-461b-8a5a-d0fa979968b7)
+
+-   The "Geofencing" section allows you to set in what regions your uniq factory will be available, based on the user location upon registreting.
+    -   This allows you to select the entire world, or specific countries/regions that you want your content to be available for users to view, buy and play.
+    -   Selecting countries is fully customizable. Users located within an unavailable area will not be able to view the content in the store (although the game page itself will still be visible).
+    -   Note: this section is not editable once published.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/736ee785-b77a-4610-bcad-673c1d976f48)
+
+-   The "Price & Revenue Shares" section offers different options based on the main choice between **paid** and **free** content.
+    -   If the uniq is set as paid, you will need to set a price in all of the available currencies.
+        -   In order to exclude a currency, the corresponding countries and regions linked to it must be excluded in the Geofencing section.
+        -   In addition, you need to select the revenue share distribution. Ultra always takes a 15% commission, and it is up to you to distribute the remaining 85%. At the moment, promoters cannot be configured.
+    -   If you set the uniq as free there are no other settings on this page.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/538bc613-634a-4853-a472-bbda459db61e)
+
+-   Skipping the "Tradability & Transferability" section, we will move on to "**Media**". In this section, you can put up to 8 pictures to advertise your uniq so your content will be more appealing in the store and across the whole ultra platform.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/fef14f35-4e01-4183-905a-2166661f4dc4)
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/fb44b91b-bae2-4f84-9031-f7036aee3b16)
+
+### The Store Token Factory and true uniq factories
+
+One of Ultra's objectives is offering game ownership to users through the use of blockchain technology. We achieve this by tokenizing games, i.e., linking every game or piece of content you want to offer to a uniq that exists on our blockchain and acts as proof of ownership of its corresponding content.
+
+At the moment, publishing a game with it's store token factory doesn't mean that the game is truly tokenized yet. The real uniq factory that will be present in our blockchain needs to be created separately through a process currently managed by Ultra employees. As we continue opening up our ecosystem, we hope to allow third parties to self-manage this.
+
+#### Tradability and resellability
+
+Although what you set up on this section within the GDC doesn't affect the uniq factory's real settings, it's still necessary to establish some of its related concepts.
+-   **Tradable** means your token can be sold by end-users that hold it and will appear in the secondhand market.
+-   **Transferable** means that your token can be transferred from one wallet to another, with no cost to it.
+-   **Non tradable** means that your token cannot be set on sale by end-users, and consequently cannot appear in the secondhand market.
+-   **Non transferable** means that your token cannot be sent freely by users .
+
+Notes:
+-   A game can be tradable and not transferable, and the other way around.
+-   You can set a minimum resale price to prevent your game from being sold under a certain price. This can be set both in USD and UOS.
+-   You can set the revenue share to be earned from the second hand market. The options are to set a fixed price or a % of the selling price set by the customer. Note: To set a fixed amount you need to choose a minimum resale price
+-   You can set tradability and transferability windows. If set, they will define when your token can be traded/transferred.
+
+### Finishing up
+
+Even if you didn't finish the uniq factory yet, the "Preview" option should be available at all times. This allows you to view what the factory will look like in Ultra.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/97a63be3-f247-449f-a81a-1eb7e5c1067c)
+
+If you did fill all of the necessary details... Congratulations! Your uniq factory should now ready to be published.
+
+![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/65b9e979-68b5-4a9a-abca-cc7d25db904c)
 
 ---
 title: 'Introduction'
@@ -13260,25 +13239,19 @@ order: 1
 
 # Game Developer Center
 
+The Game Development Center (or GDC for short) is where everything involved in the set up and publication of your games' store pages can be found. Whether it's adding the assets to display on the store, uploading your games' files, integrating our Unity or Unreal plugin, all will take place on the GDC.
+
 ## Overview
 
-Before we start with a step by step guide on how to upload your game on Ultra, we will start with a high level overview of Ultra’s unique product distribution technology.
+Before we start with a step by step guide on how to upload your game on Ultra, we will start with a high level overview of Ultra’s unique product distribution technology. Unlike other game distribution platforms, on Ultra, product ownership is represented on the blockchain.
 
-Unlike other game distribution platforms, on Ultra, product ownership is represented on the blockchain.
+Other platforms work like this:
+User buys a product => Company stores the ownership variable on a database => Product shows up in the user's library
 
-Other platforms works like this:
+On Ultra, the ownership entitlement looks like this:
+User buys product => Product's token is added to the user's wallet (which is their blockchain account) => Product shows up in user’s library. In other words, product entitlements are stored on the blockchain instead of a classic database.
 
-User buys product => Company stores ownership variable on database => product shows up in user library
-
-On Ultra ownership entitlement looks like this:
-
-User buys product => Gets asset token on his blockchain account => product shows up in user’s library
-
-In other words, product entitlements are stored on the blockchain instead of a classic Database. The advantages of representing product ownership on the blockchain are plentiful.
-
-By setting up a “token factory” in Ultra’s Game Developer Center (no coding required), you can associate a game build branch to any token this token factory produces.
-
-User Purchase game => Token Factory produces token => Token is sent to buyer’s blockchain account => game appear in owner’s inventory
+By setting up a store token factory in Ultra’s GDC (no coding required), you can associate a game build branch to any uniq this uniq factory produces. Do note that at the moment, the uniq factory needs to be created by Ultra employees in order for it to be on our blockchain. More information can be found on the "Uniq Factories" section of this guide.
 
 ---
 title: 'Getting Started'

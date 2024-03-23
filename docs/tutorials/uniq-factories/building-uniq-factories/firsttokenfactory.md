@@ -49,7 +49,7 @@ The following is an example transaction. You will have to fill in the missing de
 -   `<YOUR META HASH>` - The hash of the filename, you can find this in `upload.json` in the `factory` block at the top
 
 ```sh
-cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create \
+cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create.b \
   '[
       {
         "memo":"thirdPartyUniqNewMeta",

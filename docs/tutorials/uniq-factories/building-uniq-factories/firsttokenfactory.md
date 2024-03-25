@@ -54,31 +54,31 @@ The following is an example transaction. You will have to fill in the missing de
 cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create.b \
    '[
       {
-         "account_minting_limit": 1,
+         "memo": "CREATE UNIQ FACTORY",
          "asset_creator": "<YOUR ACCOUNT>",
          "asset_manager": "<YOUR ACCOUNT>",
-         "authorized_minters": [],
-         "conditionless_receivers": null,
-         "default_token_hash": "<YOUR DEFAULT UNIQ URI>",
-         "default_token_uri": "<YOUR DEFAULT UNIQ URI>",
-         "factory_hash": "<YOUR UNIQ FACTORY HASH>",
-         "factory_uri": "<YOUR UNIQ FACTORY URI>",
-         "lock_hash": null,
-         "lockup_time": null,
-         "max_mintable_tokens": 10,
-         "maximum_uos_payment": null,
-         "memo": "CREATE UNIQ FACTORY",
          "minimum_resell_price": null,
+         "resale_shares": null,
          "mintable_window_start": "<MINT WINDOW START>",
          "mintable_window_end": null,
-         "recall_window_end": null,
-         "recall_window_start": null,
-         "resale_shares": null,
-         "stat": 0,
          "trading_window_start": "<TRADING WINDOW START>",
          "trading_window_end": null,
+         "recall_window_start": null,
+         "recall_window_end": null,
+         "max_mintable_tokens": 10,
+         "lockup_time": null,
+         "conditionless_receivers": null,
+         "stat": 0,
+         "factory_uri": "<YOUR UNIQ FACTORY URI>",
+         "factory_hash": "<YOUR UNIQ FACTORY HASH>",
+         "authorized_minters": [],
+         "account_minting_limit": 1,
+         "transfer_window_start": null,
          "transfer_window_end": null,
-         "transfer_window_start": null
+         "maximum_uos_payment": null,
+         "default_token_uri": "<YOUR DEFAULT UNIQ URI>",
+         "default_token_hash": "<YOUR DEFAULT UNIQ URI>",
+         "lock_hash": null
       }
    ]' \
 -p <YOUR ACCOUNT>

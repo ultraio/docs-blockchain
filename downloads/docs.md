@@ -23272,37 +23272,42 @@ The following is an example transaction. You will have to fill in the missing de
 -   `<YOUR ACCOUNT>` - Your Testnet account
 -   `<MINT WINDOW START>` - A datetime in the format `2021-05-31T00:00:00`
 -   `<TRADING WINDOW START>` - A datetime in the format `2021-05-31T00:00:00`
--   `<YOUR UNIQ FACTORY URI>` - The URI of the metadata either as a zip file, or targeting the `factory.json` file with a full path
--   `<YOUR META HASH>` - The hash of the filename, you can find this in `upload.json` in the `factory` block at the top
+-   `<YOUR UNIQ FACTORY URI>` - The URI of the metadata either as a zip file, or targeting the `factory.json` file with a full path, values cannot be an empty string
+-   `<YOUR UNIQ FACTORY HASH>` - The hash of the filename, you can find this in `upload.json` in the `factory` block at the top
+-   `<YOUR DEFAULT UNIQ URI>` - The URI pointing to the token metadata if there is no token-specific metadata. Must not be empty and can be either static or dynamic
+-   `<YOUR DEFAULT UNIQ HASH>` - The Hash of static default token URI. It is optional to provide this and it should be a SHA256 of the content of default token URI. If default token URI is dynamic - specify the hash per token instead
 
 ```sh
-cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create \
-  '[
+cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create.b \
+   '[
       {
-        "memo":"thirdPartyUniqNewMeta",
-        "version":0,
-        "asset_manager":"<YOUR ACCOUNT>",
-        "asset_creator":"<YOUR ACCOUNT>",
-        "conversion_rate_oracle_contract":null,
-        "chosen_rate":null,
-        "minimum_resell_price":null,
-        "resale_shares":null,
-        "mintable_window_start":"<MINT WINDOW START>",
-        "mintable_window_end":null,
-        "trading_window_start": "<TRADING WINDOW START>",
-        "trading_window_end":null,
-        "recall_window_start": null,
-        "recall_window_end":null,
-        "max_mintable_tokens":10,
-        "lockup_time":null,
-        "conditionless_receivers":null,
-        "stat":0,
-        "meta_uris":["<YOUR UNIQ FACTORY URI>"],
-        "meta_hash":"<YOUR META HASH>",
-        "authorized_minters":[],
-        "account_minting_limit":1
+         "memo": "CREATE UNIQ FACTORY",
+         "asset_creator": "<YOUR ACCOUNT>",
+         "asset_manager": "<YOUR ACCOUNT>",
+         "minimum_resell_price": null,
+         "resale_shares": null,
+         "mintable_window_start": "<MINT WINDOW START>",
+         "mintable_window_end": null,
+         "trading_window_start": "<TRADING WINDOW START>",
+         "trading_window_end": null,
+         "recall_window_start": null,
+         "recall_window_end": null,
+         "max_mintable_tokens": 10,
+         "lockup_time": null,
+         "conditionless_receivers": null,
+         "stat": 0,
+         "factory_uri": "<YOUR UNIQ FACTORY URI>",
+         "factory_hash": "<YOUR UNIQ FACTORY HASH>",
+         "authorized_minters": [],
+         "account_minting_limit": 1,
+         "transfer_window_start": null,
+         "transfer_window_end": null,
+         "maximum_uos_payment": null,
+         "default_token_uri": "<YOUR DEFAULT UNIQ URI>",
+         "default_token_hash": "<YOUR DEFAULT UNIQ URI>",
+         "lock_hash": null
       }
-    ]' \
+   ]' \
 -p <YOUR ACCOUNT>
 ```
 
@@ -23312,7 +23317,7 @@ To see it in action on the Testnet, hop on over to the [Testnet block explorer](
 
 You should see a new transaction that shows that your new Token Factory has been successfully created.
 
-![](/images/token-factories/great_success.png)
+![](/images/token-factories/create_success.png)
 
 We are glossing over a lot of functionality here, in the interest of getting you up and running quickly. Later guides will cover some of the more advanced features that our NFT standard supports, including variants, authorized minters, and much more.
 

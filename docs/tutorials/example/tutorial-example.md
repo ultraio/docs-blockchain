@@ -22,13 +22,27 @@ Details on what will be covered in the tutorial and what will be achieved. E.g. 
 
 Tutorial is structured in steps, each steps achieves some meaningful result. E.g. first step could be to click the button on this page to generate a new key pair
 
+When providing a command it should ideally not require and manual replacements. If it is not possible then it must be extremely obvious (and highlighted in the text) if you need to replace some value.
+
+```sh
+# Get info about the current account
+cleos -u https://api.testnet.ultra.eossweden.org get account $(cleos -u https://api.testnet.ultra.eossweden.org get accounts $(cleos wallet keys | jq '.[0]' | tr -d '"') | jq '.account_names[0]' | tr -d '"')
+```
+
+In this command you must replace the `<your_account_name>` with the account name you have created
+
+```sh
+# Get info about the current account
+cleos -u https://api.testnet.ultra.eossweden.org get account <your_account_name>
+```
+
 Guides should be accompanied by images to illustrate the process and the expected outcome.
 
 ![](../fundamentals/images/account-name.png)
 
 If the result is some text output then using a code box is also ok.
 
-```sh
+```
 created: 2021-07-06T08:59:21.500
 permissions: 
      owner     1:    1 EOS6xjDaEUHMH7qEBBdfxW5Td3DmEoYZfrMnCEzMoDHyTjwk86faA

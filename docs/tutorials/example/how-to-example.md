@@ -27,6 +27,14 @@ Guides should be accompanied by images to illustrate the process and the expecte
 
 If the result is some text output then using a code box is also ok.
 
+```
+executed transaction: 2a8e7617ed251e032a3fb6d1ad9f95a19a3f717a924d52f94a87a08656144b6f  944 bytes  358 us
+#   eosio.token <= eosio.token::transfer        {"from":"1aa2aa3aa4hw","to":"1aa2aa3aa4aa","quantity":"0.10000000 UOS","memo":""}
+#  1aa2aa3aa4hw <= eosio.token::transfer        {"from":"1aa2aa3aa4hw","to":"1aa2aa3aa4aa","quantity":"0.10000000 UOS","memo":""}
+#  1aa2aa3aa4aa <= eosio.token::transfer        {"from":"1aa2aa3aa4hw","to":"1aa2aa3aa4aa","quantity":"0.10000000 UOS","memo":""}
+warning: transaction executed locally, but may not be confirmed by the network yet         ]
+```
+
 ## Nth step instructions
 
 Avoid making too big of a steps, each step should include a couple of commands or actions and provide a meaningful result. If it makes a logical sense then need to split the step into smaller steps.

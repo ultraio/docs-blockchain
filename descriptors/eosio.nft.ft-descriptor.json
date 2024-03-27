@@ -1,8 +1,8 @@
 {
     "actions": {
         "mknftofr.a": {
-            "friendlyName": "Make NFT Offer",
-            "description": "Anyone can make an offer on a NFT",
+            "friendlyName": "Make Uniq Offer",
+            "description": "Anyone can make an offer on a Uniq",
             "fields": {
                 "buyer": {
                     "friendlyName": "Buyer",
@@ -10,7 +10,7 @@
                 },
                 "receiver": {
                     "friendlyName": "Receiver",
-                    "description": "The account to receive the NFT (optional)"
+                    "description": "The account to receive the Uniq (optional)"
                 },
                 "price": {
                     "friendlyName": "Price",
@@ -22,11 +22,11 @@
                 },
                 "owner": {
                     "friendlyName": "Owner",
-                    "description": "The owner of the NFT"
+                    "description": "The owner of the Uniq"
                 },
                 "nft_id": {
-                    "friendlyName": "NFT ID",
-                    "description": "The ID of the NFT"
+                    "friendlyName": "Uniq ID",
+                    "description": "The ID of the Uniq"
                 },
                 "duration": {
                     "friendlyName": "Duration",
@@ -39,16 +39,16 @@
             }
         },
         "acptnftofr.a": {
-            "friendlyName": "Accept NFT Offer",
-            "description": "Only the NFT owner can accept an offer",
+            "friendlyName": "Accept Uniq Offer",
+            "description": "Only the Uniq owner can accept an offer",
             "fields": {
                 "owner": {
                     "friendlyName": "Owner",
-                    "description": "The owner of the NFT"
+                    "description": "The owner of the Uniq"
                 },
                 "nft_id": {
-                    "friendlyName": "NFT ID",
-                    "description": "The ID of the NFT"
+                    "friendlyName": "Uniq ID",
+                    "description": "The ID of the Uniq"
                 },
                 "offer_id": {
                     "friendlyName": "Offer ID",
@@ -65,7 +65,7 @@
             }
         },
         "rmnftofr.a": {
-            "friendlyName": "Cancel NFT Offer",
+            "friendlyName": "Cancel Uniq Offer",
             "description": "The buyer can cancel their offer, unless it is expired",
             "fields": {
                 "canceler": {
@@ -73,8 +73,8 @@
                     "description": "The account canceling the offer"
                 },
                 "nft_id": {
-                    "friendlyName": "NFT ID",
-                    "description": "The ID of the NFT"
+                    "friendlyName": "Uniq ID",
+                    "description": "The ID of the Uniq"
                 },
                 "offer_id": {
                     "friendlyName": "Offer ID",
@@ -88,7 +88,7 @@
         },
         "mkfctofr.a": {
             "friendlyName": "Make Factory Offer",
-            "description": "Make a buy offer on a given factory.",
+            "description": "Make a uniq offer on a given factory.",
             "fields": {
                 "buyer": {
                     "friendlyName": "Buyer",
@@ -122,7 +122,7 @@
         },
         "acptfctofr.a": {
             "friendlyName": "Accept Factory Offer",
-            "description": "Accept the buy offer made on the factory.",
+            "description": "Accept the uniq offer made on the factory.",
             "fields": {
                 "owner": {
                     "friendlyName": "Owner",
@@ -148,7 +148,7 @@
         },
         "rmfctofr.a": {
             "friendlyName": "Cancel Factory Offer",
-            "description": "Cancel the token buy offer made on the factory.",
+            "description": "Cancel the token uniq offer made on the factory.",
             "fields": {
                 "canceler": {
                     "friendlyName": "Canceler",

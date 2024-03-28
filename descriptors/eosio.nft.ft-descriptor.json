@@ -1,5 +1,173 @@
 {
     "actions": {
+        "mknftofr.a": {
+            "friendlyName": "Make Uniq Offer",
+            "description": "Anyone can make an offer on a Uniq",
+            "fields": {
+                "buyer": {
+                    "friendlyName": "Buyer",
+                    "description": "The account making the offer"
+                },
+                "receiver": {
+                    "friendlyName": "Receiver",
+                    "description": "The account to receive the Uniq (optional)"
+                },
+                "price": {
+                    "friendlyName": "Price",
+                    "description": "Offer price"
+                },
+                "promoter_basis_point": {
+                    "friendlyName": "Promoter Basis Points",
+                    "description": "Promoter commission in basis points"
+                },
+                "owner": {
+                    "friendlyName": "Owner",
+                    "description": "The owner of the Uniq"
+                },
+                "nft_id": {
+                    "friendlyName": "Uniq ID",
+                    "description": "The ID of the Uniq"
+                },
+                "duration": {
+                    "friendlyName": "Duration",
+                    "description": "The duration of the offer in seconds"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
+        },
+        "acptnftofr.a": {
+            "friendlyName": "Accept Uniq Offer",
+            "description": "Only the Uniq owner can accept an offer",
+            "fields": {
+                "owner": {
+                    "friendlyName": "Owner",
+                    "description": "The owner of the Uniq"
+                },
+                "nft_id": {
+                    "friendlyName": "Uniq ID",
+                    "description": "The ID of the Uniq"
+                },
+                "offer_id": {
+                    "friendlyName": "Offer ID",
+                    "description": "The ID of the offer being accepted"
+                },
+                "promoter_id": {
+                    "friendlyName": "Promoter ID",
+                    "description": "The promoter account (optional)"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
+        },
+        "rmnftofr.a": {
+            "friendlyName": "Cancel Uniq Offer",
+            "description": "The buyer can cancel their offer, unless it is expired",
+            "fields": {
+                "canceler": {
+                    "friendlyName": "Canceler",
+                    "description": "The account canceling the offer"
+                },
+                "nft_id": {
+                    "friendlyName": "Uniq ID",
+                    "description": "The ID of the Uniq"
+                },
+                "offer_id": {
+                    "friendlyName": "Offer ID",
+                    "description": "The ID of the offer being canceled"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
+        },
+        "mkfctofr.a": {
+            "friendlyName": "Make Factory Offer",
+            "description": "Make a uniq offer on a given factory.",
+            "fields": {
+                "buyer": {
+                    "friendlyName": "Buyer",
+                    "description": "The buyer account"
+                },
+                "receiver": {
+                    "friendlyName": "Receiver",
+                    "description": "The receiver account (optional)"
+                },
+                "price": {
+                    "friendlyName": "Price",
+                    "description": "Offer price"
+                },
+                "promoter_basis_point": {
+                    "friendlyName": "Promoter Basis Points",
+                    "description": "Promoter commission in basis points"
+                },
+                "factory_id": {
+                    "friendlyName": "Token Factory ID",
+                    "description": "The issuing token factory ID"
+                },
+                "duration": {
+                    "friendlyName": "Duration",
+                    "description": "The offer duration in seconds"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "The memo string to accompany the transaction"
+                }
+            }
+        },
+        "acptfctofr.a": {
+            "friendlyName": "Accept Factory Offer",
+            "description": "Accept the uniq offer made on the factory.",
+            "fields": {
+                "owner": {
+                    "friendlyName": "Owner",
+                    "description": "The token owner account"
+                },
+                "nft_id": {
+                    "friendlyName": "Token ID",
+                    "description": "The token ID"
+                },
+                "offer_id": {
+                    "friendlyName": "Offer ID",
+                    "description": "The offer ID made on the factory"
+                },
+                "promoter_id": {
+                    "friendlyName": "Promoter ID",
+                    "description": "The promoter account (optional)"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "The memo string to accompany the transaction"
+                }
+            }
+        },
+        "rmfctofr.a": {
+            "friendlyName": "Cancel Factory Offer",
+            "description": "Cancel the token uniq offer made on the factory.",
+            "fields": {
+                "canceler": {
+                    "friendlyName": "Canceler",
+                    "description": "The account who cancels the offer"
+                },
+                "factory_id": {
+                    "friendlyName": "Token Factory ID",
+                    "description": "The token factory ID"
+                },
+                "offer_id": {
+                    "friendlyName": "Offer ID",
+                    "description": "The offer ID made on the facotry"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "The memo string to accompany the transaction"
+                }
+            }
+        },
         "authmint.b": {
             "friendlyName": "Authorize minter",
             "description": "Authorize an account to be able to mint tokens",

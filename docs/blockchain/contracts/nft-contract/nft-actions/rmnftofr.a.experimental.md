@@ -6,7 +6,7 @@ order: 39
 
 # rmnftofr.a
 
-Cancel the buy offer made on the token
+Cancel the buy offer made on the Uniq
 
 ## Technical Behavior
 
@@ -20,12 +20,12 @@ When an offer is canceled, the offered price will be transferred from eosio.nfto
 
 ## Action Parameters
 
-| Property Name | C++ Type | JavaScript Type | Definition                    |
-| ------------- | -------- | --------------- | ----------------------------- |
-| canceler      | name     | String          | Account who cancel an offer   |
-| nft_id        | uint64_t | Number          | ID of token                   |
-| offer_id      | uint64_t | Number          | ID of the offer made on token |
-| memo          | string   | String          | Memo                          |
+| Property Name | C++ Type | JavaScript Type | Definition                   |
+| ------------- | -------- | --------------- | ---------------------------- |
+| canceler      | name     | String          | Account who cancels an offer  |
+| nft_id        | uint64_t | Number          | ID of Uniq                   |
+| offer_id      | uint64_t | Number          | ID of the offer made on Uniq |
+| memo          | string   | String          | Memo                         |
 
 ## CLI - cleos
 

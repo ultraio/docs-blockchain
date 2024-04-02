@@ -6,13 +6,13 @@ order: 40
 
 # mkfctofr.a
 
-Make a buy offer on a given factory.
+Make a buy offer on an Uniq factory.
 
 ## Technical Behavior
 
 The offer should be done at the time which is in the range of trading window of the factory.
 
-The action stores the offer to `fctoffer.a` table with the specified arguments. The new offer ID is read from `next.fctofr` table whose value field is then incremented.
+The action stores the offer to `fctoffer.a` table with the specified arguments. The new offer ID is read from `next.fctofr` table whose `value` field is then incremented.
 
 `eosio.nftram` pays RAM usage.
 
@@ -30,15 +30,15 @@ An account will not be able to make more offers on factories than `max_active_of
 
 ## Action Parameters
 
-| Property Name        | C++ Type        | JavaScript Type | Definition                                                                          |
-| -------------------- | --------------- | --------------- | ----------------------------------------------------------------------------------- |
-| buyer                | name            | String          | Account who make an offer                                                           |
-| receiver             | optional\<name> | String/Null     | Account who will receive the token, if not specified, buyer will receive the token. |
-| price                | asset           | String          | Offered price in UOS                                                                |
-| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                   |
-| factory_id           | uint64_t        | Number          | ID of token factory                                                                 |
-| duration             | uint32_t        | Number          | Offer duration in seconds                                                           |
-| memo                 | string          | String          | Memo                                                                                |
+| Property Name        | C++ Type        | JavaScript Type | Definition                                                                        |
+| -------------------- | --------------- | --------------- | --------------------------------------------------------------------------------- |
+| buyer                | name            | String          | Account who makes an offer                                                        |
+| receiver             | optional\<name> | String/Null     | Account who will receive the Uniq, if not specified, buyer will receive the Uniq. |
+| price                | asset           | String          | Offered price in UOS                                                              |
+| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                 |
+| factory_id           | uint64_t        | Number          | ID of Uniq factory                                                                |
+| duration             | uint32_t        | Number          | Offer duration in seconds                                                         |
+| memo                 | string          | String          | Memo                                                                              |
 
 ## CLI - cleos
 

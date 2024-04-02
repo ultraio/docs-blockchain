@@ -6,25 +6,25 @@ order: 37
 
 # mknftofr.a
 
-Make an offer on a given token.
+Make an offer on an Uniq.
 
 ## Technical Behavior
 
 The offer should be done at the time which is in the range of trading window of the NFT factory from which the NFT was issued.
 
-The action stores the offer to `nftoffer.a` table with the specified arguments. The new offer ID is read from `next.nftofr` table whose value field is then incremented.
+The action stores the offer to `nftoffer.a` table with the specified arguments. The new offer ID is read from `next.nftofr` table whose `value` field is then incremented.
 
 `eosio.nftram` pays RAM usage.
 
 The offered price will be transferred to `eosio.nftofr` account and will be kept until the offer is either accepted or cancelled.
 
-An account will not be able to make offers on the same NFTs that they already made.
+An account will not be able to make offers on the same Uniq that they already made.
 
-An account will not be able to make more offers on NFTs than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
+An account will not be able to make more offers on Uniq than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
 
 `owner` should be neither buyer nor receiver.
 
-`price` should be no less than min_price of `offercfg.a` and also should be no less than minimum_resell_price of the factory.
+`price` should be no less than min_price of `offercfg.a` and also should be no less than `minimum_resell_price` of the factory.
 
 `promoter_basis_point` should be in the range between `min_promoter_share_bp` and `max_promoter_share_bp` of `saleshrlmcfg` table configurations for resale. If `saleshrlmcfg` table doesn’t exist, the default range is between 250 (2.5 %) and 1000 (10 %).
 
@@ -32,16 +32,16 @@ An account will not be able to make more offers on NFTs than `max_active_offer_p
 
 ## Action Parameters
 
-| Property Name        | C++ Type        | JavaScript Type | Definition                                                                         |
-| -------------------- | --------------- | --------------- | ---------------------------------------------------------------------------------- |
-| buyer                | name            | String          | Account who make an offer                                                          |
-| receiver             | optional\<name> | String/Null     | Account who will receive the token, if not specified, buyer will receive the token |
-| price                | asset           | String          | Offered price in UOS                                                               |
-| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                  |
-| owner                | name            | String          | Account who own the token                                                          |
-| nft_id               | uint64_t        | Number          | ID of token buyer want to make offer to                                            |
-| duration             | uint32_t        | Number          | Offer duration in seconds                                                          |
-| memo                 | string          | String          | Memo                                                                               |
+| Property Name        | C++ Type        | JavaScript Type | Definition                                                                       |
+| -------------------- | --------------- | --------------- | -------------------------------------------------------------------------------- |
+| buyer                | name            | String          | Account who makes an offer                                                       |
+| receiver             | optional\<name> | String/Null     | Account who will receive the Uniq, if not specified, buyer will receive the Uniq |
+| price                | asset           | String          | Offered price in UOS                                                             |
+| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                |
+| owner                | name            | String          | Account who own the Uniq                                                         |
+| nft_id               | uint64_t        | Number          | ID of Uniq which buyer want to make offer to                                     |
+| duration             | uint32_t        | Number          | Offer duration in seconds                                                        |
+| memo                 | string          | String          | Memo                                                                             |
 
 ## CLI - cleos
 

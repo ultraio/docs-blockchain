@@ -6,7 +6,7 @@ order: 42
 
 # rmfctofr.a
 
-Cancel the buy offer made on the token factory.
+Cancel the buy offer made on the Uniq factory.
 
 ## Technical Behavior
 
@@ -20,12 +20,12 @@ When the offer is canceled, the offered price will be transferred from eosio.nft
 
 ## Action Parameters
 
-| Property Name | C++ Type | JavaScript Type | Definition                    |
-| ------------- | -------- | --------------- | ----------------------------- |
-| canceler      | name     | String          | Account who cancel an offer   |
-| factory_id    | uint64_t | Number          | ID of token factory           |
-| offer_id      | uint64_t | Number          | ID of the offer made on token |
-| memo          | string   | String          | Memo                          |
+| Property Name | C++ Type | JavaScript Type | Definition                   |
+| ------------- | -------- | --------------- | ---------------------------- |
+| canceler      | name     | String          | Account who cancels an offer |
+| factory_id    | uint64_t | Number          | ID of Uniq factory           |
+| offer_id      | uint64_t | Number          | ID of the offer made on Uniq |
+| memo          | string   | String          | Memo                         |
 
 ## CLI - cleos
 

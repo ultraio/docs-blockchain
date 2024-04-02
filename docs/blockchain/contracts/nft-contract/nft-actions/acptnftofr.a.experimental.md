@@ -6,17 +6,17 @@ order: 38
 
 # acptnftofr.a
 
-Accept the offer made on token.
+Accept the offer made on Uniq.
 
 ## Technical Behavior
 
 Note that `acptnftofr.a` is used to accept the offer made by `mknftofr.a` only.
 
-When the action is executed, the offer should not be expired and the token should be valid (i.e., should have not been burned).
+When the action is executed, the offer should not be expired and the Uniq should be valid (i.e., should have not been burned).
 
 The offered price will be checked again to confirm that it should be no less than `minimum_resell_price` of the factory.
 
-The token will be transferred to the buyer, or the receiver if specified when the offer was made.
+The Uniq will be transferred to the buyer, or the receiver if specified when the offer was made.
 
 The amount of offered price will be split in the same manner as 2nd hand resale, and part of it will be transferred to the owner.
 
@@ -26,17 +26,17 @@ Shares will be calculated and distributed based on the [2nd Hand Sale Policy](..
 
 The offer will be removed from `nftoffer.a` table.
 
-The token ID will be removed from `buyoffer.a` table and if both `nft_ids` and `factory_ids` fields becomes empty, the buyer's record itself will be removed. 
+The Uniq ID will be removed from `buyoffer.a` table and if both `nft_ids` and `factory_ids` fields becomes empty, the buyer's record itself will be removed. 
 
 ## Action Parameters
 
-| Property Name | C++ Type        | JavaScript Type | Definition                    |
-| ------------- | --------------- | --------------- | ----------------------------- |
-| owner         | name            | String          | Account who own the token     |
-| nft_id        | uint64_t        | Number          | ID of token will be accepted  |
-| offer_id      | uint64_t        | Number          | ID of the offer made on token |
-| promoter_id   | optional\<name> | String/Null     | Promoter account              |
-| memo          | string          | String          | Memo                          |
+| Property Name | C++ Type        | JavaScript Type | Definition                   |
+| ------------- | --------------- | --------------- | ---------------------------- |
+| owner         | name            | String          | Account who owns the Uniq    |
+| nft_id        | uint64_t        | Number          | ID of Uniq will be accepted  |
+| offer_id      | uint64_t        | Number          | ID of the offer made on Uniq |
+| promoter_id   | optional\<name> | String/Null     | Promoter account             |
+| memo          | string          | String          | Memo                         |
 
 ## CLI - cleos
 

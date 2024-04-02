@@ -1,10 +1,11 @@
 ---
-title: 'How to generate a Keypair'
-order: -99999
-oultine: [0,5]
+title: 'Public and Private Keys'
+
+outline: [0, 4]
+order: -90
 ---
 
-# How to Generate a Key Pair
+# Public and Private Keys
 
 Ultra uses an elliptic curve key pair consists of a public key (used for verification) and a private key (kept secret for signing transactions), enabling secure digital interactions on the Ultra blockchain.
 

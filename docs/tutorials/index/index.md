@@ -18,14 +18,9 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>How to generate a Keypair</td>
-        <td>Get a basic understand of private and public keys</td>
-        <td><a href="/tutorials/fundamentals/how-to-generate-a-keypair">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to create an Account</td>
-        <td>How to generate a development account on our testnet</td>
-        <td><a href="/tutorials/fundamentals/how-to-create-an-account">Link</a></td>
+        <td>Tutorial - Generate a key and create a developer Testnet account</td>
+        <td>Create your personal Ultra Testnet account to interact with the blockchain</td>
+        <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>

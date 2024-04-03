@@ -14,7 +14,7 @@ Set global configurations for all Uniq offers that will be made on either a Uniq
 
 ## Technical Behavior
 
-Only `ultra.nft.ft` account can set Uniq offer config
+Only `ultra.nft.ft` account can set Uniq offer configurations.
 
 The action stores the configurations to `offercfg.a` singleton table with the specified arguments.
 
@@ -24,7 +24,7 @@ The action even accepts the same values as the ones currently stored in `offercf
 
 `eosio.nft.ft` pays RAM usage.
 
-`min_price` must be positive, and only support UOS and USD.
+`min_price` must be positive, and only supports UOS and USD.
 
 Both `min_duration` and `max_duration` must be positive, with `max_duration` must be greater than `min_duration`.
 

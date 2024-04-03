@@ -8,7 +8,7 @@ order: 1
 
 ## Overview of Uniq Offer feature
 
-Uniq Offer allows user to make an offer directly to the owner of Uniq or Uniq Factory if it's tradable.
+Uniq Offer allows a user to make an offer directly to the owner of Uniq or Uniq Factory if it's tradable.
 
 Once these offers are made, the owner of Uniq can accept these offers as long as they are valid. This means offers remain valid even if the Uniq changes hands, ensuring your offer stands until it expires or is withdrawn.
 

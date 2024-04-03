@@ -1,10 +1,10 @@
 ---
-title: 'Uniq Tables'
+title: 'NFT Tables'
 order: 1
 
 ---
 
-# Uniq Tables
+# NFT Tables
 
 ## factory.b
 

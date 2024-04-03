@@ -20,7 +20,7 @@ The offered price will be transferred to `eosio.nftofr` account and will be kept
 
 An account will not be able to make offers on the same factories that they already made.
 
-An account will not be able to make offers if their total offers (including Uniq and Uniq factory) is more than or equal to `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
+An account will not be able to make offers if their total offers (including Uniq and Uniq factory) is more than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
 
 `price` should be no less than `min_price` of `offercfg.a` and also should be no less than `minimum_resell_price` of the factory.
 

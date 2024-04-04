@@ -1,0 +1,22 @@
+name: 'Generate Build'
+on:
+    pull_request:
+        paths:
+            - '**/*'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Clone Docs Repo
+              uses: actions/checkout@v3
+            - name: 'Install NodeJS'
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Build Docs
+              run: npm run build:all

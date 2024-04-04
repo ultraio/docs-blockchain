@@ -2139,6 +2139,286 @@ Multiple purchase requirements can be specified for a single factory. In additio
 -   [fctrprchs.a - table of factory purchase options](./nft-tables.md#fctrprchs-a)
 
 ---
+title: 'acptfctofr.a'
+order: 41
+
+---
+
+# acptfctofr.a
+
+Accept the offer made on the Uniq factory.
+
+## Technical Behavior
+
+Note that `acptfctofr.a` is used to accept the offer made by `mkfctofr.a` only.
+
+When the action is executed, the offer should not be expired and the Uniq should be valid (i.e., should have not been burned).
+
+The offered price will be checked again to confirm that it should be no less than `minimum_resell_price` of the factory.
+
+The Uniq will be transferred to the buyer, or the receiver if specified when the offer was made.
+
+The amount of offered price will be split in the same manner as 2nd hand resale, and part of it will be transferred to the owner.
+
+The promoter share, which was specified when `mkfctofr.a` action was called, was transferred to the promoter specified as `promoter_id` argument, or to the default promoter if it is set in `saleshrlmcfg` table.
+
+Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../general/antelope-ultra/2nd-hand-sale.md).
+
+The offer will be removed from `fctoffer.a` table.
+
+The Uniq ID will be removed from `buyoffer.a` table and if both `nft_ids` and `factory_ids` fields becomes empty, the buyer's record itself will be removed.
+
+## Action Parameters
+
+| Property Name | C++ Type        | JavaScript Type | Description                  |
+| ------------- | --------------- | --------------- | ---------------------------- |
+| owner         | name            | String          | Account who owns the Uniq    |
+| nft_id        | uint64_t        | Number          | ID of Uniq will be accepted  |
+| offer_id      | uint64_t        | Number          | ID of the offer made on Uniq |
+| promoter_id   | optional\<name> | String/Null     | Promoter account             |
+| memo          | string          | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft acptfctofr.a '{"owner": "alice", "nft_id": 1, "offer_id": 2, "memo": "accept the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'acptfctofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                owner: "alice",
+                nft_id: 1,
+                offer_id: 2,
+                memo: "accept the offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'acptfctofr.a'
+order: 41
+
+---
+
+# acptfctofr.a
+
+Accept the offer made on the Uniq factory.
+
+## Technical Behavior
+
+Note that `acptfctofr.a` is used to accept the offer made by `mkfctofr.a` only.
+
+When the action is executed, the offer should not be expired and the Uniq should be valid (i.e., should have not been burned).
+
+The offered price will be checked again to confirm that it should be no less than `minimum_resell_price` of the factory.
+
+The Uniq will be transferred to the buyer, or the receiver if specified when the offer was made.
+
+The amount of offered price will be split in the same manner as 2nd hand resale, and part of it will be transferred to the owner.
+
+The promoter share, which was specified when `mkfctofr.a` action was called, was transferred to the promoter specified as `promoter_id` argument, or to the default promoter if it is set in `saleshrlmcfg` table.
+
+Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../general/antelope-ultra/2nd-hand-sale.md).
+
+The offer will be removed from `fctoffer.a` table.
+
+The Uniq ID will be removed from `buyoffer.a` table and if both `nft_ids` and `factory_ids` fields becomes empty, the buyer's record itself will be removed.
+
+## Action Parameters
+
+| Property Name | C++ Type        | JavaScript Type | Description                  |
+| ------------- | --------------- | --------------- | ---------------------------- |
+| owner         | name            | String          | Account who owns the Uniq    |
+| nft_id        | uint64_t        | Number          | ID of Uniq will be accepted  |
+| offer_id      | uint64_t        | Number          | ID of the offer made on Uniq |
+| promoter_id   | optional\<name> | String/Null     | Promoter account             |
+| memo          | string          | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft acptfctofr.a '{"owner": "alice", "nft_id": 1, "offer_id": 2, "memo": "accept the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'acptfctofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                owner: "alice",
+                nft_id: 1,
+                offer_id: 2,
+                memo: "accept the offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'acptnftofr.a'
+order: 38
+
+---
+
+# acptnftofr.a
+
+Accept the offer made on Uniq.
+
+## Technical Behavior
+
+Note that `acptnftofr.a` is used to accept the offer made by `mknftofr.a` only.
+
+When the action is executed, the offer should not be expired and the Uniq should be valid (i.e., should have not been burned).
+
+The offered price will be checked again to confirm that it should be no less than `minimum_resell_price` of the factory.
+
+The Uniq will be transferred to the buyer, or the receiver if specified when the offer was made.
+
+The amount of offered price will be split in the same manner as 2nd hand resale, and part of it will be transferred to the owner.
+
+The promoter share, which was specified when `mknftofr.a` action was called, was transferred to the promoter specified as `promoter_id` argument, or to the default promoter if it is set in `saleshrlmcfg` table.
+
+Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../general/antelope-ultra/2nd-hand-sale.md).
+
+The offer will be removed from `nftoffer.a` table.
+
+The Uniq ID will be removed from `buyoffer.a` table and if both `nft_ids` and `factory_ids` fields becomes empty, the buyer's record itself will be removed. 
+
+## Action Parameters
+
+| Property Name | C++ Type        | JavaScript Type | Description                  |
+| ------------- | --------------- | --------------- | ---------------------------- |
+| owner         | name            | String          | Account who owns the Uniq    |
+| nft_id        | uint64_t        | Number          | ID of Uniq will be accepted  |
+| offer_id      | uint64_t        | Number          | ID of the offer made on Uniq |
+| promoter_id   | optional\<name> | String/Null     | Promoter account             |
+| memo          | string          | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft acptnftofr.a '{"owner": "alice", "nft_id": 1, "offer_id": 2, "memo": "accept the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'acptnftofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                owner: "alice",
+                nft_id: 1,
+                offer_id: 2,
+                memo: "accept the offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'acptnftofr.a'
+order: 38
+
+---
+
+# acptnftofr.a
+
+Accept the offer made on Uniq.
+
+## Technical Behavior
+
+Note that `acptnftofr.a` is used to accept the offer made by `mknftofr.a` only.
+
+When the action is executed, the offer should not be expired and the Uniq should be valid (i.e., should have not been burned).
+
+The offered price will be checked again to confirm that it should be no less than `minimum_resell_price` of the factory.
+
+The Uniq will be transferred to the buyer, or the receiver if specified when the offer was made.
+
+The amount of offered price will be split in the same manner as 2nd hand resale, and part of it will be transferred to the owner.
+
+The promoter share, which was specified when `mknftofr.a` action was called, was transferred to the promoter specified as `promoter_id` argument, or to the default promoter if it is set in `saleshrlmcfg` table.
+
+Shares will be calculated and distributed based on the [2nd Hand Sale Policy](../../../general/antelope-ultra/2nd-hand-sale.md).
+
+The offer will be removed from `nftoffer.a` table.
+
+The Uniq ID will be removed from `buyoffer.a` table and if both `nft_ids` and `factory_ids` fields becomes empty, the buyer's record itself will be removed. 
+
+## Action Parameters
+
+| Property Name | C++ Type        | JavaScript Type | Description                  |
+| ------------- | --------------- | --------------- | ---------------------------- |
+| owner         | name            | String          | Account who owns the Uniq    |
+| nft_id        | uint64_t        | Number          | ID of Uniq will be accepted  |
+| offer_id      | uint64_t        | Number          | ID of the offer made on Uniq |
+| promoter_id   | optional\<name> | String/Null     | Promoter account             |
+| memo          | string          | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft acptnftofr.a '{"owner": "alice", "nft_id": 1, "offer_id": 2, "memo": "accept the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'acptnftofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                owner: "alice",
+                nft_id: 1,
+                offer_id: 2,
+                memo: "accept the offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
 title: 'activers'
 order: 1
 
@@ -4120,6 +4400,312 @@ Each action has their own migration pattern and they are all complex in their ow
 When a new version is announced it is always best to migrate your actions to match the structs which are provided.
 
 ---
+title: 'mkfctofr.a'
+order: 40
+
+---
+
+# mkfctofr.a
+
+Make an offer on a Uniq factory.
+
+## Technical Behavior
+
+The offer should be done at the time which is in the range of trading window of the factory.
+
+The action stores the offer to `fctoffer.a` table with the specified arguments. The new offer ID is read from `next.fctofr` table whose `value` field is then incremented.
+
+`eosio.nftram` pays RAM usage.
+
+The offered price will be transferred to `eosio.nftofr` account and will be kept until the offer is either accepted or cancelled.
+
+An account will not be able to make offers on the same factories that they already made.
+
+An account will not be able to make offers if their total offers (including Uniq and Uniq factory) is more than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
+
+`price` should be no less than `min_price` of `offercfg.a` and also should be no less than `minimum_resell_price` of the factory.
+
+`promoter_basis_point` should be in the range between `min_promoter_share_bp` and `max_promoter_share_bp` of `saleshrlmcfg` table configurations for resale. If `saleshrlmcfg` table doesn’t exist, the default range is between 250 (2.5 %) and 1000 (10 %).
+
+`duration` should be in the range between `min_duration` and `max_duration` of `offercfg.a`. If `duration` is longer than the trading window of the factory, it will be capped by `trading_window_end`.
+
+## Action Parameters
+
+| Property Name        | C++ Type        | JavaScript Type | Description                                                                       |
+| -------------------- | --------------- | --------------- | --------------------------------------------------------------------------------- |
+| buyer                | name            | String          | Account who makes an offer                                                        |
+| receiver             | optional\<name> | String/Null     | Account who will receive the Uniq, if not specified, buyer will receive the Uniq. |
+| price                | asset           | String          | Offered price in UOS                                                              |
+| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                 |
+| factory_id           | uint64_t        | Number          | ID of Uniq factory                                                                |
+| duration             | uint32_t        | Number          | Offer duration in seconds                                                         |
+| memo                 | string          | String          | Memo                                                                              |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft mkfctofr.a '{"buyer": "alice", "receiver": null, "price": "2.00000000 UOS", "promoter_basis_point": 250, "factory_id": 1, "duration": 86400, "memo": "new offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'mkfctofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                buyer: "alice",
+                receiver: null,
+                price: "2.00000000 UOS",
+                promoter_basis_point: 250,
+                factory_id: 1,
+                duration: 86400,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'mkfctofr.a'
+order: 40
+
+---
+
+# mkfctofr.a
+
+Make an offer on a Uniq factory.
+
+## Technical Behavior
+
+The offer should be done at the time which is in the range of trading window of the factory.
+
+The action stores the offer to `fctoffer.a` table with the specified arguments. The new offer ID is read from `next.fctofr` table whose `value` field is then incremented.
+
+`eosio.nftram` pays RAM usage.
+
+The offered price will be transferred to `eosio.nftofr` account and will be kept until the offer is either accepted or cancelled.
+
+An account will not be able to make offers on the same factories that they already made.
+
+An account will not be able to make offers if their total offers (including Uniq and Uniq factory) is more than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
+
+`price` should be no less than `min_price` of `offercfg.a` and also should be no less than `minimum_resell_price` of the factory.
+
+`promoter_basis_point` should be in the range between `min_promoter_share_bp` and `max_promoter_share_bp` of `saleshrlmcfg` table configurations for resale. If `saleshrlmcfg` table doesn’t exist, the default range is between 250 (2.5 %) and 1000 (10 %).
+
+`duration` should be in the range between `min_duration` and `max_duration` of `offercfg.a`. If `duration` is longer than the trading window of the factory, it will be capped by `trading_window_end`.
+
+## Action Parameters
+
+| Property Name        | C++ Type        | JavaScript Type | Description                                                                       |
+| -------------------- | --------------- | --------------- | --------------------------------------------------------------------------------- |
+| buyer                | name            | String          | Account who makes an offer                                                        |
+| receiver             | optional\<name> | String/Null     | Account who will receive the Uniq, if not specified, buyer will receive the Uniq. |
+| price                | asset           | String          | Offered price in UOS                                                              |
+| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                 |
+| factory_id           | uint64_t        | Number          | ID of Uniq factory                                                                |
+| duration             | uint32_t        | Number          | Offer duration in seconds                                                         |
+| memo                 | string          | String          | Memo                                                                              |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft mkfctofr.a '{"buyer": "alice", "receiver": null, "price": "2.00000000 UOS", "promoter_basis_point": 250, "factory_id": 1, "duration": 86400, "memo": "new offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'mkfctofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                buyer: "alice",
+                receiver: null,
+                price: "2.00000000 UOS",
+                promoter_basis_point: 250,
+                factory_id: 1,
+                duration: 86400,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'mknftofr.a'
+order: 37
+
+---
+
+# mknftofr.a
+
+Make an offer on a Uniq.
+
+## Technical Behavior
+
+The offer should be done at the time which is in the range of trading window of the Uniq factory from which the Uniq was issued.
+
+The action stores the offer to `nftoffer.a` table with the specified arguments. The new offer ID is read from `next.nftofr` table whose `value` field is then incremented.
+
+`eosio.nftram` pays RAM usage.
+
+The offered price will be transferred to `eosio.nftofr` account and will be kept until the offer is either accepted or cancelled.
+
+An account will not be able to make offers on the same Uniq that they already made.
+
+An account will not be able to make offers if their total offers (including Uniq and Uniq factory) is more than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
+
+`owner` should be neither buyer nor receiver.
+
+`price` should be no less than `min_price` of `offercfg.a` and also should be no less than `minimum_resell_price` of the factory.
+
+`promoter_basis_point` should be in the range between `min_promoter_share_bp` and `max_promoter_share_bp` of `saleshrlmcfg` table configurations for resale. If `saleshrlmcfg` table doesn’t exist, the default range is between 250 (2.5 %) and 1000 (10 %).
+
+`duration` should be in the range between `min_duration` and `max_duration` of `offercfg.a`. If duration is longer than the trading window of the factory, it will be capped by `trading_window_end`.
+
+## Action Parameters
+
+| Property Name        | C++ Type        | JavaScript Type | Description                                                                      |
+| -------------------- | --------------- | --------------- | -------------------------------------------------------------------------------- |
+| buyer                | name            | String          | Account who makes an offer                                                       |
+| receiver             | optional\<name> | String/Null     | Account who will receive the Uniq, if not specified, buyer will receive the Uniq |
+| price                | asset           | String          | Offered price in UOS                                                             |
+| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                |
+| owner                | name            | String          | Account who owns the Uniq                                                         |
+| nft_id               | uint64_t        | Number          | ID of Uniq which buyer wants to make offer to                                     |
+| duration             | uint32_t        | Number          | Offer duration in seconds                                                        |
+| memo                 | string          | String          | Memo                                                                             |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft mknftofr.a '{"buyer": "alice", "receiver": null, "price": "2.00000000 UOS", "promoter_basis_point": 250, "owner": "bob", "nft_id": 1, "duration": 86400, "memo": "new offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'mknftofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                buyer: "alice",
+                receiver: null,
+                price: "2.00000000 UOS",
+                promoter_basis_point: 250,
+                owner: "bob",
+                nft_id: 1,
+                duration: 86400,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+---
+title: 'mknftofr.a'
+order: 37
+
+---
+
+# mknftofr.a
+
+Make an offer on a Uniq.
+
+## Technical Behavior
+
+The offer should be done at the time which is in the range of trading window of the Uniq factory from which the Uniq was issued.
+
+The action stores the offer to `nftoffer.a` table with the specified arguments. The new offer ID is read from `next.nftofr` table whose `value` field is then incremented.
+
+`eosio.nftram` pays RAM usage.
+
+The offered price will be transferred to `eosio.nftofr` account and will be kept until the offer is either accepted or cancelled.
+
+An account will not be able to make offers on the same Uniq that they already made.
+
+An account will not be able to make offers if their total offers (including Uniq and Uniq factory) is more than `max_active_offer_per_user` of `offercfg.a`, which records the global configurations.
+
+`owner` should be neither buyer nor receiver.
+
+`price` should be no less than `min_price` of `offercfg.a` and also should be no less than `minimum_resell_price` of the factory.
+
+`promoter_basis_point` should be in the range between `min_promoter_share_bp` and `max_promoter_share_bp` of `saleshrlmcfg` table configurations for resale. If `saleshrlmcfg` table doesn’t exist, the default range is between 250 (2.5 %) and 1000 (10 %).
+
+`duration` should be in the range between `min_duration` and `max_duration` of `offercfg.a`. If duration is longer than the trading window of the factory, it will be capped by `trading_window_end`.
+
+## Action Parameters
+
+| Property Name        | C++ Type        | JavaScript Type | Description                                                                      |
+| -------------------- | --------------- | --------------- | -------------------------------------------------------------------------------- |
+| buyer                | name            | String          | Account who makes an offer                                                       |
+| receiver             | optional\<name> | String/Null     | Account who will receive the Uniq, if not specified, buyer will receive the Uniq |
+| price                | asset           | String          | Offered price in UOS                                                             |
+| promoter_basis_point | uint16_t        | Number          | Promoter share in units of 0.01 %                                                |
+| owner                | name            | String          | Account who owns the Uniq                                                         |
+| nft_id               | uint64_t        | Number          | ID of Uniq which buyer wants to make offer to                                     |
+| duration             | uint32_t        | Number          | Offer duration in seconds                                                        |
+| memo                 | string          | String          | Memo                                                                             |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft mknftofr.a '{"buyer": "alice", "receiver": null, "price": "2.00000000 UOS", "promoter_basis_point": 250, "owner": "bob", "nft_id": 1, "duration": 86400, "memo": "new offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'mknftofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                buyer: "alice",
+                receiver: null,
+                price: "2.00000000 UOS",
+                promoter_basis_point: 250,
+                owner: "bob",
+                nft_id: 1,
+                duration: 86400,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+---
 title: 'purchase.a'
 order: 31
 
@@ -4439,6 +5025,124 @@ await api.transact(
 ```
 
 ---
+title: 'rmfctofr.a'
+order: 42
+
+---
+
+# rmfctofr.a
+
+Cancel the offer made on the Uniq factory.
+
+## Technical Behavior
+
+Note that `rmfctofr.a` is used to cancel the offer made by `mkfctofr.a` only.
+
+A buyer can cancel any of their offers at any time.
+
+Once the offer is expired, anyone can cancel the offer.
+
+When the offer is canceled, the offered price will be transferred from `eosio.nftofr` account back to buyer.
+
+## Action Parameters
+
+| Property Name | C++ Type | JavaScript Type | Description                  |
+| ------------- | -------- | --------------- | ---------------------------- |
+| canceler      | name     | String          | Account who cancels an offer |
+| factory_id    | uint64_t | Number          | ID of Uniq factory           |
+| offer_id      | uint64_t | Number          | ID of the offer made on Uniq |
+| memo          | string   | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft rmfctofr.a '{"canceler": "alice", "factory_id": 1, "offer_id": 2, "memo": "cancel the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'rmfctofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                canceler: "alice",
+                factory_id: 1,
+                offer_id: 2,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'rmfctofr.a'
+order: 42
+
+---
+
+# rmfctofr.a
+
+Cancel the offer made on the Uniq factory.
+
+## Technical Behavior
+
+Note that `rmfctofr.a` is used to cancel the offer made by `mkfctofr.a` only.
+
+A buyer can cancel any of their offers at any time.
+
+Once the offer is expired, anyone can cancel the offer.
+
+When the offer is canceled, the offered price will be transferred from `eosio.nftofr` account back to buyer.
+
+## Action Parameters
+
+| Property Name | C++ Type | JavaScript Type | Description                  |
+| ------------- | -------- | --------------- | ---------------------------- |
+| canceler      | name     | String          | Account who cancels an offer |
+| factory_id    | uint64_t | Number          | ID of Uniq factory           |
+| offer_id      | uint64_t | Number          | ID of the offer made on Uniq |
+| memo          | string   | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft rmfctofr.a '{"canceler": "alice", "factory_id": 1, "offer_id": 2, "memo": "cancel the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'rmfctofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                canceler: "alice",
+                factory_id: 1,
+                offer_id: 2,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
 title: 'rmgrpfcts'
 order: 21
 
@@ -4479,6 +5183,124 @@ await transact(
             data: {
                 id: 33,
                 factories: [7, 11, 22],
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'rmnftofr.a'
+order: 39
+
+---
+
+# rmnftofr.a
+
+Cancel the offer made on the Uniq
+
+## Technical Behavior
+
+Note that `rmnftofr.a` is used to cancel the offer made by `mknftofr.a` only.
+
+A buyer can cancel any of his offers at any time
+
+Once offer is expired, anyone can cancel the offer.
+
+When an offer is canceled, the offered price will be transferred from `eosio.nftofr` account back to buyer.
+
+## Action Parameters
+
+| Property Name | C++ Type | JavaScript Type | Description                  |
+| ------------- | -------- | --------------- | ---------------------------- |
+| canceler      | name     | String          | Account who cancels an offer |
+| nft_id        | uint64_t | Number          | ID of Uniq                   |
+| offer_id      | uint64_t | Number          | ID of the offer made on Uniq |
+| memo          | string   | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft rmnftofr.a '{"canceler": "alice", "nft_id": 1, "offer_id": 2, "memo": "cancel the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'rmnftofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                canceler: "alice",
+                nft_id: 1,
+                offer_id: 2,
+                memo: "new offer"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'rmnftofr.a'
+order: 39
+
+---
+
+# rmnftofr.a
+
+Cancel the offer made on the Uniq
+
+## Technical Behavior
+
+Note that `rmnftofr.a` is used to cancel the offer made by `mknftofr.a` only.
+
+A buyer can cancel any of his offers at any time
+
+Once offer is expired, anyone can cancel the offer.
+
+When an offer is canceled, the offered price will be transferred from `eosio.nftofr` account back to buyer.
+
+## Action Parameters
+
+| Property Name | C++ Type | JavaScript Type | Description                  |
+| ------------- | -------- | --------------- | ---------------------------- |
+| canceler      | name     | String          | Account who cancels an offer |
+| nft_id        | uint64_t | Number          | ID of Uniq                   |
+| offer_id      | uint64_t | Number          | ID of the offer made on Uniq |
+| memo          | string   | String          | Memo                         |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft rmnftofr.a '{"canceler": "alice", "nft_id": 1, "offer_id": 2, "memo": "cancel the offer"}' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'rmnftofr.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                canceler: "alice",
+                nft_id: 1,
+                offer_id: 2,
+                memo: "new offer"
             },
         },
     ],
@@ -5739,6 +6561,148 @@ await api.transact({
 });
 ```
 ---
+title: 'stofrcfg.a'
+order: 36
+
+---
+
+# stofrcfg.a
+
+Set global Uniq offer configuration
+
+## Behavior
+
+Set global configurations for all Uniq offers that will be made on either a Uniq or a Uniq factory.
+
+## Technical Behavior
+
+Only `ultra.nft.ft` account can set Uniq offer configurations.
+
+The action stores the configurations to `offercfg.a` singleton table with the specified arguments.
+
+All fields are optional, the action will only update the specified arguments and leave the rest the same as existing entry or as the default value if there’s no existing entry.
+
+The action even accepts the same values as the ones currently stored in `offercfg.a`.
+
+`eosio.nft.ft` pays RAM usage.
+
+`min_price` must be positive, and only supports UOS and USD.
+
+Both `min_duration` and `max_duration` must be positive, with `max_duration` must be greater than `min_duration`.
+
+`max_active_offer_per_user` must also be positive.
+
+## Action Parameters
+
+| Property Name             | C++ Type            | JavaScript Type    | Description                                                           |
+| ------------------------- | ------------------- | ------------------ | --------------------------------------------------------------------- |
+| min_price                 | optional\<asset>    | String/Null        | Minimum offer price                                                   |
+| min_duration              | optional\<uint32_t> | Number/String/Null | Minimum offer duration                                                |
+| max_duration              | optional\<uint32_t> | Number/String/Null | Maximum offer duration                                                |
+| max_active_offer_per_user | optional\<uint32_t> | Number/String/Null | Maximum number of offers, which includes both Uniq and factory offers |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft stofrcfg.a '{"min_price": "1.00000000 UOS", "min_duration": 86400, "max_duration": 15552000, "max_active_offer_per_user": 20}' -p ultra.nft.ft@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'stofrcfg.a',
+            authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+            data: {
+                min_price: "1.00000000 UOS",
+                min_duration: 86400,
+                max_duration: 15552000,
+                max_active_offer_per_user: 20
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
+title: 'stofrcfg.a'
+order: 36
+
+---
+
+# stofrcfg.a
+
+Set global Uniq offer configuration
+
+## Behavior
+
+Set global configurations for all Uniq offers that will be made on either a Uniq or a Uniq factory.
+
+## Technical Behavior
+
+Only `ultra.nft.ft` account can set Uniq offer configurations.
+
+The action stores the configurations to `offercfg.a` singleton table with the specified arguments.
+
+All fields are optional, the action will only update the specified arguments and leave the rest the same as existing entry or as the default value if there’s no existing entry.
+
+The action even accepts the same values as the ones currently stored in `offercfg.a`.
+
+`eosio.nft.ft` pays RAM usage.
+
+`min_price` must be positive, and only supports UOS and USD.
+
+Both `min_duration` and `max_duration` must be positive, with `max_duration` must be greater than `min_duration`.
+
+`max_active_offer_per_user` must also be positive.
+
+## Action Parameters
+
+| Property Name             | C++ Type            | JavaScript Type    | Description                                                           |
+| ------------------------- | ------------------- | ------------------ | --------------------------------------------------------------------- |
+| min_price                 | optional\<asset>    | String/Null        | Minimum offer price                                                   |
+| min_duration              | optional\<uint32_t> | Number/String/Null | Minimum offer duration                                                |
+| max_duration              | optional\<uint32_t> | Number/String/Null | Maximum offer duration                                                |
+| max_active_offer_per_user | optional\<uint32_t> | Number/String/Null | Maximum number of offers, which includes both Uniq and factory offers |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft stofrcfg.a '{"min_price": "1.00000000 UOS", "min_duration": 86400, "max_duration": 15552000, "max_active_offer_per_user": 20}' -p ultra.nft.ft@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'stofrcfg.a',
+            authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+            data: {
+                min_price: "1.00000000 UOS",
+                min_duration: 86400,
+                max_duration: 15552000,
+                max_active_offer_per_user: 20
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+
+---
 title: 'transfer'
 order: 29
 
@@ -5909,6 +6873,819 @@ This also corresponds with the factories that belong to this group.
 -   [deletegrp](./nft-actions/deletegrp.md)
 -   [addgrpfcts](./nft-actions/addgrpfcts.md)
 -   [rmgrpfcts](./nft-actions/rmgrpfcts.md)
+
+---
+title: 'NFT Tables'
+order: 1
+
+---
+
+# NFT Tables
+
+## factory.b
+
+-   Table: `factory.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains Uniq factories' settings and the operational info.
+
+| Fields                  | Type                              | Description                                                                                                                            |
+| ----------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| id                      | uint64_t                          | (primary key) The Uniq factory ID                                                                                                      |
+| asset_manager           | eosio::name                       | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
+| asset_creator           | eosio::name                       | Account that ceates the Uniq factory.                                                                                                  |
+| minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                           |
+| resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
+| mintable_window_start   | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be minted.                                                                             |
+| mintable_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be minted.                                                                                   |
+| trading_window_start    | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be traded.                                                                             |
+| trading_window_end      | std::optional\<uint32_t>          | The end of the time window when Uniqs can be traded.                                                                                   |
+| recall_window_start     | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| recall_window_end       | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| lockup_time             | std::optional\<uint32_t>          | *Disabled*. The time window since Uniq minting in which the Uniq cannot be transferred                                                 |
+| conditionless_receivers | std::vector\<eosio::name>         | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                    | uint8_t                           | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
+| factory_uri             | std::string                       | The Uniq factory metadata URI vector.                                                                                                  |
+| factory_hash            | eosio::checksum256                | The Uniq factory metadata hash.                                                                                                        |
+| max_mintable_tokens     | std::optional\<uint32_t>          | The maximal number of Uniqs that can be minted with the factory.                                                                       |
+| minted_tokens_no        | uint32_t                          | The number of minted Uniqs.                                                                                                            |
+| existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt Uniqs.                                                                                      |
+| authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of Uniqs that authorized minters can issue                                                                        |
+| account_minting_limit   | std::optional\<uint32_t>          | The limit of Uniqs that can be minted to each individual account                                                                       |
+| transfer_window_start   | std::optional\<uint32_t>          | The beginning fo the time window when Uniqs can be transferred                                                                         |
+| transfer_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be transferred                                                                               |
+| default_token_uri       | std::string                       | The default Uniq metadata URI for Uniqs without dedicated URI                                                                          |
+| default_token_hash      | std::optional\<checksum256>       | The default Uniq metadata hash                                                                                                         |
+| lock_hash               | bool                              | Controls whether metadata of the factory, Uniqs or default Uniqs could be changed                                                      |
+
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus**
+
+## factory.a
+
+-   Table: `factory.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains uniq factories settings and the operational info.
+
+::: warning
+Deprecated. Refer to `factory.b` instead
+:::
+
+| Fields                          | Type                              | Description                                                                                                                            |
+| ------------------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| id                              | uint64_t                          | (primary key) The Uniq factory ID                                                                                                      |
+| asset_manager                   | eosio::name                       | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
+| asset_creator                   | eosio::name                       | Account that creates the Uniq factory.                                                                                                 |
+| conversion_rate_oracle_contract | eosio::name                       | *Deprecated*. Please do not use.                                                                                                       |
+| chosen_rate                     | std::vector\<eosio::asset>        | *Deprecated*. Please do not use.                                                                                                       |
+| minimum_resell_price            | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                           |
+| resale_shares                   | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
+| mintable_window_start           | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be minted.                                                                             |
+| mintable_window_end             | std::optional\<uint32_t>          | The end of the time window when Uniqs can be minted.                                                                                   |
+| trading_window_start            | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be traded.                                                                             |
+| trading_window_end              | std::optional\<uint32_t>          | The end of the time window when Uniqs can be traded.                                                                                   |
+| recall_window_start             | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be recalled.                                                                           |
+| recall_window_end               | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be recalled.                                                                           |
+| lockup_time                     | std::optional\<uint32_t>          | The time window since Uniq minting in which the Uniq cannot be transferred                                                             |
+| conditionless_receivers         | std::vector\<eosio::name>         | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                            | uint8_t                           | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
+| meta_uris                       | std::vector\<std::string>         | The Uniq factory metadata URI vector.                                                                                                  |
+| meta_hash                       | eosio::checksum256                | The Uniq factory metadata hash.                                                                                                        |
+| max_mintable_tokens             | std::optional\<uint32_t>          | The maximal number of Uniqs that can be minted with the factory.                                                                       |
+| minted_tokens_no                | uint32_t                          | The number of minted Uniqs.                                                                                                            |
+| existing_tokens_no              | uint32_t                          | The number of minted minus number of burnt Uniqs.                                                                                      |
+
+Most relevant actions: **create, issue, setcondrecv, setmeta, setstatus**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factory.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factory.a", "json": true}'
+```
+
+---
+
+## token.b
+
+-   Table: `token.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the Uniqs owned by a user.
+
+| Fields           | Type                               | Description                                             |
+| ---------------- | ---------------------------------- | ------------------------------------------------------- |
+| id               | uint64_t                           | (primary key) Global Uniq ID                            |
+| token_factory_id | uint64_t                           | The Uniq factory ID the Uniq was issued with.           |
+| mint_date        | eosio::time_point_sec              | The Uniq mint date.                                     |
+| serial_number    | uint32_t                           | The ordinal number of the Uniq assigned during issuance |
+| uri              | std::optional\<string>             | URI pointing to the metadata of this Uniq               |
+| hash             | std::optional\<eosio::checksum256> | hash of the metadata for this Uniq                      |
+
+Most relevant actions: **buy**, **burn**, **issue.b**, **resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.b
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.b", "json": true}'
+```
+
+---
+
+## token.a
+
+-   Table: `token.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the Uniqs owned by a user.
+
+::: warning
+Deprecated. Refer to `token.b` instead
+:::
+
+| Fields           | Type                  | Description                                             |
+| ---------------- | --------------------- | ------------------------------------------------------- |
+| id               | uint64_t              | (primary key) Global Uniq ID                            |
+| token_factory_id | uint64_t              | The Uniq factory ID the Uniq was issued with.           |
+| mint_date        | eosio::time_point_sec | The Uniq mint date.                                     |
+| serial_number    | uint32_t              | The ordinal number of the Uniq assigned during issuance |
+
+Most relevant actions: **buy, burn**, **issue, resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.a", "json": true}'
+```
+
+---
+
+## resale.a
+
+-   Table: `resale.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `token_id`
+
+The table stores Uniqs for resale.
+
+| Fields               | Type         | Description                            |
+| -------------------- | ------------ | -------------------------------------- |
+| token_id             | uint64_t     | (primary key) Global Uniq ID           |
+| owner                | eosio::name  | The Uniq owner account.                |
+| price                | eosio::asset | The Uniq resale price.                 |
+| promoter_basis_point | uint16_t     | The Uniq resale advertiser commission. |
+
+Most relevant actions: **resell, cancellresell**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft resale.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"resale.a", "json": true}'
+```
+
+---
+
+## authmintrs.a
+
+-   Table: `authmintrs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `authorized_minter`
+
+The table stores information about Uniq minters permitted by uniq factories asset managers or other authorized minters to issue Uniqs.
+
+| Fields            | Type        | Description                                         |
+| ----------------- | ----------- | --------------------------------------------------- |
+| authorized_minter | eosio::name | (primary key) The authorized minter account.        |
+| quantity          | uint32_t    | The number of Uniqs the authorized minter can mint. |
+
+Most relevant actions: **authminter, issue**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <UNIQ FACTORY ID> authmintrs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<UNIQ FACTORY ID>", "code":"eosio.nft.ft", "table":"authmintrs.a", "json": true}'
+```
+
+## global.share
+
+-   Table: `global.share`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft` (for second hand), `0` (for first hand)
+-   Key: N/A
+
+The table stores information about global share of each first hand purchase or second hand Uniq sale: which account and how many basis points it receives (each basis point = 0.01%)
+
+| Fields      | Type        | Description                                     |
+| ----------- | ----------- | ----------------------------------------------- |
+| receiver    | eosio::name | Receiver of the global sale share               |
+| basis_point | uint16_t    | Share of the sale specified in the basis points |
+
+Most relevant actions: `buy`, `resell`, `globalshare`, `fhglobalshr`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft global.share
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"global.share", "json": true}'
+```
+
+## migration
+
+-   Table: `migration`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about current active Uniq standard version and flags used to indicate the status of the migration
+
+| Fields                | Type     | Description                                                                                                                                                         |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| active_nft_version    | uint64_t | Version of the current active Uniq standard                                                                                                                         |
+| table_migration_stats | uint16_t | Bitmask storing information about the status of the migration. `factory_a_migration_done = 0x0000'0000'0000'0001`, `token_a_migration_done = 0x0000'0000'0000'0002` |
+
+Most relevant actions: `migration`, `mgrfactories`, `mgrnfts`, `setnftmgrflg`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft migration
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"migration", "json": true}'
+```
+
+## next.factory
+
+-   Table: `next.factory`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created Uniq factory
+
+| Fields | Type     | Description                                        |
+| ------ | -------- | -------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq factory will receive |
+
+Most relevant actions: `create`, `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.factory
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.factory", "json": true}'
+```
+
+## next.token
+
+-   Table: `next.token`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next issued Uniq
+
+| Fields | Type     | Description                               |
+| ------ | -------- | ----------------------------------------- |
+| value  | uint64_t | ID that the next issued Uniq will receive |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.token
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.token", "json": true}'
+```
+
+## next.fct.grp
+
+-   Table: `next.fct.grp`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created factory group
+
+| Fields | Type     | Description                                        |
+| ------ | -------- | -------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq factory will receive |
+
+Most relevant actions: `creategrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.fct.grp
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.fct.grp", "json": true}'
+```
+
+## tfcreateflag
+
+-   Table: `tfcreateflag`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about whether the creation of uniq factories by accounts other than Ultra is allowed
+
+| Fields        | Type | Description                                                                      |
+| ------------- | ---- | -------------------------------------------------------------------------------- |
+| require_ultra | bool | Whether Ultra permission is required to create a Uniq factory. Default is `true` |
+
+Most relevant actions: `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft tfcreateflag
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"tfcreateflag", "json": true}'
+```
+
+## mintstat.a
+
+-   Table: `mintstat.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `user`
+
+The table stores information about how many Uniqs were minted to the specific user account. Utilized to check against minting limit within the Uniq factory
+
+| Fields | Type     | Description                                                          |
+| ------ | -------- | -------------------------------------------------------------------- |
+| user   | name     | Account name of the user                                             |
+| minted | uint32_t | Number of Uniqs that were minted to this user from this Uniq factory |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 15 mintstat.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"15", "code":"eosio.nft.ft", "table":"mintstat.a", "json": true}'
+```
+
+## ramvault.a
+
+-   Table: `ramvault.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `owner`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields  | Type    | Description                         |
+| ------- | ------- | ----------------------------------- |
+| owner   | name    | Owner of this RAM vault entry       |
+| usage   | int64_t | Current RAM usage of the vault RAM  |
+| payment | int64_t | Total payment done to the RAM vault |
+
+Most relevant actions: `create.b`, `issue.b`, `clrmintst`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft ramvault.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"ramvault.a", "json": true}'
+```
+
+## factorygrp.a
+
+-   Table: `factorygrp.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields      | Type                   | Description                                                  |
+| ----------- | ---------------------- | ------------------------------------------------------------ |
+| id          | uint64_t               | ID of this Uniq factory group                                |
+| manager     | eosio::name            | Manager of the factory group                                 |
+| uri         | std::string            | URI of the factory group metadata                            |
+| hash        | eosio::checksum256     | Hash of the factory group metadata                           |
+| factories   | std::vector\<uint64_t> | Array of factories in the Uniq factory group                 |
+| uos_payment | int64_t                | UOS payment charged during the creation of the factory group |
+
+Most relevant actions: `creategrp`, `deletegrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factorygrp.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factorygrp.a", "json": true}'
+```
+
+## saleshrlimcfg
+
+-   Table: `saleshrlmcfg`
+-   Code: `eosio.nft.ft`
+-   Scope: `0 - first hand, 1 - second hand`
+-   Key: N/A
+
+The table stores information about maximum share basis points that can be distributed during Uniq purchase
+
+| Fields                    | Type                        | Description                                                                                         |
+| ------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------- |
+| max_ultra_share_bp        | uint16_t                    | Maximum protocol fee that can be configured with `globalshare`                                      |
+| max_factory_share_bp      | uint16_t                    | Maximum total resale shares that can be specified during Uniq factory creation                      |
+| min_promoter_share_bp     | uint16_t                    | Minimum allowed promoter fee for first-hand or second-hand purchase (depending on scope)            |
+| max_promoter_share_bp     | uint16_t                    | Maximum allowed promoter fee for first-hand or second-hand purchase (depending on scope) metadata   |
+| default_promoter          | std::optional\<eosio::name> | Default promoter used during first-hand or second-hand purchase if none was specified in the action |
+| promoter_payments_enabled | bool                        | Whether the promoter shares are enabled globally                                                    |
+
+Most relevant actions: `setsharelim`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 saleshrlmcfg
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlmcfg", "json": true}'
+```
+
+## fctrprchs.a
+
+-   Table: `fctrprchs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields                     | Type                                            | Description                                                                                                                                        |
+| -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                         | uint64_t                                        | ID of this purchase requirement                                                                                                                    |
+| price                      | asset                                           | Price of the uniq specified in UOS or USD                                                                                                          |
+| purchase_limit             | uint32_t                                        | Max number of uniqs that can be purchased with this purchase option                                                                                |
+| purchased_tokens_no        | uint16_t                                        | Number of uniqs that were already purchased using this option (Default: 0)                                                                         |
+| promoter_basis_point       | uint16_t                                        | UOS share received by the promoter with each purchase done for this option. Specified in basis points. 1 means 0.01%                               |
+| purchase_option_with_uniqs | std::optional\<purchase_requirement_with_uniqs> | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories |
+| sale_shares                | std::vector\<sale_share>                        | A vector of [account, share] pairs setting the share each account receives during the purchase                                                     |
+| uos_payment                | int64_t                                         | UOS payment charged during the creation of the purchase option                                                                                     |
+| purchase_window_start      | std::optional\<eosio::time_point_sec>           | Optional start of the purchase window. Cannot purchase using this option until the start                                                           |
+| purchase_window_end        | std::optional\<eosio::time_point_sec>           | Optional end of the purchase window. Cannot purchase using this option after the end                                                               |
+| group_restriction          | std::optional\<uint64_t_vector>                 | Optional user group requirement can be specified                                                                                                   |
+
+Most relevant actions: `setprchsreq.a`, `setprchsreq.b`, `delprchsreq.a`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 123 fctrprchs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"123", "code":"eosio.nft.ft", "table":"fctrprchs.a", "json": true}'
+```
+
+The tables below describe the structure and usage of each of the fields inside `purchase_option_with_uniqs` and `uniqs_count` structures that can be provided 
+
+### `purchase_option_with_uniqs` type
+
+| Field                            | Type                        | Description                                                                                                                                                |
+| -------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transfer_tokens_receiver_account | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
+| factories                        | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
+
+### `uniqs_count` type
+
+| Field            | Type     | Description                                                                                                                                                                                                                                                                                                                        |
+| ---------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t | ID of the factory that the user needs to have Uniqs from                                                                                                                                                                                                                                                                           |
+| count            | uint32_t | How many Uniqs are needed from the specified factory                                                                                                                                                                                                                                                                               |
+| strategy         | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the Uniqs is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
+
+### `group_restriction` type
+
+By default, regardless of which action version is used, `group_restriction` will be saved as vector of 64-bit integers. This might be hard to read since it includes logical expression with the value. For example: `2305843009213693953` means `NOT 1` or `~1`.
+
+To be displayed as human-readable values, we recommend you implement some conversion on your side. Here is our small JavaScript example to convert 64-bit integer to readable string. You can run the included demo with `node user-group-converter.js`.
+
+```js
+// user-group-converter.js
+const { isBigUint64Array } = require("util/types")
+
+const OR_MASK       = 0x1000000000000000n   // 0: AND, 1: OR (= 1152921504606846976)
+const NEGATION_MASK = 0x2000000000000000n   // 0: No Negation, 1: Negation (= 2305843009213693952)
+const GROUP_ID_MASK = ~(OR_MASK + NEGATION_MASK)
+
+/* RULES
+- 1st element in group restriction array should not contain OR or AND
+- Combination rules: [OR] + [NEGATION] + [group_id]
+    + &[group_id]   = 0                     + 0                     + [group_id]
+    + |[group_id]   = 1152921504606846976   + 0                     + [group_id]
+    + ~[group_id]   = 0                     + 2305843009213693952   + [group_id]
+    + |~[group_id]  = 1152921504606846976   + 2305843009213693952   + [group_id]
+*/
+
+const expression_to_string = (group, firstIndex = false) => {
+    var result = ""
+    
+    // OR Extraction
+    if (!firstIndex) {
+        if ((group & OR_MASK) == OR_MASK)
+            result += "|" // OR
+        else
+            result += "&" // AND
+    }
+
+    // NEGATION Extraction
+    if ((group & NEGATION_MASK) == NEGATION_MASK)
+        result += "~" // NOT
+
+    // Group ID Extraction
+    result += group & GROUP_ID_MASK
+    
+    return result;
+}
+
+const convert_group_restrictions = (groupRestrictions) => {
+
+    var result = ""
+
+    if (!isBigUint64Array(groupRestrictions) || groupRestrictions.length == 0)
+        return result
+    
+    for (var i = 0; i < groupRestrictions.length; ++i) {
+        result += expression_to_string(groupRestrictions[i], i == 0);
+    }
+
+    return result
+}
+
+const demo = () => {
+    const groups = new BigUint64Array([2305843009213693953n, 2n, 3458764513820540931n]) // = "~1&2|~3"
+    console.log(convert_group_restrictions(groups))
+}
+
+demo()
+```
+
+## offercfg.a
+
+-   Table: `offercfg.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `N/A`
+
+The table stores information about global Uniq offer configuration
+
+| Fields                    | Type     | Description                                                              |
+| ------------------------- | -------- | ------------------------------------------------------------------------ |
+| min_price                 | asset    | Minimum offer price in UOS or USD (Default: 1 UOS)                       |
+| min_duration              | uint32_t | Minimum duration for offer in seconds (Default: 86400 sec or 1 day)      |
+| max_duration              | uint32_t | Maximum duration for offer in seconds (Default: 15552000 sec or 180 day) |
+| max_active_offer_per_user | uint32_t | Maximum active offer per user (Default: 50)                              |
+
+Most relevant actions: `stofrcfg.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft offercfg.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"offercfg.a", "json": true}'
+```
+
+## next.nftofr
+
+-   Table: `next.nftofr`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created Uniq offer
+
+| Fields | Type     | Description                                      |
+| ------ | -------- | ------------------------------------------------ |
+| value  | uint64_t | ID that the next created Uniq offer will receive |
+
+Most relevant actions: `mknftofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.nftofr
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.nftofr", "json": true}'
+```
+
+## nftoffer.a
+
+-   Table: `nftoffer.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq ID`
+-   Key: `id`
+
+The table stores information about the offer made by the buyer for specific Uniq ID
+
+| Fields               | Type                 | Description                                                                                  |
+| -------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| offer_id             | uint64_t             | Uniq offer ID                                                                                |
+| buyer                | name                 | Buyer who makes the offer for the Uniq                                                       |
+| receiver             | std::optional\<name> | User who will receive the Uniq if offer is accepted, if specified                            |
+| price                | asset                | Offer price in UOS                                                                           |
+| promoter_basis_point | uint16_t             | UOS share received by the promoter with this offer. Specified in basis points. 1 means 0.01% |
+| expiry_date          | time_point_sec       | Expiry date of the offer                                                                     |
+
+Most relevant actions: `mknftofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <UNIQ ID> nftoffer.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<UNIQ ID>", "code":"eosio.nft.ft", "table":"nftoffer.a", "json": true}'
+```
+
+## next.fctofr
+
+-   Table: `next.fctofr`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: `N/A`
+
+The table stores information about the ID of the next created Uniq offer
+
+| Fields | Type     | Description                                              |
+| ------ | -------- | -------------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq factory offer will receive |
+
+Most relevant actions: `mkfctofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.fctofr
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.fctofr", "json": true}'
+```
+
+## fctoffer.a
+
+-   Table: `fctoffer.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `id`
+
+The table stores information about the offer made by the buyer for specific Uniq factory ID
+
+| Fields               | Type                 | Description                                                                                  |
+| -------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| offer_id             | uint64_t             | Uniq factory offer ID                                                                        |
+| buyer                | name                 | Buyer who makes the offer for Uniq factory                                                   |
+| receiver             | std::optional\<name> | User who will receive the Uniq if offer is accepted, if specified                            |
+| price                | asset                | Offer price in UOS                                                                           |
+| promoter_basis_point | uint16_t             | UOS share received by the promoter with this offer. Specified in basis points. 1 means 0.01% |
+| expiry_date          | time_point_sec       | Expiry date of the offer                                                                     |
+
+Most relevant actions: `mkfctofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <UNIQ FACTORY ID> fctoffer.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<UNIQ FACTORY ID>", "code":"eosio.nft.ft", "table":"fctoffer.a", "json": true}'
+```
+
+## buyoffer.a
+
+-   Table: `buyoffer.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `account`
+
+The table stores the Uniq IDs and Uniq factory IDs on which the buyer made offers.
+
+| Fields      | Type                  | Description                                                             |
+| ----------- | --------------------- | ----------------------------------------------------------------------- |
+| buyer       | name                  | Buyer account                                                           |
+| nft_ids     | std:vector\<uint64_t> | Uniq IDs of all offers made by buyer, sorted in ascending order         |
+| factory_ids | std:vector\<uint64_t> | Uniq factory IDs of all offers made by buyer, sorted in ascending order |
+
+Most relevant actions: `mkfctofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft buyoffer.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"buyoffer.a", "json": true}'
+```
 
 ---
 title: 'NFT Tables'
@@ -6545,6 +8322,819 @@ const demo = () => {
 
 demo()
 ```
+---
+title: 'NFT Tables'
+order: 1
+
+---
+
+# NFT Tables
+
+## factory.b
+
+-   Table: `factory.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains Uniq factories' settings and the operational info.
+
+| Fields                  | Type                              | Description                                                                                                                            |
+| ----------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| id                      | uint64_t                          | (primary key) The Uniq factory ID                                                                                                      |
+| asset_manager           | eosio::name                       | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
+| asset_creator           | eosio::name                       | Account that ceates the Uniq factory.                                                                                                  |
+| minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                           |
+| resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
+| mintable_window_start   | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be minted.                                                                             |
+| mintable_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be minted.                                                                                   |
+| trading_window_start    | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be traded.                                                                             |
+| trading_window_end      | std::optional\<uint32_t>          | The end of the time window when Uniqs can be traded.                                                                                   |
+| recall_window_start     | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| recall_window_end       | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| lockup_time             | std::optional\<uint32_t>          | *Disabled*. The time window since Uniq minting in which the Uniq cannot be transferred                                                 |
+| conditionless_receivers | std::vector\<eosio::name>         | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                    | uint8_t                           | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
+| factory_uri             | std::string                       | The Uniq factory metadata URI vector.                                                                                                  |
+| factory_hash            | eosio::checksum256                | The Uniq factory metadata hash.                                                                                                        |
+| max_mintable_tokens     | std::optional\<uint32_t>          | The maximal number of Uniqs that can be minted with the factory.                                                                       |
+| minted_tokens_no        | uint32_t                          | The number of minted Uniqs.                                                                                                            |
+| existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt Uniqs.                                                                                      |
+| authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of Uniqs that authorized minters can issue                                                                        |
+| account_minting_limit   | std::optional\<uint32_t>          | The limit of Uniqs that can be minted to each individual account                                                                       |
+| transfer_window_start   | std::optional\<uint32_t>          | The beginning fo the time window when Uniqs can be transferred                                                                         |
+| transfer_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be transferred                                                                               |
+| default_token_uri       | std::string                       | The default Uniq metadata URI for Uniqs without dedicated URI                                                                          |
+| default_token_hash      | std::optional\<checksum256>       | The default Uniq metadata hash                                                                                                         |
+| lock_hash               | bool                              | Controls whether metadata of the factory, Uniqs or default Uniqs could be changed                                                      |
+
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus**
+
+## factory.a
+
+-   Table: `factory.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table contains uniq factories settings and the operational info.
+
+::: warning
+Deprecated. Refer to `factory.b` instead
+:::
+
+| Fields                          | Type                              | Description                                                                                                                            |
+| ------------------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| id                              | uint64_t                          | (primary key) The Uniq factory ID                                                                                                      |
+| asset_manager                   | eosio::name                       | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
+| asset_creator                   | eosio::name                       | Account that creates the Uniq factory.                                                                                                 |
+| conversion_rate_oracle_contract | eosio::name                       | *Deprecated*. Please do not use.                                                                                                       |
+| chosen_rate                     | std::vector\<eosio::asset>        | *Deprecated*. Please do not use.                                                                                                       |
+| minimum_resell_price            | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                           |
+| resale_shares                   | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
+| mintable_window_start           | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be minted.                                                                             |
+| mintable_window_end             | std::optional\<uint32_t>          | The end of the time window when Uniqs can be minted.                                                                                   |
+| trading_window_start            | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be traded.                                                                             |
+| trading_window_end              | std::optional\<uint32_t>          | The end of the time window when Uniqs can be traded.                                                                                   |
+| recall_window_start             | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be recalled.                                                                           |
+| recall_window_end               | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be recalled.                                                                           |
+| lockup_time                     | std::optional\<uint32_t>          | The time window since Uniq minting in which the Uniq cannot be transferred                                                             |
+| conditionless_receivers         | std::vector\<eosio::name>         | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                            | uint8_t                           | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
+| meta_uris                       | std::vector\<std::string>         | The Uniq factory metadata URI vector.                                                                                                  |
+| meta_hash                       | eosio::checksum256                | The Uniq factory metadata hash.                                                                                                        |
+| max_mintable_tokens             | std::optional\<uint32_t>          | The maximal number of Uniqs that can be minted with the factory.                                                                       |
+| minted_tokens_no                | uint32_t                          | The number of minted Uniqs.                                                                                                            |
+| existing_tokens_no              | uint32_t                          | The number of minted minus number of burnt Uniqs.                                                                                      |
+
+Most relevant actions: **create, issue, setcondrecv, setmeta, setstatus**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factory.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factory.a", "json": true}'
+```
+
+---
+
+## token.b
+
+-   Table: `token.b`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the Uniqs owned by a user.
+
+| Fields           | Type                               | Description                                             |
+| ---------------- | ---------------------------------- | ------------------------------------------------------- |
+| id               | uint64_t                           | (primary key) Global Uniq ID                            |
+| token_factory_id | uint64_t                           | The Uniq factory ID the Uniq was issued with.           |
+| mint_date        | eosio::time_point_sec              | The Uniq mint date.                                     |
+| serial_number    | uint32_t                           | The ordinal number of the Uniq assigned during issuance |
+| uri              | std::optional\<string>             | URI pointing to the metadata of this Uniq               |
+| hash             | std::optional\<eosio::checksum256> | hash of the metadata for this Uniq                      |
+
+Most relevant actions: **buy**, **burn**, **issue.b**, **resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.b
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.b", "json": true}'
+```
+
+---
+
+## token.a
+
+-   Table: `token.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `account`
+-   Key: `id`
+
+The table stores the Uniqs owned by a user.
+
+::: warning
+Deprecated. Refer to `token.b` instead
+:::
+
+| Fields           | Type                  | Description                                             |
+| ---------------- | --------------------- | ------------------------------------------------------- |
+| id               | uint64_t              | (primary key) Global Uniq ID                            |
+| token_factory_id | uint64_t              | The Uniq factory ID the Uniq was issued with.           |
+| mint_date        | eosio::time_point_sec | The Uniq mint date.                                     |
+| serial_number    | uint32_t              | The ordinal number of the Uniq assigned during issuance |
+
+Most relevant actions: **buy, burn**, **issue, resell**.
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <ACCOUNT> token.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<ACCOUNT>", "code":"eosio.nft.ft", "table":"token.a", "json": true}'
+```
+
+---
+
+## resale.a
+
+-   Table: `resale.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `token_id`
+
+The table stores Uniqs for resale.
+
+| Fields               | Type         | Description                            |
+| -------------------- | ------------ | -------------------------------------- |
+| token_id             | uint64_t     | (primary key) Global Uniq ID           |
+| owner                | eosio::name  | The Uniq owner account.                |
+| price                | eosio::asset | The Uniq resale price.                 |
+| promoter_basis_point | uint16_t     | The Uniq resale advertiser commission. |
+
+Most relevant actions: **resell, cancellresell**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft resale.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"resale.a", "json": true}'
+```
+
+---
+
+## authmintrs.a
+
+-   Table: `authmintrs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `authorized_minter`
+
+The table stores information about Uniq minters permitted by uniq factories asset managers or other authorized minters to issue Uniqs.
+
+| Fields            | Type        | Description                                         |
+| ----------------- | ----------- | --------------------------------------------------- |
+| authorized_minter | eosio::name | (primary key) The authorized minter account.        |
+| quantity          | uint32_t    | The number of Uniqs the authorized minter can mint. |
+
+Most relevant actions: **authminter, issue**
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <UNIQ FACTORY ID> authmintrs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<UNIQ FACTORY ID>", "code":"eosio.nft.ft", "table":"authmintrs.a", "json": true}'
+```
+
+## global.share
+
+-   Table: `global.share`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft` (for second hand), `0` (for first hand)
+-   Key: N/A
+
+The table stores information about global share of each first hand purchase or second hand Uniq sale: which account and how many basis points it receives (each basis point = 0.01%)
+
+| Fields      | Type        | Description                                     |
+| ----------- | ----------- | ----------------------------------------------- |
+| receiver    | eosio::name | Receiver of the global sale share               |
+| basis_point | uint16_t    | Share of the sale specified in the basis points |
+
+Most relevant actions: `buy`, `resell`, `globalshare`, `fhglobalshr`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft global.share
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"global.share", "json": true}'
+```
+
+## migration
+
+-   Table: `migration`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about current active Uniq standard version and flags used to indicate the status of the migration
+
+| Fields                | Type     | Description                                                                                                                                                         |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| active_nft_version    | uint64_t | Version of the current active Uniq standard                                                                                                                         |
+| table_migration_stats | uint16_t | Bitmask storing information about the status of the migration. `factory_a_migration_done = 0x0000'0000'0000'0001`, `token_a_migration_done = 0x0000'0000'0000'0002` |
+
+Most relevant actions: `migration`, `mgrfactories`, `mgrnfts`, `setnftmgrflg`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft migration
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"migration", "json": true}'
+```
+
+## next.factory
+
+-   Table: `next.factory`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created Uniq factory
+
+| Fields | Type     | Description                                        |
+| ------ | -------- | -------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq factory will receive |
+
+Most relevant actions: `create`, `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.factory
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.factory", "json": true}'
+```
+
+## next.token
+
+-   Table: `next.token`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next issued Uniq
+
+| Fields | Type     | Description                               |
+| ------ | -------- | ----------------------------------------- |
+| value  | uint64_t | ID that the next issued Uniq will receive |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.token
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.token", "json": true}'
+```
+
+## next.fct.grp
+
+-   Table: `next.fct.grp`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created factory group
+
+| Fields | Type     | Description                                        |
+| ------ | -------- | -------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq factory will receive |
+
+Most relevant actions: `creategrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.fct.grp
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.fct.grp", "json": true}'
+```
+
+## tfcreateflag
+
+-   Table: `tfcreateflag`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: N/A
+
+The table stores information about whether the creation of uniq factories by accounts other than Ultra is allowed
+
+| Fields        | Type | Description                                                                      |
+| ------------- | ---- | -------------------------------------------------------------------------------- |
+| require_ultra | bool | Whether Ultra permission is required to create a Uniq factory. Default is `true` |
+
+Most relevant actions: `create.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft tfcreateflag
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"tfcreateflag", "json": true}'
+```
+
+## mintstat.a
+
+-   Table: `mintstat.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `user`
+
+The table stores information about how many Uniqs were minted to the specific user account. Utilized to check against minting limit within the Uniq factory
+
+| Fields | Type     | Description                                                          |
+| ------ | -------- | -------------------------------------------------------------------- |
+| user   | name     | Account name of the user                                             |
+| minted | uint32_t | Number of Uniqs that were minted to this user from this Uniq factory |
+
+Most relevant actions: `issue`, `issue.b`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 15 mintstat.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"15", "code":"eosio.nft.ft", "table":"mintstat.a", "json": true}'
+```
+
+## ramvault.a
+
+-   Table: `ramvault.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `owner`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields  | Type    | Description                         |
+| ------- | ------- | ----------------------------------- |
+| owner   | name    | Owner of this RAM vault entry       |
+| usage   | int64_t | Current RAM usage of the vault RAM  |
+| payment | int64_t | Total payment done to the RAM vault |
+
+Most relevant actions: `create.b`, `issue.b`, `clrmintst`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft ramvault.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"ramvault.a", "json": true}'
+```
+
+## factorygrp.a
+
+-   Table: `factorygrp.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields      | Type                   | Description                                                  |
+| ----------- | ---------------------- | ------------------------------------------------------------ |
+| id          | uint64_t               | ID of this Uniq factory group                                |
+| manager     | eosio::name            | Manager of the factory group                                 |
+| uri         | std::string            | URI of the factory group metadata                            |
+| hash        | eosio::checksum256     | Hash of the factory group metadata                           |
+| factories   | std::vector\<uint64_t> | Array of factories in the Uniq factory group                 |
+| uos_payment | int64_t                | UOS payment charged during the creation of the factory group |
+
+Most relevant actions: `creategrp`, `deletegrp`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft factorygrp.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"factorygrp.a", "json": true}'
+```
+
+## saleshrlimcfg
+
+-   Table: `saleshrlmcfg`
+-   Code: `eosio.nft.ft`
+-   Scope: `0 - first hand, 1 - second hand`
+-   Key: N/A
+
+The table stores information about maximum share basis points that can be distributed during Uniq purchase
+
+| Fields                    | Type                        | Description                                                                                         |
+| ------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------- |
+| max_ultra_share_bp        | uint16_t                    | Maximum protocol fee that can be configured with `globalshare`                                      |
+| max_factory_share_bp      | uint16_t                    | Maximum total resale shares that can be specified during Uniq factory creation                      |
+| min_promoter_share_bp     | uint16_t                    | Minimum allowed promoter fee for first-hand or second-hand purchase (depending on scope)            |
+| max_promoter_share_bp     | uint16_t                    | Maximum allowed promoter fee for first-hand or second-hand purchase (depending on scope) metadata   |
+| default_promoter          | std::optional\<eosio::name> | Default promoter used during first-hand or second-hand purchase if none was specified in the action |
+| promoter_payments_enabled | bool                        | Whether the promoter shares are enabled globally                                                    |
+
+Most relevant actions: `setsharelim`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 saleshrlmcfg
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":0, "code":"eosio.nft.ft", "table":"saleshrlmcfg", "json": true}'
+```
+
+## fctrprchs.a
+
+-   Table: `fctrprchs.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `id`
+
+The table stores information about the utilization of RAM vault per account with usage and UOS payment done
+
+| Fields                     | Type                                            | Description                                                                                                                                        |
+| -------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id                         | uint64_t                                        | ID of this purchase requirement                                                                                                                    |
+| price                      | asset                                           | Price of the uniq specified in UOS or USD                                                                                                          |
+| purchase_limit             | uint32_t                                        | Max number of uniqs that can be purchased with this purchase option                                                                                |
+| purchased_tokens_no        | uint16_t                                        | Number of uniqs that were already purchased using this option (Default: 0)                                                                         |
+| promoter_basis_point       | uint16_t                                        | UOS share received by the promoter with each purchase done for this option. Specified in basis points. 1 means 0.01%                               |
+| purchase_option_with_uniqs | std::optional\<purchase_requirement_with_uniqs> | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories |
+| sale_shares                | std::vector\<sale_share>                        | A vector of [account, share] pairs setting the share each account receives during the purchase                                                     |
+| uos_payment                | int64_t                                         | UOS payment charged during the creation of the purchase option                                                                                     |
+| purchase_window_start      | std::optional\<eosio::time_point_sec>           | Optional start of the purchase window. Cannot purchase using this option until the start                                                           |
+| purchase_window_end        | std::optional\<eosio::time_point_sec>           | Optional end of the purchase window. Cannot purchase using this option after the end                                                               |
+| group_restriction          | std::optional\<uint64_t_vector>                 | Optional user group requirement can be specified                                                                                                   |
+
+Most relevant actions: `setprchsreq.a`, `setprchsreq.b`, `delprchsreq.a`, `purchase.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 123 fctrprchs.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"123", "code":"eosio.nft.ft", "table":"fctrprchs.a", "json": true}'
+```
+
+The tables below describe the structure and usage of each of the fields inside `purchase_option_with_uniqs` and `uniqs_count` structures that can be provided 
+
+### `purchase_option_with_uniqs` type
+
+| Field                            | Type                        | Description                                                                                                                                                |
+| -------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| transfer_tokens_receiver_account | std::optional\<eosio::name> | If any of the `factories` specified contain a requirement with `transfer` strategy then this account will be the one to receive the uniq during `purchase` |
+| factories                        | std::vector\<uniqs_count>   | List of purchase requirements using uniqs from other factories. Description of the `uniqs_count` type provided below                                       |
+
+### `uniqs_count` type
+
+| Field            | Type     | Description                                                                                                                                                                                                                                                                                                                        |
+| ---------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| token_factory_id | uint64_t | ID of the factory that the user needs to have Uniqs from                                                                                                                                                                                                                                                                           |
+| count            | uint32_t | How many Uniqs are needed from the specified factory                                                                                                                                                                                                                                                                               |
+| strategy         | uint8_t  | Can be either `check` (use 0), `burn` (use 1), `transfer` (use 2). If `check` is used - only the presence of the Uniqs is validated, no change occurs. If `burn` is specified - provided uniq from the factory will be burnt. If `transfer` is specified - provided uniq will be transferred to `transfer_tokens_receiver_account` |
+
+### `group_restriction` type
+
+By default, regardless of which action version is used, `group_restriction` will be saved as vector of 64-bit integers. This might be hard to read since it includes logical expression with the value. For example: `2305843009213693953` means `NOT 1` or `~1`.
+
+To be displayed as human-readable values, we recommend you implement some conversion on your side. Here is our small JavaScript example to convert 64-bit integer to readable string. You can run the included demo with `node user-group-converter.js`.
+
+```js
+// user-group-converter.js
+const { isBigUint64Array } = require("util/types")
+
+const OR_MASK       = 0x1000000000000000n   // 0: AND, 1: OR (= 1152921504606846976)
+const NEGATION_MASK = 0x2000000000000000n   // 0: No Negation, 1: Negation (= 2305843009213693952)
+const GROUP_ID_MASK = ~(OR_MASK + NEGATION_MASK)
+
+/* RULES
+- 1st element in group restriction array should not contain OR or AND
+- Combination rules: [OR] + [NEGATION] + [group_id]
+    + &[group_id]   = 0                     + 0                     + [group_id]
+    + |[group_id]   = 1152921504606846976   + 0                     + [group_id]
+    + ~[group_id]   = 0                     + 2305843009213693952   + [group_id]
+    + |~[group_id]  = 1152921504606846976   + 2305843009213693952   + [group_id]
+*/
+
+const expression_to_string = (group, firstIndex = false) => {
+    var result = ""
+    
+    // OR Extraction
+    if (!firstIndex) {
+        if ((group & OR_MASK) == OR_MASK)
+            result += "|" // OR
+        else
+            result += "&" // AND
+    }
+
+    // NEGATION Extraction
+    if ((group & NEGATION_MASK) == NEGATION_MASK)
+        result += "~" // NOT
+
+    // Group ID Extraction
+    result += group & GROUP_ID_MASK
+    
+    return result;
+}
+
+const convert_group_restrictions = (groupRestrictions) => {
+
+    var result = ""
+
+    if (!isBigUint64Array(groupRestrictions) || groupRestrictions.length == 0)
+        return result
+    
+    for (var i = 0; i < groupRestrictions.length; ++i) {
+        result += expression_to_string(groupRestrictions[i], i == 0);
+    }
+
+    return result
+}
+
+const demo = () => {
+    const groups = new BigUint64Array([2305843009213693953n, 2n, 3458764513820540931n]) // = "~1&2|~3"
+    console.log(convert_group_restrictions(groups))
+}
+
+demo()
+```
+
+## offercfg.a
+
+-   Table: `offercfg.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `N/A`
+
+The table stores information about global Uniq offer configuration
+
+| Fields                    | Type     | Description                                                              |
+| ------------------------- | -------- | ------------------------------------------------------------------------ |
+| min_price                 | asset    | Minimum offer price in UOS or USD (Default: 1 UOS)                       |
+| min_duration              | uint32_t | Minimum duration for offer in seconds (Default: 86400 sec or 1 day)      |
+| max_duration              | uint32_t | Maximum duration for offer in seconds (Default: 15552000 sec or 180 day) |
+| max_active_offer_per_user | uint32_t | Maximum active offer per user (Default: 50)                              |
+
+Most relevant actions: `stofrcfg.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft offercfg.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"offercfg.a", "json": true}'
+```
+
+## next.nftofr
+
+-   Table: `next.nftofr`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: N/A
+
+The table stores information about the ID of the next created Uniq offer
+
+| Fields | Type     | Description                                      |
+| ------ | -------- | ------------------------------------------------ |
+| value  | uint64_t | ID that the next created Uniq offer will receive |
+
+Most relevant actions: `mknftofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.nftofr
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.nftofr", "json": true}'
+```
+
+## nftoffer.a
+
+-   Table: `nftoffer.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq ID`
+-   Key: `id`
+
+The table stores information about the offer made by the buyer for specific Uniq ID
+
+| Fields               | Type                 | Description                                                                                  |
+| -------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| offer_id             | uint64_t             | Uniq offer ID                                                                                |
+| buyer                | name                 | Buyer who makes the offer for the Uniq                                                       |
+| receiver             | std::optional\<name> | User who will receive the Uniq if offer is accepted, if specified                            |
+| price                | asset                | Offer price in UOS                                                                           |
+| promoter_basis_point | uint16_t             | UOS share received by the promoter with this offer. Specified in basis points. 1 means 0.01% |
+| expiry_date          | time_point_sec       | Expiry date of the offer                                                                     |
+
+Most relevant actions: `mknftofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <UNIQ ID> nftoffer.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<UNIQ ID>", "code":"eosio.nft.ft", "table":"nftoffer.a", "json": true}'
+```
+
+## next.fctofr
+
+-   Table: `next.fctofr`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: `N/A`
+
+The table stores information about the ID of the next created Uniq offer
+
+| Fields | Type     | Description                                              |
+| ------ | -------- | -------------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq factory offer will receive |
+
+Most relevant actions: `mkfctofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.fctofr
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.fctofr", "json": true}'
+```
+
+## fctoffer.a
+
+-   Table: `fctoffer.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `Uniq factory ID`
+-   Key: `id`
+
+The table stores information about the offer made by the buyer for specific Uniq factory ID
+
+| Fields               | Type                 | Description                                                                                  |
+| -------------------- | -------------------- | -------------------------------------------------------------------------------------------- |
+| offer_id             | uint64_t             | Uniq factory offer ID                                                                        |
+| buyer                | name                 | Buyer who makes the offer for Uniq factory                                                   |
+| receiver             | std::optional\<name> | User who will receive the Uniq if offer is accepted, if specified                            |
+| price                | asset                | Offer price in UOS                                                                           |
+| promoter_basis_point | uint16_t             | UOS share received by the promoter with this offer. Specified in basis points. 1 means 0.01% |
+| expiry_date          | time_point_sec       | Expiry date of the offer                                                                     |
+
+Most relevant actions: `mkfctofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft <UNIQ FACTORY ID> fctoffer.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<UNIQ FACTORY ID>", "code":"eosio.nft.ft", "table":"fctoffer.a", "json": true}'
+```
+
+## buyoffer.a
+
+-   Table: `buyoffer.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `account`
+
+The table stores the Uniq IDs and Uniq factory IDs on which the buyer made offers.
+
+| Fields      | Type                  | Description                                                             |
+| ----------- | --------------------- | ----------------------------------------------------------------------- |
+| buyer       | name                  | Buyer account                                                           |
+| nft_ids     | std:vector\<uint64_t> | Uniq IDs of all offers made by buyer, sorted in ascending order         |
+| factory_ids | std:vector\<uint64_t> | Uniq factory IDs of all offers made by buyer, sorted in ascending order |
+
+Most relevant actions: `mkfctofr.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft buyoffer.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"buyoffer.a", "json": true}'
+```
+
 ---
 title: 'How does oracle contract calculate UOS conversion rate'
 order: 1
@@ -9540,6 +12130,46 @@ cleos push action eosio allowpred '["alice", "eosio", "buyram", 2000, "ubisoft",
 ```
 
 A unique @payer permission of the developer account must be specified to utilize this system. An account with the @payer permission provided will be the one to pay for the whole transaction but only if all actions in the transaction are allowed by the payer, and all predicate actions are successfully executed. If @payer is present in the transaction then he will be ranked in the transaction queue described above instead of the first authorizer.
+---
+title: 'Public and Private Keys'
+
+outline: [0, 4]
+order: -90
+---
+
+# Public and Private Keys
+
+Ultra uses an elliptic curve key pair consists of a public key (used for verification) and a private key (kept secret for signing transactions), enabling secure digital interactions on the Ultra blockchain.
+
+A keypair is **required** for most blockchain development besides reading APIs. If you are going to publish a smart contract, sign a transaction, or even sign a message you're going to need a keypair.
+
+::: details Additional Information
+
+#### What is a Public Key?
+
+A public key is primarily used for cryptographic verification. In the context of blockchain or digital signatures, it allows others to confirm that a message or transaction was indeed signed by the corresponding private key without revealing the private key itself. This verification process is crucial for ensuring the integrity and authenticity of data in secure communications and transactions.
+
+#### What is a Private Key?
+
+A private key, a secret alphanumeric code, is used to digitally sign transactions or messages. It grants control over associated assets or data in blockchain systems. Essential for secure communication, it enables identity verification and access control, emphasizing the need for stringent security measures to prevent unauthorized access or loss.
+
+:::
+
+### Generate a Keypair
+
+In most cases we don't recommend generating private keys online. However, if you are using this for our test network it is safe to use there. Otherwise, seek out some of the additional ways to generate a key pair safely. Such as using [cleos](../tools/cleos.md).
+
+<KeyGenerator />
+<br />
+<br />
+
+### Alternative Ways to Generate Keypairs
+
+-   [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+-   [EOS Authority](https://eosauthority.com/generate_eos_private_key)
+-   [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
+-   [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
+
 ---
 title: 'RAM Policy'
 
@@ -18686,7 +21316,7 @@ outline: [0, 4]
 
 # Detecting the Ultra Wallet
 
-To detect if a user has already installed the Ultra Wallet browser extension the web application should run over **HTTPS** and check for the existence of an `**ultra**` object in the `window` variable.
+To detect if a user has already installed the Ultra Wallet browser extension the web application should run over **HTTPS** and check for the existence of an `ultra` object in the `window` variable.
 
 ```JavaScript
 if ('ultra' in window) {
@@ -18695,7 +21325,7 @@ if ('ultra' in window) {
 ```
 
 This code can be called when you want (for example, when clicking on a button or a link).  
-If you want this check to be carried out automatically when the web page loads, you will need to integrate it into the '**load**' event in the `window` variable:
+If you want this check to be carried out automatically when the web page loads, you will need to integrate it into the `load` event in the `window` variable:
 
 ```JavaScript
 if(document.readyState !== 'complete') {
@@ -18709,7 +21339,7 @@ function afterWindowLoaded(){
         console.log('Page load: Ultra Wallet is installed!');
     } else {
         console.log('Page load: No Ultra Wallet extension detected!');
-    } 
+    }
 }
 ```
 
@@ -20852,91 +23482,6 @@ Your storage quota is calculated based on the RAM resource.
 
 
 ---
-title: 'How to create an Account'
-order: -99998
-oultine: [0,5]
----
-
-# How to create a Developer Account
-
-Creating an account for development with Ultra.io is situational. You only need a developer account if you're dealing with smart contracts, and transactions. In that case continue forward with this brief tutorial.
-
-## Video Tutorial
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zOmt-aYUJjI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-## Generate a Key Pair
-
-First you'll need need a private and public key. If you're going into production, do not use this key generator. See [how to generate a keypair](./how-to-generate-a-keypair.md) for additional information.
-
-After obtaining a keypair, write it down somewhere safe. You are going to need it later.
-
-<KeyGenerator />
-
-## Visit Test Network Faucet
-
-Visit the link below to open our faucet application.
-
-* https://faucet.testnet.app.ultra.io
-
-1. Click `Account Creator`
-2. Paste your `Public Key` in the owner and active fields
-3. Fill the Captcha
-4. Click Create Account
-5. Write down the **Account Name** that was returned
-
-![](./images/create-account.png)
-
-![](./images/account-name.png)
-
-## Lookup Your Account
-
-Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
-
-<AccountLookupTestnet />
-
-## All Done!
-
-You now have a development account for our test network.
----
-title: 'How to generate a Keypair'
-order: -99999
-oultine: [0,5]
----
-
-# How to Generate a Key Pair
-
-Ultra uses an elliptic curve key pair consists of a public key (used for verification) and a private key (kept secret for signing transactions), enabling secure digital interactions on the Ultra blockchain.
-
-A keypair is **required** for most blockchain development besides reading APIs. If you are going to publish a smart contract, sign a transaction, or even sign a message you're going to need a keypair.
-
-::: details Additional Information
-
-#### What is a Public Key?
-
-A public key is primarily used for cryptographic verification. In the context of blockchain or digital signatures, it allows others to confirm that a message or transaction was indeed signed by the corresponding private key without revealing the private key itself. This verification process is crucial for ensuring the integrity and authenticity of data in secure communications and transactions.
-
-#### What is a Private Key?
-
-A private key, a secret alphanumeric code, is used to digitally sign transactions or messages. It grants control over associated assets or data in blockchain systems. Essential for secure communication, it enables identity verification and access control, emphasizing the need for stringent security measures to prevent unauthorized access or loss.
-
-:::
-
-### Generate a Keypair
-
-In most cases we don't recommend generating private keys online. However, if you are using this for our test network it is safe to use there. Otherwise, seek out some of the additional ways to generate a key pair safely. Such as using [cleos](../../blockchain/general/tools/cleos.md).
-
-<KeyGenerator />
-<br />
-<br />
-
-### Alternative Ways to Generate Keypairs
-
-* [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
-* [EOS Authority](https://eosauthority.com/generate_eos_private_key)
-* [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
-* [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
----
 title: 'How to get RAM'
 order: -99995
 oultine: [0,5]
@@ -21238,7 +23783,7 @@ It's highly recommended to use `curl` requests against [REST API Endpoints](./ho
 ---
 title: 'How to setup the Ultra Wallet'
 order: -99996
-oultine: [0,5]
+oultine: [0, 5]
 ---
 
 # How to setup the Ultra Wallet
@@ -21270,7 +23815,7 @@ This tutorial is meant for developers, if you are using a non-development accoun
 
 :::
 
-Click on `Use Private Key & Password` to import your private key from the [How to Generate a Keypair Tutorial](./how-to-generate-a-keypair.md)
+Click on `Use Private Key & Password` to import your private key from the [Generate a key and create a developer Testnet account Tutorial](./tutorial-generate-key-and-create-testnet-account.md)
 
 ![](./images/use-private-key-wallet.png)
 
@@ -21285,6 +23830,79 @@ Paste your private key.
 ## Success!
 
 You have successfully imported your private key into your wallet!
+
+---
+title: 'Tutorial - Generate a key and create a developer Testnet account'
+order: -99999
+oultine: [0,5]
+---
+
+# Tutorial - Generate a key and create a developer Testnet account
+
+This tutorial will cover the simplest process of creating a developer account on Testnet to be used to interact with the blockchain.
+
+## Prerequisites
+
+- No prerequisites
+
+## Goal
+
+The goal of this tutorial is to generate a unique key pair that will be used to create a new developer Testnet blockchain account. The account will later be used in later tutorials to demonstrate interaction with the blockchain.
+
+## Generate a Key Pair
+
+First we will generate a [private and public key](../../blockchain/general/antelope-ultra/public-and-private-keys.md). To do so use the form below and press the `Generate Key` button.
+
+<KeyGenerator />
+
+## Keep the keys safe
+
+You will need both public and private key you've just generated in later tutorials. The public key (the one that starts with `EOS`) can be shared publicly with anyone. But the private key (begins with `5`) should be kept secret and not shared with anyone.
+
+::: info
+
+The simplest approach for now to keep your private key for later use would be to write it down on a piece of paper. It is not a good practice to store your private key openly in a text file on your machine.
+
+:::
+
+## Create Testnet account using Testnet Faucet
+
+Please note that the images are for reference only. The key you generate and the account name you get will be different.
+
+1. Visit this link to open our faucet application: https://faucet.testnet.app.ultra.io
+2. Select `Account Creator` tab
+
+![](./images/faucet-account-tab.png)
+
+3. Paste your `Public Key` (the one that starts with `EOS`) in the `Owner Public Key` field
+
+![](./images/faucet-account-key.png)
+
+4. Fill the Captcha
+5. Click `Create Account`
+6. Write down the **Account Name** that was returned
+
+![](./images/faucet-account-created.png)
+
+## Lookup Your Account
+
+Use the form below to lookup your account on our [Testnet Explorer](https://explorer.testnet.ultra.io/)
+
+Verify that the public key listed under `Permissions` and the `Creation Date` are correct:
+
+<LastPublicKey />
+
+<TodaysDate />
+
+&nbsp;
+
+<AccountLookupTestnet />
+
+![](./images/explorer-1aa2aa3aa4in.png)
+
+## What's next?
+
+The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./how-to-setup-the-wallet.md)
 ---
 title: 'Creating a Testnet Account'
 
@@ -21756,14 +24374,9 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>How to generate a Keypair</td>
-        <td>Get a basic understand of private and public keys</td>
-        <td><a href="/tutorials/fundamentals/how-to-generate-a-keypair">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to create an Account</td>
-        <td>How to generate a development account on our testnet</td>
-        <td><a href="/tutorials/fundamentals/how-to-create-an-account">Link</a></td>
+        <td>Tutorial - Generate a key and create a developer Testnet account</td>
+        <td>Create your personal Ultra Testnet account to interact with the blockchain</td>
+        <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>
@@ -25054,6 +27667,86 @@ await transact([
 ]);
 ```
 
+---
+title: 'Uniq Offer'
+
+order: 1
+---
+
+# Uniq Offer
+
+## Overview of Uniq Offer feature
+
+Uniq Offer allows a user to make an offer directly to the owner of Uniq or Uniq Factory if it's tradable.
+
+Once these offers are made, the owner of Uniq can accept these offers as long as they are valid. This means offers remain valid even if the Uniq changes hands, ensuring your offer stands until it expires or is withdrawn.
+
+Upon making an offer, the offered price is securely locked through smart contracts, safeguarding Uniq owners against fake bids.
+
+You can cancel your offer anytime or let it expire. Once an offer expires, anyone can cancel the offer. When an offer is canceled, the offered price will be transferred back to the user who made the offer.
+
+When an offer is accepted, the Uniq will be transferred to the specified buyer (or receiver if specified when making an offer), ensuring a smooth transition of ownership. The fund will also be released and transferred to the owner of the Uniq. If the promoter option is configured, fund will be distributed accordingly to [2nd Hand Sale Policy](../../../blockchain/general/antelope-ultra/2nd-hand-sale.md)
+
+Usage of the actions for creating, accepting and canceling offers is provided below.
+
+-   [mknftofr.a - Make an offer on a Uniq](../../../blockchain/contracts/nft-contract/nft-actions/mknftofr.a.md)
+-   [acptnftofr.a - Accept a Uniq offer](../../../blockchain/contracts/nft-contract/nft-actions/acptnftofr.a.md)
+-   [rmnftofr.a - Cancel a Uniq offer](../../../blockchain/contracts/nft-contract/nft-actions/rmnftofr.a.md)
+-   [mkfctofr.a - Make an offer on a Uniq factory](../../../blockchain/contracts/nft-contract/nft-actions/mkfctofr.a.md)
+-   [acptfctofr.a - Accept a Uniq factory offer](../../../blockchain/contracts/nft-contract/nft-actions/acptfctofr.a.md)
+-   [rmfctofr.a - Cancel a Uniq factory offer](../../../blockchain/contracts/nft-contract/nft-actions/rmfctofr.a.md)
+
+And the below action sets the global configurations for Uniq offer.
+
+-   [stofrcfg.a - Set global Uniq offer configuration](../../../blockchain/contracts/nft-contract/nft-actions/stofrcfg.a.md)
+
+## Benefits of Uniq Offer
+
+- Even if a user misses a Uniq sale, as long as the Uniq is tradable, the user can make an offer to buy it directly from its current owner.
+
+- By locking the funds, we will protect Uniq owners from fake bidding and encourage buyers to use their funds smartly.
+
+- An offer will always be valid until it's expired or cancelled. In this way, the new owner can always resell right away if they don't like or there's a better offer missed by the last owner.
+---
+title: 'Uniq Offer'
+
+order: 1
+---
+
+# Uniq Offer
+
+## Overview of Uniq Offer feature
+
+Uniq Offer allows a user to make an offer directly to the owner of Uniq or Uniq Factory if it's tradable.
+
+Once these offers are made, the owner of Uniq can accept these offers as long as they are valid. This means offers remain valid even if the Uniq changes hands, ensuring your offer stands until it expires or is withdrawn.
+
+Upon making an offer, the offered price is securely locked through smart contracts, safeguarding Uniq owners against fake bids.
+
+You can cancel your offer anytime or let it expire. Once an offer expires, anyone can cancel the offer. When an offer is canceled, the offered price will be transferred back to the user who made the offer.
+
+When an offer is accepted, the Uniq will be transferred to the specified buyer (or receiver if specified when making an offer), ensuring a smooth transition of ownership. The fund will also be released and transferred to the owner of the Uniq. If the promoter option is configured, fund will be distributed accordingly to [2nd Hand Sale Policy](../../../blockchain/general/antelope-ultra/2nd-hand-sale.md)
+
+Usage of the actions for creating, accepting and canceling offers is provided below.
+
+-   [mknftofr.a - Make an offer on a Uniq](../../../blockchain/contracts/nft-contract/nft-actions/mknftofr.a.md)
+-   [acptnftofr.a - Accept a Uniq offer](../../../blockchain/contracts/nft-contract/nft-actions/acptnftofr.a.md)
+-   [rmnftofr.a - Cancel a Uniq offer](../../../blockchain/contracts/nft-contract/nft-actions/rmnftofr.a.md)
+-   [mkfctofr.a - Make an offer on a Uniq factory](../../../blockchain/contracts/nft-contract/nft-actions/mkfctofr.a.md)
+-   [acptfctofr.a - Accept a Uniq factory offer](../../../blockchain/contracts/nft-contract/nft-actions/acptfctofr.a.md)
+-   [rmfctofr.a - Cancel a Uniq factory offer](../../../blockchain/contracts/nft-contract/nft-actions/rmfctofr.a.md)
+
+And the below action sets the global configurations for Uniq offer.
+
+-   [stofrcfg.a - Set global Uniq offer configuration](../../../blockchain/contracts/nft-contract/nft-actions/stofrcfg.a.md)
+
+## Benefits of Uniq Offer
+
+- Even if a user misses a Uniq sale, as long as the Uniq is tradable, the user can make an offer to buy it directly from its current owner.
+
+- By locking the funds, we will protect Uniq owners from fake bidding and encourage buyers to use their funds smartly.
+
+- An offer will always be valid until it's expired or cancelled. In this way, the new owner can always resell right away if they don't like or there's a better offer missed by the last owner.
 ---
 title: 'Example Metadata Project'
 

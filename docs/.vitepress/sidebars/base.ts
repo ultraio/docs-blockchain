@@ -71,6 +71,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Uniq Offer',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-offer'),
+            collapsed: true,
+        },
+        {
             text: 'Token Swap',
             items: getMarkdownFiles('/tutorials/token-swap'),
             collapsed: true,
@@ -201,6 +206,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Uniq Avatar',
             items: getMarkdownFiles('/tutorials/uniq-factories/uniq-avatar'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq Offer',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-offer'),
             collapsed: true,
         },
     ],

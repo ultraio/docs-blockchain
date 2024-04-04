@@ -21,10 +21,12 @@ const props = defineProps<{
             </div>
             <hr class="hr" />
             <div class="divide">
-                <div class="copyright">&copy; 2024 ULTRA CORPORATION. ALL RIGHTS RESERVED.</div>
+                <div class="copyright">
+                    &copy; {{ new Date().getFullYear() }} ULTRA CORPORATION. ALL RIGHTS RESERVED.
+                </div>
                 <div class="divide">
                     <a href="https://ultra.io/terms" class="hoverable">Terms of Use</a>
-                    <div class="link-gap">&#x2024;</div>
+                    <div class="link-gap">&#x2022;</div>
                     <a href="https://ultra.io/privacy" class="hoverable">Privacy Policy</a>
                 </div>
             </div>

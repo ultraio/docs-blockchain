@@ -1,7 +1,7 @@
 ---
 title: 'How to setup the Ultra Wallet'
 order: -99996
-oultine: [0,5]
+oultine: [0, 5]
 ---
 
 # How to setup the Ultra Wallet
@@ -33,7 +33,7 @@ This tutorial is meant for developers, if you are using a non-development accoun
 
 :::
 
-Click on `Use Private Key & Password` to import your private key from the [How to Generate a Keypair Tutorial](./how-to-generate-a-keypair.md)
+Click on `Use Private Key & Password` to import your private key from the [Generate a key and create a developer Testnet account Tutorial](./tutorial-generate-key-and-create-testnet-account.md)
 
 ![](./images/use-private-key-wallet.png)
 

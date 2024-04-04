@@ -1,11 +1,17 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import * as wharfkit from '@wharfkit/antelope';
+import { globals } from '../../.vitepress/theme';
+import * as emitter from 'tiny-emitter/instance';
+
+const emit = defineEmits<{ (e: 'onClick'): void }>();
 
 let privateKey = ref<string>(null);
 
 async function generate() {
     privateKey.value = wharfkit.PrivateKey.generate('K1').toWif();
+    globals.lastPublicKey = wharfkit.PrivateKey.from(privateKey.value).toPublic().toLegacyString();
+    emitter.emit('globals-updated');
 }
 </script>
 

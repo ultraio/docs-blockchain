@@ -23781,60 +23781,9 @@ It's highly recommended to use `curl` requests against [REST API Endpoints](./ho
 
 ![](./images/block-explorer/explorer-tables.png)
 ---
-title: 'How to setup the Ultra Wallet'
-order: -99996
-oultine: [0, 5]
----
-
-# How to setup the Ultra Wallet
-
-Ultra Wallet is a chrome extension that allows you to login to your normal account, but also add a private key to perform transactions. The ultra wallet is a necessary tool to write web-based applications.
-
-## Setup
-
-1. Download Chrome, Brave, or Chromium Equivalent
-2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
-
-## Open Ultra Wallet
-
-Open your `Ultra Wallet` by clicking it inside of the extensions panel.
-
-![](./images/ultra-wallet-extension-panel.png)
-
-## Set the Network
-
-Set your network to `Testnet` if you are developing applications. This may need to be done for other applications.
-
-![](./images/set-network-testnet.png)
-
-## Import Private Key
-
-::: info
-
-This tutorial is meant for developers, if you are using a non-development account login normally.
-
-:::
-
-Click on `Use Private Key & Password` to import your private key from the [Generate a key and create a developer Testnet account Tutorial](./tutorial-generate-key-and-create-testnet-account.md)
-
-![](./images/use-private-key-wallet.png)
-
-Set a password.
-
-Paste your private key.
-
-![](./images/import-private-key-wallet.png)
-
-![](./images/wallet-import-done.png)
-
-## Success!
-
-You have successfully imported your private key into your wallet!
-
----
 title: 'Tutorial - Generate a key and create a developer Testnet account'
 order: -99999
-oultine: [0,5]
+oultine: [0, 5]
 ---
 
 # Tutorial - Generate a key and create a developer Testnet account
@@ -23843,7 +23792,7 @@ This tutorial will cover the simplest process of creating a developer account on
 
 ## Prerequisites
 
-- No prerequisites
+-   No prerequisites
 
 ## Goal
 
@@ -23902,7 +23851,85 @@ Verify that the public key listed under `Permissions` and the `Creation Date` ar
 
 ## What's next?
 
-The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./how-to-setup-the-wallet.md)
+The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./tutorial-setup-the-wallet.md)
+
+---
+title: 'Tutorial - Setup the Ultra Wallet'
+order: -99998
+oultine: [0, 5]
+---
+
+# Tutorial - Setup the Ultra Wallet
+
+Ultra Wallet browser extension is a crypto wallet that helps you access decentralized applications on Ultra blockchain and securely manage digital assets. This tutorial will cover the simplest process of setting up the Ultra Wallet and adding your keys to the wallet.
+
+## Prerequisites
+
+-   Have a basic understanding of [EBA and non-EBA Accounts](../../blockchain/contracts/system-contract/eba-non-eba-accounts.md).
+-   Have a [private and public key pair](../../blockchain/general/antelope-ultra/public-and-private-keys.md). To generate a key pair, please follow the [Generate a key and create a developer Testnet account](./tutorial-generate-key-and-create-testnet-account.md) tutorial.
+-   Have a chromium based browser since Ultra Wallet only supports chromium based browsers.
+
+## Goal
+
+The goal of this tutorial is to add your non-EBA account to the Ultra Wallet. The Ultra Wallet will later be used in later tutorials to demonstrate interaction with the blockchain.
+
+## Setup
+
+1. Download or use Chrome, Brave, or Chromium Equivalent
+2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
+
+## Open Ultra Wallet
+
+Open your `Ultra Wallet` by clicking it inside of the extensions panel.
+
+![](./images/ultra-wallet-extension-panel.png)
+
+## Set the Network
+
+Set your network to `Testnet` since we created our account on testnet in the previous tutorial.
+
+![](./images/wallet-set-network-testnet.png)
+
+## Add Account to Ultra Wallet
+
+1. Click on `Use Private Key & Password`.
+
+![](./images/wallet-use-private-key.png)
+
+2. Set a password, agree to the [Terms of Service](https://ultra.io/terms) and [Privacy Policy](https://ultra.io/privacy) and click on the `Set Password` button.
+
+![](./images/wallet-set-pwd.png)
+
+3. Paste your private key that you generated in the [Generate a key and create a developer Testnet account Tutorial](./tutorial-generate-key-and-create-testnet-account.md), and click on the `Import Account` button.
+
+![](./images/import-private-key-wallet.png)
+
+4. You will see a list of accounts along with their permissions that are controlled by your private key. Select the account with `@active` permission in it, and click the `Import Accounts` button.
+
+![](./images/wallet-account-permission-select.png)
+
+5. Once done, you will see a success message. You have now successfully imported your private key into your Ultra Wallet.
+
+![](./images/wallet-import-done.png)
+
+## Unlocking Ultra Wallet
+
+1. Open the wallet extension and click on the `Unlock Wallet` button.
+
+![](./images/wallet-unlock.png)
+
+2. Enter the password that you set in the previous steps, and click the `Unlock Wallet` button.
+
+![](./images/wallet-unlock-pwd.png)
+
+3. Once unlocked, you will be able to see your account name and your UOS balance.
+
+![](./images/wallet-unlocked.png)
+
+## What's next?
+
+TBD
+
 ---
 title: 'Creating a Testnet Account'
 
@@ -24379,6 +24406,11 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
     </tr>
     <tr>
+        <td>Tutorial - Setup the Ultra Wallet</td>
+        <td>Learn how to use our Ultra Wallet extension and set it up</td>
+        <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
+    </tr>
+    <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>
         <td><a href="/tutorials/fundamentals/how-to-get-tokens">Link</a></td>
@@ -24387,11 +24419,6 @@ General tutorials to help feed your curiosity.
         <td>How to read the Block Explorer</td>
         <td>Learn how to use our block explorer for reading data</td>
         <td><a href="/tutorials/fundamentals/how-to-read-the-block-explorer">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to setup the Ultra Wallet</td>
-        <td>Learn how to use our Ultra Wallet extension and set it up</td>
-        <td><a href="/tutorials/fundamentals/how-to-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get RAM</td>
@@ -24403,6 +24430,7 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
     </tr>
+
 </table>
 
 ## Projects
@@ -24436,7 +24464,6 @@ General tutorials to help feed your curiosity.
 </table>
 
 ## Uniq Factories
-
 
 <table>
     <tr>
@@ -24485,8 +24512,6 @@ General tutorials to help feed your curiosity.
         <td><a href="/tutorials/general/faucet/index">Link</a></td>
     </tr>
 </table>
-
-
 
 ---
 title: 'How to get UOS conversion rate'

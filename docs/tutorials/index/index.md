@@ -23,6 +23,11 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
     </tr>
     <tr>
+        <td>Tutorial - Setup the Ultra Wallet</td>
+        <td>Learn how to use our Ultra Wallet extension and set it up</td>
+        <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
+    </tr>
+    <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>
         <td><a href="/tutorials/fundamentals/how-to-get-tokens">Link</a></td>
@@ -31,11 +36,6 @@ General tutorials to help feed your curiosity.
         <td>How to read the Block Explorer</td>
         <td>Learn how to use our block explorer for reading data</td>
         <td><a href="/tutorials/fundamentals/how-to-read-the-block-explorer">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to setup the Ultra Wallet</td>
-        <td>Learn how to use our Ultra Wallet extension and set it up</td>
-        <td><a href="/tutorials/fundamentals/how-to-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get RAM</td>
@@ -47,6 +47,7 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
     </tr>
+
 </table>
 
 ## Projects
@@ -80,7 +81,6 @@ General tutorials to help feed your curiosity.
 </table>
 
 ## Uniq Factories
-
 
 <table>
     <tr>
@@ -129,5 +129,3 @@ General tutorials to help feed your curiosity.
         <td><a href="/tutorials/general/faucet/index">Link</a></td>
     </tr>
 </table>
-
-

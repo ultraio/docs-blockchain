@@ -1,7 +1,7 @@
 ---
 title: 'Tutorial - Generate a key and create a developer Testnet account'
 order: -99999
-oultine: [0,5]
+oultine: [0, 5]
 ---
 
 # Tutorial - Generate a key and create a developer Testnet account
@@ -10,7 +10,7 @@ This tutorial will cover the simplest process of creating a developer account on
 
 ## Prerequisites
 
-- No prerequisites
+-   No prerequisites
 
 ## Goal
 
@@ -69,4 +69,4 @@ Verify that the public key listed under `Permissions` and the `Creation Date` ar
 
 ## What's next?
 
-The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./how-to-setup-the-wallet.md)
+The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./tutorial-setup-the-wallet.md)

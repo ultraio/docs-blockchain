@@ -1,6 +1,6 @@
 ---
 title: 'Tutorial - Setup the Ultra Wallet'
-order: -99996
+order: -99998
 oultine: [0, 5]
 ---
 
@@ -20,8 +20,8 @@ The goal of this tutorial is to add your non-EBA account to the Ultra Wallet. Th
 
 ## Setup
 
-1. Download Chrome, Brave, or Chromium Equivalent
-2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+1. Download or use Chrome, Brave, or Chromium Equivalent
+2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
 
 ## Open Ultra Wallet
 
@@ -41,7 +41,7 @@ Set your network to `Testnet` since we created our account on testnet in the pre
 
 ![](./images/wallet-use-private-key.png)
 
-2. Set a password and click on the `Set Password` button.
+2. Set a password, agree to the [Terms of Service](https://ultra.io/terms) and [Privacy Policy](https://ultra.io/privacy) and click on the `Set Password` button.
 
 ![](./images/wallet-set-pwd.png)
 

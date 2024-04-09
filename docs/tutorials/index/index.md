@@ -25,7 +25,7 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>Tutorial - Setup the Ultra Wallet</td>
         <td>Learn how to use our Ultra Wallet extension and set it up</td>
-        <td><a href="/tutorials/fundamentals/tutorial-setup-the-wallet">Link</a></td>
+        <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>

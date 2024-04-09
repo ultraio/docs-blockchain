@@ -9,7 +9,7 @@ const navbar: DefaultTheme.NavItem[] = [
             {
                 text: 'Featured',
                 items: [
-                    { text: 'Fundamentals', link: '/tutorials/fundamentals/how-to-generate-a-keypair' },
+                    { text: 'Fundamentals', link: '/tutorials/fundamentals/tutorial-generate-key-and-create-testnet-account' },
                     { text: 'Docker', link: '/tutorials/docker/index' },
                     { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
                     { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },

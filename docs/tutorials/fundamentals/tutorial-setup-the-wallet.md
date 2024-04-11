@@ -10,13 +10,12 @@ Ultra Wallet browser extension is a crypto wallet that helps you access decentra
 
 ## Prerequisites
 
--   Have a basic understanding of [EBA and non-EBA Accounts](../../blockchain/contracts/system-contract/eba-non-eba-accounts.md).
 -   Have a [private and public key pair](../../blockchain/general/antelope-ultra/public-and-private-keys.md). To generate a key pair, please follow the [Generate a key and create a developer Testnet account](./tutorial-generate-key-and-create-testnet-account.md) tutorial.
 -   Have a chromium based browser since Ultra Wallet only supports chromium based browsers.
 
 ## Goal
 
-The goal of this tutorial is to add your non-EBA account to the Ultra Wallet. The Ultra Wallet will later be used in later tutorials to demonstrate interaction with the blockchain.
+The goal of this tutorial is to add your developer account to the Ultra Wallet. The Ultra Wallet will be used in later tutorials to demonstrate interaction with the blockchain.
 
 ## Setup
 
@@ -41,7 +40,7 @@ Set your network to `Testnet` since we created our account on testnet in the pre
 
 ![](./images/wallet-use-private-key.png)
 
-2. Set a password, agree to the [Terms of Service](https://ultra.io/terms) and [Privacy Policy](https://ultra.io/privacy) and click on the `Set Password` button.
+2. Set a password, read and agree to the [Terms of Service](https://ultra.io/terms) and [Privacy Policy](https://ultra.io/privacy) and then click on the `Set Password` button.
 
 ![](./images/wallet-set-pwd.png)
 

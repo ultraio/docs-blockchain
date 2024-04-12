@@ -1,4 +1,4 @@
-name: 'Generate Build'
+name: 'Validate Build'
 on:
     pull_request:
         paths:

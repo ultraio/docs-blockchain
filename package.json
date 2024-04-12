@@ -18,7 +18,8 @@
         "[-] Preview Scaffolded Files ": "",
         "preview:experimental": "tsx ./scripts/scaffold.ts && npm run build:experimental && vitepress preview ./docs-experimental",
         "preview:staging": "tsx ./scripts/scaffold.ts && npm run build:staging && vitepress preview ./docs-staging",
-        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet"
+        "preview:mainnet": "tsx ./scripts/scaffold.ts && npm run build:mainnet && vitepress preview ./docs-mainnet",
+        "verifylinks": "npx tsx ./scripts/verifyLinks.ts"
     },
     "devDependencies": {
         "@types/node": "^20.10.4",

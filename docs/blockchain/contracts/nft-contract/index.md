@@ -123,7 +123,7 @@ The _Asset Manager_ can update the token factory metadata.
 
 The **setmeta.b** action lets the _Asset Manager_ to set the token factory metadata updating the `factory.b` table.
 
--   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md.md)
+-   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md)
 -   [factory.b](./nft-tables.md#factory-b)
 
 ## Setting the conditionless receivers

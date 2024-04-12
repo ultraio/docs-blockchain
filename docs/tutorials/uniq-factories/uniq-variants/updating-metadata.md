@@ -76,7 +76,7 @@ After a factory and token is minted we can look up their ids from `factory.b` an
 
 ## Updating factory metadata
 
-If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](../../../blockchain/contracts/nft-contract/nft-actions/091_setmeta.b.md) to change the corresponding data:
+If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](../../../blockchain/contracts/nft-contract/nft-actions/setmeta.b.md) to change the corresponding data:
 
 ```sh
 cleos push action eosio.nft.ft setmeta.b '[

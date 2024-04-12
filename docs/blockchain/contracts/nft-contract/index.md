@@ -32,7 +32,7 @@ The _Asset Manager_ can **issue.b** a token either to the _Asset Manager_ or to 
 The NFT issuance requires setting several parameters like the receiving _Account_ and the amount of tokens. The issued NFTs receive a global unique ID and a token factory recorded serial (ordinal) number. The issued token is recorded into the _Account_'s `token.b` table. The **issue.b** action reads and updates the data in the `factory.b` table.
 
 -   [issue.b - issue tokens with token factory](./nft-actions/issue.b.md)
--   [factory.b](./nft-tables.mdd#factory-bb)
+-   [factory.b](./nft-tables.md#factory-b)
 -   [token.b](./nft-tables.md#token-b)
 
 ## Transferring

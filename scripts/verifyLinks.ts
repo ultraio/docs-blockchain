@@ -104,26 +104,41 @@ function defineLink(original: string, link: string): LinkInfo {
 function verifyMultiEnvDocument(badLinks: string[], line: number, source: string, link: string): string[] {
     let filesToCheck = [];
 
-    const envCheck = (env: string) => {
-        if (fs.existsSync(link.replace('.md', `.${env}.md`))) filesToCheck.push(link.replace('.md', `.${env}.md`));
-        else if (!fs.existsSync(link))
-            badLinks.push(
+    const envCheck = (env: string, silent: boolean) => {
+        if (fs.existsSync(link.replace('.md', `.${env}.md`))) {
+            if (!silent) filesToCheck.push(link.replace('.md', `.${env}.md`));
+            return true;
+        } else if (!fs.existsSync(link)) {
+            if (!silent) badLinks.push(
                 `Line ${line + 1} | File: ${source} | Link: ${link.replace('.md', `.${env}.md`)} | ${env} FILE MISSING`
             );
+            return false;
+        }
     };
 
     if (fs.existsSync(link)) filesToCheck.push(link);
     if (source.includes('.experimental')) {
-        envCheck('experimental');
+        envCheck('experimental', false);
     } else if (source.includes('.staging')) {
-        envCheck('staging');
+        envCheck('staging', false);
     } else if (source.includes('.mainnet')) {
-        envCheck('mainnet');
+        envCheck('mainnet', false);
     } else if (!fs.existsSync(link)) {
-        // if the document is environment specific, but the link is not - then all 3 environments should exist
-        envCheck('experimental');
-        envCheck('staging');
-        envCheck('mainnet');
+        // if the document is not environment specific and there is no document that exists directly
+        // then need to check that the document exists on 3 separate environments instead
+        let docExists = envCheck('experimental', true) || envCheck('staging', true) || envCheck('mainnet', true);
+
+        // no document exists, instead of printing 3 errors print only one
+        if (docExists) {
+            envCheck('experimental', false);
+            envCheck('staging', false);
+            envCheck('mainnet', false);
+        }
+        if (!docExists) {
+            badLinks.push(
+                `Line ${line + 1} | File: ${source} | Link: ${link} | FILE MISSING`
+            );
+        }
     }
 
     return filesToCheck;

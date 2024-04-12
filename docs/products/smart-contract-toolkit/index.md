@@ -35,7 +35,7 @@ Make sure you have docker installed while using this tool!
 
 ## Tutorials & Help
 
-* [Extension tutorial page](../../tutorials/smart-contracts/compile.md)
+* [Extension tutorial page](../../guides/Smart%20Contracts/3.compile.md)
 
 * Vscode extension walkthrough 👇
   <iframe width="560" height="315" src="https://www.youtube.com/embed/88dOlL6nwWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

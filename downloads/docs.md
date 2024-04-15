@@ -2110,7 +2110,7 @@ The _Asset Manager_ can update the token factory metadata.
 
 The **setmeta.b** action lets the _Asset Manager_ to set the token factory metadata updating the `factory.b` table.
 
--   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md.md)
+-   [setmeta.b - set token factory metadata uri and hash](./nft-actions/setmeta.b.md)
 -   [factory.b](./nft-tables.md#factory-b)
 
 ## Setting the conditionless receivers
@@ -23089,7 +23089,7 @@ In many cases when working with smart contracts, or on-chain actions you will ne
 
 ## Cleos Usage
 
-Cleos has a section on using [external endpoints](../../products/chain-api/index.md#external-apis).
+Cleos has a section on using [external endpoints](../../products/chain-api/index.md).
 
 In short append the `-u` flag with a url. If you are using local environment then this flag can be skipped. The default value of `http://127.0.0.1:8888` will be used
 
@@ -25793,7 +25793,7 @@ We provide a template example for you to use in the context of this guide.
 1.  Use the following CSV template: [Google Sheets Metadata Tool Template](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing) (Visit the link and go to `File -> Make a Copy` to make a copy in your own Google Drive).
 2.  Open your copied CSV template in your Google Drive and begin modifications of individual fields. (Read the first sheet for information regarding the template).
 3.  Export both `factory` and `tokens` sheets as CSV files. `File -> Download -> csv`
-4.  Rename factory file to `factory.csv` and place in your root folder. (See [Folder Structure](#folder-structure) Above)
+4.  Rename factory file to `factory.csv` and place in your root folder. (See [Setup Folder Structure](#setup-folder-structure) Above)
 5.  Rename token file to `tokens.csv` and place in your root folder.
 
 ### Image/Media Pathing:
@@ -28770,13 +28770,13 @@ You have an option to provide a metadata URI and hash for each token individuall
 
 Both the URI and hash are optional. You may want to provide either of them or both of them at the same time depending on your use case. Refer to this page for details: [use cases](./Examples/variant-example-use-cases.md)
 
-Token metadata can be specified when minting a token - [issue.b](../../../blockchain/blockchain/contracts/nft-contract/nft-actions/issue.b.md)
+Token metadata can be specified when minting a token - [issue.b](../../../blockchain/contracts/nft-contract/nft-actions/issue.b.md)
 
 Alternatively URI and hash can be changed after the token is minted using the following action - [settknmeta](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md)
 
 ## How to find metadata for a given Uniq
 
-For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../../blockchain/contracts/nft-contract/nft-tables.md#token.b).
+For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../../blockchain/contracts/nft-contract/nft-tables.md#token-b).
 
 The first step is to check if there is a URI specified on the token itself by checking the `uri` field of the token. If it is specified then you are done - go to `uri` and fetch the metadata.
 
@@ -29137,7 +29137,7 @@ After a factory and token is minted we can look up their ids from `factory.b` an
 
 ## Updating factory metadata
 
-If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](../../../blockchain/contracts/nft-contract/nft-actions/091_setmeta.b.md) to change the corresponding data:
+If a content creator reuploads a new factory metadata they have to use [`setmeta.b`](../../../blockchain/contracts/nft-contract/nft-actions/setmeta.b.md) to change the corresponding data:
 
 ```sh
 cleos push action eosio.nft.ft setmeta.b '[

@@ -1,4 +1,4 @@
-name: 'Generate Build'
+name: 'Validate Build'
 on:
     pull_request:
         paths:
@@ -20,3 +20,6 @@ jobs:
 
             - name: Build Docs
               run: npm run build:all
+
+            - name: Verify Links
+              run: npm run verifylinks

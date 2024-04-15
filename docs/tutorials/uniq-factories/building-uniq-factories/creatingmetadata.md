@@ -117,7 +117,7 @@ We provide a template example for you to use in the context of this guide.
 1.  Use the following CSV template: [Google Sheets Metadata Tool Template](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing) (Visit the link and go to `File -> Make a Copy` to make a copy in your own Google Drive).
 2.  Open your copied CSV template in your Google Drive and begin modifications of individual fields. (Read the first sheet for information regarding the template).
 3.  Export both `factory` and `tokens` sheets as CSV files. `File -> Download -> csv`
-4.  Rename factory file to `factory.csv` and place in your root folder. (See [Folder Structure](#folder-structure) Above)
+4.  Rename factory file to `factory.csv` and place in your root folder. (See [Setup Folder Structure](#setup-folder-structure) Above)
 5.  Rename token file to `tokens.csv` and place in your root folder.
 
 ### Image/Media Pathing:

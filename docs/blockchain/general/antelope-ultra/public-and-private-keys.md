@@ -1,10 +1,11 @@
 ---
-title: 'How to generate a Keypair'
-order: -99999
-oultine: [0,5]
+title: 'Public and Private Keys'
+
+outline: [0, 4]
+order: -90
 ---
 
-# How to Generate a Key Pair
+# Public and Private Keys
 
 Ultra uses an elliptic curve key pair consists of a public key (used for verification) and a private key (kept secret for signing transactions), enabling secure digital interactions on the Ultra blockchain.
 
@@ -24,7 +25,7 @@ A private key, a secret alphanumeric code, is used to digitally sign transaction
 
 ### Generate a Keypair
 
-In most cases we don't recommend generating private keys online. However, if you are using this for our test network it is safe to use there. Otherwise, seek out some of the additional ways to generate a key pair safely. Such as using [cleos](../../blockchain/general/tools/cleos.md).
+In most cases we don't recommend generating private keys online. However, if you are using this for our test network it is safe to use there. Otherwise, seek out some of the additional ways to generate a key pair safely. Such as using [cleos](../tools/cleos.md).
 
 <KeyGenerator />
 <br />
@@ -32,7 +33,7 @@ In most cases we don't recommend generating private keys online. However, if you
 
 ### Alternative Ways to Generate Keypairs
 
-* [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
-* [EOS Authority](https://eosauthority.com/generate_eos_private_key)
-* [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
-* [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
+-   [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+-   [EOS Authority](https://eosauthority.com/generate_eos_private_key)
+-   [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
+-   [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)

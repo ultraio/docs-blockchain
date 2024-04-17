@@ -47,13 +47,13 @@ You have an option to provide a metadata URI and hash for each token individuall
 
 Both the URI and hash are optional. You may want to provide either of them or both of them at the same time depending on your use case. Refer to this page for details: [use cases](./Examples/variant-example-use-cases.md)
 
-Token metadata can be specified when minting a token - [issue.b](../../../blockchain/blockchain/contracts/nft-contract/nft-actions/issue.b.md)
+Token metadata can be specified when minting a token - [issue.b](../../../blockchain/contracts/nft-contract/nft-actions/issue.b.md)
 
 Alternatively URI and hash can be changed after the token is minted using the following action - [settknmeta](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md)
 
 ## How to find metadata for a given Uniq
 
-For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../../blockchain/contracts/nft-contract/nft-tables.md#token.b).
+For the integrators it may be important to know how to fetch the token metadata if you already know the [on-chain token data](../../../blockchain/contracts/nft-contract/nft-tables.md#token-b).
 
 The first step is to check if there is a URI specified on the token itself by checking the `uri` field of the token. If it is specified then you are done - go to `uri` and fetch the metadata.
 

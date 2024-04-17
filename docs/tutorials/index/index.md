@@ -18,14 +18,14 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>How to generate a Keypair</td>
-        <td>Get a basic understand of private and public keys</td>
-        <td><a href="/tutorials/fundamentals/how-to-generate-a-keypair">Link</a></td>
+        <td>Tutorial - Generate a key and create a developer Testnet account</td>
+        <td>Create your personal Ultra Testnet account to interact with the blockchain</td>
+        <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
     </tr>
     <tr>
-        <td>How to create an Account</td>
-        <td>How to generate a development account on our testnet</td>
-        <td><a href="/tutorials/fundamentals/how-to-create-an-account">Link</a></td>
+        <td>Tutorial - Setup the Ultra Wallet</td>
+        <td>Learn how to use our Ultra Wallet extension and set it up</td>
+        <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>
@@ -38,11 +38,6 @@ General tutorials to help feed your curiosity.
         <td><a href="/tutorials/fundamentals/how-to-read-the-block-explorer">Link</a></td>
     </tr>
     <tr>
-        <td>How to setup the Ultra Wallet</td>
-        <td>Learn how to use our Ultra Wallet extension and set it up</td>
-        <td><a href="/tutorials/fundamentals/how-to-setup-the-wallet">Link</a></td>
-    </tr>
-    <tr>
         <td>How to get RAM</td>
         <td>Use this tutorial to get RAM on the Testnet for your account</td>
         <td><a href="/tutorials/fundamentals/how-to-get-ram">Link</a></td>
@@ -52,6 +47,7 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
     </tr>
+
 </table>
 
 ## Projects
@@ -85,7 +81,6 @@ General tutorials to help feed your curiosity.
 </table>
 
 ## Uniq Factories
-
 
 <table>
     <tr>
@@ -134,5 +129,3 @@ General tutorials to help feed your curiosity.
         <td><a href="/tutorials/general/faucet/index">Link</a></td>
     </tr>
 </table>
-
-

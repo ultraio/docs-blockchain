@@ -34,7 +34,7 @@ Clicking on the network selection component will open up a list of available net
 
 ## Unlock Ultra Wallet
 
-Unlock your Ultra Wallet as described in the [Setup the Ultra Wallet Tutorial](./tutorial-setup-the-wallet.md).
+Unlock your Ultra Wallet as described in the [Setup the Ultra Wallet Tutorial](./tutorial-setup-the-wallet.md#unlocking-ultra-wallet).
 Ensure you have selected the `Testnet` environment in your Ultra Wallet.
 
 ![](./images/wallet-set-network-testnet.png)

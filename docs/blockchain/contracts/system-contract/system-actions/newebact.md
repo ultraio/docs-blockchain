@@ -15,7 +15,7 @@ title: 'newebact'
 ## CLI - cleos
 
 ```sh
-cleos push action eosio delegatebw '["from","receiver","5.0000 UOS",true]' -p from
+cleos push action eosio newebact '"active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "major_idp":"account", "major_idp_id":"", "account":"account", "memo":"sample"}' -p from
 ```
 
 ## JavaScript - eosjs
@@ -25,13 +25,24 @@ await api.transact({
   actions: [
     {
       account: "eosio",
-      name: "delegatebw",
+      name: "newebact",
       authorization: [{ actor: "from", permission: "active" }],
       data: {
-        from: "from",
-        receiver: "receiver",
-        stake_net_quantity: "5.00000000 UOS",
-        transfer: "true"
+        active: {
+          threshold: 1,
+          keys: [
+            {
+                key: 'EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9',
+                weight: 1,
+            },
+        ],
+          accounts: [],
+          waits: []
+        },
+        major_idp: 'account',
+        major_idp_id: [],
+        account: 'account',
+        memo: "sample"
       },
     },
   ],

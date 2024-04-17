@@ -10,7 +10,7 @@ order: 4
 
 ##### Description
 
-This query is used to retrieve information about a uniq by its id.
+Provides direct access to detailed information about a specific Uniq using its unique blockchain ID.
 
 ##### Response
 
@@ -18,9 +18,9 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                   | Description              |
-|----------------------------------------|--------------------------|
-| `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq. |
+| Name                                   | Description                                                                                           |
+|----------------------------------------|-------------------------------------------------------------------------------------------------------|
+| `id` - [`BigInt!`](types.md#bigint) | The blockchain ID of the Uniq, serving as a primary key to fetch detailed information about the Uniq. |
 
 #### Example
 
@@ -33,6 +33,10 @@ query Uniq($id: BigInt!) {
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -124,6 +128,40 @@ query Uniq($id: BigInt!) {
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -399,8 +437,7 @@ query Uniq($id: BigInt!) {
 
 ##### Description
 
-This query is used to find information about uniq factories. If no
-filter applied, will return all existing factories.
+Retrieves a list of Uniq factories, optionally filtered by asset manager, and applies pagination for result management. Returns all factories if no specific filters are used.
 
 ##### Response
 
@@ -408,10 +445,10 @@ Returns a [`UniqFactoryList!`](types.md#uniqfactorylist)
 
 ##### Arguments
 
-| Name                                                            | Description                                                                                                    |
-|-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `assetManager` - [`WalletId`](types.md#walletid)             | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                       |
+| Name                                                            | Description                                                                                                            |
+|-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `assetManager` - [`WalletId`](types.md#walletid)             | Optional filter to narrow down factories by their associated asset manager, aiding in targeted queries.                |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination settings to control the volume and segmentation of returned results, enhancing usability and accessibility. |
 
 #### Example
 
@@ -430,6 +467,10 @@ query UniqFactories(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -521,6 +562,40 @@ query UniqFactories(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -664,7 +739,7 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -676,7 +751,7 @@ query UniqFactories(
 
 ##### Description
 
-This query is used to find a factory based on their ID.
+Fetches a specific Uniq factory by its blockchain ID, providing detailed information about its configuration, operations, and associated default Uniqs metadata.
 
 ##### Response
 
@@ -684,9 +759,9 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                   | Description                       |
-|----------------------------------------|-----------------------------------|
-| `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq factory . |
+| Name                                   | Description                                                                        |
+|----------------------------------------|------------------------------------------------------------------------------------|
+| `id` - [`BigInt!`](types.md#bigint) | The blockchain ID of the desired Uniq factory, serving as the query's focal point. |
 
 #### Example
 
@@ -698,6 +773,10 @@ query UniqFactory($id: BigInt!) {
     accountMintingLimit
     assetCreator
     assetManager
+    authorizedMinters {
+      quantity
+      walletId
+    }
     conditionlessReceivers
     defaultUniqMetadata {
       cachedSource {
@@ -789,6 +868,40 @@ query UniqFactory($id: BigInt!) {
         uri
       }
       status
+    }
+    firsthandPurchases {
+      groupRestriction {
+        excludes
+        includes
+      }
+      id
+      option {
+        factories {
+          count
+          id
+          strategy
+        }
+        transferUniqsReceiver
+      }
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      promoterBasisPoints
+      purchaseLimit
+      purchaseWindow {
+        endDate
+        startDate
+      }
+      purchasedUniqs
+      saleShares {
+        basisPoints
+        receiver
+      }
+      uosPayment
     }
     id
     metadata {
@@ -924,10 +1037,14 @@ query UniqFactory($id: BigInt!) {
       "accountMintingLimit": 987,
       "assetCreator": "aa1aa2aa3ag4",
       "assetManager": "aa1aa2aa3ag4",
+      "authorizedMinters": [UniqFactoryAuthorizedMinter],
       "conditionlessReceivers": [
         "aa1aa2aa3ag4"
       ],
       "defaultUniqMetadata": UniqMetadata,
+      "firsthandPurchases": [
+        UniqFactoryFirsthandPurchase
+      ],
       "id": 987,
       "metadata": UniqFactoryMetadata,
       "mintableWindow": UniqFactoryMintableWindow,
@@ -970,7 +1087,7 @@ query UniqGlobalShares {
   "data": {
     "uniqGlobalShares": [
       {
-        "basisPoints": 123,
+        "basisPoints": 987,
         "receiver": "aa1aa2aa3ag4"
       }
     ]
@@ -984,8 +1101,7 @@ query UniqGlobalShares {
 
 ##### Description
 
-This query is used to find uniqs that are associated with a factory
-based on their ID.
+Lists Uniqs associated with a particular factory, allowing for advanced filtering based on serial numbers, IDs, resale status, and incorporates pagination for comprehensive result exploration.
 
 ##### Response
 
@@ -993,12 +1109,13 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                                       | Description                                                                                                    |
-|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq which one is related to the factory. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination to apply. Please refer to the pagination section.                                                       |
-| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter by a range of serial number.                                                                            |
+| Name                                                                       | Description                                                                                                                 |
+|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `factoryId` - [`BigInt!`](types.md#bigint)                              | The blockchain ID of the factory, specifying the source of the Uniqs to be retrieved.                                       |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Optional list of specific Uniq IDs for targeted retrieval, offering precise control over the query output.                  |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination settings, structuring the query results into segmented, navigable data sets for user convenience.                |
+| `resale` - [`Boolean`](types.md#boolean)                                | Optional filter for Uniq resale status, distinguishing between items available for sale and those not on the market.        |
+| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Optional serial number range filter, refining the selection of Uniqs based on their sequence within the factory's issuance. |
 
 #### Example
 
@@ -1009,12 +1126,14 @@ query UniqsOfFactory(
   $factoryId: BigInt!,
   $ids: [BigInt!],
   $pagination: PaginationInput,
+  $resale: Boolean,
   $serialRange: UniqSerialRangeInput
 ) {
   uniqsOfFactory(
     factoryId: $factoryId,
     ids: $ids,
     pagination: $pagination,
+    resale: $resale,
     serialRange: $serialRange
   ) {
     data {
@@ -1022,6 +1141,10 @@ query UniqsOfFactory(
         accountMintingLimit
         assetCreator
         assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
         conditionlessReceivers
         defaultUniqMetadata {
           cachedSource {
@@ -1113,6 +1236,40 @@ query UniqsOfFactory(
             uri
           }
           status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
         }
         id
         metadata {
@@ -1368,6 +1525,7 @@ query UniqsOfFactory(
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
+  "resale": true,
   "serialRange": UniqSerialRangeInput
 }
 ```
@@ -1380,7 +1538,7 @@ query UniqsOfFactory(
     "uniqsOfFactory": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
@@ -1392,7 +1550,7 @@ query UniqsOfFactory(
 
 ##### Description
 
-This query is used to recover user-specific uniqs.
+Enables querying user-specific Uniqs, offering personalized insight into Uniq ownership and management based on wallet ID.
 
 ##### Response
 
@@ -1400,12 +1558,13 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                            | Description                                                                                               |
-|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| `factoryIds` - [`[BigInt!]`](types.md#bigint)                | Filter from a list of uniq factory id.                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq which one is owned by the user. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to the pagination section.                                                  |
-| `walletId` - [`WalletId!`](types.md#walletid)                | Wallet id of the user.                                                                                    |
+| Name                                                            | Description                                                                                                                    |
+|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `factoryIds` - [`[BigInt!]`](types.md#bigint)                | Optional: Specifies a list of Uniq Factory IDs to refine the query results, focusing on Uniqs from specific factories.         |
+| `ids` - [`[BigInt!]`](types.md#bigint)                       | Optional: Specifies a list of Uniq IDs to filter the query results. Useful for identifying specific Uniqs owned by the user.   |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Applies pagination to manage the data volume, facilitating efficient data retrieval and display.                               |
+| `resale` - [`Boolean`](types.md#boolean)                     | Optional: Filters the Uniqs based on their resale status, allowing users to segregate Uniqs that are currently on sale or not. |
+| `walletId` - [`WalletId!`](types.md#walletid)                | The unique identifier for the user's wallet, essential for retrieving Uniqs associated with this particular user.              |
 
 #### Example
 
@@ -1416,12 +1575,14 @@ query UniqsOfWallet(
   $factoryIds: [BigInt!],
   $ids: [BigInt!],
   $pagination: PaginationInput,
+  $resale: Boolean,
   $walletId: WalletId!
 ) {
   uniqsOfWallet(
     factoryIds: $factoryIds,
     ids: $ids,
     pagination: $pagination,
+    resale: $resale,
     walletId: $walletId
   ) {
     data {
@@ -1429,6 +1590,10 @@ query UniqsOfWallet(
         accountMintingLimit
         assetCreator
         assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
         conditionlessReceivers
         defaultUniqMetadata {
           cachedSource {
@@ -1520,6 +1685,40 @@ query UniqsOfWallet(
             uri
           }
           status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
         }
         id
         metadata {
@@ -1775,6 +1974,7 @@ query UniqsOfWallet(
   "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
+  "resale": true,
   "walletId": "aa1aa2aa3ag4"
 }
 ```
@@ -1787,7 +1987,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }

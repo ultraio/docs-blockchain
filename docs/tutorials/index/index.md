@@ -27,6 +27,11 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use our Ultra Wallet extension and set it up</td>
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
+        <tr>
+        <td>Tutorial - LogIn to the Ultra Toolkit</td>
+        <td>A brief introduction to the toolkit along with learning how login to the toolkit using Ultra Wallet</td>
+        <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
+    </tr>
     <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>

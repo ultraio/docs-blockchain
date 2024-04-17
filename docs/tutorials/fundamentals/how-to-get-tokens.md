@@ -1,7 +1,7 @@
 ---
 title: 'How to get Tokens'
-order: -99997
-oultine: [0,5]
+order: -99996
+oultine: [0, 5]
 ---
 
 # How to get Tokens
@@ -18,7 +18,7 @@ Make sure you have an account on our Test Network before you continue.
 
 Visit the link below to open our faucet application.
 
-* https://faucet.testnet.app.ultra.io
+-   https://faucet.testnet.app.ultra.io
 
 1. Click `Token Faucet`
 2. Paste your `Account Name` in the `To Account` field.
@@ -32,7 +32,6 @@ Visit the link below to open our faucet application.
 Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
 
 <AccountLookupTestnet />
-
 
 ## All Done!
 

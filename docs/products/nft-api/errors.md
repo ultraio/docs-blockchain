@@ -6,19 +6,19 @@ order: 3
 
 # Errors
 
-This section aims to inform our users how errors are handled.
+This section is dedicated to providing our users with comprehensive insights into our error handling mechanisms.
 
 ## GraphQL errors
 
-These are errors related to the server-side execution of a GraphQL operation. They include:
+GraphQL errors encompass issues arising from server-side execution of GraphQL operations, including:
 
--   Syntax errors (e.g., a query was malformed)
--   Validation errors (e.g., a query included a schema field that doesn't exist)
--   Resolver errors (e.g., an error occurred while attempting to populate a query field)
+-   Syntax Errors: These occur when a query is not correctly formed.
+-   Validation Errors: These happen when a query references a schema field that does not exist.
+-   Resolver Errors: These are encountered when an error occurs as the server attempts to fetch data for a query field.
 
-If a syntax error or validation error occurs, your server doesn't execute the operation at all because it's invalid. If resolver errors occur, your server can still return partial data.
+In cases of syntax or validation errors, the server will not execute the operation because it is deemed invalid. However, if resolver errors are encountered, the server may still return partial data alongside the errors.
 
-Here an error sample returned after a validation failure :
+Below is an example of an error message returned following a validation error:
 
 ```json
 {
@@ -79,4 +79,4 @@ Here an error sample returned after a validation failure :
 
 ### Network errors
 
-These are errors encountered while attempting to communicate with your GraphQL server, usually resulting in a 4xx or 5xx response status code (and no data).
+Network errors refer to problems encountered during communication with the GraphQL server, typically leading to a response status code in the 4xx or 5xx range, indicating an unsuccessful attempt and resulting in no data being returned.

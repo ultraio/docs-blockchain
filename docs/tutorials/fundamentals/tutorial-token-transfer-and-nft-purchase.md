@@ -12,7 +12,7 @@ This tutorial will demonstrate how to use the Ultra toolkit for sending asset (t
 
 Before starting this tutorial, you will need:
 
-- A developer account on the Ultra testnet. If you don't have one, follow our previous tutorial: [Generate a key and create a developer Testnet account](./tutorial-generate-key-create-account.md).
+- A developer account on the Ultra testnet. If you don't have one, follow our previous tutorial: [Generate a key and create a developer Testnet account](./tutorial-generate-key-and-create-testnet-account.md).
 - Your account must have sufficient UOS tokens for transactions and fees.
 - The latest version of the Ultra toolkit installed on your machine.
 

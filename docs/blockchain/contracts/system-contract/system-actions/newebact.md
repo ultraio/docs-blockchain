@@ -1,6 +1,5 @@
 ---
 title: 'newebact'
-
 ---
 
 # newebact - create an EBA account
@@ -15,7 +14,7 @@ title: 'newebact'
 ## CLI - cleos
 
 ```sh
-cleos push action eosio newebact '"active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "major_idp":"account", "major_idp_id":"", "account":"account", "memo":"sample"}' -p from
+cleos push action eosio newebact '{"active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "major_idp":"account", "major_idp_id":"", "account":"account", "memo":"sample"}}' -p from
 ```
 
 ## JavaScript - eosjs

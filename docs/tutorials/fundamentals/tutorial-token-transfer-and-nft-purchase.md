@@ -4,7 +4,7 @@ order: -99998
 outline: [0, 5]
 ---
 
-# Tutorial - Tutorial - Token transfer and Uniq purchase transactions
+# Tutorial - Token transfer and Uniq purchase transactions
 
 This tutorial will demonstrate how to use the Ultra toolkit for sending asset (transfer) and purchasing Uniq interact with Ultra the blockchain.
 
@@ -13,7 +13,7 @@ This tutorial will demonstrate how to use the Ultra toolkit for sending asset (t
 Before starting this tutorial, you will need:
 
 - A developer account on the Ultra testnet. If you don't have one, follow our previous tutorial: [Generate a key and create a developer Testnet account](./tutorial-generate-key-and-create-testnet-account.md).
-- Your account must have sufficient UOS tokens for transactions and fees.
+- Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to get tokens](./how-to-get-tokens.md).
 
 ## Goal
 

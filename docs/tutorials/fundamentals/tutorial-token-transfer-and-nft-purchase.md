@@ -48,6 +48,8 @@ In the token transfer fields, enter the details of the transaction:
 
 Ensure all details are correct to avoid any errors in the transaction.
 
+Finally press the `Send 1 Action` button.
+
 ![](./images/token-transfer-attributes.png)
 
 ### Step 4: Preview and Confirm the Transaction
@@ -70,7 +72,7 @@ After signing the transaction, you will see a confirmation screen indicating tha
 
 ### Step 7: Verify the Transaction
 
-To ensure the transaction was successfully processed, visit the Ultra Testnet Explorer at `https://explorer.testnet.ultra.io/`. Search for your account (`1aa2aa3aa4in`) to view the transaction details and confirm that the transfer went through as intended.
+To ensure the transaction was successfully processed, visit the Ultra Testnet Explorer at `https://explorer.testnet.ultra.io/`. Search for your account (e.g. `1aa2aa3aa4in`) to view the transaction details and confirm that the transfer went through as intended.
 
 ![](./images/token-transfer-explorer.png)
 
@@ -104,6 +106,8 @@ Scroll down to complete any additional required attributes for the purchase.
 
 ![](./images/purchase-attribute-II.png)
 
+After filling the indicated fields press the `Send 1 Action` button.
+
 ### Step 4: Review and Confirm Transaction
 
 Carefully review all the transaction details on the confirmation screen to ensure they are correct before proceeding.
@@ -126,7 +130,7 @@ Once the transaction is signed, a confirmation screen will display indicating th
 
 #### Step 7a: Access Your User Inventory Page
 
-To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name `1aa2aa3aa4in` in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
+To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
 
 ![](./images/purchase-user-uniq-explorer.png)
 

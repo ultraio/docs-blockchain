@@ -9,20 +9,32 @@ outline: [0,4]
 
 The goal of this document is to get a development environment set up in as little time as possible.
 
-Here is a quick introduction to [Substreams](https://substreams.streamingfast.io/).
+Here is a quick introduction to [Substreams from StreamingFast](https://substreams.streamingfast.io/).
 
 ## Prerequisites
+
+Before deploying, please make sure you have all these tools installed.
+
+- `helm` is the tool for downloading a chart and installing it to your target cluster.
+- `minikube` is the tool for setting up a cluster in your local machine. This cluster will have all the basic functions of any other cloud solution.
+- `kubectl` is the tool for managing all the deployments/pods/services from your cluster which includes some useful functions like monitoring, deploying, debugging, ...
 
 ### Installing `helm`
 
 -   [Helm for Windows](https://helm.sh/docs/intro/install/#from-chocolatey-windows).
--   [Helm for Linux](https://helm.sh/docs/intro/install/#from-script).
+-   Helm for Linux.
+    - [Install from Scripts](https://helm.sh/docs/intro/install/#from-script).
+    - [Install from Apt](https://helm.sh/docs/intro/install/#from-apt-debianubuntu).
+    - [Install from Source](https://helm.sh/docs/intro/install/#from-source-linux-macos).
 -   [Helm for Mac](https://helm.sh/docs/intro/install/#from-homebrew-macos).
 
 Make sure `helm` is installed properly:
 
 ```sh
 helm version
+```
+```sh
+version.BuildInfo{Version:"v3.14.4", GitCommit:"81c902a123462fd4052bc5e9aa9c513c4c8fc142", GitTreeState:"clean", GoVersion:"go1.21.9"}
 ```
 
 ### Installing `minikube`
@@ -110,6 +122,8 @@ minikube stop
 ```
 ## Deploy `substreams-charts`
 
+`substreams-charts` contain helm templates for deploying all core applications of `Substreams`.
+
 ### Pull `substreams-charts` release
 
 **NOTE**: If you clone our [substreams-charts Repo](https://github.com/ultraio/substreams-charts) directly, please skip ahead.
@@ -161,7 +175,49 @@ NAME         READY   STATUS    RESTARTS   AGE
 producer-0   1/1     Running   0          57s
 ```
 
-**NOTE**: If you follow the above instructions, your `producer-0` can be reached at `producer-0.producer.default.svc.cluster.local`. This is important because we will use this IP in `substreams` reader node to connect to the producer to feed block data from it. If for some reason you decide to deploy it in another namespace or under another name, please use this to find its cluster IP `kubectl get pod -o wide`.
+**NOTE**: If you follow the above instructions, your `producer-0` can be reached at `producer-0.producer.default.svc.cluster.local`. This is important because we will use this IP in `substreams` reader node to connect to the producer to feed block data from it. If for some reason you decide to deploy it in another namespace or under another name, please use this to find its cluster IP `kubectl get pod -o wide`, or you can follow the instructions below.
+
+Deploy `dnsutils` pod to your cluster
+```sh
+kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml
+```
+
+Check the `NAME` and `IP` of your producer pod
+```sh
+kubectl get pod -o wide
+```
+```sh
+NAME         READY   STATUS    RESTARTS   AGE     IP           NODE       NOMINATED NODE   READINESS GATES
+producer-0   1/1     Running   0          4m43s   10.244.0.3   minikube   <none>           <none>
+```
+
+Check the `NAME` of your producer service
+```sh
+kubectl get service
+```
+```sh
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)             AGE
+producer     ClusterIP   None         <none>        8888/TCP,9876/TCP   16m
+```
+
+You can use the `pod_name.service_name` to find the Pod's DNS name.
+```sh
+kubectl exec -i -t dnsutils -- nslookup producer-0.producer
+```
+
+Or you can use the Pod's `IP`
+```sh
+kubectl exec -i -t dnsutils -- nslookup 10.244.0.3
+```
+
+Both methods will have the same result
+```sh
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+Name:   producer-0.producer.default.svc.cluster.local
+Address: 10.244.0.3
+```
 
 ### Deploy `firehose-antelope` chart
 
@@ -293,7 +349,7 @@ firehose:
 
 Some important configurations you need to know:
 
-- `statefulset: enabledPVC = false`: This will disable the persistent volume use for Ultra's deployment
+- `statefulset: persistentVolumeClaimEnabled = false`: This will disable the persistent volume claim which is only used in Ultra's deployment.
 - `localVolume: enabled = true`: This will enable local storage to replace cloud storage, this will make use of `minikube` persist file store. You can read more here [Persistent Volumes](https://minikube.sigs.k8s.io/docs/handbook/persistent_volumes/).
 - `p2p-peer-address = producer-0.producer.default.svc.cluster.local:9876`: you can see why I mentioned the importance of this config above. If you use a different name/namespace please update the according to the format mentioned in [DNS Pod](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pods) or simply use get pod IP and replace it here.
 
@@ -302,7 +358,7 @@ The final step is to install `firehose-antelope` chart
 ```sh
 helm install firehose-antelope ./firehose-antelope -f ./values.yaml
 ```
-If the deployment has no error, you should see this
+If the deployment has no error, you should see `READY` at `1/1` (please ignore `firehose` ready status for now).
 ```sh
 kubectl get pod
 ```

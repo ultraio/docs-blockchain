@@ -28,8 +28,8 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
         <tr>
-        <td>Tutorial - LogIn to the Ultra Toolkit</td>
-        <td>A brief introduction to the toolkit along with learning how login to the toolkit using Ultra Wallet</td>
+        <td>Tutorial - Log in to the Ultra Toolkit</td>
+        <td>A brief introduction to the toolkit along with learning how log in to the toolkit using Ultra Wallet</td>
         <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
     </tr>
     <tr>

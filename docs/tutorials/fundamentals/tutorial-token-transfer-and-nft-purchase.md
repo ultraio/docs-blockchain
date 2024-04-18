@@ -84,19 +84,13 @@ Begin by checking the Factory Explorer in the Uniq Explorer. Confirm the on-chai
 
 ![](./images/purchase-factory-explorer.png)
 
-### Step 2: Explore Available Uniqs
-
-View the Uniqs available under Uniq Factory 4243. This screen will show you the specific Uniqs that you can purchase from this factory.
-
-![](./images/purchase-factory-explorer-uniqs.png)
-
-### Step 3: Initiate Purchase Action
+### Step 2: Initiate Purchase Action
 
 Navigate to the action builder in your toolkit and select the `eosio.nft.ft` contract. Choose the purchase action to start the process of buying a Uniq.
 
 ![](./images/purchase-action-builder.png)
 
-### Step 4: Enter Purchase Details
+### Step 3: Enter Purchase Details
 
 On the purchase action screen, fill out the attributes necessary for the transaction:
 - **Factory ID**: `4243` (ID of the Uniq Factory)
@@ -110,33 +104,33 @@ Scroll down to complete any additional required attributes for the purchase.
 
 ![](./images/purchase-attribute-II.png)
 
-### Step 5: Review and Confirm Transaction
+### Step 4: Review and Confirm Transaction
 
 Carefully review all the transaction details on the confirmation screen to ensure they are correct before proceeding.
 
 ![](./images/purchase-confirm.png)
 
-### Step 6: Confirm and Sign with Ultra Wallet
+### Step 5: Confirm and Sign with Ultra Wallet
 
 Confirm and sign the transaction using the Ultra Wallet extension. This step is essential to authorize the transaction on the blockchain.
 
 ![](./images/purchase-confirm-ultra-wallet.png)
 
-### Step 7: Transaction Completion
+### Step 6: Transaction Completion
 
 Once the transaction is signed, a confirmation screen will display indicating that the purchase was successfully completed.
 
 ![](./images/purchase-ultra-wallet-confirm.png)
 
-### Step 8: Verify Ownership of New Uniq
+### Step 7: Verify Ownership of New Uniq
 
-#### Step 8a: Access Your User Inventory Page
+#### Step 7a: Access Your User Inventory Page
 
 To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name `1aa2aa3aa4in` in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
 
 ![](./images/purchase-user-uniq-explorer.png)
 
-#### Step 8b: Verify the Newly Purchased Uniq
+#### Step 7b: Verify the Newly Purchased Uniq
 
 After entering your account name and setting the correct network endpoint, scroll down to view your Uniqs. Here, you should see the newly purchased Uniq with ID 303221 from Uniq Factory 4243.
 

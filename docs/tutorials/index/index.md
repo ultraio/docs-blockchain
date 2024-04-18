@@ -28,6 +28,11 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
+        <td>Tutorial - Token transfer and Uniq purchase transactions</td>
+        <td>Demonstrating token transfer and Uniq puchasing</td>
+        <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
+    </tr>
+    <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>
         <td><a href="/tutorials/fundamentals/how-to-get-tokens">Link</a></td>

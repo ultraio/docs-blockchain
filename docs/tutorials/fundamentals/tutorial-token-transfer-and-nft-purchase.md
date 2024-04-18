@@ -132,7 +132,7 @@ Once the transaction is signed, a confirmation screen will display indicating th
 
 #### Step 8a: Access Your User Inventory Page
 
-To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name `1aa2aa3aa4in` in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.eosnation.io](https://ultratest.eosnation.io).
+To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name `1aa2aa3aa4in` in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
 
 ![](./images/purchase-user-uniq-explorer.png)
 

@@ -12,7 +12,7 @@ This tutorial will demonstrate how to use the Ultra toolkit for sending asset (t
 
 Before starting this tutorial, you will need:
 
-- A developer account on the Ultra testnet. If you don't have one, follow our previous tutorial: [Generate a key and create a developer Testnet account](./tutorial-generate-key-and-create-testnet-account.md).
+- A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
 - Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to get tokens](./how-to-get-tokens.md).
 
 ## Goal
@@ -139,3 +139,7 @@ To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([h
 After entering your account name and setting the correct network endpoint, scroll down to view your Uniqs. Here, you should see the newly purchased Uniq with ID 303221 from Uniq Factory 4243.
 
 ![](./images/purchase-user-uniq-explorer-show-uniqs.png)
+
+## What's next?
+
+TBA

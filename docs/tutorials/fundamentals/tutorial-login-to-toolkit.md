@@ -1,5 +1,5 @@
 ---
-title: 'Tutorial - LogIn to the Ultra Toolkit'
+title: 'Tutorial - Log in to the Ultra Toolkit'
 order: -99997
 oultine: [0, 5]
 ---
@@ -57,4 +57,4 @@ You have now successfully logged in to the Ultra Toolkit using Ultra Wallet.
 
 ## What's next?
 
-TBD
+The next tutorial will cover the process of building a transaction using the Ultra Toolkit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)

@@ -72,4 +72,4 @@ Set your network to `Testnet` since we created our account on testnet in the pre
 
 ## What's next?
 
-The next tutorial will cover using the Ultra Wallet to login into Ultra Toolkit - [Tutorial - LogIn to the Ultra Toolkit](./tutorial-login-to-toolkit.md)
+The next tutorial will cover using the Ultra Wallet to login into Ultra Toolkit - [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md)

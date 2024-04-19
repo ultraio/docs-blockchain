@@ -1,6 +1,6 @@
 ---
 title: 'Tutorial - Token transfer and Uniq purchase transactions'
-order: -99997
+order: -99996
 outline: [0, 5]
 ---
 
@@ -88,7 +88,7 @@ Begin by checking the Factory Explorer in the Uniq Explorer. Confirm the on-chai
 
 ### Step 2: Initiate Purchase Action
 
-Navigate to the factory in your toolkit and select the `eosio.nft.ft::purchase.a` action.
+Navigate to the `Factory` page under the `Uniq Actions` section of the toolkit and then start typing `purchase` into the search bar. Then select the `Purchase Uniqs directly` action.
 
 ![](./images/purchase-action-builder.png)
 

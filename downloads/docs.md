@@ -23494,7 +23494,7 @@ Your storage quota is calculated based on the RAM resource.
 
 ---
 title: 'How to get RAM'
-order: -99995
+order: -99985
 oultine: [0,5]
 ---
 
@@ -23535,7 +23535,7 @@ Use the form below to add RAM to your account on our Test Network.
 You now have a development account with some UOS balance, and a little bit of RAM to publish a smart contract!
 ---
 title: 'How to get Tokens'
-order: -99996
+order: -99987
 oultine: [0, 5]
 ---
 
@@ -23574,7 +23574,7 @@ You now have a development account with some UOS balance distributed to the acco
 
 ---
 title: 'How to make a REST Request'
-order: -99994
+order: -99984
 oultine: [0,5]
 ---
 
@@ -23701,7 +23701,7 @@ HttpResponse<String> response = Unirest.get("http://ultra.api.eosnation.io/v1/ch
 Check out our section on the [Chain API](../../products/chain-api/index.md) for all endpoints, and available URLs.
 ---
 title: 'How to read the Block Explorer'
-order: -99996
+order: -99986
 oultine: [0,5]
 ---
 
@@ -24003,7 +24003,7 @@ The next tutorial will cover using the Ultra Wallet to login into Ultra Toolkit 
 
 ---
 title: 'Tutorial - Token transfer and Uniq purchase transactions'
-order: -99998
+order: -99996
 outline: [0, 5]
 ---
 
@@ -24037,7 +24037,7 @@ Open the Ultra toolkit and log in with your developer account. Click on the 'Tra
 
 ### Step 2: Select the eosio.token Contract
 
-Navigate to the `eosio.token` contract by clicking on it from the list of available contracts. Once you select the contract, choose the `eosio.token::transfer` action to initiate a token transfer.
+Find the `eosio.token` contract from the list of available contracts in Add Contracts section. Once you add the contract, search for `eosio.token::transfer` action to initiate a token transfer.
 
 ![](./images/token-transfer-eosio.token.png)
 
@@ -24091,7 +24091,7 @@ Begin by checking the Factory Explorer in the Uniq Explorer. Confirm the on-chai
 
 ### Step 2: Initiate Purchase Action
 
-Navigate to the action builder in your toolkit and select the `eosio.nft.ft` contract. Choose the purchase action to start the process of buying a Uniq.
+Navigate to the `Factory` page under the `Uniq Actions` section of the toolkit and then start typing `purchase` into the search bar. Then select the `Purchase Uniqs directly` action.
 
 ![](./images/purchase-action-builder.png)
 
@@ -24139,7 +24139,7 @@ To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([h
 
 #### Step 7b: Verify the Newly Purchased Uniq
 
-After entering your account name and setting the correct network endpoint, scroll down to view your Uniqs. Here, you should see the newly purchased Uniq with ID 303221 from Uniq Factory 4243.
+After entering your account name and setting the correct network endpoint, scroll down to view your Uniqs. Here, you should see the newly purchased Uniq from Uniq Factory 4243.
 
 ![](./images/purchase-user-uniq-explorer-show-uniqs.png)
 
@@ -24626,7 +24626,7 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use our Ultra Wallet extension and set it up</td>
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
-        <tr>
+    <tr>
         <td>Tutorial - Log in to the Ultra Toolkit</td>
         <td>A brief introduction to the toolkit along with learning how log in to the toolkit using Ultra Wallet</td>
         <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>

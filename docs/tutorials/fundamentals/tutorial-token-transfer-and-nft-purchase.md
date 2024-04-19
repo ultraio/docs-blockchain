@@ -1,6 +1,6 @@
 ---
 title: 'Tutorial - Token transfer and Uniq purchase transactions'
-order: -99998
+order: -99997
 outline: [0, 5]
 ---
 
@@ -34,7 +34,7 @@ Open the Ultra toolkit and log in with your developer account. Click on the 'Tra
 
 ### Step 2: Select the eosio.token Contract
 
-Navigate to the `eosio.token` contract by clicking on it from the list of available contracts. Once you select the contract, choose the `eosio.token::transfer` action to initiate a token transfer.
+Find the `eosio.token` contract from the list of available contracts in Add Contracts section. Once you add the contract, search for `eosio.token::transfer` action to initiate a token transfer.
 
 ![](./images/token-transfer-eosio.token.png)
 
@@ -88,7 +88,7 @@ Begin by checking the Factory Explorer in the Uniq Explorer. Confirm the on-chai
 
 ### Step 2: Initiate Purchase Action
 
-Navigate to the action builder in your toolkit and select the `eosio.nft.ft` contract. Choose the purchase action to start the process of buying a Uniq.
+Navigate to the factory in your toolkit and select the `eosio.nft.ft::purchase.a` action.
 
 ![](./images/purchase-action-builder.png)
 
@@ -136,7 +136,7 @@ To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([h
 
 #### Step 7b: Verify the Newly Purchased Uniq
 
-After entering your account name and setting the correct network endpoint, scroll down to view your Uniqs. Here, you should see the newly purchased Uniq with ID 303221 from Uniq Factory 4243.
+After entering your account name and setting the correct network endpoint, scroll down to view your Uniqs. Here, you should see the newly purchased Uniq from Uniq Factory 4243.
 
 ![](./images/purchase-user-uniq-explorer-show-uniqs.png)
 

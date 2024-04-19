@@ -150,6 +150,11 @@ function defineLink(original: string, link: string): LinkInfo {
         types.push('bad');
     }
 
+    // if no relative or absolute identifier provided - assume the link is absolute
+    if (types.indexOf('absolute') < 0 && types.indexOf('relative') < 0) {
+        types.push('absolute');
+    }
+
     return { original, link, type: types };
 }
 
@@ -245,7 +250,8 @@ async function verify() {
                 // Links we do not care about
                 const linkInfo = defineLink(result.original, result.link);
                 addMdIfMissing(linkInfo);
-                if (linkInfo.type.indexOf('invalid') >= 0) {
+
+                if (linkInfo.type.indexOf('invalid') >= 0 || linkInfo.type.indexOf('bad') >= 0) {
                     continue;
                 }
 

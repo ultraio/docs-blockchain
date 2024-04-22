@@ -23870,7 +23870,7 @@ order: -99997
 oultine: [0, 5]
 ---
 
-# Tutorial - LogIn to the Ultra Toolkit
+# Tutorial - Log in to the Ultra Toolkit
 
 Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
@@ -23907,7 +23907,9 @@ Ensure you have selected the `Testnet` environment in your Ultra Wallet.
 
 ## Login to Toolkit
 
-Click on the `Login To Toolkit` button to open a list of all sported login methods, and click on the option for `Ultra Wallet`.
+Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ultra Wallet` option
+
+![](./images/toolkit-login-button.png)
 
 ![](./images/toolkit-login-wallet-selection.png)
 

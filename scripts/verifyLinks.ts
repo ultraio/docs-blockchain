@@ -27,6 +27,8 @@ interface MarkdownLink {
     original: string;
     text: string;
     link: string;
+    source: ('md' | 'vue');
+    type: ('md' | 'href' | 'link');
 }
 
 function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
@@ -43,6 +45,8 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
                 original: line.substring(idx1, idx4),
                 text: line.substring(idx1 + 1, idx2),
                 link: line.substring(idx3 + 1, idx4),
+                source: 'md',
+                type: 'md'
             });
             results.concat(parseMarkdownAndHtmlLinks(line.substring(idx4 + 1)));
         }
@@ -57,6 +61,8 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             original: link,
             text: link,
             link: link,
+            source: 'md',
+            type: 'href'
         });
         results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
     }
@@ -70,6 +76,23 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             original: link,
             text: link,
             link: link,
+            source: 'vue',
+            type: 'link'
+        });
+        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+    }
+
+    // e.g. link: "/guides/Docker/docker-image-usage"
+    idx1 = line.indexOf(`link: "`);
+    if (idx1 >= 0) {
+        let idx2 = line.indexOf("\"", idx1 + `link: "`.length);
+        let link = line.substring(idx1 + `link: "`.length, idx2);
+        results.push({
+            original: link,
+            text: link,
+            link: link,
+            source: 'vue',
+            type: 'link'
         });
         results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
     }
@@ -83,6 +106,8 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             original: link,
             text: link,
             link: link,
+            source: 'vue',
+            type: 'href'
         });
         results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
     }
@@ -271,6 +296,14 @@ async function verify() {
                 }
 
                 const linksAndHeaders = linkInfo.link.split('#');
+
+                // href links in markdown files don't properly substitute the environment (staging or experimental)
+                // those links should be instead be created as relative
+                // if it is a link to an anchor in the current page then it is fine
+                if (result.source === 'md' && result.type === 'href' && linkInfo.type.indexOf('relative') < 0 && linkInfo.type.indexOf('self-reference') < 0) {
+                    badLinks.push(`Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | HREF MUST BE RELATIVE`);
+                    continue;
+                }
 
                 // For images the logic used for absolute paths does not apply
                 // For relative paths images behave the same way as markdown files

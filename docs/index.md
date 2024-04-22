@@ -108,7 +108,7 @@ tooling:
       link: "https://explorer.testnet.ultra.io/"
       icon: "/svgs/link.svg"
     - title: "pNetwork Bridge"
-      link: "https://dapp.ptokens.io/#/swap?asset=uos&from=eth&to=ultra"
+      link: "https://dapp.p.network/#/swap?asset=uos&from=eth&to=ultra"
       icon: "/svgs/link.svg"
     - title: "Account & Faucet for Testnet"
       link: "https://faucet.testnet.app.ultra.io/"

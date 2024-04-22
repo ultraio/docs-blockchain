@@ -12941,9 +12941,9 @@ Meaning, developers who wish **to deploy a smart contract** on the production ne
 
 ### Account Rules
 
-Account names are automatically generated sequentially based on previous name. Developers are not required to provide a name for an account, developers are given one.
+Account names are automatically generated sequentially based on the previous name. Developers are not required to provide a name for an account, developers are given one.
 
-_Requires system contracts to be deployed, and applies on staging and production networks._
+_Requires system contracts to be deployed, and applied on Testnet and production networks._
 
 ### Name Type Rules
 
@@ -12951,22 +12951,22 @@ There are rules with using the `eosio::name` type and account names.
 
 * Can be up to 12 character(s)
 * Must only contain digits 1-5
-* Must only contains letters a-z
+* Must only contain letters a-z
 * Must be lowercase only
 
-_Developers are unable to choose their name on staging and production networks._
+_Developers are unable to choose their names on Testnet and production networks._
 
 ### Resource Information
 
-You do not need to have UOS in the account to deploy smart contracts, or do general transactions. This is all shared through Ultra's POWER system which splits resources amongst multiple accounts as they are created.
+You do not need to have UOS in the account to deploy smart contracts or do general transactions. This is all shared through Ultra's POWER system which splits resources amongst multiple accounts as they are created.
 
 This being said, you will need RAM in order to deploy a smart contract. You may acquire RAM during the account creation process, from the RAM market, or by creating an unlimited account which has no RAM limitations.
 
-### Accounts for Staging Network & Production Network
+### Accounts for Testnet Network & Production Network
 
 However, **a non-eba account is necessary for deploying smart contracts.** This can only be obtained by going through Ultra. 
 
-In a local network a developer has full control over how accounts are created, and when they can be created. Refer to the instructions below to use `cleos` to create accounts.
+In a local network, a developer has full control over how accounts are created, and when they can be created. Refer to the instructions below to use `cleos` to create accounts.
 
 ### Creating an Account
 
@@ -12976,13 +12976,13 @@ This applies when you have a system contract deployed to the chain, and need to 
 cleos system newaccount ultra.eosio accountname SomePublicKey --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
 ```
 
-This permission is inaccessible on staging and production networks.
+This permission is inaccessible on Testnet and Mainnet.
 
 _Note: Using the `ultra.eosio` permission should be possible when launching the chain with the javascript framework included in the image._
 
 ### Creating a Non-EBA Account
 
-Allow user to create new non-EBA account when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
+Allow user to create new non-EBA account when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p alice
@@ -13101,7 +13101,7 @@ An example of a smart contract would be the `eosio.token` contract that also has
 
 By default `ultra` requires KYB (Know Your Business) before any business or individual user can deploy smart contracts to their test network or the main network. 
 
-This is a manual process and the following following must be done:
+This is a manual process and the following must be done:
 
 1. Generate two key pairs, one each for your OWNER and ACTIVE permissions.
 
@@ -13109,7 +13109,7 @@ This is a manual process and the following following must be done:
 
 3. Send the public keys to Ultra
 
-4. Ultra will generate a non-EBA account and revert with the account name
+4. Ultra will generate a non-EBA account and revert to the account name
 
 Contact an Ultra representative through Telegram for more information.
 
@@ -13159,7 +13159,7 @@ Assume the account the contract is deployed under is `hello`.
 cleos push action hello test '["acc1", "acc2"]' -p someaccount
 ```
 
-This will push the action, and we should recieve some output back from the action.
+This will push the action, and we should receive some output back from the action.
 
 Here is another example with the `eosio.token` account and `transfer` action.
 
@@ -13167,7 +13167,7 @@ Here is another example with the `eosio.token` account and `transfer` action.
 cleos push action eosio.token transfer '["acc1", "someaccount", "4.00000000 UOS", "some transfer"]' -p someaccount
 ```
 
-Upon successful transaction it will return a unique identifier which can be used to fetch that transaction with `cleos get transaction`.
+Upon successful transaction, it will return a unique identifier which can be used to fetch that transaction with `cleos get transaction`.
 
 ## Get Data
 

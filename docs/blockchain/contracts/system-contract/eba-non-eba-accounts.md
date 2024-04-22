@@ -1,30 +1,30 @@
 ---
-title: 'EBA and non-EBA Accounts'
+title: 'Ultra Accounts and Ultra Pro Wallets'
 order: 1
 
 ---
 
-# EBA and non-EBA Accounts
+# Ultra Accounts and Ultra Pro Wallets
 
 ## How it works
 
-For non-EBA the account name is auto generated and has a form of “1aa2aa3aa4aa” where “a” is an English alphabet letter in the range of \[a-z\]. An EBA account name has a form of “aa1aa2aa3aa4” and can be proposed by the account creator. If the proposed name exists or does not follow the format, a new name is generated automatically.
+For Ultra Pro Wallet the account name is auto generated and has a form of “1aa2aa3aa4aa” where “a” is an English alphabet letter in the range of \[a-z\]. An Ultra Account name has a form of “aa1aa2aa3aa4” and can be proposed by the account creator. If the proposed name exists or does not follow the format, a new name is generated automatically.
 
-Ultra sponsors the RAM needed for an EBA account creation. For non-EBA account records the RAM can be paid by another account.
+Ultra sponsors the RAM needed for an Ultra Account and Ultra Pro Wallet creation.
 
-## Easy Blockchain Account - EBA
+## Ultra Account - Easy Blockchain Account
 
 An Easy Blockchain Account is a special type of account mainly for average users.
 
-## Non-EBA
+## Ultra Pro Wallet
 
-A non-EBA account is a typical blockchain account controlled by private keys you must secure yourself.
+An Ultra Pro Wallet is a typical blockchain account controlled by private keys you must secure yourself.
 
 ## Relevant actions
 
-[newnonebact - create a non-EBA account](./system-actions/newnonebact.html)
+[newnonebact - create an Ultra Pro Wallet](./system-actions/newnonebact.html)
 
-[newebact - create a EBA account](./system-actions/newebact.html)
+[newebact - create an Ultra Account](./system-actions/newebact.html)
 
 ### Relevant tables
 

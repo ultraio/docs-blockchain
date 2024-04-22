@@ -51,7 +51,7 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 :::
 
 ::: details Ultra Testnet
-1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create a non-eba account and receive tokens. Use the key from the step of creating a wallet
+1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create an Ultra Pro Wallet and receive tokens. Use the key from the step of creating a wallet
 2. Open VSCode and Command Palette (F1) and type `Ultra: Create Transaction`
 3. Select Ultra Testnet
 4. Enter Wallet Password
@@ -62,9 +62,10 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 :::
 
 ::: details Ultra Mainnet
-1. Create an eba account with ultra <a href="https://ultra.io/">desktop client</a>
+TODO: use wallet extension
+1. Create an Ultra Account with ultra <a href="https://ultra.io/">desktop client</a>
 2. Download ultra wallet <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">extension</a>
-3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to create a non-eba account and buy ram. Log in with your eba account credentials created in the first step
+3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to create an Ultra Pro Wallet account and buy ram. Log in with your Ultra Account credentials created in the first step
 :::
 
 ## Deploy Contract

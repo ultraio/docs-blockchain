@@ -42,11 +42,11 @@ Then you'll be able to use it to do things like creating accounts or signing tra
 
 Ultra has a [few different types of accounts](../../../blockchain/general/antelope-ultra/accounts-and-permissions.md) that are available for creation. In short, there are:
 
--   EBA accounts - These are created by the Ultra client on Mainnet and Testnet. They are non-custodial, recoverable accounts.
--   Non-EBA accounts - These are created by users and developers who wish to self-manage their keys.
+-   Ultra Accounts - These are created by the Ultra client on Mainnet and Testnet. They are non-custodial, recoverable accounts.
+-   Ultra Pro Wallets - These are created by users and developers who wish to self-manage their keys.
 -   Premium accounts - These are custom names reserved for Ultra and their partners.
 
-For your local chain, you'll be creating a **non-EBA account**. You can do so with the cleos command:
+For your local chain, you'll be creating an **Ultra Pro Wallet**. You can do so with the cleos command:
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"default", "owner":{"threshold":1,"keys":[{"key":"YOURPRIVATEKEY","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"PUBLICKEY","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p default

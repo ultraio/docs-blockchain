@@ -2,7 +2,7 @@
 title: 'newebact'
 ---
 
-# newebact - create an EBA account
+# newebact - create an Ultra Account
 
 | Field       | Type             | Description                                         |
 | ----------- | ---------------- | --------------------------------------------------- |

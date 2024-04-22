@@ -43,6 +43,8 @@ Ensure you have selected the `Testnet` environment in your Ultra Wallet.
 
 Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ultra Wallet` option
 
+![](./images/toolkit-login-button.png)
+
 ![](./images/toolkit-login-wallet-selection.png)
 
 Once you click on `Ultra Wallet` option, your Ultra Wallet will open and ask for authorization to connect to the Toolkit. Click on `Connect` button to proceed.

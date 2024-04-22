@@ -27,7 +27,7 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use our Ultra Wallet extension and set it up</td>
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
-        <tr>
+    <tr>
         <td>Tutorial - Log in to the Ultra Toolkit</td>
         <td>A brief introduction to the toolkit along with learning how log in to the toolkit using Ultra Wallet</td>
         <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>

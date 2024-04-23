@@ -1,6 +1,6 @@
 ---
 title: 'Tutorial - Token transfer and Uniq purchase transactions'
-order: -99996
+order: -99995
 outline: [0, 5]
 ---
 

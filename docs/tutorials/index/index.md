@@ -33,6 +33,11 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
     </tr>
     <tr>
+        <td>Tutorial - Obtaining UOS and purchasing RAM</td>
+        <td>Obtaining UOS tokens on Testnet and purchasing RAM</td>
+        <td><a href="../fundamentals/tutorial-obtain-token-and-purchase-ram">Link</a></td>
+    </tr>
+    <tr>
         <td>Tutorial - Token transfer and Uniq purchase transactions</td>
         <td>Demonstrating token transfer and Uniq purchasing</td>
         <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>

@@ -329,9 +329,9 @@ async function verify() {
                             const targetLines = targetPathContent.split(/\r?\n/);
 
                             let foundMatch = false;
-
+                            let listOfAttemptedMatches = [];
                             for (const targetLine of targetLines) {
-                                if (!targetLine.includes('##')) {
+                                if (!targetLine.startsWith('#')) {
                                     continue;
                                 }
 
@@ -343,6 +343,7 @@ async function verify() {
                                 actualHeader = actualHeader.substring(1, actualHeader.length);
 
                                 if (actualHeader !== linksAndHeaders[1]) {
+                                    listOfAttemptedMatches.push(actualHeader);
                                     continue;
                                 }
 
@@ -358,7 +359,7 @@ async function verify() {
 
                             if (!foundMatch) {
                                 badLinks.push(
-                                    `Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | BAD HEADER`
+                                    `Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | BAD HEADER | Attempted: ${listOfAttemptedMatches}`
                                 );
                             }
                         }

@@ -64,9 +64,8 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 ::: details Ultra Mainnet
 TODO: use wallet extension
 1. Download <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Ultra Wallet extension</a>
-1. Create an Ultra Pro Wallet with Ultra <a href="https://ultra.io/">desktop client</a>
-
-3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to create an Ultra Pro Wallet account and buy ram. Log in with your Ultra Account credentials created in the first step
+2. Create an Ultra Pro Wallet using the Ultra Wallet extension <a href="../fundamentals/how-to-create-ultra-pro-wallet.md">tutorial</a>
+3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to to buy RAM. Log in with your Ultra Pro Wallet. Transfer UOS to this account if needed
 :::
 
 ## Deploy Contract

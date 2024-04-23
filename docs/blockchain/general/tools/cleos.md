@@ -221,7 +221,7 @@ _Note: Using the `ultra.eosio` permission should be possible when launching the 
 
 ### Creating an Ultra Pro Wallet
 
-Allow user to create new Ultra Pro Wallet when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be-auto generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
+Allow user to create new Ultra Pro Wallet when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p alice

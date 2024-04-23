@@ -1,74 +1,76 @@
 ---
-title: 'How to create Ultra Pro Wallet'
-order: -99999
+title: 'How to create an Ultra Pro Wallet'
+order: -99988
 oultine: [0, 5]
 ---
 
-# How to create Ultra Pro Wallet
+# How to create an Ultra Pro Wallet
 
-https://ultraio.atlassian.net/wiki/spaces/PROJ/pages/2840920069/HOW+TO+Create+an+Ultra+Wallet+Pro+Account
-
-This tutorial will cover the simplest process of creating a developer account on Testnet to be used to interact with the blockchain.
+This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Wallet extension.
 
 ## Prerequisites
 
--   No prerequisites
+- Account created using official [Ultra client](https://ultra.io/) or you can create it later during the tutorial using the Wallet Extension
+- Installed the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
+- Your account must have sufficient UOS tokens for transactions and fees. Current Ultra Pro Wallet creation price: <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" />. This tutorial will briefly cover how to get UOS on Mainnet but if you already have some then you will be able to skip that step
 
 ## Goal
 
-The goal of this tutorial is to generate a unique key pair that will be used to create a new developer Testnet blockchain account. The account will later be used in later tutorials to demonstrate interaction with the blockchain.
+The goal of this tutorial is to create a new developer Ultra Pro Wallet on Mainnet which you can later use to directly interact with the blockchain. It is desireable for developers as it provides a more granular control over your account and allows it to be easily used for other tools and libraries like `cleos` or `Wharfkit`.
 
-## Generate a Key Pair
+## Open and log in to the Ultra Wallet
 
-First we will generate a [private and public key](../../blockchain/general/antelope-ultra/public-and-private-keys.md). To do so use the form below and press the `Generate Key` button.
+To be able to create an Ultra Pro Wallet on Mainnet you will need to open your Wallet Extension and make sure you are switched to Mainnet. (You may need to log out from your Testnet account if it is currently logged in by clicking on the circular icon and clicking `Log out`).
 
-<KeyGenerator />
+![](./images/UltraProWallet/wallet-mainnet-selection.png)
 
-## Keep the keys safe
+Now if you already have an Ultra Account (created using the Ultra client) then you can simply use the `Sign In` option. If you don't have an account yet and need to create an account then proceed with `Sign Up` option, after signing up return back to this step and now use the `Sign In` option.
 
-You will need both public and private key you've just generated in later tutorials. The public key (the one that starts with `EOS`) can be shared publicly with anyone. But the private key (begins with `5`) should be kept secret and not shared with anyone.
+## Create an Ultra Pro Wallet
 
-::: info
+To be able to create an Ultra Pro Wallet you will need some UOS available on your Ultra Account. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to have at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations.
 
-The simplest approach for now to keep your private key for later use would be to write it down on a piece of paper. It is not a good practice to store your private key openly in a text file on your machine.
+If you don't have the required amount yet then you can utilize the `Buy UOS` option of the Ultra Wallet extension.
+
+![](./images/UltraProWallet/wallet-buy-uos.png)
+
+When you have enough funds you can proceed with the creation of the Ultra Pro Wallet. For this you need to click on the profile icon and select the `Create an Ultra Pro Wallet` button.
+
+![](./images/UltraProWallet/wallet-create-pro-wallet.png)
+
+This will open a new browser tab where you will have 2 options:
+
+- Generate a new private and public key pair
+- Use an existing pair to create an Ultra Pro Wallet
+
+![](./images/UltraProWallet/wallet-generate-or-paste-public-key.png)
+
+The simplest option is to generate a new key pair using the `Generate` button. Pressing it will automatically fill out the `Public key` field and will show you the associated private key
+
+![](./images/UltraProWallet/wallet-private-key-shown.png)
+
+::: warning
+
+It is up to you to properly secure your private key and not to lose it. If you lose the original copy of the private key you may eventually lose access to your new Ultra Pro Wallet account completely.
 
 :::
 
-## Create Testnet account using Testnet Faucet
+Before finishing the Ultra Pro Wallet creation you need to specify the maximum amount of UOS your are willing to pay to create it. The price fluctuates over time due to USD to UOS conversion fluctuations and may be a bit different then the estimate shown on the page. Pick a value that is a bit over the estimated price or just put a large number there, we will charge only the current equivalent of 2 USD converted to UOS.
 
-Please note that the images are for reference only. The key you generate and the account name you get will be different.
+![](./images/UltraProWallet/wallet-fill-optional-fields.png)
 
-1. Visit this link to open our faucet application: https://faucet.testnet.app.ultra.io
-2. Select `Account Creator` tab
+Now you can press the `Create Account` button to proceed. You will be prompted to approve the transaction with its details listed. Check it and click `Confirm`
 
-![](./images/faucet-account-tab.png)
+![](./images/UltraProWallet/wallet-approve-transaction.png)
 
-3. Paste your `Public Key` (the one that starts with `EOS`) in the `Owner Public Key` field
+If everything was done correctly you will get a successful transaction screen. You can click on `Block Explorer` button to view the transaction status.
 
-![](./images/faucet-account-key.png)
+![](./images/UltraProWallet/wallet-transaction-successful.png)
 
-4. Fill the Captcha
-5. Click `Create Account`
-6. Write down the **Account Name** that was returned
+Your new Ultra Pro Wallet name will be listed in the actions list. You cannot chose a name directly.
 
-![](./images/faucet-account-created.png)
+![](./images/UltraProWallet/wallet-check-block-explorer.png)
 
-## Lookup Your Account
+## Sign In to the Ultra Wallet using Ultra Pro Wallet
 
-Use the form below to lookup your account on our [Testnet Explorer](https://explorer.testnet.ultra.io/)
-
-Verify that the public key listed under `Permissions` and the `Creation Date` are correct:
-
-<LastPublicKey />
-
-<TodaysDate />
-
-&nbsp;
-
-<AccountLookupTestnet />
-
-![](./images/explorer-1aa2aa3aa4in.png)
-
-## What's next?
-
-The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./tutorial-setup-the-wallet.md)
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](./tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.

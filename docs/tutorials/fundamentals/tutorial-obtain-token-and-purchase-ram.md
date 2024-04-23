@@ -13,7 +13,6 @@ This tutorial will guide you through the process of obtaining UOS tokens using t
 Before starting this tutorial, ensure you have the following:
 
 - **A Developer Testnet Account**: You need an account on the Ultra testnet. If you don't have one, please refer to our previous tutorial on [how to create a testnet account](./tutorial-generate-key-and-create-testnet-account.md).
-- **Private and Public Keys**: Your account’s keys should be securely stored. You’ll need your private key for signing transactions during this tutorial.
 
 ## Goal
 
@@ -29,19 +28,29 @@ This section will guide you through the process of obtaining UOS tokens on the U
 
 ### Step 1: Check Initial Balance
 
-Before obtaining additional UOS tokens, first check your current balance to verify the amount of UOS you have available. Visit the Ultra Blockchain Explorer at [https://explorer.testnet.ultra.io](https://explorer.testnet.ultra.io) and search for your account (`1aa2aa3aa4in`). The initial balance (8.99999999 UOS) will be displayed.
+Before obtaining additional UOS tokens, first check your current balance to verify the amount of UOS you have available. Visit the Ultra Blockchain Explorer at [https://explorer.testnet.ultra.io](https://explorer.testnet.ultra.io) and search for your account (`1aa2aa3aa4in`). In this example, the initial balance (8.99999999 UOS) will be displayed. However, if you are accessing your account for the first time, the balance may be different, most likely 0 UOS.
 
 ![](./images/faucet-initial-uos-balance.png)
 
-### Step 2: Request UOS Tokens from the Faucet
+https://faucet.testnet.app.ultra.io
+
+
+### Step 2: Open UOS Token Faucet Page
 
 1. Open the faucet page at [https://faucet.testnet.app.ultra.io](https://faucet.testnet.app.ultra.io).
-2. In the `To account` field, enter your account name (`1aa2aa3aa4in`).
-3. Click the `Issue` button to request the tokens. This interface may also show your initial balance as a reference, confirming the account to which the tokens will be issued.
+2. Select the `Token Faucet` tab on the page, as shown in the picture.
+
+![](./images/faucet-token-faucet-tab.png)
+
+
+### Step 3: Request UOS Tokens from the Faucet
+
+1. In the `To account` field, enter your account name (`1aa2aa3aa4in`).
+2. Click the `Issue` button to request the tokens. This interface may also show your initial balance as a reference, confirming the account to which the tokens will be issued.
 
 ![](./images/faucet-issue-tokens.png)
 
-### Step 3: Confirm Token Issuance
+### Step 4: Confirm Token Issuance
 
 After requesting the tokens:
 1. You will be directed to a confirmation screen showing that 10 UOS tokens have been issued to your account.
@@ -49,7 +58,7 @@ After requesting the tokens:
 
 ![](./images/faucet-token-issued.png)
 
-### Step 4: Verify the Transaction
+### Step 5: Verify the Transaction
 
 To ensure that the tokens were correctly added to your account:
 1. Click on the `See in explorer` link provided on the confirmation page, or revisit the Ultra Blockchain Explorer.
@@ -57,7 +66,7 @@ To ensure that the tokens were correctly added to your account:
 
 ![](./images/faucet-verify-account-balance.png)
 
-### Step 5: Check Account Balance
+### Step 6: Check Account Balance
 
 Finally, revisit the Ultra Blockchain Explorer to check your new account balance (18.99999999 UOS).
 

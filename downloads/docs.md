@@ -15037,119 +15037,6 @@ title: 'Ultra.io'
 layout: home
 headline: "Build on Ultra"
 
-gettingstarted:
-  - title: "Putting Developers in Control"
-    content: "Take advantage of all the best features of decentralized technologies without the downside of high costs, hard on-boarding, and slow networks."
-
-documentation:
-  content: "Our documentation is segmented into two discrete parts that cater to your specific developer needs."
-  bighero: 
-    title: "Jump to the Ultracloud SDK Documentation"
-    content: "Our gaming orientated SDK provides easy to use multiplayer, NFTs, inventory management, SSO, and more."
-    link: "https://getbraincloud.com/apidocs/"
-  concepts:
-    - title: "Blockchain"
-      link: "/learn/Blockchains/block-production"
-      links:
-        - title: "Block Production"
-          link: "/learn/Blockchains/block-production"
-        - title: "Actions & Transactions"
-          link: "/learn/Blockchains/actions-and-transactions"
-        - title: "Account & Permissions"
-          link: "/learn/Blockchains/accounts-and-permissions"
-    - title: "Ultra Blockchain"
-      link: "/learn/Ultra Blockchain/key-differences"
-      links:
-        - title: "Key Differences"
-          link: "/learn/Ultra Blockchain/key-differences"
-        - title: "Account Types"
-          link: "/learn/Ultra Blockchain/account-types"
-        - title: "POWER Resource"
-          link: "/learn/Ultra Blockchain/power-resource"
-    - title: "Block Producers"
-      link: "/learn/Block Producers/Infrastructure/block-producing-infrastructure"
-      links:
-        - title: "Overview"
-          link: "/learn/Block Producers/Infrastructure/block-producing-infrastructure"
-        - title: "Minimum Infrastructure"
-          link: "/learn/Block Producers/Infrastructure/minimum-recommended-infrastructure"
-        - title: "Infrastructure & Network"
-          link: "/learn/Block Producers/Infrastructure/infrastructure-and-network-overview"
-  guides:
-    - title: "Basics"
-      link: "/guides/Basics/introduction"
-      links:
-        - title: "Introduction"
-          link: "/guides/Basics/introduction"
-        - title: "Actions & Transactions"
-          link: "/learn/Blockchains/actions-and-transactions"
-        - title: "Account & Permissions"
-          link: "/learn/Blockchains/accounts-and-permissions"
-    - title: "Contract Dev Kit"
-      link: "/guides/CDT/index"
-      links:
-        - title: "Introduction"
-          link: "/guides/CDT/index"
-        - title: "Create a contract"
-          link: "/guides/CDT/create-a-contract"
-        - title: "Compile a contract"
-          link: "/guides/CDT/compile-a-contract"
-    - title: "Docker"
-      link: "/guides/Docker/getting-started"
-      links:
-        - title: "Introduction"
-          link: "/guides/Docker/getting-started"
-        - title: "Environment Setup"
-          link: "/guides/Docker/development-environment"
-        - title: "Image Usage"
-          link: "/guides/Docker/docker-image-usage"
-    - title: "Uniq Variants"
-      link: "/guides/Uniq Variants/index"
-      links:
-        - title: "Overview"
-          link: "/guides/Uniq Variants/index"
-        - title: "Common Metadata Concepts"
-          link: "/guides/Uniq Variants/common-metadata-concepts"
-        - title: "FAQ"
-          link: "/guides/Uniq Variants/faq"
-    - title: "Wallet Extension"
-      link: "/guides/Wallet Extension/index"
-      links:
-        - title: "Introduction"
-          link: "/guides/Wallet Extension/index"
-        - title: "Installing Extension"
-          link: "/guides/Wallet Extension/installing-extension"
-        - title: "Establishing a Connection"
-          link: "/guides/Wallet Extension/stablishing-connection"
-    - title: "Misc"
-      link: "/guides/Ultra Specific/token-swap"
-      links:
-        - title: "Token Swap Overview"
-          link: "/guides/Ultra Specific/token-swap"
-        - title: "Request Fungible Token"
-          link: "/guides/Ultra Specific/request-fungible-token"
-        - title: "Testnet Faucet Guide"
-          link: "/guides/Ultra Specific/faucet"
-
-tooling:
-  content: "Many excellent developer tools already exist within the Ultra ecosystem."
-  links:
-    - title: "Ultra Mainnet Explorer"
-      link: "https://explorer.mainnet.ultra.io/"
-      icon: "/svgs/link.svg"
-    - title: "Ultra Testnet Explorer"
-      link: "https://explorer.testnet.ultra.io/"
-      icon: "/svgs/link.svg"
-    - title: "pNetwork Bridge"
-      link: "https://dapp.ptokens.io/#/swap?asset=uos&from=eth&to=ultra"
-      icon: "/svgs/link.svg"
-    - title: "Account & Faucet for Testnet"
-      link: "https://faucet.testnet.app.ultra.io/"
-      icon: "/svgs/link.svg"
-    - title: "EOS Authority Keypair Generator"
-      link: "https://eosauthority.com/generate_eos_private_key"
-      icon: "/svgs/link.svg"
-
 support:
   content: "We know that not everything always goes smoothly. Here's how we can help."
   links:
@@ -24642,22 +24529,22 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>
-        <td><a href="/tutorials/fundamentals/how-to-get-tokens">Link</a></td>
+        <td><a href="../fundamentals/how-to-get-tokens">Link</a></td>
     </tr>
     <tr>
         <td>How to read the Block Explorer</td>
         <td>Learn how to use our block explorer for reading data</td>
-        <td><a href="/tutorials/fundamentals/how-to-read-the-block-explorer">Link</a></td>
+        <td><a href="../fundamentals/how-to-read-the-block-explorer">Link</a></td>
     </tr>
     <tr>
         <td>How to get RAM</td>
         <td>Use this tutorial to get RAM on the Testnet for your account</td>
-        <td><a href="/tutorials/fundamentals/how-to-get-ram">Link</a></td>
+        <td><a href="../fundamentals/how-to-get-ram">Link</a></td>
     </tr>
     <tr>
         <td>How to make a REST Request</td>
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
-        <td><a href="/tutorials/fundamentals/how-to-make-a-rest-request">Link</a></td>
+        <td><a href="../fundamentals/how-to-make-a-rest-request">Link</a></td>
     </tr>
 
 </table>
@@ -24673,7 +24560,7 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>Vite, Vue and Ultra Wallet</td>
         <td>Learn how to build a basic web application with vite, vue, and the ultra wallet.</td>
-        <td><a href="/tutorials/projects/vite-vue-ultra-wallet/index">Link</a></td>
+        <td><a href="../projects/vite-vue-ultra-wallet/index">Link</a></td>
     </tr>
 </table>
 
@@ -24688,7 +24575,7 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>Build Smart Contracts</td>
         <td>Learn how to build your first smart contract utilizing C++ that compiles into WebAssembly on Ultra.</td>
-        <td><a href="/tutorials/smart-contracts/index">Link</a></td>
+        <td><a href="../smart-contracts/index">Link</a></td>
     </tr>
 </table>
 
@@ -24703,12 +24590,12 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>Build a Uniq Factory</td>
         <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
-        <td><a href="/tutorials/uniq-factories/building-uniq-factories/index">Link</a></td>
+        <td><a href="../uniq-factories/building-uniq-factories/index">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>
         <td>Learn how to manage your uniq avatar as a user</td>
-        <td><a href="/tutorials/uniq-factories/uniq-avatar/index">Link</a></td>
+        <td><a href="../uniq-factories/uniq-avatar/index">Link</a></td>
     </tr>
 </table>
 
@@ -24723,22 +24610,22 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>Learn the Basics</td>
         <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
-        <td><a href="/tutorials/general/basics/index">Link</a></td>
+        <td><a href="../general/basics/index">Link</a></td>
     </tr>
     <tr>
         <td>Docker Container</td>
         <td>Learn how to use our development docker container</td>
-        <td><a href="/tutorials/docker/index">Link</a></td>
+        <td><a href="../docker/index">Link</a></td>
     </tr>
     <tr>
         <td>Create a Test Network Account</td>
         <td>Learn how to create a test network account on Ultra's Test Network</td>
-        <td><a href="/tutorials/general/basics/create-a-testnet-account">Link</a></td>
+        <td><a href="../general/basics/create-a-testnet-account">Link</a></td>
     </tr>
     <tr>
         <td>Get Test Network Tokens</td>
         <td>Learn how to obtain test network tokens</td>
-        <td><a href="/tutorials/general/faucet/index">Link</a></td>
+        <td><a href="../general/faucet/index">Link</a></td>
     </tr>
 </table>
 

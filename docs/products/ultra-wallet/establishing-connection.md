@@ -15,7 +15,7 @@ Similarly, it is possible to terminate the connection both on the application an
 ```JavaScript
 try {
     const response = await ultra.connect();
-    response.data.blockchainId;
+    response.data.blockchainid;
     // ej1vx2ft3ht4
     response.data.publicKey;
     // EOS7uRb72dR8jrLjNuC9UoevBBH3YbVZfNKUtYCfLkV7aPGcmDjs7

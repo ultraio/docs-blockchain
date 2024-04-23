@@ -34,8 +34,13 @@ General tutorials to help feed your curiosity.
     </tr>
     <tr>
         <td>Tutorial - Token transfer and Uniq purchase transactions</td>
-        <td>Demonstrating token transfer and Uniq puchasing</td>
+        <td>Demonstrating token transfer and Uniq purchasing</td>
         <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to create Ultra Pro Wallet</td>
+        <td>Create an Ultra Pro Wallet using Wallet Extension</td>
+        <td><a href="../fundamentals/how-to-create-ultra-pro-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>

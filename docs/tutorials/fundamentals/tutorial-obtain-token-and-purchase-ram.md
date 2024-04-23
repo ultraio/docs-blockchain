@@ -12,13 +12,13 @@ This tutorial will guide you through the process of obtaining UOS tokens using t
 
 Before starting this tutorial, ensure you have the following:
 
-- **A Developer Testnet Account**: You need an account on the Ultra testnet. If you don't have one, please refer to our previous tutorial on [how to create a testnet account](./tutorial-generate-key-and-create-testnet-account.md).
+- A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
 
 ## Goal
 
 The goal of this tutorial is two-fold:
 1. **To add UOS tokens to your testnet account using the faucet**: The faucet is a tool that distributes free UOS tokens on the testnet, allowing you to perform transactions and interact with the blockchain without real financial cost.
-2. **To purchase RAM for your account using `eosio.buyram`**: RAM in the EOSIO ecosystem is needed to store data on the blockchain. For example, if you want to store or manage digital assets like Uniqs, you need sufficient RAM. This tutorial will show you how to increase your RAM quota based on current prices and the amount of UOS you are willing to spend.
+2. **To purchase RAM for your account using `eosio::buyram`**: RAM in the EOS ecosystem is needed to store data on the blockchain. For example, if you want to store or manage digital assets like Uniqs, you need sufficient RAM. This tutorial will show you how to increase your RAM quota based on current prices and the amount of UOS you are willing to spend.
 
 By the end of this tutorial, you should be able to comfortably manage your resources on the Ultra blockchain, paving the way for more complex interactions such as deploying smart contracts or trading digital assets.
 
@@ -28,7 +28,7 @@ This section will guide you through the process of obtaining UOS tokens on the U
 
 ### Step 1: Check Initial Balance
 
-Before obtaining additional UOS tokens, first check your current balance to verify the amount of UOS you have available. Visit the Ultra Blockchain Explorer at [https://explorer.testnet.ultra.io](https://explorer.testnet.ultra.io) and search for your account (`1aa2aa3aa4in`). In this example, the initial balance (8.99999999 UOS) will be displayed. However, if you are accessing your account for the first time, the balance may be different, most likely 0 UOS.
+Before obtaining additional UOS tokens, first check your current balance to verify the amount of UOS you have available. Visit the Ultra Blockchain Explorer at [https://explorer.testnet.ultra.io](https://explorer.testnet.ultra.io) and search for your account (e.g. `1aa2aa3aa4in`). In this example, the initial balance (e.g. 8.99999999 UOS) will be displayed. However, if you are accessing your account for the first time, the balance may be different, most likely 0 UOS.
 
 ![](./images/faucet-initial-uos-balance.png)
 
@@ -54,7 +54,7 @@ https://faucet.testnet.app.ultra.io
 
 After requesting the tokens:
 1. You will be directed to a confirmation screen showing that 10 UOS tokens have been issued to your account.
-2. Your new balance, combining previous funds with the newly issued tokens, should now read 18.99999999 UOS.
+2. Your new balance, combining previous funds with the newly issued tokens, should now read, for example, 18.99999999 UOS.
 
 ![](./images/faucet-token-issued.png)
 
@@ -68,7 +68,7 @@ To ensure that the tokens were correctly added to your account:
 
 ### Step 6: Check Account Balance
 
-Finally, revisit the Ultra Blockchain Explorer to check your new account balance (18.99999999 UOS).
+Finally, revisit the Ultra Blockchain Explorer to check your new account balance (e.g. 18.99999999 UOS).
 
 ![](./images/faucet-new-balance.png)
 
@@ -80,7 +80,7 @@ This section explains how to use your UOS tokens to purchase RAM on the Ultra bl
 
 ### Step 1: Check Initial RAM Balance
 
-Start by checking the initial RAM balance of your account to understand how much RAM you currently have. Navigate to the Ultra Blockchain Explorer at [https://explorer.testnet.ultra.io](https://explorer.testnet.ultra.io) and enter your account name (`1aa2aa3aa4in`) to view your RAM usage (86 KB).
+Start by checking the initial RAM balance of your account to understand how much RAM you currently have. Navigate to the Ultra Blockchain Explorer at [https://explorer.testnet.ultra.io](https://explorer.testnet.ultra.io) and enter your account name (e.g. `1aa2aa3aa4in`) to view your RAM usage (e.g. 86 KB).
 
 ![](./images/buyram-initial-ram-balance.png)
 
@@ -93,10 +93,10 @@ Start by checking the initial RAM balance of your account to understand how much
 
 ### Step 3: Configure Buyram Action
 
-Fill in the required fields for the buyram action:
+Fill in the required fields for the `buyram` action:
 - **Payer**: `1aa2aa3aa4in` (your account, who will pay for the RAM)
 - **Receiver**: `1aa2aa3aa4in` (your account, who will receive the RAM)
-- **Quantity**: `10 UOS` (the amount of UOS you want to spend on RAM)
+- **Quantity**: `10.00000000 UOS` (the amount of UOS you want to spend on RAM)
 - **Authorizer**: `1aa2aa3aa4in` (your account, authorizing the transaction)
 
 ![](./images/buyram-attributes.png)
@@ -127,8 +127,12 @@ Check the blockchain explorer to confirm that 10 UOS was indeed spent from your 
 
 ### Step 8: Check New RAM Balance
 
-Finally, revisit the Ultra Blockchain Explorer to check your new RAM balance (952 KB). You should see an increase in RAM, reflecting the purchase.
+Finally, revisit the Ultra Blockchain Explorer to check your new RAM balance (e.g. 952 KB). You should see an increase in RAM, reflecting the purchase.
 
 ![](./images/buyram-new-ram-balance.png)
 
 By following these steps, you have successfully used UOS tokens to purchase RAM for your account on the Ultra blockchain. This RAM is essential for activities such as deploying smart contracts or managing digital assets.
+
+## What's next?
+
+The next tutorial will cover the process of building a transaction using the Ultra Toolkit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)

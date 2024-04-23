@@ -59,4 +59,4 @@ You have now successfully logged in to the Ultra Toolkit using Ultra Wallet.
 
 ## What's next?
 
-The next tutorial will cover the process of building a transaction using the Ultra Toolkit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)
+The next tutorial will cover obtaining some UOS from the Ultra Faucet and buying RAM using the toolkit which will be needed for future tutorials - [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](./tutorial-obtain-token-and-purchase-ram.md)

@@ -27,9 +27,11 @@ interface MarkdownLink {
     original: string;
     text: string;
     link: string;
+    source: ('md' | 'vue');
+    type: ('md' | 'href' | 'link');
 }
 
-function parseMarkdownLinks(line: string): MarkdownLink[] {
+function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
     let results = [];
 
     let idx1 = line.indexOf('[');
@@ -43,22 +45,87 @@ function parseMarkdownLinks(line: string): MarkdownLink[] {
                 original: line.substring(idx1, idx4),
                 text: line.substring(idx1 + 1, idx2),
                 link: line.substring(idx3 + 1, idx4),
+                source: 'md',
+                type: 'md'
             });
-            results.concat(parseMarkdownLinks(line.substring(idx4 + 1)));
+            results.concat(parseMarkdownAndHtmlLinks(line.substring(idx4 + 1)));
         }
+    }
+
+    // e.g. <a href="../fundamentals/tutorial-login-to-toolkit">
+    idx1 = line.indexOf(`href="`);
+    if (idx1 >= 0) {
+        let idx2 = line.indexOf('"', idx1 + `href="`.length);
+        let link = line.substring(idx1 + `href="`.length, idx2);
+        results.push({
+            original: link,
+            text: link,
+            link: link,
+            source: 'md',
+            type: 'href'
+        });
+        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+    }
+
+    // e.g. link: '/tutorials/index/index'
+    idx1 = line.indexOf(`link: '`);
+    if (idx1 >= 0) {
+        let idx2 = line.indexOf("'", idx1 + `link: '`.length);
+        let link = line.substring(idx1 + `link: '`.length, idx2);
+        results.push({
+            original: link,
+            text: link,
+            link: link,
+            source: 'vue',
+            type: 'link'
+        });
+        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+    }
+
+    // e.g. link: "/guides/Docker/docker-image-usage"
+    idx1 = line.indexOf(`link: "`);
+    if (idx1 >= 0) {
+        let idx2 = line.indexOf("\"", idx1 + `link: "`.length);
+        let link = line.substring(idx1 + `link: "`.length, idx2);
+        results.push({
+            original: link,
+            text: link,
+            link: link,
+            source: 'vue',
+            type: 'link'
+        });
+        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+    }
+
+    // e.g. href: 'tutorials/index/index.html'
+    idx1 = line.indexOf(`href: '`);
+    if (idx1 >= 0) {
+        let idx2 = line.indexOf("'", idx1 + `href: '`.length);
+        let link = line.substring(idx1 + `href: '`.length, idx2);
+        results.push({
+            original: link,
+            text: link,
+            link: link,
+            source: 'vue',
+            type: 'href'
+        });
+        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
     }
 
     return results;
 }
 
 async function getAllFiles(): Promise<string[]> {
-    return await fg([MD_LOOKUP], { onlyFiles: true, globstar: true });
+    let files = await fg([MD_LOOKUP], { onlyFiles: true, globstar: true });
+    files.push('docs/components/UltraHome.vue');
+    files.push('docs/.vitepress/navbar.ts');
+    return files;
 }
 
 interface LinkInfo {
     original: string;
     link: string;
-    type: 'relative' | 'image' | 'absolute' | 'self-reference' | 'bad' | 'invalid';
+    type: ('relative' | 'image' | 'absolute' | 'self-reference' | 'markdown' | 'html' | 'bad' | 'invalid')[];
 }
 
 /**
@@ -69,39 +136,74 @@ interface LinkInfo {
  * @return {LinkInfo}
  */
 function defineLink(original: string, link: string): LinkInfo {
+    let types = [];
+
     if (link.startsWith('http')) {
-        return { original, link, type: 'invalid' };
+        console.log(`Ignored link: ${link}`);
+        types.push('invalid');
     }
 
-    if (link.startsWith('docs') || link.startsWith('/docs')) {
-        return { original, link, type: 'absolute' };
+    if (link.startsWith('/')) {
+        types.push('absolute');
     }
 
     if (link.startsWith('../') || link.startsWith('./')) {
-        return { original, link, type: 'relative' };
+        types.push('relative');
     }
 
-    if (
-        original.includes('!') &&
-        (link.includes('.jpg') || link.includes('.gif') || link.includes('.jpeg') || link.includes('.png'))
-    ) {
-        return { original, link, type: 'image' };
+    if (link.includes('.jpg') || link.includes('.gif') || link.includes('.jpeg') || link.includes('.png')) {
+        types.push('image');
     }
 
     // some links may be relative but without specifying ./ or ../
     if (link.includes('.md')) {
-        return { original, link, type: 'relative' };
+        types.push('relative');
+        types.push('markdown');
+    }
+
+    if (link.includes('.html')) {
+        types.push('html');
     }
 
     // some documents can link to a section within the document
     if (link.startsWith('#')) {
-        return { original, link, type: 'self-reference' };
+        types.push('self-reference');
     }
 
-    return { original, link, type: 'bad' };
+    if (types.length == 0) {
+        console.log(`Ignored link: ${link}`);
+        types.push('bad');
+    }
+
+    // if no relative or absolute identifier provided - assume the link is absolute
+    if (types.indexOf('absolute') < 0 && types.indexOf('relative') < 0) {
+        types.push('absolute');
+    }
+
+    return { original, link, type: types };
 }
 
-function verifyMultiEnvDocument(badLinks: string[], line: number, source: string, link: string): string[] {
+function addMdIfMissing(link: LinkInfo) {
+    if (link.type.indexOf('image') >= 0) return;
+    if (link.type.indexOf('self-reference') >= 0) return;
+    if (link.type.indexOf('markdown') >= 0) return;
+    if (link.type.indexOf('html') >= 0) return;
+
+    let idx = link.link.indexOf('#');
+    if (idx >= 0) {
+        link.link = link.link.substring(0, idx) + '.md' + link.link.substring(idx);
+    } else {
+        link.link = link.link + '.md';
+    }
+}
+
+function verifyMultiEnvDocument(
+    badLinks: string[],
+    line: number,
+    source: string,
+    link: string,
+    originalLink: string
+): string[] {
     let filesToCheck = [];
 
     const envCheck = (env: string, silent: boolean) => {
@@ -109,9 +211,14 @@ function verifyMultiEnvDocument(badLinks: string[], line: number, source: string
             if (!silent) filesToCheck.push(link.replace('.md', `.${env}.md`));
             return true;
         } else if (!fs.existsSync(link)) {
-            if (!silent) badLinks.push(
-                `Line ${line + 1} | File: ${source} | Link: ${link.replace('.md', `.${env}.md`)} | ${env} FILE MISSING`
-            );
+            if (!silent) {
+                badLinks.push(
+                    `Line ${line + 1} | File: ${source} | Link: ${originalLink.replace(
+                        '.md',
+                        `.${env}.md`
+                    )} | ${env} FILE MISSING`
+                );
+            }
             return false;
         }
     };
@@ -135,9 +242,7 @@ function verifyMultiEnvDocument(badLinks: string[], line: number, source: string
             envCheck('mainnet', false);
         }
         if (!docExists) {
-            badLinks.push(
-                `Line ${line + 1} | File: ${source} | Link: ${link} | FILE MISSING`
-            );
+            badLinks.push(`Line ${line + 1} | File: ${source} | Link: ${originalLink} | FILE MISSING`);
         }
     }
 
@@ -156,7 +261,7 @@ async function verify() {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             //const results = MarkdownLink.exec(line);
-            const results = parseMarkdownLinks(line);
+            const results = parseMarkdownAndHtmlLinks(line);
             if (!results) {
                 continue;
             }
@@ -169,7 +274,9 @@ async function verify() {
 
                 // Links we do not care about
                 const linkInfo = defineLink(result.original, result.link);
-                if (linkInfo.type === 'invalid') {
+                addMdIfMissing(linkInfo);
+
+                if (linkInfo.type.indexOf('invalid') >= 0 || linkInfo.type.indexOf('bad') >= 0) {
                     continue;
                 }
 
@@ -181,22 +288,37 @@ async function verify() {
                 //     continue;
                 // }
 
-                if (linkInfo.type === 'self-reference') {
-                    linkInfo.type = 'absolute';
-                    linkInfo.link = filePath + linkInfo.link;
+                if (linkInfo.type.indexOf('self-reference') >= 0) {
+                    linkInfo.type.push('absolute');
+                    // The code below that handles the absolute links will add process.cwd() which already starts with docs
+                    // So here need to remove the docs to remove
+                    linkInfo.link = filePath.replace('docs', '') + linkInfo.link;
                 }
 
                 const linksAndHeaders = linkInfo.link.split('#');
 
-                if (linkInfo.type === 'absolute' || linkInfo.type === 'relative') {
+                // href links in markdown files don't properly substitute the environment (staging or experimental)
+                // those links should be instead be created as relative
+                // if it is a link to an anchor in the current page then it is fine
+                if (result.source === 'md' && result.type === 'href' && linkInfo.type.indexOf('relative') < 0 && linkInfo.type.indexOf('self-reference') < 0) {
+                    badLinks.push(`Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | HREF MUST BE RELATIVE`);
+                    continue;
+                }
+
+                // For images the logic used for absolute paths does not apply
+                // For relative paths images behave the same way as markdown files
+                if (
+                    (linkInfo.type.indexOf('image') < 0 && linkInfo.type.indexOf('absolute') >= 0) ||
+                    linkInfo.type.indexOf('relative') >= 0
+                ) {
                     let newFilePath =
-                        linkInfo.type === 'absolute'
-                            ? path.join(process.cwd(), linksAndHeaders[0])
+                        linkInfo.type.indexOf('absolute') >= 0
+                            ? path.join(process.cwd(), 'docs', linksAndHeaders[0])
                             : path.join(process.cwd(), path.dirname(filePath), linksAndHeaders[0]);
                     newFilePath = newFilePath.replace('.html', '.md');
 
                     // depending on the environment (experimental, staging or mainnet) need to consider other possible paths
-                    let filesToCheck = verifyMultiEnvDocument(badLinks, i, filePath, newFilePath);
+                    let filesToCheck = verifyMultiEnvDocument(badLinks, i, filePath, newFilePath, linkInfo.link);
 
                     if (filesToCheck.length === 0) continue;
 
@@ -227,6 +349,12 @@ async function verify() {
                                 foundMatch = true;
                                 break;
                             }
+                            // check for id="..." which can also be used for # references
+                            for (const targetLine of targetLines) {
+                                if (targetLine.includes(`id="${linksAndHeaders[1]}"`)) {
+                                    foundMatch = true;
+                                }
+                            }
 
                             if (!foundMatch) {
                                 badLinks.push(
@@ -237,7 +365,7 @@ async function verify() {
                     }
                 }
 
-                if (linkInfo.type === 'image') {
+                if (linkInfo.type.indexOf('image') >= 0 && linkInfo.type.indexOf('absolute') >= 0) {
                     const cleanLink = linkInfo.link.replace(/\.\.\//gm, '');
                     if (!fs.existsSync(path.join(process.cwd(), 'docs/public', cleanLink))) {
                         badLinks.push(`Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | BAD IMAGE LINK`);

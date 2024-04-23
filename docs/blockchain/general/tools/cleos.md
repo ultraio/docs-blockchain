@@ -176,7 +176,7 @@ If you find a need for a wallet that almost never locks itself then seek the fol
 
 Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a Ultra Pro Wallet is necessary to deploy smart contracts. 
 
-Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](awdawd) or [Ultra Toolkit](awdasdsafd) to create an Ultra Pro Wallet.
+Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/fundamentals/how-to-create-ultra-pro-wallet.md) or [Ultra Toolkit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
 
 ### Account Rules
 

@@ -32,8 +32,6 @@ Before obtaining additional UOS tokens, first check your current balance to veri
 
 ![](./images/faucet-initial-uos-balance.png)
 
-https://faucet.testnet.app.ultra.io
-
 
 ### Step 2: Open UOS Token Faucet Page
 

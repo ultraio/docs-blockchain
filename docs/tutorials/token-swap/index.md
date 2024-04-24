@@ -42,7 +42,7 @@ You can use these explorers to check transactions on our networks.
 
 ## Creating Account(s)
 
-The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create these non-EBA accounts. Exchanges will be able to access the network and accounts through an API node.
+The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create this Ultra Premium Wallet or Ultra Corporate Wallet (for the differences see [here](../../blockchain/general/antelope-ultra/account-types.md)). Exchanges will be able to access the network and accounts through an API node.
 
 *   **Requirement checklist**
     *   **Accountname** (12 characters, a-z, 1-5)

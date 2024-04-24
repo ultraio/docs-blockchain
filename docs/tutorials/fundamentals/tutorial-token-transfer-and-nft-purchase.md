@@ -13,7 +13,7 @@ This tutorial will demonstrate how to use the Ultra toolkit for sending asset (t
 Before starting this tutorial, you will need:
 
 - A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
-- Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to get tokens](./how-to-get-tokens.md) or [how to use Faucet](./tutorial-obtain-token-and-purchase-ram.md).
+- Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](./tutorial-obtain-token-and-purchase-ram.md).
 
 ## Goal
 

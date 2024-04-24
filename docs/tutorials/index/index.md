@@ -42,30 +42,40 @@ General tutorials to help feed your curiosity.
         <td>Demonstrating token transfer and Uniq purchasing</td>
         <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
     </tr>
+</table>
+
+## Guides
+
+<table>
+    <tr>
+        <td>Guide Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
     <tr>
         <td>How to create Ultra Pro Wallet</td>
         <td>Create an Ultra Pro Wallet using Wallet Extension</td>
-        <td><a href="../fundamentals/how-to-create-ultra-pro-wallet">Link</a></td>
+        <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>
-        <td><a href="../fundamentals/how-to-get-tokens">Link</a></td>
+        <td><a href="../guides/how-to-get-tokens">Link</a></td>
     </tr>
     <tr>
         <td>How to read the Block Explorer</td>
         <td>Learn how to use our block explorer for reading data</td>
-        <td><a href="../fundamentals/how-to-read-the-block-explorer">Link</a></td>
+        <td><a href="../guides/how-to-read-the-block-explorer">Link</a></td>
     </tr>
     <tr>
         <td>How to get RAM</td>
         <td>Use this tutorial to get RAM on the Testnet for your account</td>
-        <td><a href="../fundamentals/how-to-get-ram">Link</a></td>
+        <td><a href="../guides/how-to-get-ram">Link</a></td>
     </tr>
     <tr>
         <td>How to make a REST Request</td>
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
-        <td><a href="../fundamentals/how-to-make-a-rest-request">Link</a></td>
+        <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
     </tr>
 
 </table>

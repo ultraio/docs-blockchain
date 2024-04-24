@@ -73,4 +73,4 @@ Your new Ultra Pro Wallet name will be listed in the actions list. You cannot ch
 
 ## Sign In to the Ultra Wallet using Ultra Pro Wallet
 
-The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](./tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.

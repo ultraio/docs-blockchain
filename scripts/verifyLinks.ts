@@ -48,7 +48,7 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
                 source: 'md',
                 type: 'md'
             });
-            results.concat(parseMarkdownAndHtmlLinks(line.substring(idx4 + 1)));
+            results = results.concat(parseMarkdownAndHtmlLinks(line.replace(line.substring(idx1, idx4 + 1), '')));
         }
     }
 
@@ -64,7 +64,7 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             source: 'md',
             type: 'href'
         });
-        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+        results = results.concat(parseMarkdownAndHtmlLinks(line.replace(line.substring(idx1, idx2 + 1), '')));
     }
 
     // e.g. link: '/tutorials/index/index'
@@ -79,7 +79,7 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             source: 'vue',
             type: 'link'
         });
-        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+        results = results.concat(parseMarkdownAndHtmlLinks(line.replace(line.substring(idx1, idx2 + 1), '')));
     }
 
     // e.g. link: "/guides/Docker/docker-image-usage"
@@ -94,7 +94,7 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             source: 'vue',
             type: 'link'
         });
-        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+        results = results.concat(parseMarkdownAndHtmlLinks(line.replace(line.substring(idx1, idx2 + 1), '')));
     }
 
     // e.g. href: 'tutorials/index/index.html'
@@ -109,7 +109,7 @@ function parseMarkdownAndHtmlLinks(line: string): MarkdownLink[] {
             source: 'vue',
             type: 'href'
         });
-        results.concat(parseMarkdownAndHtmlLinks(line.substring(idx2 + 1)));
+        results = results.concat(parseMarkdownAndHtmlLinks(line.replace(line.substring(idx1, idx2 + 1), '')));
     }
 
     return results;

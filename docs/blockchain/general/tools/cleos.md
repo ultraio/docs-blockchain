@@ -176,7 +176,7 @@ If you find a need for a wallet that almost never locks itself then seek the fol
 
 Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a Ultra Pro Wallet is necessary to deploy smart contracts. 
 
-Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/fundamentals/how-to-create-ultra-pro-wallet.md) or [Ultra Toolkit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
+Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md) or [Ultra Toolkit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
 
 ### Account Rules
 
@@ -221,7 +221,7 @@ _Note: Using the `ultra.eosio` permission should be possible when launching the 
 
 ### Creating an Ultra Pro Wallet
 
-Allow user to create new Ultra Pro Wallet when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
+Allow user to create new Ultra Pro Wallet when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated, for details on the format see [this page](../../../blockchain/general/antelope-ultra/account-types.md).
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p alice

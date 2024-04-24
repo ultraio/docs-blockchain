@@ -387,4 +387,4 @@ Once you can deploy an app on your own GKE cluster, you can use the same `helm` 
 
 Now you have `substreams` components deployed on clusters and connected to a `nodeos` producer.
 
-To make use of it, please refer to [Substreams Application Example](substreams-application-example.md)
+To make use of it, please refer to [Substreams Application Example](./substreams-app-example.md)

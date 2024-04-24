@@ -17,7 +17,7 @@ Before deploying, please make sure you have all these tools installed.
 
 - `helm` is the tool for downloading a chart and installing it to your target cluster.
 - `minikube` is the tool for setting up a cluster in your local machine. This cluster will have all the basic functions of any other cloud solution.
-- `kubectl` is the tool for managing all the deployments/pods/services from your cluster which includes some useful functions like monitoring, deploying, debugging, ...
+- `kubectl` is the tool for managing all the deployments/pods/services from your cluster which includes some useful functions like monitoring, deploying, debugging, etc.
 
 ### Installing `helm`
 
@@ -122,7 +122,7 @@ minikube stop
 ```
 ## Deploy `substreams-charts`
 
-`substreams-charts` contain helm templates for deploying all core applications of `Substreams`.
+`substreams-charts` contains helm templates for deploying all core applications of `Substreams`.
 
 ### Pull `substreams-charts` release
 
@@ -372,3 +372,19 @@ relayer-7fc86d45cc-dz8vz   1/1     Running   0          2m27s
 substreams-tier1-0         1/1     Running   0          2m27s
 substreams-tier2-0         1/1     Running   0          2m27s
 ```
+### Deploy `substreams-charts` to Google Kubernetes Engines (GKE) cluster
+
+**NOTE**: If you are familiar with deployment with `GKE`, once you log in and connect to your project, you can use the same `helm` commands to deploy to `GKE`.
+
+If not familiar with GKE, you can follow these tutorials:
+
+- Installing [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+- Create a cluster and [deploy an app to GKE cluster](https://cloud.google.com/kubernetes-engine/docs/deploy-app-cluster)
+
+Once you can deploy an app on your own GKE cluster, you can use the same `helm` commands provided above to deploy `substreams-charts`.
+
+## How to consume `substreams` data
+
+Now you have `substreams` components deployed on clusters and connected to a `nodeos` producer.
+
+To make use of it, please refer to [Substreams Application Example](substreams-application-example.md)

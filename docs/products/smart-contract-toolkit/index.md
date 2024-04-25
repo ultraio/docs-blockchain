@@ -28,7 +28,7 @@ Inside of vscode extension browser type `ultra-cpp`.
 
 ## Tutorials & Help
 
--   [How to compile smart contracts using the extension](../../tutorials/smart-contracts/compile.md)
+-   [Install and Setup the Ultra Smart Contract Toolkit Extension](../../tutorials/smart-contracts/index.md)
 
 -   Vscode extension walkthrough 👇
     <iframe width="560" height="315" src="https://www.youtube.com/embed/XhCPDQ2ugtw?si=srK0jAAeCHdndofZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

@@ -10,6 +10,12 @@ Build smart contracts, and get rid of those annoying squigglies while working wi
 
 This is your all in one toolkit to do everything EOS in the blink of an eye.
 
+## Install
+
+[Download from VSCode Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+
+Inside of vscode extension browser type `ultra-cpp`.
+
 ## Features
 
 -   Fix Smart Contract Header Issues

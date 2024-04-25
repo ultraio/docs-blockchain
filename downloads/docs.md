@@ -12282,6 +12282,60 @@ In case an account becomes negative while its transaction is in the positive que
 With these mechanisms, Ultra Blockchain ensures efficient resource allocation and transaction processing while preventing resource abuse. Always remember to monitor your CPU usage and stake enough UOS to maintain a positive account status.
 
 ---
+title: 'Smart Contracts'
+
+outline: [0, 5]
+order: -98
+prev: false
+---
+
+# Smart Contracts
+
+Smart contracts are pieces of code that are applied on-chain and have functions that can be called to run code.
+
+Think of it like a REST endpoint that requires a POST request to run under specific parameters.
+
+## Language
+
+Smart contracts on Ultra are written in C++ and compiled down into Web Assembly.
+
+It's not as intimidating as you think; here's an example `hello-world.cpp` contract.
+
+::: details hello-world.cpp
+
+```cpp
+#include <eosio/eosio.hpp>
+#include <eosio/print.hpp>
+
+namespace mycontract {
+    using namespace std;
+    using namespace eosio;
+
+    CONTRACT hello : public eosio::contract {
+        using eosio::contract::contract;
+
+        public:
+            ACTION hi(name user) {
+                print("Hi there, ", user.value, "!");
+            }
+   };
+}
+```
+
+:::
+
+## Building a contract
+
+There are 3 options to build a contract at the moment:
+
+-   Via [cdt-cpp](../../../tutorials/docker/getting-started.md) with docker
+-   Via [contract-builder](../../../products/contract-builder/index.md) tool
+-   Via [vscode extension](../../../tutorials/smart-contracts/compile.md)
+
+Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
+it's better to use the docker option.
+
+---
 title: 'Transaction Failure Trace'
 
 outline: [0, 4]
@@ -16064,7 +16118,7 @@ Check out some of the various libraries, code examples and products we have avai
         <td>Smart Contract Toolkit for VSCode</td>
         <td>An all inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to our blockchain for VSCode.</td>
         <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
-        <td>N/A</td>
+        <td><a href="../tutorials/smart-contracts/compile.md">Tutorial</a></td>
     </tr>
     <tr>
         <td>Uniq Discord Bot</td>
@@ -16073,6 +16127,7 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
     </tr>
 </table>
+
 ---
 title: 'Authentication'
 deploy: ['staging', 'mainnet']
@@ -21104,7 +21159,7 @@ title: 'Introduction'
 order: -99999999
 ---
 
-# VSCode Smart Contract Extension
+# VS Code Smart Contract Extension
 
 Build smart contracts, and get rid of those annoying squigglies while working with smart contracts on EOS based chains.
 
@@ -21118,27 +21173,20 @@ Inside of vscode extension browser type `ultra-cpp`.
 
 ## Features
 
-* Fix Smart Contract Header Issues
-* Build Smart Contracts
-* Deploy Smart Contracts
-* Scaffold New Smart Contracts
-* Query Endpoints
-* Wallet
-* Send Transactions
-
-## Prerequisities
-
-Make sure you have docker installed while using this tool!
-
-* [Docker](https://docs.docker.com/engine/install/)
-* Microsoft C++ Extension (optional)
+-   Fix Smart Contract Header Issues
+-   Build Smart Contracts
+-   Deploy Smart Contracts
+-   Scaffold New Smart Contracts
+-   Query Endpoints
+-   Wallet
+-   Send Transactions
 
 ## Tutorials & Help
 
-* [Extension tutorial page](../../tutorials/smart-contracts/compile.md)
+-   [Install and Setup the Ultra Smart Contract Toolkit Extension](../../tutorials/smart-contracts/index.md)
 
-* Vscode extension walkthrough 👇
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/88dOlL6nwWE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+-   Vscode extension walkthrough 👇
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/XhCPDQ2ugtw?si=srK0jAAeCHdndofZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ---
 title: 'How to add custom networks'
@@ -24717,9 +24765,14 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>Build Smart Contracts</td>
-        <td>Learn how to build your first smart contract utilizing C++ that compiles into WebAssembly on Ultra.</td>
+        <td>Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension</td>
+        <td>Learn how to install and use the Ultra Smart Contract Toolkit Extension.</td>
         <td><a href="../smart-contracts/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Build and compile smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td><a href="../smart-contracts/compile">Link</a></td>
     </tr>
 </table>
 
@@ -25301,40 +25354,45 @@ Check your browser's console (F12) and see if an `object` prints out.
 
 Looks good, let's move on to the next section.
 ---
-title: '3. Smart Contract Compiling'
+title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension'
 
-outline: [0,5]
+outline: [0, 5]
 order: -97
 ---
 
-# Smart Contract Compiling
+# Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension
 
-Compiling smart contracts is very simple with the [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+Compiling smart contracts is very simple with the [Ultra Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
 
-If docker is installed correctly it will automatically download our development image, and use the image to compile your contracts.
+## Prerequisites
 
-Make sure you're not connected to any vm or docker container with remote explorer otherwise the plugin won't work correctly.
+-   Have installed the Ultra Smart Contract Toolkit Extension. Refer to [Install and Setup the Ultra Smart Contract Toolkit Extension Tutorial](./index.md) for more information.
+
+## Goal
+
+The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract Toolkit extension.
+
 ## How to Compile
 
 There are **two ways** to compile your smart contract.
 
-1. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VSCode.
+First way is to compile using the VS Code Status Bar. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VSCode.
 
 ![](./images/compile-button.png)
 
-1. Use the `Command Palette (F1)` under `Ultra: Build Contract`
+Second way to compile is to use the `Command Palette (F1)` and search for `Ultra: Build Contract`.
 
 ![](./images/command-palette-build.png)
 
 ## Successful Compilation
 
-If successful you won't see any `errors` in the output window for `ultra-cpp`.
+If the compilation is successful, you won't see any `errors` in the output window for `ultra-cpp`.
 
 ![](./images/successful-build.png)
 
 ## Bad Compilation
 
-If unsuccessful you will see various errors such as the ones below.
+If the compilation is successful unsuccessful, you will see various errors such as the ones below.
 
 ![](./images/unsuccessful-build.png)
 
@@ -25343,10 +25401,15 @@ If unsuccessful you will see various errors such as the ones below.
 Once the files are compiled you should see an `abi` and a `wasm` file next to your compiled smart contract.
 
 ![](./images/compiled-files.png)
----
-title: '4. Deploy Smart Contract'
 
-outline: [0,5]
+## What's next?
+
+The next tutorial will cover deploying smart contracts using the VS Code extension. See [Deploy Smart Contract](./deploy.md) for more information.
+
+---
+title: '3. Deploy Smart Contract'
+
+outline: [0, 5]
 order: -96
 ---
 
@@ -25366,12 +25429,11 @@ Take note of both your `private key` and `public key`.
 
 **You will need your public key after importing**.
 
-- Fill out the password fields
-  - This will be used to unlock your wallet
-- Fill out the private key field
+-   Fill out the password fields
+    -   This will be used to unlock your wallet
+-   Fill out the private key field
 
 Wallet will tell you the account creation was successful in the bottom-right upon completion.
-
 
 ## Creating a Test Network Account
 
@@ -25387,6 +25449,7 @@ ultratest -Dsn
 ```
 
 3. Create new account
+
 ```
 cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
 ```
@@ -25396,6 +25459,7 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 :::
 
 ::: details Ultra Testnet
+
 1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create a non-eba account and receive tokens. Use the key from the step of creating a wallet
 2. Open VSCode and Command Palette (F1) and type `Ultra: Create Transaction`
 3. Select Ultra Testnet
@@ -25404,13 +25468,14 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 6. Look at your .wasm file properties to determine the RAM you need. Buy extra for storing table data. You will want to lookup the total amount of bytes your .wasm file has. For small contracts 65356 bytes should be sufficient
 7. Fill out the form, and buy some RAM. payer and receiver should be the same.
 8. Ensure that the transaction is successful
-:::
+   :::
 
 ::: details Ultra Mainnet
+
 1. Create an eba account with ultra <a href="https://ultra.io/">desktop client</a>
 2. Download ultra wallet <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">extension</a>
 3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to create a non-eba account and buy ram. Log in with your eba account credentials created in the first step
-:::
+   :::
 
 ## Deploy Contract
 
@@ -25456,9 +25521,9 @@ In the case of `cleos` you would not provide any `-u` parameters to target your 
 
 ### Why use local?
 
-* Just beginning smart contract development.
-* Need to test and write tests before full deployment.
-* Easy way to start and stop a blockchain and restart from zero each time.
+-   Just beginning smart contract development.
+-   Need to test and write tests before full deployment.
+-   Easy way to start and stop a blockchain and restart from zero each time.
 
 ## Test Network
 
@@ -25468,10 +25533,10 @@ This should be the first place you will want to deploy your smart contract for o
 
 ### Why use Testnet?
 
-* Ready to deploy smart contracts to other users.
-* Begin getting feedback in a public manner.
-* Begin writing frontend for your decentralized application.
-* Need a way for others to easily interact and test your smart contract.
+-   Ready to deploy smart contracts to other users.
+-   Begin getting feedback in a public manner.
+-   Begin writing frontend for your decentralized application.
+-   Need a way for others to easily interact and test your smart contract.
 
 Go to the [faucet documentation page]() to start working with testnet.
 
@@ -25483,14 +25548,14 @@ This is the stage where you have a smart contract, you have had that contract au
 
 ### Why use Mainnet?
 
-* Ready to go live with your smart contract.
-* Smart contract has already been audited.
-* Optional frontend application is ready to be used.
+-   Ready to go live with your smart contract.
+-   Smart contract has already been audited.
+-   Optional frontend application is ready to be used.
 
 ---
-title: '6. Code Examples'
+title: '5. Code Examples'
 
-outline: [0,5]
+outline: [0, 5]
 order: -94
 next: false
 ---
@@ -25506,11 +25571,13 @@ However, you might be just looking for a quick way to perform basic functionalit
 Requires permission from the name passed from the client to transact.
 
 ::: details Code
+
 ```cpp
 ACTION hi(name user) {
     require_auth(user);
 }
 ```
+
 :::
 
 ## Actions with More Parameters
@@ -25518,11 +25585,13 @@ ACTION hi(name user) {
 When you need to add more parameters to your action.
 
 ::: details Code
+
 ```cpp
 ACTION hi(name user, string message) {
     print("Hello, your message was: ", message);
 }
 ```
+
 :::
 
 ## CRUD Operations
@@ -25560,11 +25629,13 @@ You can use the iterator to directly access the data.
 The code below is based on the Scoped CRUD Operations
 
 ::: details Code
+
 ```cpp
 journal_t scoped_journal = journal_t(get_self(), user.value);
 auto journal_itr = scoped_journal.require_find(timepoint, "entry was not found");
 print("Message at ", timepoint, " is ", journal_itr->message);
 ```
+
 :::
 
 ## Listening for Token Transfers
@@ -25583,87 +25654,50 @@ _You must add the `eosio.code` permission to your account to use this._
 
 If you want to listen for transfers from `eosio.nft.ft` see [onIssue Example](../../tutorials/uniq-factories/uniq-variants/Examples/on-issue.md).
 
-
-
-
 ---
-title: '1. Intro'
+title: 'Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension'
 
-outline: [0,5]
-order: -99
-prev: false
----
-
-# Intro to Smart Contracts
-
-Smart contracts are pieces of code that are applied on-chain and have functions that can be called to run code.
-
-Think of it like a REST endpoint that requires a POST request to run under specific parameters.
-
-## Language
-
-Smart contracts on Ultra are written in C++ and compiled down into Web Assembly.
-
-It's not as intimidating as you think; here's an example `hello-world.cpp` contract.
-
-::: details hello-world.cpp
-```cpp
-#include <eosio/eosio.hpp>
-#include <eosio/print.hpp>
-
-namespace mycontract {
-    using namespace std;
-    using namespace eosio;
-
-    CONTRACT hello : public eosio::contract {
-        using eosio::contract::contract;
-
-        public:
-            ACTION hi(name user) {
-                print("Hi there, ", user.value, "!");
-            }
-   };
-}
-```
-:::
-
-## Building a contract
-
-There are 3 options to build a contract at the moment:
-
-* Via [cdt-cpp](../../tutorials/docker/getting-started.md) with docker
-* Via [contract-builder](../../products/contract-builder/index.md) tool
-* Via [vscode extension](./compile.md)
-
-Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
-it's better to use the docker option.
----
-title: '2. Smart Contract Setup'
-
-outline: [0,5]
+outline: [0, 5]
 order: -98
 ---
 
-# Smart Contract Setup
+# Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension
 
-There's a few things you will need to get started with writing smart contracts.
+## Prerequisites
 
-We highly suggest you install the following programs and their individual extensions for this tutorial.
+-   Have [Docker](https://docs.docker.com/engine/install/) installed before using the extension.
+-   [VS Code](https://code.visualstudio.com/)
+    -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended).
 
-- [Docker](https://docs.docker.com/engine/install/)
-- [VSCode](https://code.visualstudio.com/download)
-  - [C/C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
-  - [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+## Goal
+
+The goal of this tutorial is to install the Ultra Smart Contract Toolkit extension and getting started with writing smart contracts.
+
+## Installation
+
+You can download the extension from [VS Code Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or you can manually install it via VS Code.
+
+To install the extension via VSCode, follow these steps:
+
+1. Open up your VS Code and click on the `Extensions` tab, or press `Ctrl + Shift + X`
+2. Under the `Extensions` tab, search for `ultra-cpp`.
+3. Click on the `Install` button.
+
+![](./images/install-vscode-ext.png)
+
+You have now successfully installed the Ultra Smart Contract Toolkit Extension. To verify the installation, make sure you have `ᕫ API` item in the VS Code status bar.
+
+![](./images/vscode-ext-installed.png)
+
+## Scaffolding
 
 Depending on where you want to start your project. Always start with a workspace folder and open it in VSCode.
 
 ![](./images/select-project-folder.png)
 
-## Scaffolding
+Once you have the Ultra Smart Contract Toolkit extension installed, you can easily create a starting template.
 
-Once you have the [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp) installed, you can easily create a starting template.
-
-Access the `Command Palette` in VSCode with `F1` on the keyboard.
+Access the `Command Palette` in VS Code with `F1` on the keyboard.
 
 ![](./images/open-command-palette.png)
 
@@ -25681,8 +25715,9 @@ After creating the contract, you will need to **install headers** to remove some
 
 There are currently **two ways** to install headers.
 
-- Open your `.cpp` file that was generated, and follow the prompts.
-- Through the `Command Palette (F1)` under `Ultra: Add C++ Header Files`
+-   Open your `.cpp` file that was generated, and follow the prompts.
+-   Through the `Command Palette (F1)` search for
+-   `Ultra: Add C++ Header Files`
 
 After installation, and following the prompts your window will restart.
 
@@ -25691,10 +25726,15 @@ Wait for intellisense to finish updating to ensure everything is working correct
 ![](./images/intellisense-updating.png)
 
 ![](./images/intellisense-ready.png)
----
-title: '5. Create a Transaction'
 
-outline: [0,5]
+## What's next?
+
+The next tutorial will cover compiling smart contracts using the VS Code extension. See [Smart Contract Compiling](./compile.md) for more information.
+
+---
+title: '4. Create a Transaction'
+
+outline: [0, 5]
 order: -95
 ---
 
@@ -25727,11 +25767,12 @@ Fill out your transaction, and execute it.
 ## Successful Transaction!
 
 ![](./images/successful-transaction.png)
+
 ---
-title: '7. Troubleshooting Deployment'
+title: '6. Troubleshooting Deployment'
 
 order: -93
-outline: [0,5]
+outline: [0, 5]
 ---
 
 # Troubleshooting Deployment
@@ -25766,7 +25807,8 @@ You can also change your workdir (output directory) with `-v`. Refer to docker [
 If you get `docker unavailable` error message make sure you have disconnected from docker container by clicking on the bottom-left corner.
 
 \
-For any further assistance don't hestitate to contract the team on [discord](https://discord.com/invite/U7raPf6qZu).
+For any further assistance don't hesitate to contract the team on [discord](https://discord.com/invite/U7raPf6qZu).
+
 ---
 title: 'Token Swap Overview'
 

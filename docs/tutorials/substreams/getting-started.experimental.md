@@ -117,6 +117,12 @@ Or if you want to clear any persistent data please use
 ```sh
 minikube delete
 ```
+```sh
+🔥  Deleting "minikube" in docker ...
+🔥  Deleting container "minikube" ...
+🔥  Removing /home/duncan/.minikube/machines/minikube ...
+💀  Removed all traces of the "minikube" cluster.
+```
 
 ## Deploy `substreams-charts`
 

@@ -1,17 +1,21 @@
 ---
-title: '3. Smart Contract Compiling'
+title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension'
 
 outline: [0, 5]
 order: -97
 ---
 
-# Smart Contract Compiling
+# Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension
 
-Compiling smart contracts is very simple with the [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+Compiling smart contracts is very simple with the [Ultra Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
 
-If docker is installed correctly it will automatically download our development image, and use the image to compile your contracts.
+## Prerequisites
 
-Make sure you're not connected to any vm or docker container with remote explorer otherwise the plugin won't work correctly.
+-   Have installed the Ultra Smart Contract Toolkit Extension. Refer to [Install and Setup the Ultra Smart Contract Toolkit Extension Tutorial](./index.md) for more information.
+
+## Goal
+
+The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract Toolkit extension.
 
 ## How to Compile
 

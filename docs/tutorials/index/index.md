@@ -89,9 +89,14 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>Build Smart Contracts</td>
-        <td>Learn how to build your first smart contract utilizing C++ that compiles into WebAssembly on Ultra.</td>
+        <td>Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension</td>
+        <td>Learn how to install and use the Ultra Smart Contract Toolkit Extension.</td>
         <td><a href="../smart-contracts/index">Link</a></td>
+    </tr>
+    <tr>
+        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Build and compile smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td><a href="../smart-contracts/compile">Link</a></td>
     </tr>
 </table>
 

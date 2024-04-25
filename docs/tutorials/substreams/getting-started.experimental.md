@@ -1,7 +1,7 @@
 ---
 title: 'Getting Started'
 
-order: -9999
+order: 1
 outline: [0,4]
 ---
 
@@ -117,9 +117,7 @@ Or if you want to clear any persistent data please use
 ```sh
 minikube delete
 ```
-```sh
-minikube stop
-```
+
 ## Deploy `substreams-charts`
 
 `substreams-charts` contains helm templates for deploying all core applications of `Substreams`.
@@ -383,8 +381,36 @@ If not familiar with GKE, you can follow these tutorials:
 
 Once you can deploy an app on your own GKE cluster, you can use the same `helm` commands provided above to deploy `substreams-charts`.
 
-## How to consume `substreams` data
+### Switching between `minikube` and `GKE`
 
-Now you have `substreams` components deployed on clusters and connected to a `nodeos` producer.
+If you are using both `minikube` and `GKE` with `kubectl`, to switch between them, you can follow the steps below.
+
+```sh
+kubectl config get-contexts
+```
+```sh
+CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+          gke_***    gke_***    gke_***    GKE_NAMESPACE
+*         minikube   minikube   minikube   default
+```
+
+Now select the context `NAME` you want to switch to.
+
+```sh
+kubectl config use-context gke_***
+```
+You should see `CURRENT` switch to your desired context.
+```sh
+kubectl config get-contexts
+```
+```sh
+CURRENT   NAME       CLUSTER    AUTHINFO   NAMESPACE
+*         gke_***    gke_***    gke_***    GKE_NAMESPACE
+          minikube   minikube   minikube   default
+```
+
+## How to consume `Substreams` data
+
+Now you have `Substreams` components deployed on clusters and connected to a `nodeos` producer.
 
 To make use of it, please refer to [Substreams Application Example](./substreams-app-example.md)

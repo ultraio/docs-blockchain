@@ -1,13 +1,15 @@
 ---
 title: 'Substreams application example'
 
-order: -9999
+order: 2
 outline: [0,4]
 ---
 
-# Substreams Application Example
+# Substreams Sink Application Example
 
-If you follow the deployment of `substreams charts` from [Getting Started](getting-started.experimental.md), you should now have a working `Substreams` cluster locally.
+Any application that is being used to consume `Substreams data` will be referred to as `Substreams Sink`.
+
+If you follow the deployment of `substreams charts` from [Getting Started](./getting-started.md), you should now have a working `Substreams` cluster locally.
 
 However, this local cluster will only help you to extract block data from `producer` pod or a blockchain if you connect to a public endpoint instead.
 
@@ -15,19 +17,19 @@ To fully make use of these block data you will need something called `Substreams
 - Get transaction data from a block
 - Find action data based on action name and account
 - Find transaction by hash
-- etc...
+- etc.
 
-Then with these filtered data, you can use it by storing it in a database, displaying it in an explorer, etc...
+A `Substreams Package` is a ready-to-consume binary file, which contains all the necessary dependencies (manifest, modules, protobufs...). You can read more about [Substreams Packages](https://substreams.streamingfast.io/documentation/consume/packages) and how to develop your own [Manifest and Modules](https://substreams.streamingfast.io/documentation/develop/manifest-modules) to create a new `Substreams package`. Alternatively, you can go to [Pinax Substreams package](https://github.com/pinax-network/substreams) for `Ultra` compatible `Substreams` package.
 
-You can write your own [Substreams package](https://substreams.streamingfast.io/#develop-substreams), or you can go to [Pinax Substreams package](https://github.com/pinax-network/substreams) for Ultra compatible `Substreams` package.
+Finally, with these filtered data, you can use it by storing it in a database, displaying it in an explorer, etc.
 
 ## Prerequisites
 
 Here is an example that demonstrates how you can make use of `Substreams` package and extract `eosio.token` `transfer` action from `Substreams` cluster.
 
-The example will be a `NodeJS` application written in `Typescript` with `yarn` as package manager, so make sure you have these installed before starting.
-- [Install NodeJS for Windows/macOS with Installer](https://nodejs.org/en/download)
-- [Install NodeJS for Windows/macOS/Linux with Package Manager](https://nodejs.org/en/download/package-manager)
+The example will be a `Node.js` application written in `Typescript` with `yarn` as package manager, so make sure you have these installed before starting.
+- [Install Node.js for Windows/macOS with Installer](https://nodejs.org/en/download)
+- [Install Node.js for Windows/macOS/Linux with Package Manager](https://nodejs.org/en/download/package-manager)
 - Install `yarn` (you can skip if you prefer `npm`)
 ```sh
 npm install --global yarn

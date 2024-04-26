@@ -1,7 +1,7 @@
 ---
-title: '6. Code Examples'
+title: '5. Code Examples'
 
-outline: [0,5]
+outline: [0, 5]
 order: -94
 next: false
 ---
@@ -17,11 +17,13 @@ However, you might be just looking for a quick way to perform basic functionalit
 Requires permission from the name passed from the client to transact.
 
 ::: details Code
+
 ```cpp
 ACTION hi(name user) {
     require_auth(user);
 }
 ```
+
 :::
 
 ## Actions with More Parameters
@@ -29,11 +31,13 @@ ACTION hi(name user) {
 When you need to add more parameters to your action.
 
 ::: details Code
+
 ```cpp
 ACTION hi(name user, string message) {
     print("Hello, your message was: ", message);
 }
 ```
+
 :::
 
 ## CRUD Operations
@@ -71,11 +75,13 @@ You can use the iterator to directly access the data.
 The code below is based on the Scoped CRUD Operations
 
 ::: details Code
+
 ```cpp
 journal_t scoped_journal = journal_t(get_self(), user.value);
 auto journal_itr = scoped_journal.require_find(timepoint, "entry was not found");
 print("Message at ", timepoint, " is ", journal_itr->message);
 ```
+
 :::
 
 ## Listening for Token Transfers
@@ -93,6 +99,3 @@ _You must add the `eosio.code` permission to your account to use this._
 ## Listening for Uniq Transfers
 
 If you want to listen for transfers from `eosio.nft.ft` see [onIssue Example](../../tutorials/uniq-factories/uniq-variants/Examples/on-issue.md).
-
-
-

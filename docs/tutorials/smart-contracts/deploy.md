@@ -1,7 +1,7 @@
 ---
-title: '4. Deploy Smart Contract'
+title: '3. Deploy Smart Contract'
 
-outline: [0,5]
+outline: [0, 5]
 order: -96
 ---
 
@@ -21,12 +21,11 @@ Take note of both your `private key` and `public key`.
 
 **You will need your public key after importing**.
 
-- Fill out the password fields
-  - This will be used to unlock your wallet
-- Fill out the private key field
+-   Fill out the password fields
+    -   This will be used to unlock your wallet
+-   Fill out the private key field
 
 Wallet will tell you the account creation was successful in the bottom-right upon completion.
-
 
 ## Creating a Test Network Account
 
@@ -42,6 +41,7 @@ ultratest -Dsn
 ```
 
 3. Create new account
+
 ```
 cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
 ```
@@ -51,6 +51,7 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 :::
 
 ::: details Ultra Testnet
+
 1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create an Ultra Pro Wallet and receive tokens. Use the key from the step of creating a wallet
 2. Open VSCode and Command Palette (F1) and type `Ultra: Create Transaction`
 3. Select Ultra Testnet
@@ -59,13 +60,14 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 6. Look at your .wasm file properties to determine the RAM you need. Buy extra for storing table data. You will want to lookup the total amount of bytes your .wasm file has. For small contracts 65356 bytes should be sufficient
 7. Fill out the form, and buy some RAM. payer and receiver should be the same.
 8. Ensure that the transaction is successful
-:::
+   :::
 
 ::: details Ultra Mainnet
-TODO: use wallet extension
+
 1. Download <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Ultra Wallet extension</a>
 2. Create an Ultra Pro Wallet using the Ultra Wallet extension <a href="../guides/how-to-create-ultra-pro-wallet.md">tutorial</a>
-3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to to buy RAM. Log in with your Ultra Pro Wallet. Transfer UOS to this account if needed
+3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=buyrambytes">toolkit</a> to to buy RAM. Log in with your Ultra Pro Wallet. Transfer UOS to this account if needed
+
 :::
 
 ## Deploy Contract
@@ -112,9 +114,9 @@ In the case of `cleos` you would not provide any `-u` parameters to target your 
 
 ### Why use local?
 
-* Just beginning smart contract development.
-* Need to test and write tests before full deployment.
-* Easy way to start and stop a blockchain and restart from zero each time.
+-   Just beginning smart contract development.
+-   Need to test and write tests before full deployment.
+-   Easy way to start and stop a blockchain and restart from zero each time.
 
 ## Test Network
 
@@ -124,10 +126,10 @@ This should be the first place you will want to deploy your smart contract for o
 
 ### Why use Testnet?
 
-* Ready to deploy smart contracts to other users.
-* Begin getting feedback in a public manner.
-* Begin writing frontend for your decentralized application.
-* Need a way for others to easily interact and test your smart contract.
+-   Ready to deploy smart contracts to other users.
+-   Begin getting feedback in a public manner.
+-   Begin writing frontend for your decentralized application.
+-   Need a way for others to easily interact and test your smart contract.
 
 Go to the [faucet documentation page]() to start working with testnet.
 
@@ -139,6 +141,6 @@ This is the stage where you have a smart contract, you have had that contract au
 
 ### Why use Mainnet?
 
-* Ready to go live with your smart contract.
-* Smart contract has already been audited.
-* Optional frontend application is ready to be used.
+-   Ready to go live with your smart contract.
+-   Smart contract has already been audited.
+-   Optional frontend application is ready to be used.

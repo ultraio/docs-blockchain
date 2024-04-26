@@ -1,8 +1,8 @@
 ---
-title: '7. Troubleshooting Deployment'
+title: '6. Troubleshooting Deployment'
 
 order: -93
-outline: [0,5]
+outline: [0, 5]
 ---
 
 # Troubleshooting Deployment
@@ -37,4 +37,4 @@ You can also change your workdir (output directory) with `-v`. Refer to docker [
 If you get `docker unavailable` error message make sure you have disconnected from docker container by clicking on the bottom-left corner.
 
 \
-For any further assistance don't hestitate to contract the team on [discord](https://discord.com/invite/U7raPf6qZu).
+For any further assistance don't hesitate to contract the team on [discord](https://discord.com/invite/U7raPf6qZu).

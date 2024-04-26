@@ -1,51 +1,76 @@
 ---
-title: '1. Intro'
+title: 'Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension'
 
-outline: [0,5]
-order: -99
-prev: false
+outline: [0, 5]
+order: -98
 ---
 
-# Intro to Smart Contracts
+# Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension
 
-Smart contracts are pieces of code that are applied on-chain and have functions that can be called to run code.
+## Prerequisites
 
-Think of it like a REST endpoint that requires a POST request to run under specific parameters.
+-   Have [Docker](https://docs.docker.com/engine/install/) installed before using the extension.
+-   [VS Code](https://code.visualstudio.com/)
+    -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended).
 
-## Language
+## Goal
 
-Smart contracts on Ultra are written in C++ and compiled down into Web Assembly.
+The goal of this tutorial is to install the Ultra Smart Contract Toolkit extension and getting started with writing smart contracts.
 
-It's not as intimidating as you think; here's an example `hello-world.cpp` contract.
+## Installation
 
-::: details hello-world.cpp
-```cpp
-#include <eosio/eosio.hpp>
-#include <eosio/print.hpp>
+You can download the extension from [VS Code Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or you can manually install it via VS Code.
 
-namespace mycontract {
-    using namespace std;
-    using namespace eosio;
+To install the extension via VSCode, follow these steps:
 
-    CONTRACT hello : public eosio::contract {
-        using eosio::contract::contract;
+1. Open up your VS Code and click on the `Extensions` tab, or press `Ctrl + Shift + X`
+2. Under the `Extensions` tab, search for `ultra-cpp`.
+3. Click on the `Install` button.
 
-        public:
-            ACTION hi(name user) {
-                print("Hi there, ", user.value, "!");
-            }
-   };
-}
+![](./images/install-vscode-ext.png)
+
+You have now successfully installed the Ultra Smart Contract Toolkit Extension. To verify the installation, make sure you have `ᕫ API` item in the VS Code status bar.
+
+![](./images/vscode-ext-installed.png)
+
+## Scaffolding
+
+Depending on where you want to start your project. Always start with a workspace folder and open it in VSCode.
+
+![](./images/select-project-folder.png)
+
+Once you have the Ultra Smart Contract Toolkit extension installed, you can easily create a starting template.
+
+Access the `Command Palette` in VS Code with `F1` on the keyboard.
+
+![](./images/open-command-palette.png)
+
+### Command Palette Command
+
 ```
-:::
+Ultra: Create Smart Contract
+```
 
-## Building a contract
+It will prompt you for a folder to put the source code under. It is recommended to use `src` if it's a single contract.
 
-There are 3 options to build a contract at the moment:
+## Header Setup
 
-* Via [cdt-cpp](../../tutorials/docker/getting-started.md) with docker
-* Via [contract-builder](../../products/contract-builder/index.md) tool
-* Via [vscode extension](./compile.md)
+After creating the contract, you will need to **install headers** to remove some of the errors you will get from VSCode about the code.
 
-Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
-it's better to use the docker option.
+There are currently **two ways** to install headers.
+
+-   Open your `.cpp` file that was generated, and follow the prompts.
+-   Through the `Command Palette (F1)` search for
+-   `Ultra: Add C++ Header Files`
+
+After installation, and following the prompts your window will restart.
+
+Wait for intellisense to finish updating to ensure everything is working correctly.
+
+![](./images/intellisense-updating.png)
+
+![](./images/intellisense-ready.png)
+
+## What's next?
+
+The next tutorial will cover compiling smart contracts using the VS Code extension. See [Smart Contract Compiling](./compile.md) for more information.

@@ -8,11 +8,11 @@ order: -99
 
 The `eosio.system` contract inherits its functionality from the traditional EOSIO `eosio.system` contract. Below are Ultra’s additions or modification to it.
 
-## EBA and Non-EBA Accounts
+## Ultra Accounts and Ultra Pro Wallets
 
 An Ultra account is a set of blockchain data records that establishes a permission graph for the account keys and keys belonging to other accounts. It controls the resources possessed by the account and provides a set of actions that are used to communicate with the account, and in the case that it is present, the smart contract.
 
-[EBA and non-EBA Accounts](./eba-non-eba-accounts.html)
+[Ultra Accounts and Ultra Pro Wallets](./eba-non-eba-accounts.html)
 
 ## Know Your Client
 

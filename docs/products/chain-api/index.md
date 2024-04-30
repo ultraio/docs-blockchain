@@ -61,7 +61,7 @@ These allow for a `/v2` API call, useful for `get-transaction` API endpoint
 - https://ultra.eosusa.io
 - https://api.ultra.eossweden.org
 
-**Test Networking (Staging)**
+**Test Network (Staging)**
 
 - https://api.testnet.ultra.eossweden.org
 - https://test.ultra.eosusa.io

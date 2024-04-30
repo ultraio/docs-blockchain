@@ -19,7 +19,7 @@ In the case that an exchange needs to deploy a smart contract, please speak with
 
 ::: tip Info
 
-If you are simply looking for a way to swap from ERC-20 to native UOS use the following service [https://dapp.ptokens.io](https://dapp.ptokens.io) which is provided by our partner at pNetwork.
+If you are simply looking for a way to swap from ERC-20 to native UOS use the following service [https://dapp.p.network/](https://dapp.p.network/) which is provided by our partner at pNetwork.
 
 :::
 
@@ -42,7 +42,7 @@ You can use these explorers to check transactions on our networks.
 
 ## Creating Account(s)
 
-The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create these non-EBA accounts. Exchanges will be able to access the network and accounts through an API node.
+The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create this Ultra Premium Wallet or Ultra Corporate Wallet (for the differences see [here](../../blockchain/general/antelope-ultra/account-types.md)). Exchanges will be able to access the network and accounts through an API node.
 
 *   **Requirement checklist**
     *   **Accountname** (12 characters, a-z, 1-5)
@@ -50,7 +50,7 @@ The exchanges will provide us with public keys for each permission (OWNER, ACTIV
         
 ## Pre-Swap
 
-Ultra will be leveraging the p.network token swap solution. This means that partner exchanges will log in to [https://dapp.ptokens.io/](https://dapp.ptokens.io/) and must have their metamask (or ledger, etc.) ready to perform the swap.
+Ultra will be leveraging the p.network token swap solution. This means that partner exchanges will log in to [https://dapp.p.network/](https://dapp.p.network/) and must have their metamask (or ledger, etc.) ready to perform the swap.
 
 During the swap process you will be making Ethereum transactions. Depending on the time of day, activity, etc. of the chain gas prices may be extremely high. Please keep an eye on gas prices before performing a swap.
 
@@ -66,15 +66,15 @@ During the swap you will be putting in an Ultra accountname. This is the target 
 
 ### Fees and Costs
 
-The fee for ERC-20 swap to the native chain will have a 0% fee on the amount transferred. However, transferring from native UOS to ERC-20 UOS (or any other token) will have a 0.25% fee. Which means that you will only have a fee if you are moving into the ERC-20 platform. This fee will go to the validators of pNetwork and their infrastructure.
+The fee for ERC-20 swap to the native chain will have a 0% fee on the amount transferred. However, transferring from native UOS to ERC-20 UOS (or any other token) will have a 0.25% fee (min 10 USD). Which means that you will only have a fee if you are moving into the ERC-20 platform. This fee will go to the validators of pNetwork and their infrastructure. Keep in mind that the amounts mentioned do not include ETH Gas Fee which must be paid in either case.
 
 #### Actions and fees
 
-| Action                                                   | Fee Covered By                             |
-| -------------------------------------------------------- | ------------------------------------------ |
-| Sending ERC20 UOS tokens to the p.network Vault Contract | Covered by the user, paid in ETH (Gas Fee) |
-| Peg In                                                   | Covered by p.network                       |
-| Peg Out                                                  | The user (0.25% of transaction)            |
+| Action                                                   | Fee Covered By                                                                                                                                                                                                    |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sending ERC20 UOS tokens to the p.network Vault Contract | Covered by the user, paid in ETH (Gas Fee)                                                                                                                                                                        |
+| Peg In                                                   | Covered by p.network                                                                                                                                                                                              |
+| Peg Out                                                  | The user (0.25% of transaction, min 10 USD) + ETH Gas fee. For a more precise estimate see the [swap page](https://dapp.p.network/#/swap?asset=uos&from=ultra&to=eth) |
 
 ## EOSIO Examples
 

@@ -40,4 +40,4 @@ Oracle contract is used or can be used in following scenarios
 - BP payouts for blocks produced
 - NFT first-hand and second-hand pricing calculation that is done through USD and converted to UOS
 - NFT RAM payment conversion from bytes to USD to UOS
-- Non-EBA account creation price conversion from USD to UOS
+- Ultra Pro Wallet creation price conversion from USD to UOS

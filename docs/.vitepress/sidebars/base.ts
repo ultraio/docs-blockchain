@@ -21,6 +21,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Guides',
+            items: getMarkdownFiles('/tutorials/guides'),
+            collapsed: true,
+        },
+        {
             text: 'Projects',
             items: [
                 {
@@ -85,6 +90,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/oracle'),
             collapsed: true,
         },
+        {
+            text: 'Substreams',
+            items: getMarkdownFiles('/tutorials/substreams'),
+            collapsed: true,
+        },
     ],
     '/tutorials/general': [
         {
@@ -120,6 +130,22 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Fundamentals',
             items: getMarkdownFiles('/tutorials/fundamentals'),
+            collapsed: true,
+        },
+    ],
+    '/tutorials/guides': [
+        {
+            text: 'Guides',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Guides',
+            items: getMarkdownFiles('/tutorials/guides'),
             collapsed: true,
         },
     ],
@@ -242,6 +268,21 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Oracle',
             items: getMarkdownFiles('/tutorials/oracle'),
+        },
+    ],
+    '/tutorials/substreams': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Substreams',
+            items: getMarkdownFiles('/tutorials/substreams'),
         },
     ],
     // ################

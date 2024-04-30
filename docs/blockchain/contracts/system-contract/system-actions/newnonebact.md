@@ -3,13 +3,13 @@ title: 'newnonebact'
 
 ---
 
-# newnonebact - create a non-EBA account
+# newnonebact - create an Ultra Pro Wallet
 
-Allows creating a new non-EBA account, with expected cost not larger than max payment. The cost calculation will be based on the config from `newactconfig` table.
+Allows creating a new Ultra Pro Wallet, with expected cost not larger than max payment. The cost calculation will be based on the config from `newactconfig` table.
 
 | Field       | Type             | Description                                                                                                   |
 | ----------- | ---------------- | ------------------------------------------------------------------------------------------------------------- |
-| creator     | eosio::name      | The account that will pay for non-EBA account creation                                                        |
+| creator     | eosio::name      | The account that will pay for Ultra Pro Wallet account creation                                               |
 | owner       | eosio::authority | The `owner` authority for the new account                                                                     |
 | active      | eosio::authority | The `active` authority for the new account                                                                    |
 | max_payment | eosio::asset     | Maximum payment in UOS that creator is willing to pay to account for possible USD/UOS conversion fluctuations |

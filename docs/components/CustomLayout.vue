@@ -37,7 +37,7 @@ function forceReload(e: InputEvent) {
 function getLinks() {
     return [
         { text: 'Mainnet', link: generateLink('mainnet'), target: '_parent', rel: 'noreferrer' },
-        { text: 'Staging', link: generateLink('staging'), target: '_parent', rel: 'noreferrer' },
+        { text: 'Testnet', link: generateLink('staging'), target: '_parent', rel: 'noreferrer' },
         { text: 'Experimental', link: generateLink('experimental'), target: '_parent', rel: 'noreferrer' },
     ];
 }

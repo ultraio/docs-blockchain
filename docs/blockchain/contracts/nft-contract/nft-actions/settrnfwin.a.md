@@ -11,7 +11,7 @@ Allows a token manager to update the `transfer_window_start` and `transfer_windo
 ::: warning
 This action is disabled.
 
-Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md#swap-uniqs)* pages for alternative migration solutions to a new factory
+Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/factory-purchase-options.md)* pages for alternative migration solutions to a new factory
 :::
 
 ## Technical Behavior

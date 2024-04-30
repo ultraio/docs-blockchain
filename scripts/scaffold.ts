@@ -3,6 +3,8 @@ import fg from 'fast-glob';
 
 for (let environment of ['experimental', 'staging', 'mainnet']) {
     const docsFolder = `docs-${environment}`;
+    // Delete previous build to avoid duplicate pages
+    fs.rmSync(docsFolder, { recursive: true, force: true });
     fs.mkdirSync(docsFolder, { recursive: true });
 
     // Remove Cache

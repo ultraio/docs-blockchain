@@ -35,7 +35,7 @@ interface IUltraWalletApi {
     /**
      * Request permission to establish a connection with the Wallet extension
      */
-    connect(): Promise<IResponse<{ blockchainId: string; publicKey: string }>>;
+    connect(): Promise<IResponse<{ blockchainid: string; publicKey: string }>>;
 
     /**
      * Request permission to disconnect the app from the wallet extension

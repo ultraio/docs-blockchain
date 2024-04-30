@@ -44,7 +44,7 @@ const navbar: DefaultTheme.NavItem[] = [
                 items: [
                     { text: 'Ultra Wallet', link: '/products/ultra-wallet/index' },
                     { text: 'Chain API', link: '/products/chain-api/index' },
-                    { text: 'NFT API', link: '/products/nft-api/index' },
+                    { text: 'NFT API', link: '/products/nft-api/introduction' },
                 ],
             },
         ],

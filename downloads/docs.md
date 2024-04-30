@@ -1909,21 +1909,9 @@ For Ultra's platform, KYC is required if a user wants to access more advanced bl
 
 ## Features for KYC accounts
 
-### 1 - Deploy smart contract
+Currently no features require you to have KYC provided
 
-As a security measure for Ultra's network, any 3rd party who wants to deploy a new contract to Ultra will be required to provide their KYC info. This will ensure that Ultra can identify the deployer and we can respond against the party if they are trying to do any harm to our network.
-
-As only one single smart contract can only be deployed to a blockchain account, you will be required to register KYC for all of your contract accounts.
-
-### 2 - Purchase more RAM
-
-When storing data or deploying a contract on Ultra blockchain, it will consume the user's RAM. The more data you store, the more RAM you will consume.
-
-Although Ultra platform already provides all users a free tier of RAM, however, as a developer, you might need to store more data than normal users do. You can refer to RAM calculation in our dedicated page for more info.
-
-By registering KYC, you will be able purchase as much RAM as you need.
-
-## KYC request for smart contract deployment
+## KYC request for developers
 
 If you want to deploy a contract or register KYC for your account, please contact us at [developers@ultra.io](developers@ultra.io).
 
@@ -6436,7 +6424,7 @@ Allows a token manager to update the `trading_window_start` and `trading_window_
 ::: warning
 This action is disabled.
 
-Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md#swap-uniqs)* pages for alternative migration solutions to a new factory
+Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/factory-purchase-options.md)* pages for alternative migration solutions to a new factory
 :::
 
 ## Technical Behavior
@@ -6505,7 +6493,7 @@ Allows a token manager to update the `transfer_window_start` and `transfer_windo
 ::: warning
 This action is disabled.
 
-Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md#swap-uniqs)* pages for alternative migration solutions to a new factory
+Refer to *[exchange a uniq guide](../../../../tutorials/uniq-factories/factory-management/exchange-a-uniq-using-smart-contract.md)* or *[swap uniqs using purchase options](../../../../tutorials/uniq-factories/factory-management/factory-purchase-options.md)* pages for alternative migration solutions to a new factory
 :::
 
 ## Technical Behavior
@@ -9220,7 +9208,7 @@ Oracle contract is used or can be used in following scenarios
 - BP payouts for blocks produced
 - NFT first-hand and second-hand pricing calculation that is done through USD and converted to UOS
 - NFT RAM payment conversion from bytes to USD to UOS
-- Non-EBA account creation price conversion from USD to UOS
+- Ultra Pro Wallet creation price conversion from USD to UOS
 ---
 title: 'addma'
 order: 3
@@ -10211,32 +10199,32 @@ The table contains the information about the resources that are allocated some a
 | flags        | uint32_t     | Indicates if RAM or POWER is managed by the accountram_managed = 1, power_managed = 2 |
 
 ---
-title: 'EBA and non-EBA Accounts'
+title: 'Ultra Accounts and Ultra Pro Wallets'
 order: 1
 
 ---
 
-# EBA and non-EBA Accounts
+# Ultra Accounts and Ultra Pro Wallets
 
 ## How it works
 
-For non-EBA the account name is auto generated and has a form of “1aa2aa3aa4aa” where “a” is an English alphabet letter in the range of \[a-z\]. An EBA account name has a form of “aa1aa2aa3aa4” and can be proposed by the account creator. If the proposed name exists or does not follow the format, a new name is generated automatically.
+System contract provides 2 actions to generate new accounts of the following types: Ultra Account and Ultra Pro Wallet. Their names are automatically generated using a pattern `aa1aa2aa3aa4` and `1aa2aa3aa4aa` respectively. For more details see [this page](../../general/antelope-ultra/account-types.md).
 
-Ultra sponsors the RAM needed for an EBA account creation. For non-EBA account records the RAM can be paid by another account.
+Ultra sponsors the RAM needed for an Ultra Account and Ultra Pro Wallet creation.
 
-## Easy Blockchain Account - EBA
+## Ultra Account
 
-An Easy Blockchain Account is a special type of account mainly for average users.
+Ultra Accounts (formerly known as Easy Blockchain Account or EBA) is a special type of account mainly for average users. It provides recovery options and is managed by our Backend.
 
-## Non-EBA
+## Ultra Pro Wallet
 
-A non-EBA account is a typical blockchain account controlled by private keys you must secure yourself.
+Ultra Pro Wallet (formerly known as non-EBA) is a typical blockchain account controlled by private keys you must secure yourself. In case you lose the keys - you lose the ownership of the account. This type of account allows full control and automation.
 
 ## Relevant actions
 
-[newnonebact - create a non-EBA account](./system-actions/newnonebact.html)
+[newnonebact - create an Ultra Pro Wallet](./system-actions/newnonebact.html)
 
-[newebact - create a EBA account](./system-actions/newebact.html)
+[newebact - create an Ultra Account](./system-actions/newebact.html)
 
 ### Relevant tables
 
@@ -10252,11 +10240,11 @@ order: -99
 
 The `eosio.system` contract inherits its functionality from the traditional EOSIO `eosio.system` contract. Below are Ultra’s additions or modification to it.
 
-## EBA and Non-EBA Accounts
+## Ultra Accounts and Ultra Pro Wallets
 
 An Ultra account is a set of blockchain data records that establishes a permission graph for the account keys and keys belonging to other accounts. It controls the resources possessed by the account and provides a set of actions that are used to communicate with the account, and in the case that it is present, the smart contract.
 
-[EBA and non-EBA Accounts](./eba-non-eba-accounts.html)
+[Ultra Accounts and Ultra Pro Wallets](./eba-non-eba-accounts.html)
 
 ## Know Your Client
 
@@ -10586,7 +10574,7 @@ await api.transact({
 title: 'newebact'
 ---
 
-# newebact - create an EBA account
+# newebact - create an Ultra Account
 
 | Field       | Type             | Description                                         |
 | ----------- | ---------------- | --------------------------------------------------- |
@@ -10637,13 +10625,13 @@ title: 'newnonebact'
 
 ---
 
-# newnonebact - create a non-EBA account
+# newnonebact - create an Ultra Pro Wallet
 
-Allows creating a new non-EBA account, with expected cost not larger than max payment. The cost calculation will be based on the config from `newactconfig` table.
+Allows creating a new Ultra Pro Wallet, with expected cost not larger than max payment. The cost calculation will be based on the config from `newactconfig` table.
 
 | Field       | Type             | Description                                                                                                   |
 | ----------- | ---------------- | ------------------------------------------------------------------------------------------------------------- |
-| creator     | eosio::name      | The account that will pay for non-EBA account creation                                                        |
+| creator     | eosio::name      | The account that will pay for Ultra Pro Wallet account creation                                               |
 | owner       | eosio::authority | The `owner` authority for the new account                                                                     |
 | active      | eosio::authority | The `active` authority for the new account                                                                    |
 | max_payment | eosio::asset     | Maximum payment in UOS that creator is willing to pay to account for possible USD/UOS conversion fluctuations |
@@ -11938,15 +11926,33 @@ order: -98
 
 Accounts have a resource cost as RAM is a limited resource on the network. To generate a new account, the RAM must be paid for. In some cases Ultra might cover the costs for account creation and sponsoring RAM for development purposes, in all other cases the user or developer will have to purchase RAM from the on-chain market.
 
-Ultra has deployed a platform-specific feature called the `Easy Blockchain Account`, more commonly referred to internally as EBA. We have yet to release public information about how these work.
+In traditional EOS blockchain accounts, the OWNER permission may change the ACTIVE permission’s keys, and the ACTIVE permission may also change its own keys. In Ultra, the ACTIVE permission may not change its own keys. This applies to both Ultra Pro Wallets and to Ultra Accounts.
 
-In traditional EOSIO accounts, the OWNER permission may change the ACTIVE permission’s keys, and the ACTIVE permission may also change its own keys. In Ultra, the ACTIVE permission may not change its own keys. This applies to both non-EBA accounts and to EBA accounts.
+## Ultra Account
 
-Non-EBA accounts are equivalent to traditional EOSIO blockchain accounts, in that they are fully managed by the end user. These accounts are used internally by Ultra, and are recommended for developers to deploy their smart contracts to.
+Accounts created using Ultra client are referred to as Ultra Accounts. Formerly referred to as `Easy Blockchain Account` (or EBA). This type of account is managed by Ultra Backend and provides users account recovery options in case you lose access to your account.
+
+The name in this case is auto-generated on chain with format of `aa1aa2aa3aa4` where the positional numerals 1, 2, 3 and 4 remain in the same place for all accounts, but the letters `a` will be incremented for each new account starting from `a` and ending at `z` after which the next `a` will be incremented to a `b` and so on (e.g. `aa1aa2aa3aa4`, `aa1aa2aa3ab4`, `aa1aa2aa3ac4`, ... `aa1aa2aa3az4`, `aa1aa2aa3ba4`).
+
+## Ultra Pro Wallet
+
+Ultra Pro Wallets (formerly referred to as non-EBA) are equivalent to traditional EOS blockchain accounts, in that they are fully managed by the end user. These accounts are used internally by Ultra, and are recommended for developers to deploy their smart contracts to.
+
+The name in this case is auto-generated on chain with format of `1aa2aa3aa4aa` where the positional numerals 1, 2, 3 and 4 remain in the same place for all accounts, but the letters `a` will be incremented for each new account starting from `a` and ending at `z` after which the next `a` will be incremented to a `b` and so on (e.g. `1aa2aa3aa4aa`, `1aa2aa3aa4ab`, `1aa2aa3aa4ac`, ... `1aa2aa3aa4az`, `1aa2aa3aa4ba`).
+
+## Ultra Premium Wallet
+
+Ownership of the account and private keys is the same as for Ultra Pro Wallet. In this case Ultra will be responsible for personally creating an account for you. The limitation on the name is that it is a single purpose name like `devname123` or `productname`. Request for this type of account should be directed to [developers@ultra.io](developers@ultra.io)
+
+## Ultra Corporate Wallet
+
+Ownership of the account and private keys is the same as for Ultra Pro Wallet. Ultra in this case is also responsible for creating such accounts. The name format follows a format like `partner.contract`, `partner.data`, `partner.account` or `contract.partner`, etc. Requests for this type of account should be directed to [developers@ultra.io](developers@ultra.io).
 
 ## Okay, how do I make an account?
 
-We currently allow **EBA accounts** to be created through the official ultra.io client which can be found at [https://ultra.io](https://ultra.io).
+We currently allow **Ultra Accounts** to be created through the official ultra.io client which can be found at [https://ultra.io](https://ultra.io).
+
+For creating **Ultra Pro Wallet** refer to this [Testnet tutorial](../../../tutorials/fundamentals/tutorial-generate-key-and-create-testnet-account.md) or to a [Mainnet guide](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md)
 
 Using our docker image you can create local accounts for testing.
 
@@ -12989,9 +12995,9 @@ If you find a need for a wallet that almost never locks itself then seek the fol
 
 ## Accounts
 
-Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a non-eba account is necessary to deploy smart contracts. 
+Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a Ultra Pro Wallet is necessary to deploy smart contracts. 
 
-Meaning, developers who wish **to deploy a smart contract** on the production network must contact Ultra and **obtain a non-eba account.**
+Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md) or [Ultra Toolkit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
 
 ### Account Rules
 
@@ -13018,7 +13024,7 @@ This being said, you will need RAM in order to deploy a smart contract. You may 
 
 ### Accounts for Testnet Network & Production Network
 
-However, **a non-eba account is necessary for deploying smart contracts.** This can only be obtained by going through Ultra. 
+However, **an Ultra Pro Wallet is necessary for deploying smart contracts.**. 
 
 In a local network, a developer has full control over how accounts are created, and when they can be created. Refer to the instructions below to use `cleos` to create accounts.
 
@@ -13034,9 +13040,9 @@ This permission is inaccessible on Testnet and Mainnet.
 
 _Note: Using the `ultra.eosio` permission should be possible when launching the chain with the javascript framework included in the image._
 
-### Creating a Non-EBA Account
+### Creating an Ultra Pro Wallet
 
-Allow user to create new non-EBA account when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
+Allow user to create new Ultra Pro Wallet when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated, for details on the format see [this page](../../../blockchain/general/antelope-ultra/account-types.md).
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p alice
@@ -13148,24 +13154,6 @@ Smart contracts allow accounts to interact with an `action` inside of a compiled
 Deploying a compiled smart contract is how developers, and users alike will interface with the blockchain. 
 
 An example of a smart contract would be the `eosio.token` contract that also has the `transfer` action. This allows users to transfer the native token between accounts.
-
-### Restrictions
-
-**This does not apply to local networks, you can bypass this through other scripts**.
-
-By default `ultra` requires KYB (Know Your Business) before any business or individual user can deploy smart contracts to their test network or the main network. 
-
-This is a manual process and the following must be done:
-
-1. Generate two key pairs, one each for your OWNER and ACTIVE permissions.
-
-2. These key pairs must be securely saved locally.
-
-3. Send the public keys to Ultra
-
-4. Ultra will generate a non-EBA account and revert to the account name
-
-Contact an Ultra representative through Telegram for more information.
 
 ### Deploying a Smart Contract
 
@@ -21197,7 +21185,7 @@ outline: [0, 4]
 
 # How to add custom networks
 
-For non-EBA wallet accounts, it is possible to add custom networks for testing purposes.
+For Ultra Pro Wallets, it is possible to add custom networks for testing purposes.
 
 This is the correct procedure:
 
@@ -21327,7 +21315,7 @@ interface IUltraWalletApi {
     /**
      * Request permission to establish a connection with the Wallet extension
      */
-    connect(): Promise<IResponse<{ blockchainId: string; publicKey: string }>>;
+    connect(): Promise<IResponse<{ blockchainid: string; publicKey: string }>>;
 
     /**
      * Request permission to disconnect the app from the wallet extension
@@ -21419,7 +21407,7 @@ Similarly, it is possible to terminate the connection both on the application an
 ```JavaScript
 try {
     const response = await ultra.connect();
-    response.data.blockchainId;
+    response.data.blockchainid;
     // ej1vx2ft3ht4
     response.data.publicKey;
     // EOS7uRb72dR8jrLjNuC9UoevBBH3YbVZfNKUtYCfLkV7aPGcmDjs7
@@ -21531,21 +21519,21 @@ outline: [0, 4]
 
 # Import your account’s private key
 
-The Ultra Wallet Extension supports two kinds of accounts: EBA and Non-EBA. To understand how a private key can be imported into the wallet, we have to explain first the differences between both account types.
+The Ultra Wallet Extension supports two kinds of accounts: Ultra Account and Ultra Pro Wallet. To understand how a private key can be imported into the wallet, we have to explain first the differences between both account types.
 
-## EBA (Easy Blockchain Account)
+## Ultra Account (Easy Blockchain Account)
 
 One of the most critical missions of Ultra is to democratize the blockchain, bringing all its advantages to the mass market. To do so, it was required to simplify drastically how the blockchain is managed, making it almost transparent for the user.
 
-The EBA is an account type where the users store their own private keys in their devices and Ultra only provides a way to recover a blockchain account or sync a private key with a blockchain account.
+The Ultra Account is an account type where the users store their own private keys in their devices and Ultra only provides a way to recover a blockchain account or sync a private key with a blockchain account.
 
 ![](/images/uwax-login-btns.png)
 
 To get an Easy Blockchain Account you only have to create an Ultra account using the Ultra Wallet Extension or the Ultra Desktop client.
 
-## Non-EBA (Self-managed blockchain account)
+## Ultra Pro Wallet (Self-managed blockchain account)
 
-A non-EBA account is a typical blockchain account controlled by private keys that you must secure yourself. This type of account is recommended for developers and other advanced users. To learn more about how to generate your own keys, read this [documentation page](../../blockchain/general/tools/nodeos.md).
+An Ultra Pro Wallet is a typical blockchain account controlled by private keys that you must secure yourself. This type of account is recommended for developers and other advanced users. To learn more about how to generate your own keys, read this [documentation page](../../blockchain/general/tools/nodeos.md).
 
 ![](/images/uwax-private-key-btn.png)
 
@@ -23429,307 +23417,6 @@ Your storage quota is calculated based on the RAM resource.
 
 
 ---
-title: 'How to get RAM'
-order: -99985
-oultine: [0,5]
----
-
-# How to get RAM
-
-After creating a developer account you can also purchase RAM for your account.
-
-::: warning
-
-This is only necessary if you are a smart contract developer
-
-:::
-
-## Why do you need RAM?
-
-RAM on the Ultra blockchain is essential for storing smart contract data and state. When you purchase RAM, you are purchasing RAM with the intent of storing data on-chain for other users to interact with.
-
-## Initial Setup
-
-1. Download Chrome or Brave
-2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
-3. Refresh this Page
-4. Use the form below to quickly add RAM
-5. Ultra wallet should open
-6. **Make sure to set your wallet to `Testnet`**
-7. Import your private key into the wallet
-
-![](./images/select-network-wallet.png)
-
-## Purchase RAM
-
-Use the form below to add RAM to your account on our Test Network.
-
-<BuyRam />
-
-## All Done!
-
-You now have a development account with some UOS balance, and a little bit of RAM to publish a smart contract!
-
----
-title: 'How to get Tokens'
-order: -99987
-oultine: [0, 5]
----
-
-# How to get Tokens
-
-After creating a developer account you can also use the testnet faucet to get tokens.
-
-::: warning
-
-Make sure you have an account on our Test Network before you continue.
-
-:::
-
-## Visit Test Network Faucet
-
-Visit the link below to open our faucet application.
-
--   https://faucet.testnet.app.ultra.io
-
-1. Click `Token Faucet`
-2. Paste your `Account Name` in the `To Account` field.
-3. Fill the Captcha
-4. Click Issue
-
-![](./images/get-tokens.png)
-
-## Check Your Account Balance
-
-Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
-
-<AccountLookupTestnet />
-
-## All Done!
-
-You now have a development account with some UOS balance distributed to the account!
-
----
-title: 'How to make a REST Request'
-order: -99984
-oultine: [0,5]
----
-
-# How to make a REST Request
-
-A REST request is a way to interact with a web service or in our case the blockchain, using HTTP methods (GET, POST, PUT, DELETE) to perform actions on resources identified by URIs. It follows the principles of Representational State Transfer (REST) for stateless communication.
-
-## Why would I need to do this?
-
-You may need to perform a REST request if you're looking up user balance, user account data, or maybe even NFTs.
-
-## REST API Basics
-
-Observe the following URL:
-
-```
-http://ultra.api.eosnation.io/v1/chain/get_info
-```
-
-It is composed of two parts:
-
-```
-<block_producer_url><endpoint>
-```
-
-Block Producer URL: `http://ultra.api.eosnation.io`
-
-Endpoint: `/v1/chain/get_info`
-
-Knowing this we can make a simple REST request.
-
-## Making the Request
-
-Use a CLI, or write some code in the language of your choice.
-
-::: code-group
-
-```sh [curl]
-curl http://ultra.api.eosnation.io/v1/chain/get_info
-```
-
-```js [JavaScript]
-const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: 'false'};
-
-fetch('http://ultra.api.eosnation.io/v1/chain/get_info', options)
-  .then(response => response.json())
-  .then(response => console.log(response))
-  .catch(err => console.error(err));
-```
-
-```C# [C#]
-var client = new RestClient("http://ultra.api.eosnation.io/v1/chain/get_info");
-var request = new RestRequest(Method.GET);
-request.AddHeader("Content-Type", "application/json");
-IRestResponse response = client.Execute(request);
-```
-
-```GO [Go]
-package main
-
-import (
-	"fmt"
-	"net/http"
-	"io/ioutil"
-)
-
-func main() {
-
-	url := "http://ultra.api.eosnation.io/v1/chain/get_info"
-
-	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("Content-Type", "application/json")
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-```
-
-```Java [Java]
-HttpResponse<String> response = Unirest.get("http://ultra.api.eosnation.io/v1/chain/get_info")
-  .header("Content-Type", "application/json")
-  .asString();
-```
-:::
-
-::: details Example Response
-```ts
-{
-	"server_version": "b668b78f",
-	"chain_id": "a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097",
-	"head_block_num": 152993457,
-	"last_irreversible_block_num": 152993368,
-	"last_irreversible_block_id": "091e7e580dc242f48fc8aca5685affdea9f65288d871fd818d3ec8cf602928ad",
-	"head_block_id": "091e7eb1ca42c9e9c9a4d134aacde9bcee73bcdbf03cc02e881a0b22a260344f",
-	"head_block_time": "2023-11-21T19:32:20.000",
-	"head_block_producer": "cryptolions1",
-	"virtual_block_cpu_limit": 400000,
-	"virtual_block_net_limit": 1048576,
-	"block_cpu_limit": 400000,
-	"block_net_limit": 1048576,
-	"server_version_string": "v3.2.4-2.0.1",
-	"fork_db_head_block_num": 152993457,
-	"fork_db_head_block_id": "091e7eb1ca42c9e9c9a4d134aacde9bcee73bcdbf03cc02e881a0b22a260344f",
-	"server_full_version_string": "v3.2.4-2.0.1-0-gb668b78f6",
-	"total_cpu_weight": 613000000,
-	"total_net_weight": 613000000,
-	"earliest_available_block_num": 1,
-	"last_irreversible_block_time": "2023-11-21T19:31:35.500"
-}
-```
-:::
-
-
-
-## What are the available endpoints?
-
-Check out our section on the [Chain API](../../products/chain-api/index.md) for all endpoints, and available URLs.
----
-title: 'How to read the Block Explorer'
-order: -99986
-oultine: [0,5]
----
-
-# How to read the Block Explorer
-
-A block explorer is a web tool that allows users to view information about cryptocurrency transactions and blockchain data. It provides details such as transaction history, wallet balances, and block information, enhancing transparency and accountability.
-
-## Our Explorers
-
-* [Main Network](https://explorer.mainnet.ultra.io/)
-* [Test Network (You probably want this one)](https://explorer.testnet.ultra.io/)
-
-## Usage
-
-In most cases the search bar at the top takes any of the following:
-
-* Account Name
-* Transaction ID
-* Block Number
-
-### Example Queries
-
-::: details Examples
-
-```
-account:eosio.token 
-
-receiver:eosio.token (data.from:eoscanadacom OR data.to:eoscanadacom)
-
-(auth:eoscanadacom OR receiver:eoscanadacom)
-
-account:eosio.token action:transfer
-
-(ram.consumed:eoscanadacom OR ram.released:eoscanadacom)
-
-receiver:eosio.token 
-
-db.table:global
-```
-
-Examples pulled from [dFuse Docs](https://docs.dfuse.eosnation.io/eosio/public-apis/reference/search/terms/)
-:::
-
-## Account Page
-
-
-### Account Balance
-
-Account balance is available at the top.
-
-![](./images/block-explorer/explorer-balance.png)
-
-### RAM & Power
-
-Both of these are available on the account page as well.
-
-`∞` means the account has no limitations. Otherwise, most accounts have a limitation.
-
-Storing data on-chain costs `RAM`.
-
-Executing transactions utilizes `POWER`.
-
-![](./images/block-explorer/explorer-costs.png)
-
-### Permissions
-
-You can see who owns an account, or what key has control over an account under the `permissions` section.
-
-The +1/1 shows how many signatures are necessary to act on behalf of a `permission`. Permission being `active` or `owner` in the example below.
-
-![](./images/block-explorer/explorer-permissions.png)
-
-In the example below the `tech` `permission` requires two users to a transaction to act on behalf of the `ultra@tech` account.
-
-![](./images/block-explorer/explorer-permissions-advanced.png)
-
-### Contracts
-
-When you are on an account page such as `eosio.token` you can see that it has a contract deployed because it has the `tables` and `ABI` tabs.
-
-![](./images/block-explorer/explorer-abi.png)
-
-### Tables
-
-Tables can be browsed for additional information if you're aware of how the table is structured. In the case of `eosio.nft.ft` I can view the `factory.b` table to see available Uniqs. Tables available can be gathered from the `abi` tab.
-
-It's highly recommended to use `curl` requests against [REST API Endpoints](./how-to-make-a-rest-request.md) when reading data, or write a small script in one of your favorite programming languages.
-
-![](./images/block-explorer/explorer-tables.png)
-
----
 title: 'Tutorial - Generate a key and create a developer Testnet account'
 order: -99999
 oultine: [0, 5]
@@ -24092,7 +23779,7 @@ This tutorial will demonstrate how to use the Ultra toolkit for sending asset (t
 Before starting this tutorial, you will need:
 
 - A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
-- Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to get tokens](./how-to-get-tokens.md) or [how to use Faucet](./tutorial-obtain-token-and-purchase-ram.md).
+- Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](./tutorial-obtain-token-and-purchase-ram.md).
 
 ## Goal
 
@@ -24509,11 +24196,11 @@ Then you'll be able to use it to do things like creating accounts or signing tra
 
 Ultra has a [few different types of accounts](../../../blockchain/general/antelope-ultra/accounts-and-permissions.md) that are available for creation. In short, there are:
 
--   EBA accounts - These are created by the Ultra client on Mainnet and Testnet. They are non-custodial, recoverable accounts.
--   Non-EBA accounts - These are created by users and developers who wish to self-manage their keys.
+-   Ultra Accounts - These are created by the Ultra client on Mainnet and Testnet. They are non-custodial, recoverable accounts.
+-   Ultra Pro Wallets - These are created by users and developers who wish to self-manage their keys.
 -   Premium accounts - These are custom names reserved for Ultra and their partners.
 
-For your local chain, you'll be creating a **non-EBA account**. You can do so with the cleos command:
+For your local chain, you'll be creating an **Ultra Pro Wallet**. You can do so with the cleos command:
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"default", "owner":{"threshold":1,"keys":[{"key":"YOURPRIVATEKEY","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"PUBLICKEY","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p default
@@ -24675,6 +24362,384 @@ oultine: [0, 4]
 
 
 ---
+title: 'How to create an Ultra Pro Wallet'
+order: -99988
+oultine: [0, 5]
+---
+
+# How to create an Ultra Pro Wallet
+
+This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Wallet extension.
+
+## Prerequisites
+
+- Account created using official [Ultra client](https://ultra.io/) or you can create it later during the tutorial using the Wallet Extension
+- Installed the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
+- Your account must have sufficient UOS tokens for transactions and fees. Current Ultra Pro Wallet creation price: <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" />. This tutorial will briefly cover how to get UOS on Mainnet but if you already have some then you will be able to skip that step
+
+## Goal
+
+The goal of this tutorial is to create a new developer Ultra Pro Wallet on Mainnet which you can later use to directly interact with the blockchain. It is desireable for developers as it provides a more granular control over your account and allows it to be easily used for other tools and libraries like `cleos` or `Wharfkit`.
+
+## Open and log in to the Ultra Wallet
+
+To be able to create an Ultra Pro Wallet on Mainnet you will need to open your Wallet Extension and make sure you are switched to Mainnet. (You may need to log out from your Testnet account if it is currently logged in by clicking on the circular icon and clicking `Log out`).
+
+![](./images/UltraProWallet/wallet-mainnet-selection.png)
+
+Now if you already have an Ultra Account (created using the Ultra client) then you can simply use the `Sign In` option. If you don't have an account yet and need to create an account then proceed with `Sign Up` option, after signing up return back to this step and now use the `Sign In` option.
+
+## Create an Ultra Pro Wallet
+
+To be able to create an Ultra Pro Wallet you will need some UOS available on your Ultra Account. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to have at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations.
+
+If you don't have the required amount yet then you can utilize the `Buy UOS` option of the Ultra Wallet extension.
+
+![](./images/UltraProWallet/wallet-buy-uos.png)
+
+When you have enough funds you can proceed with the creation of the Ultra Pro Wallet. For this you need to click on the profile icon and select the `Create an Ultra Pro Wallet` button.
+
+![](./images/UltraProWallet/wallet-create-pro-wallet.png)
+
+This will open a new browser tab where you will have 2 options:
+
+- Generate a new private and public key pair
+- Use an existing pair to create an Ultra Pro Wallet
+
+![](./images/UltraProWallet/wallet-generate-or-paste-public-key.png)
+
+The simplest option is to generate a new key pair using the `Generate` button. Pressing it will automatically fill out the `Public key` field and will show you the associated private key
+
+![](./images/UltraProWallet/wallet-private-key-shown.png)
+
+::: warning
+
+It is up to you to properly secure your private key and not to lose it. If you lose the original copy of the private key you may eventually lose access to your new Ultra Pro Wallet account completely.
+
+:::
+
+Before finishing the Ultra Pro Wallet creation you need to specify the maximum amount of UOS your are willing to pay to create it. The price fluctuates over time due to USD to UOS conversion fluctuations and may be a bit different then the estimate shown on the page. Pick a value that is a bit over the estimated price or just put a large number there, we will charge only the current equivalent of 2 USD converted to UOS.
+
+![](./images/UltraProWallet/wallet-fill-optional-fields.png)
+
+Now you can press the `Create Account` button to proceed. You will be prompted to approve the transaction with its details listed. Check it and click `Confirm`
+
+![](./images/UltraProWallet/wallet-approve-transaction.png)
+
+If everything was done correctly you will get a successful transaction screen. You can click on `Block Explorer` button to view the transaction status.
+
+![](./images/UltraProWallet/wallet-transaction-successful.png)
+
+Your new Ultra Pro Wallet name will be listed in the actions list. You cannot chose a name directly.
+
+![](./images/UltraProWallet/wallet-check-block-explorer.png)
+
+## Sign In to the Ultra Wallet using Ultra Pro Wallet
+
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.
+
+---
+title: 'How to get RAM'
+order: -99985
+oultine: [0,5]
+---
+
+# How to get RAM
+
+After creating a developer account you can also purchase RAM for your account.
+
+::: warning
+
+This is only necessary if you are a smart contract developer
+
+:::
+
+## Why do you need RAM?
+
+RAM on the Ultra blockchain is essential for storing smart contract data and state. When you purchase RAM, you are purchasing RAM with the intent of storing data on-chain for other users to interact with.
+
+## Initial Setup
+
+1. Download Chrome or Brave
+2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+3. Refresh this Page
+4. Use the form below to quickly add RAM
+5. Ultra wallet should open
+6. **Make sure to set your wallet to `Testnet`**
+7. Import your private key into the wallet
+
+![](./images/select-network-wallet.png)
+
+## Purchase RAM
+
+Use the form below to add RAM to your account on our Test Network.
+
+<BuyRam />
+
+## All Done!
+
+You now have a development account with some UOS balance, and a little bit of RAM to publish a smart contract!
+
+---
+title: 'How to get Tokens'
+order: -99987
+oultine: [0, 5]
+---
+
+# How to get Tokens
+
+After creating a developer account you can also use the testnet faucet to get tokens.
+
+::: warning
+
+Make sure you have an account on our Test Network before you continue.
+
+:::
+
+## Visit Test Network Faucet
+
+Visit the link below to open our faucet application.
+
+-   https://faucet.testnet.app.ultra.io
+
+1. Click `Token Faucet`
+2. Paste your `Account Name` in the `To Account` field.
+3. Fill the Captcha
+4. Click Issue
+
+![](./images/get-tokens.png)
+
+## Check Your Account Balance
+
+Use the form below to lookup your account on our [Test Network Explorer](https://explorer.testnet.ultra.io/)
+
+<AccountLookupTestnet />
+
+## All Done!
+
+You now have a development account with some UOS balance distributed to the account!
+
+---
+title: 'How to make a REST Request'
+order: -99984
+oultine: [0,5]
+---
+
+# How to make a REST Request
+
+A REST request is a way to interact with a web service or in our case the blockchain, using HTTP methods (GET, POST, PUT, DELETE) to perform actions on resources identified by URIs. It follows the principles of Representational State Transfer (REST) for stateless communication.
+
+## Why would I need to do this?
+
+You may need to perform a REST request if you're looking up user balance, user account data, or maybe even NFTs.
+
+## REST API Basics
+
+Observe the following URL:
+
+```
+http://ultra.api.eosnation.io/v1/chain/get_info
+```
+
+It is composed of two parts:
+
+```
+<block_producer_url><endpoint>
+```
+
+Block Producer URL: `http://ultra.api.eosnation.io`
+
+Endpoint: `/v1/chain/get_info`
+
+Knowing this we can make a simple REST request.
+
+## Making the Request
+
+Use a CLI, or write some code in the language of your choice.
+
+::: code-group
+
+```sh [curl]
+curl http://ultra.api.eosnation.io/v1/chain/get_info
+```
+
+```js [JavaScript]
+const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: 'false'};
+
+fetch('http://ultra.api.eosnation.io/v1/chain/get_info', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+```
+
+```C# [C#]
+var client = new RestClient("http://ultra.api.eosnation.io/v1/chain/get_info");
+var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+IRestResponse response = client.Execute(request);
+```
+
+```GO [Go]
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "http://ultra.api.eosnation.io/v1/chain/get_info"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("Content-Type", "application/json")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```Java [Java]
+HttpResponse<String> response = Unirest.get("http://ultra.api.eosnation.io/v1/chain/get_info")
+  .header("Content-Type", "application/json")
+  .asString();
+```
+:::
+
+::: details Example Response
+```ts
+{
+	"server_version": "b668b78f",
+	"chain_id": "a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097",
+	"head_block_num": 152993457,
+	"last_irreversible_block_num": 152993368,
+	"last_irreversible_block_id": "091e7e580dc242f48fc8aca5685affdea9f65288d871fd818d3ec8cf602928ad",
+	"head_block_id": "091e7eb1ca42c9e9c9a4d134aacde9bcee73bcdbf03cc02e881a0b22a260344f",
+	"head_block_time": "2023-11-21T19:32:20.000",
+	"head_block_producer": "cryptolions1",
+	"virtual_block_cpu_limit": 400000,
+	"virtual_block_net_limit": 1048576,
+	"block_cpu_limit": 400000,
+	"block_net_limit": 1048576,
+	"server_version_string": "v3.2.4-2.0.1",
+	"fork_db_head_block_num": 152993457,
+	"fork_db_head_block_id": "091e7eb1ca42c9e9c9a4d134aacde9bcee73bcdbf03cc02e881a0b22a260344f",
+	"server_full_version_string": "v3.2.4-2.0.1-0-gb668b78f6",
+	"total_cpu_weight": 613000000,
+	"total_net_weight": 613000000,
+	"earliest_available_block_num": 1,
+	"last_irreversible_block_time": "2023-11-21T19:31:35.500"
+}
+```
+:::
+
+
+
+## What are the available endpoints?
+
+Check out our section on the [Chain API](../../products/chain-api/index.md) for all endpoints, and available URLs.
+---
+title: 'How to read the Block Explorer'
+order: -99986
+oultine: [0,5]
+---
+
+# How to read the Block Explorer
+
+A block explorer is a web tool that allows users to view information about cryptocurrency transactions and blockchain data. It provides details such as transaction history, wallet balances, and block information, enhancing transparency and accountability.
+
+## Our Explorers
+
+* [Main Network](https://explorer.mainnet.ultra.io/)
+* [Test Network (You probably want this one)](https://explorer.testnet.ultra.io/)
+
+## Usage
+
+In most cases the search bar at the top takes any of the following:
+
+* Account Name
+* Transaction ID
+* Block Number
+
+### Example Queries
+
+::: details Examples
+
+```
+account:eosio.token 
+
+receiver:eosio.token (data.from:eoscanadacom OR data.to:eoscanadacom)
+
+(auth:eoscanadacom OR receiver:eoscanadacom)
+
+account:eosio.token action:transfer
+
+(ram.consumed:eoscanadacom OR ram.released:eoscanadacom)
+
+receiver:eosio.token 
+
+db.table:global
+```
+
+Examples pulled from [dFuse Docs](https://docs.dfuse.eosnation.io/eosio/public-apis/reference/search/terms/)
+:::
+
+## Account Page
+
+
+### Account Balance
+
+Account balance is available at the top.
+
+![](./images/block-explorer/explorer-balance.png)
+
+### RAM & Power
+
+Both of these are available on the account page as well.
+
+`∞` means the account has no limitations. Otherwise, most accounts have a limitation.
+
+Storing data on-chain costs `RAM`.
+
+Executing transactions utilizes `POWER`.
+
+![](./images/block-explorer/explorer-costs.png)
+
+### Permissions
+
+You can see who owns an account, or what key has control over an account under the `permissions` section.
+
+The +1/1 shows how many signatures are necessary to act on behalf of a `permission`. Permission being `active` or `owner` in the example below.
+
+![](./images/block-explorer/explorer-permissions.png)
+
+In the example below the `tech` `permission` requires two users to a transaction to act on behalf of the `ultra@tech` account.
+
+![](./images/block-explorer/explorer-permissions-advanced.png)
+
+### Contracts
+
+When you are on an account page such as `eosio.token` you can see that it has a contract deployed because it has the `tables` and `ABI` tabs.
+
+![](./images/block-explorer/explorer-abi.png)
+
+### Tables
+
+Tables can be browsed for additional information if you're aware of how the table is structured. In the case of `eosio.nft.ft` I can view the `factory.b` table to see available Uniqs. Tables available can be gathered from the `abi` tab.
+
+It's highly recommended to use `curl` requests against [REST API Endpoints](./how-to-make-a-rest-request.md) when reading data, or write a small script in one of your favorite programming languages.
+
+![](./images/block-explorer/explorer-tables.png)
+
+---
 title: 'Tutorials'
 
 order: -99994
@@ -24715,28 +24780,43 @@ General tutorials to help feed your curiosity.
     </tr>
     <tr>
         <td>Tutorial - Token transfer and Uniq purchase transactions</td>
-        <td>Demonstrating token transfer and Uniq puchasing</td>
+        <td>Demonstrating token transfer and Uniq purchasing</td>
         <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
+    </tr>
+</table>
+
+## Guides
+
+<table>
+    <tr>
+        <td>Guide Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>How to create Ultra Pro Wallet</td>
+        <td>Create an Ultra Pro Wallet using Wallet Extension</td>
+        <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>
         <td>How to get tokens for interactions on the testnet</td>
-        <td><a href="../fundamentals/how-to-get-tokens">Link</a></td>
+        <td><a href="../guides/how-to-get-tokens">Link</a></td>
     </tr>
     <tr>
         <td>How to read the Block Explorer</td>
         <td>Learn how to use our block explorer for reading data</td>
-        <td><a href="../fundamentals/how-to-read-the-block-explorer">Link</a></td>
+        <td><a href="../guides/how-to-read-the-block-explorer">Link</a></td>
     </tr>
     <tr>
         <td>How to get RAM</td>
         <td>Use this tutorial to get RAM on the Testnet for your account</td>
-        <td><a href="../fundamentals/how-to-get-ram">Link</a></td>
+        <td><a href="../guides/how-to-get-ram">Link</a></td>
     </tr>
     <tr>
         <td>How to make a REST Request</td>
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
-        <td><a href="../fundamentals/how-to-make-a-rest-request">Link</a></td>
+        <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
     </tr>
 
 </table>
@@ -24869,7 +24949,7 @@ The scope used for `finalrates` table determines the unit of time you are lookin
 
 Then you can utilize the `rates` field to get the UOS conversion rate. Note that to convert the `price` stored here you will need to divide it by 100000000 (8 zeros). For minutes scope the `rates` are stored in intervals of 60 seconds (so it is an average over the past 60 seconds as well), for hours scope - 60 minutes, for days scope - 24 hours.
 
-## Get conversion rate using cleos (ang jq for parsing)
+## Get conversion rate using cleos (and jq for parsing)
 
 For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
 
@@ -25460,7 +25540,7 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 
 ::: details Ultra Testnet
 
-1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create a non-eba account and receive tokens. Use the key from the step of creating a wallet
+1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create an Ultra Pro Wallet and receive tokens. Use the key from the step of creating a wallet
 2. Open VSCode and Command Palette (F1) and type `Ultra: Create Transaction`
 3. Select Ultra Testnet
 4. Enter Wallet Password
@@ -25472,10 +25552,11 @@ cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-k
 
 ::: details Ultra Mainnet
 
-1. Create an eba account with ultra <a href="https://ultra.io/">desktop client</a>
-2. Download ultra wallet <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">extension</a>
-3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=newnonebact,buyrambytes">toolkit</a> to create a non-eba account and buy ram. Log in with your eba account credentials created in the first step
-   :::
+1. Download <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Ultra Wallet extension</a>
+2. Create an Ultra Pro Wallet using the Ultra Wallet extension <a href="../guides/how-to-create-ultra-pro-wallet.md">tutorial</a>
+3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=buyrambytes">toolkit</a> to to buy RAM. Log in with your Ultra Pro Wallet. Transfer UOS to this account if needed
+
+:::
 
 ## Deploy Contract
 
@@ -25785,7 +25866,7 @@ Error Details:
 assertion failure with message: must buy ram with core token
 ```
 
-Make sure UOS is specified with **exactly** 8 decimals as in [buyram](https://developers.ultra.io/experimental/contracts/System%20Contract/system-actions/buyram.html#buyram-buy-ram-with-uos) page.
+Make sure UOS is specified with **exactly** 8 decimals as in [buyram](../../blockchain/contracts/system-contract/system-actions/buyram.html#buyram-buy-ram-with-uos) page.
 
 ## Docker container start issues
 
@@ -26481,7 +26562,7 @@ In the case that an exchange needs to deploy a smart contract, please speak with
 
 ::: tip Info
 
-If you are simply looking for a way to swap from ERC-20 to native UOS use the following service [https://dapp.ptokens.io](https://dapp.ptokens.io) which is provided by our partner at pNetwork.
+If you are simply looking for a way to swap from ERC-20 to native UOS use the following service [https://dapp.p.network/](https://dapp.p.network/) which is provided by our partner at pNetwork.
 
 :::
 
@@ -26504,7 +26585,7 @@ You can use these explorers to check transactions on our networks.
 
 ## Creating Account(s)
 
-The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create these non-EBA accounts. Exchanges will be able to access the network and accounts through an API node.
+The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create this Ultra Premium Wallet or Ultra Corporate Wallet (for the differences see [here](../../blockchain/general/antelope-ultra/account-types.md)). Exchanges will be able to access the network and accounts through an API node.
 
 *   **Requirement checklist**
     *   **Accountname** (12 characters, a-z, 1-5)
@@ -26512,7 +26593,7 @@ The exchanges will provide us with public keys for each permission (OWNER, ACTIV
         
 ## Pre-Swap
 
-Ultra will be leveraging the p.network token swap solution. This means that partner exchanges will log in to [https://dapp.ptokens.io/](https://dapp.ptokens.io/) and must have their metamask (or ledger, etc.) ready to perform the swap.
+Ultra will be leveraging the p.network token swap solution. This means that partner exchanges will log in to [https://dapp.p.network/](https://dapp.p.network/) and must have their metamask (or ledger, etc.) ready to perform the swap.
 
 During the swap process you will be making Ethereum transactions. Depending on the time of day, activity, etc. of the chain gas prices may be extremely high. Please keep an eye on gas prices before performing a swap.
 
@@ -26528,15 +26609,15 @@ During the swap you will be putting in an Ultra accountname. This is the target 
 
 ### Fees and Costs
 
-The fee for ERC-20 swap to the native chain will have a 0% fee on the amount transferred. However, transferring from native UOS to ERC-20 UOS (or any other token) will have a 0.25% fee. Which means that you will only have a fee if you are moving into the ERC-20 platform. This fee will go to the validators of pNetwork and their infrastructure.
+The fee for ERC-20 swap to the native chain will have a 0% fee on the amount transferred. However, transferring from native UOS to ERC-20 UOS (or any other token) will have a 0.25% fee (min 10 USD). Which means that you will only have a fee if you are moving into the ERC-20 platform. This fee will go to the validators of pNetwork and their infrastructure. Keep in mind that the amounts mentioned do not include ETH Gas Fee which must be paid in either case.
 
 #### Actions and fees
 
-| Action                                                   | Fee Covered By                             |
-| -------------------------------------------------------- | ------------------------------------------ |
-| Sending ERC20 UOS tokens to the p.network Vault Contract | Covered by the user, paid in ETH (Gas Fee) |
-| Peg In                                                   | Covered by p.network                       |
-| Peg Out                                                  | The user (0.25% of transaction)            |
+| Action                                                   | Fee Covered By                                                                                                                                                                                                    |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sending ERC20 UOS tokens to the p.network Vault Contract | Covered by the user, paid in ETH (Gas Fee)                                                                                                                                                                        |
+| Peg In                                                   | Covered by p.network                                                                                                                                                                                              |
+| Peg Out                                                  | The user (0.25% of transaction, min 10 USD) + ETH Gas fee. For a more precise estimate see the [swap page](https://dapp.p.network/#/swap?asset=uos&from=ultra&to=eth) |
 
 ## EOSIO Examples
 

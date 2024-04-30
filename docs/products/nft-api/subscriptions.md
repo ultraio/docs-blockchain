@@ -320,8 +320,6 @@ subscription UniqFactories($assetManager: WalletId) {
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqFactorySnapshots`
 
 ##### Description
@@ -633,8 +631,6 @@ subscription UniqFactorySnapshots(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqSnapshots`
 
 ##### Description
@@ -850,8 +846,6 @@ subscription UniqSnapshots(
   }
 }
 ```
-
-[Subscriptions](#group-Operations-Subscriptions)
 
 ## `uniqsOfFactory`
 
@@ -1293,8 +1287,6 @@ subscription UniqsOfFactory(
   }
 }
 ```
-
-[Subscriptions](#group-Operations-Subscriptions)
 
 ## `uniqsOfWallet`
 

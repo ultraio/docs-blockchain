@@ -174,9 +174,9 @@ If you find a need for a wallet that almost never locks itself then seek the fol
 
 ## Accounts
 
-Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a non-eba account is necessary to deploy smart contracts. 
+Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a Ultra Pro Wallet is necessary to deploy smart contracts. 
 
-Meaning, developers who wish **to deploy a smart contract** on the production network must contact Ultra and **obtain a non-eba account.**
+Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md) or [Ultra Toolkit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
 
 ### Account Rules
 
@@ -203,7 +203,7 @@ This being said, you will need RAM in order to deploy a smart contract. You may 
 
 ### Accounts for Testnet Network & Production Network
 
-However, **a non-eba account is necessary for deploying smart contracts.** This can only be obtained by going through Ultra. 
+However, **an Ultra Pro Wallet is necessary for deploying smart contracts.**. 
 
 In a local network, a developer has full control over how accounts are created, and when they can be created. Refer to the instructions below to use `cleos` to create accounts.
 
@@ -219,9 +219,9 @@ This permission is inaccessible on Testnet and Mainnet.
 
 _Note: Using the `ultra.eosio` permission should be possible when launching the chain with the javascript framework included in the image._
 
-### Creating a Non-EBA Account
+### Creating an Ultra Pro Wallet
 
-Allow user to create new non-EBA account when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated on chain with format of `1aa2aa3aa4aa` with `a` as an alphabet character.
+Allow user to create new Ultra Pro Wallet when the system contract is deployed, with expected cost should not be larger than max payment. Cost calculation will base on config from newactconfig. All names will be auto-generated, for details on the format see [this page](../../../blockchain/general/antelope-ultra/account-types.md).
 
 ```sh
 cleos push action eosio newnonebact '{"creator":"alice", "owner":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "active":{"threshold":1,"keys":[{"key":"EOS7i1PgEe399sjbhhS6umNFU6okzit96chj8NtpBRzy6XpDYXUH9","weight":1}],"accounts":[],"waits":[]}, "max_payment":"1.00000000 UOS"}' -p alice
@@ -333,24 +333,6 @@ Smart contracts allow accounts to interact with an `action` inside of a compiled
 Deploying a compiled smart contract is how developers, and users alike will interface with the blockchain. 
 
 An example of a smart contract would be the `eosio.token` contract that also has the `transfer` action. This allows users to transfer the native token between accounts.
-
-### Restrictions
-
-**This does not apply to local networks, you can bypass this through other scripts**.
-
-By default `ultra` requires KYB (Know Your Business) before any business or individual user can deploy smart contracts to their test network or the main network. 
-
-This is a manual process and the following must be done:
-
-1. Generate two key pairs, one each for your OWNER and ACTIVE permissions.
-
-2. These key pairs must be securely saved locally.
-
-3. Send the public keys to Ultra
-
-4. Ultra will generate a non-EBA account and revert to the account name
-
-Contact an Ultra representative through Telegram for more information.
 
 ### Deploying a Smart Contract
 

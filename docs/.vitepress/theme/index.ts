@@ -14,6 +14,7 @@ import LastPublicKeyVue from '../../components/widgets/LastPublicKey.vue';
 import AccountLookupTestnetVue from '../../components/widgets/AccountLookupTestnet.vue';
 import BuyRamVue from '../../components/widgets/BuyRam.vue';
 import TodaysDateVue from '../../components/widgets/TodaysDate.vue';
+import OracleConversionVue from '../../components/widgets/OracleConversion.vue';
 
 let globals;
 
@@ -29,6 +30,7 @@ export default {
         app.component('AccountLookupTestnet', AccountLookupTestnetVue);
         app.component('BuyRam', BuyRamVue);
         app.component('TodaysDate', TodaysDateVue);
+        app.component('OracleConversion', OracleConversionVue);
 
         // Uses window, document, etc. in component
         app.component('Mainnet', await defineAsyncComponent(() => import('../../components/environments/Mainnet.vue')));

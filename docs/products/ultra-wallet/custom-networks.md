@@ -7,7 +7,7 @@ outline: [0, 4]
 
 # How to add custom networks
 
-For non-EBA wallet accounts, it is possible to add custom networks for testing purposes.
+For Ultra Pro Wallets, it is possible to add custom networks for testing purposes.
 
 This is the correct procedure:
 

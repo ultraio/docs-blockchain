@@ -41,7 +41,7 @@ The scope used for `finalrates` table determines the unit of time you are lookin
 
 Then you can utilize the `rates` field to get the UOS conversion rate. Note that to convert the `price` stored here you will need to divide it by 100000000 (8 zeros). For minutes scope the `rates` are stored in intervals of 60 seconds (so it is an average over the past 60 seconds as well), for hours scope - 60 minutes, for days scope - 24 hours.
 
-## Get conversion rate using cleos (ang jq for parsing)
+## Get conversion rate using cleos (and jq for parsing)
 
 For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
 

@@ -1,30 +1,30 @@
 ---
-title: 'EBA and non-EBA Accounts'
+title: 'Ultra Accounts and Ultra Pro Wallets'
 order: 1
 
 ---
 
-# EBA and non-EBA Accounts
+# Ultra Accounts and Ultra Pro Wallets
 
 ## How it works
 
-For non-EBA the account name is auto generated and has a form of “1aa2aa3aa4aa” where “a” is an English alphabet letter in the range of \[a-z\]. An EBA account name has a form of “aa1aa2aa3aa4” and can be proposed by the account creator. If the proposed name exists or does not follow the format, a new name is generated automatically.
+System contract provides 2 actions to generate new accounts of the following types: Ultra Account and Ultra Pro Wallet. Their names are automatically generated using a pattern `aa1aa2aa3aa4` and `1aa2aa3aa4aa` respectively. For more details see [this page](../../general/antelope-ultra/account-types.md).
 
-Ultra sponsors the RAM needed for an EBA account creation. For non-EBA account records the RAM can be paid by another account.
+Ultra sponsors the RAM needed for an Ultra Account and Ultra Pro Wallet creation.
 
-## Easy Blockchain Account - EBA
+## Ultra Account
 
-An Easy Blockchain Account is a special type of account mainly for average users.
+Ultra Accounts (formerly known as Easy Blockchain Account or EBA) is a special type of account mainly for average users. It provides recovery options and is managed by our Backend.
 
-## Non-EBA
+## Ultra Pro Wallet
 
-A non-EBA account is a typical blockchain account controlled by private keys you must secure yourself.
+Ultra Pro Wallet (formerly known as non-EBA) is a typical blockchain account controlled by private keys you must secure yourself. In case you lose the keys - you lose the ownership of the account. This type of account allows full control and automation.
 
 ## Relevant actions
 
-[newnonebact - create a non-EBA account](./system-actions/newnonebact.html)
+[newnonebact - create an Ultra Pro Wallet](./system-actions/newnonebact.html)
 
-[newebact - create a EBA account](./system-actions/newebact.html)
+[newebact - create an Ultra Account](./system-actions/newebact.html)
 
 ### Relevant tables
 

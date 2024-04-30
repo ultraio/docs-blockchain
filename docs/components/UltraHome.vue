@@ -43,7 +43,7 @@ const popularresources = [
         icon: '/images/links/api.svg',
     },
     {
-        href: 'products/nft-api/index.html',
+        href: 'products/nft-api/introduction.html',
         title: 'NFT API',
         desc: 'Read data from Uniqs and Uniq Factories using our NFT API.',
         icon: '/images/links/api.svg',
@@ -130,7 +130,7 @@ const marketplacelinks = [
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'products/nft-api/index.html',
+        href: 'products/nft-api/introduction.html',
         title: 'Using Our NFTAPI',
         icon: '/images/links/uniq.svg',
     },

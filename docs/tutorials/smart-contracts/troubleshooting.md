@@ -1,5 +1,5 @@
 ---
-title: '6. Troubleshooting Deployment'
+title: 'Troubleshooting Deployment'
 
 order: -93
 outline: [0, 5]

@@ -8,7 +8,7 @@ order: -99999999
 
 Build smart contracts, and get rid of those annoying squigglies while working with smart contracts on EOS based chains.
 
-This is your all in one toolkit to do everything EOS in the blink of an eye.
+This is your all in one toolkit to do everything in the blink of an eye.
 
 ## Install
 

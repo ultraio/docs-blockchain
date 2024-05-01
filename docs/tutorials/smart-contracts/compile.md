@@ -47,6 +47,8 @@ Once the files are compiled you should see an `abi` and a `wasm` file next to yo
 
 ![](./images/compiled-files.png)
 
+For more information about `.abi` and `.wasm` files see the [official EOS Network Foundation page](https://docs.eosnetwork.com/docs/latest/quick-start/build-and-deploy#what-does-a-smart-contract-build-to)
+
 ## What's next?
 
 The next tutorial will cover deploying smart contracts using the VS Code extension. See [Deploy Smart Contract](./deploy.md) for more information.

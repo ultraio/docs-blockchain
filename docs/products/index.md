@@ -78,7 +78,7 @@ Check out some of the various libraries, code examples and products we have avai
     </tr>
     <tr>
         <td>Smart Contract Toolkit for VSCode</td>
-        <td>An all inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to our blockchain for VSCode.</td>
+        <td>An all-inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to Ultra/EOS blockchain.</td>
         <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
         <td><a href="../tutorials/smart-contracts/compile.md">Tutorial</a></td>
     </tr>

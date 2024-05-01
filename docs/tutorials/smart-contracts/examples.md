@@ -1,5 +1,5 @@
 ---
-title: '5. Code Examples'
+title: 'Code Examples'
 
 outline: [0, 5]
 order: -94

@@ -16104,7 +16104,7 @@ Check out some of the various libraries, code examples and products we have avai
     </tr>
     <tr>
         <td>Smart Contract Toolkit for VSCode</td>
-        <td>An all inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to our blockchain for VSCode.</td>
+        <td>An all-inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to Ultra/EOS blockchain.</td>
         <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
         <td><a href="../tutorials/smart-contracts/compile.md">Tutorial</a></td>
     </tr>
@@ -21151,7 +21151,7 @@ order: -99999999
 
 Build smart contracts, and get rid of those annoying squigglies while working with smart contracts on EOS based chains.
 
-This is your all in one toolkit to do everything EOS in the blink of an eye.
+This is your all in one toolkit to do everything in the blink of an eye.
 
 ## Install
 
@@ -25482,12 +25482,14 @@ Once the files are compiled you should see an `abi` and a `wasm` file next to yo
 
 ![](./images/compiled-files.png)
 
+For more information about `.abi` and `.wasm` files see the [official EOS Network Foundation page](https://docs.eosnetwork.com/docs/latest/quick-start/build-and-deploy#what-does-a-smart-contract-build-to)
+
 ## What's next?
 
 The next tutorial will cover deploying smart contracts using the VS Code extension. See [Deploy Smart Contract](./deploy.md) for more information.
 
 ---
-title: '3. Deploy Smart Contract'
+title: 'Deploy Smart Contract'
 
 outline: [0, 5]
 order: -96
@@ -25634,7 +25636,7 @@ This is the stage where you have a smart contract, you have had that contract au
 -   Optional frontend application is ready to be used.
 
 ---
-title: '5. Code Examples'
+title: 'Code Examples'
 
 outline: [0, 5]
 order: -94
@@ -25748,7 +25750,7 @@ order: -98
 
 -   Have [Docker](https://docs.docker.com/engine/install/) installed before using the extension.
 -   [VS Code](https://code.visualstudio.com/)
-    -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended).
+    -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended)
 
 ## Goal
 
@@ -25761,8 +25763,8 @@ You can download the extension from [VS Code Market Place](https://marketplace.v
 To install the extension via VSCode, follow these steps:
 
 1. Open up your VS Code and click on the `Extensions` tab, or press `Ctrl + Shift + X`
-2. Under the `Extensions` tab, search for `ultra-cpp`.
-3. Click on the `Install` button.
+2. Under the `Extensions` tab, search for `ultra-cpp`
+3. Click on the `Install` button
 
 ![](./images/install-vscode-ext.png)
 
@@ -25796,11 +25798,16 @@ After creating the contract, you will need to **install headers** to remove some
 
 There are currently **two ways** to install headers.
 
--   Open your `.cpp` file that was generated, and follow the prompts.
--   Through the `Command Palette (F1)` search for
--   `Ultra: Add C++ Header Files`
+-   First way is to open your `.cpp` file that was generated, and follow the prompts
+-   The second way is to open the the `Command Palette (F1)` and search for `Ultra: Add C++ Header Files for EOSIO`
 
-After installation, and following the prompts your window will restart.
+Make sure you agree to both prompts (`Add Ultra.io Header Files` and `Add C++ Support`):
+
+![](./images/vscode-ultra-headers.png)
+
+![](./images/vscode-ultra-cpp-support.png)
+
+After installation, and following the prompts, the VS Code window will restart itself.
 
 Wait for intellisense to finish updating to ensure everything is working correctly.
 
@@ -25808,12 +25815,14 @@ Wait for intellisense to finish updating to ensure everything is working correct
 
 ![](./images/intellisense-ready.png)
 
+Any other prompts from VS Code can be ignored (including prompts related to Docker or CMake Tools if you have those installed)
+
 ## What's next?
 
 The next tutorial will cover compiling smart contracts using the VS Code extension. See [Smart Contract Compiling](./compile.md) for more information.
 
 ---
-title: '4. Create a Transaction'
+title: 'Create a Transaction'
 
 outline: [0, 5]
 order: -95
@@ -25850,7 +25859,7 @@ Fill out your transaction, and execute it.
 ![](./images/successful-transaction.png)
 
 ---
-title: '6. Troubleshooting Deployment'
+title: 'Troubleshooting Deployment'
 
 order: -93
 outline: [0, 5]

@@ -53,9 +53,14 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>How to create Ultra Pro Wallet</td>
-        <td>Create an Ultra Pro Wallet using Wallet Extension</td>
+        <td>How to create Ultra Pro Wallet using Ultra Wallet Extension</td>
+        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Wallet Extension</td>
         <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to create Ultra Pro Wallet using Ultra Toolkit</td>
+        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Toolkit</td>
+        <td><a href="../guides/how-to-create-ultra-pro-wallet-using-toolkit">Link</a></td>
     </tr>
     <tr>
         <td>How to get Tokens</td>

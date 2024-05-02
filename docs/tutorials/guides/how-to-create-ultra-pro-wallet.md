@@ -1,18 +1,18 @@
 ---
-title: 'How to create an Ultra Pro Wallet'
-order: -99988
+title: 'How to create an Ultra Pro Wallet using Ultra Wallet Extension'
+order: -99989
 oultine: [0, 5]
 ---
 
-# How to create an Ultra Pro Wallet
+# How to create an Ultra Pro Wallet using Ultra Wallet Extension
 
 This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Wallet extension.
 
 ## Prerequisites
 
-- Account created using official [Ultra client](https://ultra.io/) or you can create it later during the tutorial using the Wallet Extension
-- Installed the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
-- Your account must have sufficient UOS tokens for transactions and fees. Current Ultra Pro Wallet creation price: <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" />. This tutorial will briefly cover how to get UOS on Mainnet but if you already have some then you will be able to skip that step
+-   Account created using official [Ultra client](https://ultra.io/) or you can create it later during the tutorial using the Wallet Extension
+-   Installed the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
+-   Your account must have sufficient UOS tokens for transactions and fees. Current Ultra Pro Wallet creation price is <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" />. This tutorial will briefly cover how to get UOS on Mainnet but if you already have some then you will be able to skip that step
 
 ## Goal
 
@@ -40,8 +40,8 @@ When you have enough funds you can proceed with the creation of the Ultra Pro Wa
 
 This will open a new browser tab where you will have 2 options:
 
-- Generate a new private and public key pair
-- Use an existing pair to create an Ultra Pro Wallet
+-   Generate a new private and public key pair
+-   Use an existing pair to create an Ultra Pro Wallet
 
 ![](./images/UltraProWallet/wallet-generate-or-paste-public-key.png)
 
@@ -73,4 +73,4 @@ Your new Ultra Pro Wallet name will be listed in the actions list. You cannot ch
 
 ## Sign In to the Ultra Wallet using Ultra Pro Wallet
 
-The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` network when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.

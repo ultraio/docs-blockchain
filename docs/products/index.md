@@ -41,10 +41,10 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="./chain-api/index">Tutorial</a></td>
     </tr>
     <tr>
-        <td>NFT API</td>
+        <td>Ultra API</td>
         <td>Ultra is providing direct access to uniq data in a easily digestable API. Lookup Uniq data quickly, and easily.</td>
         <td>N/A</td>
-        <td><a href="./nft-api/index">Tutorial</a></td>
+        <td><a href="./nft-api/introduction">Tutorial</a></td>
     </tr>
     <tr>
         <td>Ultra Ledger Lib</td>

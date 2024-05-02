@@ -8,13 +8,11 @@ order: 5
 
 ## `uniqFactories`
 
-Use uniqFactorySnapshots instead. This subscription will be removed in a
-next version.
+Transition to uniqFactorySnapshots for improved data management. This method will be phased out in future updates.
 
 ##### Description
 
-This subscription is used to find information about uniq factories. If
-no filter is applied, it will return all existing factories.
+Subscribes to updates on Uniq Factories, providing a mechanism for real-time monitoring and data synchronization based on specified criteria.
 
 ##### Response
 
@@ -22,9 +20,9 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                                | Description                                                                                                    |
-|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `assetManager` - [`WalletId`](types.md#walletid) | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
+| Name                                                | Description                                                                                                                   |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `assetManager` - [`WalletId`](types.md#walletid) | Optional filter to narrow down factories by their associated asset manager, enhancing focus and relevance of the data stream. |
 
 #### Example
 
@@ -36,6 +34,10 @@ subscription UniqFactories($assetManager: WalletId) {
     accountMintingLimit
     assetCreator
     assetManager
+    authorizedMinters {
+      quantity
+      walletId
+    }
     conditionlessReceivers
     defaultUniqMetadata {
       cachedSource {
@@ -127,6 +129,40 @@ subscription UniqFactories($assetManager: WalletId) {
         uri
       }
       status
+    }
+    firsthandPurchases {
+      groupRestriction {
+        excludes
+        includes
+      }
+      id
+      option {
+        factories {
+          count
+          id
+          strategy
+        }
+        transferUniqsReceiver
+      }
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      promoterBasisPoints
+      purchaseLimit
+      purchaseWindow {
+        endDate
+        startDate
+      }
+      purchasedUniqs
+      saleShares {
+        basisPoints
+        receiver
+      }
+      uosPayment
     }
     id
     metadata {
@@ -262,10 +298,14 @@ subscription UniqFactories($assetManager: WalletId) {
       "accountMintingLimit": 987,
       "assetCreator": "aa1aa2aa3ag4",
       "assetManager": "aa1aa2aa3ag4",
+      "authorizedMinters": [UniqFactoryAuthorizedMinter],
       "conditionlessReceivers": [
         "aa1aa2aa3ag4"
       ],
       "defaultUniqMetadata": UniqMetadata,
+      "firsthandPurchases": [
+        UniqFactoryFirsthandPurchase
+      ],
       "id": 987,
       "metadata": UniqFactoryMetadata,
       "mintableWindow": UniqFactoryMintableWindow,
@@ -280,15 +320,11 @@ subscription UniqFactories($assetManager: WalletId) {
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqFactorySnapshots`
 
 ##### Description
 
-Subscribes on uniq factory snapshots. A snapshot is fired when a state
-change occurs. Provides efficient state synchronization feature based on
-cursors with position reset strategy.
+Engages with Uniq Factory snapshots, offering an advanced model for tracking changes and state transitions within factories, powered by stream positions and optional cursors for continuity.
 
 ##### Response
 
@@ -296,10 +332,10 @@ Returns a [`UniqFactorySnapshot!`](types.md#uniqfactorysnapshot)
 
 ##### Arguments
 
-| Name                                                                                 | Description                                                                                                                               |
-|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | The optional stream cursor to resume snapshots position after. If the given cursor is unreachable, the given positionStrategy is applied. |
-| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | The stream position strategy to apply if no cursor provided or the given cursor is unreachable.                                           |
+| Name                                                                                 | Description                                                                                        |
+|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | An optional parameter to resume snapshot streaming, enhancing data recovery and stream management. |
+| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | Determines the starting point for snapshot updates, ensuring data relevance and stream continuity. |
 
 #### Example
 
@@ -321,6 +357,10 @@ subscription UniqFactorySnapshots(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -412,6 +452,40 @@ subscription UniqFactorySnapshots(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -557,15 +631,11 @@ subscription UniqFactorySnapshots(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqSnapshots`
 
 ##### Description
 
-Subscribes on uniq snapshots. A snapshot is fired when a state change
-occurs. Provides efficient state synchronization feature based on
-cursors with position reset strategy.
+Initiates a subscription to Uniq snapshots, offering a modern framework for observing Uniq state changes and updates, supported by strategic stream positioning and cursor-based continuity.
 
 ##### Response
 
@@ -573,10 +643,10 @@ Returns a [`UniqSnapshot!`](types.md#uniqsnapshot)
 
 ##### Arguments
 
-| Name                                                                                 | Description                                                                                                                               |
-|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | The optional stream cursor to resume snapshots position after. If the given cursor is unreachable, the given positionStrategy is applied. |
-| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | The stream position strategy to apply if no cursor provided or the given cursor is unreachable.                                           |
+| Name                                                                                 | Description                                                                                                      |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | Facilitates the resumption of snapshot updates, promoting efficient data streaming and enhanced user experience. |
+| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | Sets the framework for initiating snapshot updates, ensuring alignment with user needs and system capabilities.  |
 
 #### Example
 
@@ -777,17 +847,13 @@ subscription UniqSnapshots(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqsOfFactory`
 
-Use uniqSnapshots instead. This subscription will be removed in a next
-version.
+Adopt uniqSnapshots for enhanced state tracking and real-time updates. This method is slated for discontinuation.
 
 ##### Description
 
-This subscription is used to find uniqs that are associated with a
-factory based on their ID.
+Provides a subscription service for tracking Uniqs associated with a specific factory, leveraging serial number ranges and ID filters for targeted data retrieval.
 
 ##### Response
 
@@ -795,11 +861,11 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                                                       | Description                                                                                                    |
-|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
-| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter from a range of serial number.                                                                          |
+| Name                                                                       | Description                                                                                                                |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `factoryId` - [`BigInt!`](types.md#bigint)                              | Identifies the factory of interest, centralizing the focus of the subscription on its associated Uniqs.                    |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Optional list of specific Uniq IDs for filtering, enabling targeted tracking within the factory's scope.                   |
+| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Optional range filter for focusing on Uniqs within specific serial number boundaries, adding precision to the data stream. |
 
 #### Example
 
@@ -820,6 +886,10 @@ subscription UniqsOfFactory(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -911,6 +981,40 @@ subscription UniqsOfFactory(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -1184,16 +1288,13 @@ subscription UniqsOfFactory(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqsOfWallet`
 
-Use uniqSnapshots instead. This subscription will be removed in a next
-version.
+Shift to uniqSnapshots for a streamlined and updated approach to Uniq monitoring. This subscription will be phased out.
 
 ##### Description
 
-This subscription is used to recover user-specific uniqs.
+Facilitates user-centric tracking of Uniqs, catering to individual ownership patterns and preferences with optional filters for ID and factory association.
 
 ##### Response
 
@@ -1201,11 +1302,11 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                             | Description                                                                                                 |
-|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| `factoryIds` - [`[BigInt!]`](types.md#bigint) | Filter from a list of uniq factory id.                                                                      |
-| `ids` - [`[BigInt!]`](types.md#bigint)        | Filter from a list of uniq id. Can be used to know with a list of uniq witch one is related to the factory. |
-| `walletId` - [`WalletId!`](types.md#walletid) | Wallet id of the user.                                                                                      |
+| Name                                             | Description                                                                                                         |
+|--------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `factoryIds` - [`[BigInt!]`](types.md#bigint) | Optional filter for factory association, allowing users to monitor Uniqs from selected production sources.          |
+| `ids` - [`[BigInt!]`](types.md#bigint)        | Optional list of Uniq IDs for refined tracking, aligning the data stream with user-specific interests and holdings. |
+| `walletId` - [`WalletId!`](types.md#walletid) | The wallet ID of the user, providing a personalized data stream focused on owned Uniqs.                             |
 
 #### Example
 
@@ -1226,6 +1327,10 @@ subscription UniqsOfWallet(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -1317,6 +1422,40 @@ subscription UniqsOfWallet(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {

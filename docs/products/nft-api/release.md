@@ -1,12 +1,12 @@
 ---
-title: 'Release Notes'
+title: 'release'
 deploy: ['staging', 'mainnet']
 order: 1
 ---
 
-# Release Notes
+# Release notes
 
-We're thrilled to announce the release of new version of the NFT API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
+We're thrilled to announce the release of a new version of the Ultra API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
 
 ## Key Highlights
 
@@ -16,7 +16,7 @@ We're thrilled to announce the release of new version of the NFT API. This updat
 
 ## Breaking changes
 
--   **Removed** enum `BlockStep` - The NFT API will now reflect only irreversible transactions.
+-   **Removed** enum `BlockStep` - The Ultra API will now reflect only irreversible transactions.
 
 -   **Removed** type `UniqRevenue`
 

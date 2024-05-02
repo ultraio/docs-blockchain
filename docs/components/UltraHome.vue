@@ -44,8 +44,8 @@ const popularresources = [
     },
     {
         href: 'products/nft-api/introduction.html',
-        title: 'NFT API',
-        desc: 'Read data from Uniqs and Uniq Factories using our NFT API.',
+        title: 'Ultra API',
+        desc: 'Read data from Uniqs and Uniq Factories using our Ultra API.',
         icon: '/images/links/api.svg',
     },
     {

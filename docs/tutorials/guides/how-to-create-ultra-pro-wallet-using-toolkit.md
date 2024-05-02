@@ -78,14 +78,14 @@ Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool
 4. Clicking on the `eosio::newnonebact` option will open up the transaction modal.
 
 5. Fill the required feilds for the `newnonebact` action.
-    1. **creator**: `aa1aa2aa3ai4` (your account, who will pay for the RAM)
+    1. **creator**: `aa1aa2aa3ai4` (your existing Ultra Account, who will pay the account creation fee)
     2. Under `owner` section:
         1. **threshold**: Input `1` as the threshold for owner authority.
         2. Click on the `Add` button for `keys` section and enter your public key in the **key** input, and `1` in the **weight** input.
     3. Under `active` section:
         1. **threshold**: Input `1` as the threshold for active authority.
         2. Click on the `Add` button for `keys` section and enter your public key in the **key** input, and `1` in the **weight** input.
-    4. **max_payment**: You need to specify the maximum amount of UOS your are willing to pay to create your Ultra Pro Wallet. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to input at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations.
+    4. **max_payment**: You need to specify the maximum amount of UOS your are willing to pay to create your Ultra Pro Wallet. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to input at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations (e.g. put 1 UOS over the current price).
     5. Once you have inputted all the values, click on the `Send 1 Action` button.
 
 ![](./images/toolkit-newnonebact-form.png)

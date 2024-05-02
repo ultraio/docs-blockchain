@@ -343,7 +343,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'NFT API',
+            text: 'Ultra API',
             items: getMarkdownFiles('/products/nft-api'),
             collapsed: true,
         },

@@ -1,5 +1,5 @@
 ---
-title: '3. Deploy Smart Contract'
+title: 'Deploy Smart Contract'
 
 outline: [0, 5]
 order: -96

@@ -11,7 +11,7 @@ order: -98
 
 -   Have [Docker](https://docs.docker.com/engine/install/) installed before using the extension.
 -   [VS Code](https://code.visualstudio.com/)
-    -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended).
+    -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended)
 
 ## Goal
 
@@ -24,8 +24,8 @@ You can download the extension from [VS Code Market Place](https://marketplace.v
 To install the extension via VSCode, follow these steps:
 
 1. Open up your VS Code and click on the `Extensions` tab, or press `Ctrl + Shift + X`
-2. Under the `Extensions` tab, search for `ultra-cpp`.
-3. Click on the `Install` button.
+2. Under the `Extensions` tab, search for `ultra-cpp`
+3. Click on the `Install` button
 
 ![](./images/install-vscode-ext.png)
 
@@ -59,17 +59,24 @@ After creating the contract, you will need to **install headers** to remove some
 
 There are currently **two ways** to install headers.
 
--   Open your `.cpp` file that was generated, and follow the prompts.
--   Through the `Command Palette (F1)` search for
--   `Ultra: Add C++ Header Files`
+-   First way is to open your `.cpp` file that was generated, and follow the prompts
+-   The second way is to open the the `Command Palette (F1)` and search for `Ultra: Add C++ Header Files for EOSIO`
 
-After installation, and following the prompts your window will restart.
+Make sure you agree to both prompts (`Add Ultra.io Header Files` and `Add C++ Support`):
+
+![](./images/vscode-ultra-headers.png)
+
+![](./images/vscode-ultra-cpp-support.png)
+
+After installation, and following the prompts, the VS Code window will restart itself.
 
 Wait for intellisense to finish updating to ensure everything is working correctly.
 
 ![](./images/intellisense-updating.png)
 
 ![](./images/intellisense-ready.png)
+
+Any other prompts from VS Code can be ignored (including prompts related to Docker or CMake Tools if you have those installed)
 
 ## What's next?
 

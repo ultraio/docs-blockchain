@@ -1,5 +1,5 @@
 ---
-title: '4. Create a Transaction'
+title: 'Create a Transaction'
 
 outline: [0, 5]
 order: -95

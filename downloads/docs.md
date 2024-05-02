@@ -14189,7 +14189,7 @@ New repository versions are only created when one or more new files you uploaded
 ### Setting up the SSN upload
 
 1. Copy the repository ID that you want to use by clicking on the copy icon.
-2. Create a .json (name isn’t relevant) file with the following structure:
+2. Create a .json (the name isn’t relevant, but we will refer to it as repo_config.json) file with the following structure:
 
 ```
 [
@@ -14210,17 +14210,28 @@ Pro tips:
 > -   Include a comma at the end of each line if the next line also has text.
 > -   If you’re uploading to several repositories at once, include a comma after the closing curly bracket of each repository, except after the last repository.
 
+### Getting filebeam
+
+The dependencies necessary to upload files to a repository can be found below, separated by environment:
+
+- [Dev](https://download.dev.app.ultra.io/downloads-dev-ultraio/dev/solid-state-networks/direct6/5.1.0/archive.zip)
+- [QA](https://download.qa.app.ultra.io/downloads-dev-ultraio/qa/solid-state-networks/direct6/5.1.0/archive.zip)
+- [Preprod](https://download-cdn.preprod.app.ultra.io/solid-state-networks/direct6/5.1.0/archive.zip)
+- [Sandbox](https://download.staging.app.ultra.io/downloads-staging-ultraio/solid-state-networks/direct6/5.1.0/archive.zip)
+- [Production](https://download-cdn.app.ultra.io/solid-state-networks/direct6/5.1.0/archive.zip)
+
+
 ### Running filebeam
 
 To do this, you need to use an account that is either the company owner or has Admin permissions within the company. Other accounts will see an error message when trying to execute the filebeam script.
 
-1. On the CMD tool of your choice, run this command to go to the folder containing the upload script:
+1. On the CMD tool of your choice, navigate to the following folder within the downloaded archive:
 ```
-cd %localappdata%\Ultra_{env}\sdk-direct6\DIRECT6\deploy\
+cd {download_location}\sdk-direct6\DIRECT6\deploy\
 ```
 2. Then run this command to start the upload:
 ```
-..\..\setup\python38\python.exe filebeam.py --email=your_account@email.com --repositories_config=C:\Ultra_Games\Repo\repo_config.json
+..\..\setup\python38\python.exe filebeam.py --email=your_account@email.com --repositories_config={file_location}\repo_config.json
 ```
 3. Enter your password, which won't be visible.
 ![image](https://github.com/Tomas-Cucit/docs-blockchain/assets/140004349/a42efda0-3584-440a-ad05-ac560d9b3ab3)
@@ -16067,10 +16078,10 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="./chain-api/index">Tutorial</a></td>
     </tr>
     <tr>
-        <td>NFT API</td>
+        <td>Ultra API</td>
         <td>Ultra is providing direct access to uniq data in a easily digestable API. Lookup Uniq data quickly, and easily.</td>
         <td>N/A</td>
-        <td><a href="./nft-api/index">Tutorial</a></td>
+        <td><a href="./nft-api/introduction">Tutorial</a></td>
     </tr>
     <tr>
         <td>Ultra Ledger Lib</td>
@@ -16122,9 +16133,53 @@ deploy: ['staging', 'mainnet']
 order: 2
 ---
 
-# Authentication
+# API Authentication Documentation
 
-## API Endpoints
+## Introduction
+
+Welcome to the API Authentication Documentation for the Ultra API . This document provides guidelines and instructions for managing authentication when interacting with our API.
+
+## How to register
+
+To access our API endpoints, third-party clients must first obtain appropriate credentials depending on their application type.
+
+Your API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.
+
+### Frontend Application Registration
+
+For frontend applications, you need to obtain a registration token and a unique X-Client-ID. These credentials are essential for authenticating requests and identifying clients accessing our API. To request the registration token and X-Client-ID, please contact our support team at developers@ultra.io. They will guide you through the registration process and provide you with the necessary credentials to integrate with our API securely.
+
+### Backend Application Registration
+
+For backend applications, you'll need a client ID and a client secret. To set up authentication for your backend application, you must implement a client credentials flow. This integration enables your backend application to authenticate users through another backend securely. Please contact our support team at developers@ultra.io. They will guide you through the registration process and provide you with the necessary credentials to integrate with our API securely.
+
+## Authentication Flow
+
+The authentication flow for Ultra API depends on the type of application.
+
+### Frontend Application Authentication Flow
+
+When making requests to API endpoints from a frontend application, follow these steps:
+
+-   Obtain Registration Token: Upon registration, users receive a unique registration token and X-Client-ID associated with their account.
+
+-   Authentication Header: Include the registration token as the authentication bearer in the request header when making API requests. Use the Authorization: Bearer {registration_token} header.
+
+-   Client Identification: Along with the registration token, clients must include their X-Client-ID parameter in the request header to identify themselves to the API.
+
+### Backend Application Authentication Flow
+
+For backend applications, follow these steps:
+
+-   Obtain Client Credentials: Upon registration, obtain a client ID and client secret for your backend application.
+
+-   Configure Backend Application: Configure your backend application for authentication. This typically involves setting up appropriate middleware or libraries to handle authentication using the client ID and client secret.
+
+-   Implement Client Credentials Flow : Implement the authentication flow in your backend application according to the OAuth 2.0 and OpenID Connect specifications. Ensure that your backend application follows best practices for securely handling authentication tokens and user sessions.
+
+## Examples
+
+### Endpoints :
 
 ```yaml
 # Sandbox:
@@ -16133,42 +16188,39 @@ https://staging.api.ultra.io/graphql
 https://api.ultra.io/graphql
 ```
 
-## Get your access token
+### Login Example Frontend Application (cURL)
 
-Once you have your credentials you can retrieve your access token manually thanks to the curl command below :
-
-```
-curl \
-  -d "client_id=YOUR_CLIENT_ID" \
-  -d "client_secret=YOUR_CLIENT_SECRET" \
-  -d "grant_type=client_credentials" \
-  "https://auth.staging.ultra.io/auth/realms/ultraio/protocol/openid-connect/token"
+```bash
+# Frontend Application
+curl -X POST \
+  -H "Authorization: Bearer {registration_token}" \
+  -H "X-Client-ID: YourClientID" \
+  https://api.example.com/your-endpoint
 ```
 
-Then, the response will be like this :
+### Login Example Backend Application (cURL)
 
-<!-- prettier-ignore -->
-```
-{
-    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCdTRsMi12RzVZaDdqUFBuSWNSNlZEakxCRzVOQjVlZUdqV2ZfWmlhTVlvIn0.eyJleHAiOjE2ODkyNTM3NzUsImlhdCI6MTY4OTI1MDE3NSwianRpIjoiZjYzNTB```mZTAtYzg4YS00MTE1LTkyYmQtNGZlMjlhMWRkNGI2IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRldi51bHRyYS5pby9hdXRoL3JlYWxtcy91bHRyYWlvIiwiYXVkIjpbInVsdHJhV2ViYXBwIiwicmVhbG0tbWFuYWdlbWVudCIsInVsdHJhQ2xvdWRXZWJhcHAiLCJhY2NvdW50IiwicGxhdGZvcm0iXSwic3ViIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGVzdCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJlYmEiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidWx0cmFXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwicXVlcnktZ3JvdXBzIiwicXVlcnktdXNlcnMiXX0sInVsdHJhQ2xvdWRXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJwbGF0Zm9ybSI6eyJyb2xlcyI6WyIwMDFHIiwiMDAxVSIsIjAwMUEiLCJzZXJ2aWNlIiwiMDAxTSIsInVzZXIiLCI5OTlNIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIGxlZ2FjeSByZWZlcnJhbCBwaG9uZSBibG9ja2NoYWluIHByaXZhdGVfYWNjZXNzIiwidmFsaWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiJ0ZXN0IiwiY2xpZW50SG9zdCI6IjEwLjEzMi4wLjE0IiwicGVybWlzc2lvbiI6eyJnbG9iYWwiOlsiMDAxRyIsIjAwMVUiLCIwMDFBIiwiMDAxTSIsIjk5OU0iXX0sImlkIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LXRlc3QiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjbGllbnRBZGRyZXNzIjoiMTAuMTMyLjAuMTQifQ.XVkgotJ0JcOOxjksyFRJOmut5WE4rWUObLZ_1oXfTJ41TuIwj5rNEM_gGZC89v_FQEcMRKC46x8HAutlnjPti6-6ejFP5SKJZ5TU-0F2iUQIXJw1inIYUcJWxQUVG1fV9vzW1pQK3TRRkoJW63O6vXodcBZ6Pvv5Ff9keV_n-YfdOqHiHpG_o6hZUq-_bT0MOJ8pX14CWl44_vsZPvm6E__F1kcPuBjwY-664I9Blp46vTYnXnpOMQWvNnQ7VSAFoSmjEg4vHbx3GfnbiorDgkI8pAa_vHuYoM1hqMUxSekIE08yfZ6HoJ6z_o2YDB-fJpdKJdzIFD7IziFz034cXZ",
-    "expires_in": 3600,
-    "refresh_expires_in": 0,
-    "token_type": "Bearer",
-    "not-before-policy": 1608643774,
-    "scope": "some access"
-}
+```bash
+# Backend Application
+curl -X POST \
+  -H "client_id:YourClientID" \
+  -H "client_secret: YourClientSecret" \
+  -H "grant_type: client_credentials" \
+  -H "scope: YourScope" \
+  https://api.example.com/your-endpoint
 ```
 
-Extract the _access_token_ field and use it as a bearer token inside the your graphql queries/mutations :
+## Error Handling
 
-<!-- prettier-ignore -->
-```
-{
-    "headers": {
-        "Authorization": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCdTRsMi12RzVZaDdqUFBuSWNSNlZEakxCRzVOQjVlZUdqV2ZfWmlhTVlvIn0.eyJleHAiOjE2ODkyNTM3NzUsImlhdCI6MTY4OTI1MDE3NSwianRpIjoiZjYzNTB```mZTAtYzg4YS00MTE1LTkyYmQtNGZlMjlhMWRkNGI2IiwiaXNzIjoiaHR0cHM6Ly9hdXRoLmRldi51bHRyYS5pby9hdXRoL3JlYWxtcy91bHRyYWlvIiwiYXVkIjpbInVsdHJhV2ViYXBwIiwicmVhbG0tbWFuYWdlbWVudCIsInVsdHJhQ2xvdWRXZWJhcHAiLCJhY2NvdW50IiwicGxhdGZvcm0iXSwic3ViIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoidGVzdCIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJlYmEiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidWx0cmFXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwicmVhbG0tbWFuYWdlbWVudCI6eyJyb2xlcyI6WyJtYW5hZ2UtdXNlcnMiLCJ2aWV3LXVzZXJzIiwicXVlcnktZ3JvdXBzIiwicXVlcnktdXNlcnMiXX0sInVsdHJhQ2xvdWRXZWJhcHAiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19LCJwbGF0Zm9ybSI6eyJyb2xlcyI6WyIwMDFHIiwiMDAxVSIsIjAwMUEiLCJzZXJ2aWNlIiwiMDAxTSIsInVzZXIiLCI5OTlNIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIGxlZ2FjeSByZWZlcnJhbCBwaG9uZSBibG9ja2NoYWluIHByaXZhdGVfYWNjZXNzIiwidmFsaWQiOnRydWUsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiJ0ZXN0IiwiY2xpZW50SG9zdCI6IjEwLjEzMi4wLjE0IiwicGVybWlzc2lvbiI6eyJnbG9iYWwiOlsiMDAxRyIsIjAwMVUiLCIwMDFBIiwiMDAxTSIsIjk5OU0iXX0sImlkIjoiOTg3YTlhODctMWYyYS00MDIwLWJhNjUtOTE3NjA2OWIyMjM1IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LXRlc3QiLCJ0eXBlIjoiYWNjZXNzVG9rZW4iLCJjbGllbnRBZGRyZXNzIjoiMTAuMTMyLjAuMTQifQ.XVkgotJ0JcOOxjksyFRJOmut5WE4rWUObLZ_1oXfTJ41TuIwj5rNEM_gGZC89v_FQEcMRKC46x8HAutlnjPti6-6ejFP5SKJZ5TU-0F2iUQIXJw1inIYUcJWxQUVG1fV9vzW1pQK3TRRkoJW63O6vXodcBZ6Pvv5Ff9keV_n-YfdOqHiHpG_o6hZUq-_bT0MOJ8pX14CWl44_vsZPvm6E__F1kcPuBjwY-664I9Blp46vTYnXnpOMQWvNnQ7VSAFoSmjEg4vHbx3GfnbiorDgkI8pAa_vHuYoM1hqMUxSekIE08yfZ6HoJ6z_o2YDB-fJpdKJdzIFD7IziFz034cXZ"
-    }
-}
-```
+-   **Invalid Credentials**: When logging in with incorrect registration_token or X-Client-ID, the API responds with 401 Unauthorized.
+-   **Unauthorized Access**: When accessing protected endpoints without a valid token, the API responds with 401 Unauthorized.
+
+## Appendix
+
+References
+
+-   OpenID Connect Specifications: [OpenID](https://openid.net/)
+-   OpenID Certified Relying Party Libraries : [OpenID Libraries](https://openid.net/developers/certified-openid-connect-implementations/)
 
 ---
 title: 'Errors'
@@ -16178,19 +16230,19 @@ order: 3
 
 # Errors
 
-This section aims to inform our users how errors are handled.
+This section is dedicated to providing our users with comprehensive insights into our error handling mechanisms.
 
 ## GraphQL errors
 
-These are errors related to the server-side execution of a GraphQL operation. They include:
+GraphQL errors encompass issues arising from server-side execution of GraphQL operations, including:
 
--   Syntax errors (e.g., a query was malformed)
--   Validation errors (e.g., a query included a schema field that doesn't exist)
--   Resolver errors (e.g., an error occurred while attempting to populate a query field)
+-   Syntax Errors: These occur when a query is not correctly formed.
+-   Validation Errors: These happen when a query references a schema field that does not exist.
+-   Resolver Errors: These are encountered when an error occurs as the server attempts to fetch data for a query field.
 
-If a syntax error or validation error occurs, your server doesn't execute the operation at all because it's invalid. If resolver errors occur, your server can still return partial data.
+In cases of syntax or validation errors, the server will not execute the operation because it is deemed invalid. However, if resolver errors are encountered, the server may still return partial data alongside the errors.
 
-Here an error sample returned after a validation failure :
+Below is an example of an error message returned following a validation error:
 
 ```json
 {
@@ -16251,7 +16303,7 @@ Here an error sample returned after a validation failure :
 
 ### Network errors
 
-These are errors encountered while attempting to communicate with your GraphQL server, usually resulting in a 4xx or 5xx response status code (and no data).
+Network errors refer to problems encountered during communication with the GraphQL server, typically leading to a response status code in the 4xx or 5xx range, indicating an unsuccessful attempt and resulting in no data being returned.
 
 ---
 title: 'Introduction'
@@ -16261,9 +16313,11 @@ order: -9999
 
 # Introduction
 
-Ultra is proud to provide external developers more direct access to the data that is stored on-chain in a package that is easy for them to digest within the apps that they are building.
+Ultra is excited to offer external developers enhanced access to on-chain data through an easily consumable package, designed to streamline the integration process within their applications.
 
-The NFTAPI is based on [graphql](https://graphql.org/), which is a schema-based format that abstracts data into a developer-friendly, accessible configuration.
+Leveraging the power of [graphQL](https://graphql.org/), the Ultra API adopts a schema-driven approach, making data more accessible and developer-friendly.
+
+Resources provided include:
 
 -   [Authentication](./authentication.md)
 -   [Errors](./errors.md)
@@ -16271,34 +16325,29 @@ The NFTAPI is based on [graphql](https://graphql.org/), which is a schema-based 
 -   [Subscriptions](./subscriptions.md)
 -   [Types](./types.md)
 
-## Why would someone need the NFTAPI?
+## Purpose of the Ultra API
 
-It’s currently hard to get specific current data about stuff that we consider central to our ecosystem. This means that Users, Token Factories, the Uniqs that they mint, and the metadata associated with them are hard to access.
+Accessing up-to-date, specific data within our ecosystem can be challenging. This includes information on Uniq Factories, the Uniqs they produce, and associated metadata—all vital components that are traditionally difficult to retrieve.
 
-The NFTAPI makes it easy for developers to integrate and use NFT data.
+The Ultra API simplifies the integration and manipulation of NFT data for developers.
 
-## Specific Examples of what you can do with the NFTAPI
+## Capabilities Offered by the Ultra API
 
-The NFTAPI is targeted towards (surprise, surprise) NFT data.
+Focused on NFT data, the Ultra API facilitates a variety of tasks, making the following operations straightforward:
 
-Some stuff that is now simple to do with access to the NFTAPI:
+-   Retrieving a complete list of Uniq Factory IDs
+-   Fetching details for a specific Uniq Factory using its ID
+-   Accessing a particular Uniq with its ID
+-   Identifying a Uniq Factory associated with a given Uniq ID
+-   Listing Uniqs linked to a wallet ID
+-   Extracting Uniq Factory Metadata and/or Media Content by ID, including images, descriptions, and more
+-   Determining the type of a Uniq (e.g., collectible, game) via its ID
 
--   Get a list of all Token Factories IDs
--   Get a specific Token Factory based on an ID
--   Get a specific Uniq based on an ID
--   Get a specific Token Factory based on the Uniq ID
--   Get a list of Uniqs based on a wallet ID
--   Get the Token Factory Metadata and/or Media Content based on an ID
-    -   Images
-    -   Descriptions
-    -   etc.
--   Get the Uniq type (collectible, game) based on an ID
+Additionally, it enables access to marketplace-specific information such as resale status, revenue splits, and metadata conditions.
 
-You can also get a lot of marketplace specific data like resale status, revenue split, metadata status, etc.
+## Using the Ultra API
 
-## Using the NFTAPI
-
-To use the NFTAPI developers must have a `client_id` to access the endpoints. To get access, developers must send an email to [developers@ultra.io](mailto:developers@ultra.io). Following this, a request must be made to the #devrel-requests Slack channel.
+Developers need a `client_id` to interact with the Ultra API's endpoints. For access, please send a request to [developers@ultra.io](mailto:developers@ultra.io).
 
 ---
 title: 'Queries'
@@ -16312,7 +16361,7 @@ order: 4
 
 ##### Description
 
-This query is used to retrieve information about a uniq by its id.
+Provides direct access to detailed information about a specific Uniq using its unique blockchain ID.
 
 ##### Response
 
@@ -16320,9 +16369,9 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                   | Description              |
-|----------------------------------------|--------------------------|
-| `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq. |
+| Name                                   | Description                                                                                           |
+|----------------------------------------|-------------------------------------------------------------------------------------------------------|
+| `id` - [`BigInt!`](types.md#bigint) | The blockchain ID of the Uniq, serving as a primary key to fetch detailed information about the Uniq. |
 
 #### Example
 
@@ -16335,6 +16384,10 @@ query Uniq($id: BigInt!) {
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -16426,6 +16479,40 @@ query Uniq($id: BigInt!) {
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -16695,14 +16782,11 @@ query Uniq($id: BigInt!) {
 }
 ```
 
-[Queries](#group-Operations-Queries)
-
 ## `uniqFactories`
 
 ##### Description
 
-This query is used to find information about uniq factories. If no
-filter applied, will return all existing factories.
+Retrieves a list of Uniq factories, optionally filtered by asset manager, and applies pagination for result management. Returns all factories if no specific filters are used.
 
 ##### Response
 
@@ -16710,10 +16794,10 @@ Returns a [`UniqFactoryList!`](types.md#uniqfactorylist)
 
 ##### Arguments
 
-| Name                                                            | Description                                                                                                    |
-|-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `assetManager` - [`WalletId`](types.md#walletid)             | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to pagination section.                                                       |
+| Name                                                            | Description                                                                                                            |
+|-----------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `assetManager` - [`WalletId`](types.md#walletid)             | Optional filter to narrow down factories by their associated asset manager, aiding in targeted queries.                |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination settings to control the volume and segmentation of returned results, enhancing usability and accessibility. |
 
 #### Example
 
@@ -16732,6 +16816,10 @@ query UniqFactories(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -16823,6 +16911,40 @@ query UniqFactories(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -16966,19 +17088,17 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
 ```
 
-[Queries](#group-Operations-Queries)
-
 ## `uniqFactory`
 
 ##### Description
 
-This query is used to find a factory based on their ID.
+Fetches a specific Uniq factory by its blockchain ID, providing detailed information about its configuration, operations, and associated default Uniqs metadata.
 
 ##### Response
 
@@ -16986,9 +17106,9 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                   | Description                       |
-|----------------------------------------|-----------------------------------|
-| `id` - [`BigInt!`](types.md#bigint) | On chain id of the uniq factory . |
+| Name                                   | Description                                                                        |
+|----------------------------------------|------------------------------------------------------------------------------------|
+| `id` - [`BigInt!`](types.md#bigint) | The blockchain ID of the desired Uniq factory, serving as the query's focal point. |
 
 #### Example
 
@@ -17000,6 +17120,10 @@ query UniqFactory($id: BigInt!) {
     accountMintingLimit
     assetCreator
     assetManager
+    authorizedMinters {
+      quantity
+      walletId
+    }
     conditionlessReceivers
     defaultUniqMetadata {
       cachedSource {
@@ -17091,6 +17215,40 @@ query UniqFactory($id: BigInt!) {
         uri
       }
       status
+    }
+    firsthandPurchases {
+      groupRestriction {
+        excludes
+        includes
+      }
+      id
+      option {
+        factories {
+          count
+          id
+          strategy
+        }
+        transferUniqsReceiver
+      }
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      promoterBasisPoints
+      purchaseLimit
+      purchaseWindow {
+        endDate
+        startDate
+      }
+      purchasedUniqs
+      saleShares {
+        basisPoints
+        receiver
+      }
+      uosPayment
     }
     id
     metadata {
@@ -17226,10 +17384,14 @@ query UniqFactory($id: BigInt!) {
       "accountMintingLimit": 987,
       "assetCreator": "aa1aa2aa3ag4",
       "assetManager": "aa1aa2aa3ag4",
+      "authorizedMinters": [UniqFactoryAuthorizedMinter],
       "conditionlessReceivers": [
         "aa1aa2aa3ag4"
       ],
       "defaultUniqMetadata": UniqMetadata,
+      "firsthandPurchases": [
+        UniqFactoryFirsthandPurchase
+      ],
       "id": 987,
       "metadata": UniqFactoryMetadata,
       "mintableWindow": UniqFactoryMintableWindow,
@@ -17243,8 +17405,6 @@ query UniqFactory($id: BigInt!) {
   }
 }
 ```
-
-[Queries](#group-Operations-Queries)
 
 ## `uniqGlobalShares`
 
@@ -17272,7 +17432,7 @@ query UniqGlobalShares {
   "data": {
     "uniqGlobalShares": [
       {
-        "basisPoints": 123,
+        "basisPoints": 987,
         "receiver": "aa1aa2aa3ag4"
       }
     ]
@@ -17280,14 +17440,13 @@ query UniqGlobalShares {
 }
 ```
 
-[Queries](#group-Operations-Queries)
+
 
 ## `uniqsOfFactory`
 
 ##### Description
 
-This query is used to find uniqs that are associated with a factory
-based on their ID.
+Lists Uniqs associated with a particular factory, allowing for advanced filtering based on serial numbers, IDs, resale status, and incorporates pagination for comprehensive result exploration.
 
 ##### Response
 
@@ -17295,12 +17454,13 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                                       | Description                                                                                                    |
-|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq which one is related to the factory. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination to apply. Please refer to the pagination section.                                                       |
-| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter by a range of serial number.                                                                            |
+| Name                                                                       | Description                                                                                                                 |
+|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `factoryId` - [`BigInt!`](types.md#bigint)                              | The blockchain ID of the factory, specifying the source of the Uniqs to be retrieved.                                       |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Optional list of specific Uniq IDs for targeted retrieval, offering precise control over the query output.                  |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)            | Pagination settings, structuring the query results into segmented, navigable data sets for user convenience.                |
+| `resale` - [`Boolean`](types.md#boolean)                                | Optional filter for Uniq resale status, distinguishing between items available for sale and those not on the market.        |
+| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Optional serial number range filter, refining the selection of Uniqs based on their sequence within the factory's issuance. |
 
 #### Example
 
@@ -17311,12 +17471,14 @@ query UniqsOfFactory(
   $factoryId: BigInt!,
   $ids: [BigInt!],
   $pagination: PaginationInput,
+  $resale: Boolean,
   $serialRange: UniqSerialRangeInput
 ) {
   uniqsOfFactory(
     factoryId: $factoryId,
     ids: $ids,
     pagination: $pagination,
+    resale: $resale,
     serialRange: $serialRange
   ) {
     data {
@@ -17324,6 +17486,10 @@ query UniqsOfFactory(
         accountMintingLimit
         assetCreator
         assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
         conditionlessReceivers
         defaultUniqMetadata {
           cachedSource {
@@ -17415,6 +17581,40 @@ query UniqsOfFactory(
             uri
           }
           status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
         }
         id
         metadata {
@@ -17670,6 +17870,7 @@ query UniqsOfFactory(
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
+  "resale": true,
   "serialRange": UniqSerialRangeInput
 }
 ```
@@ -17682,19 +17883,17 @@ query UniqsOfFactory(
     "uniqsOfFactory": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
 ```
 
-[Queries](#group-Operations-Queries)
-
 ## `uniqsOfWallet`
 
 ##### Description
 
-This query is used to recover user-specific uniqs.
+Enables querying user-specific Uniqs, offering personalized insight into Uniq ownership and management based on wallet ID.
 
 ##### Response
 
@@ -17702,12 +17901,13 @@ Returns a [`UniqList!`](types.md#uniqlist)
 
 ##### Arguments
 
-| Name                                                            | Description                                                                                               |
-|-----------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
-| `factoryIds` - [`[BigInt!]`](types.md#bigint)                | Filter from a list of uniq factory id.                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                       | Filter from a list of uniq id. It can be used to know with a list of uniq which one is owned by the user. |
-| `pagination` - [`PaginationInput`](types.md#paginationinput) | Pagination to apply. Please refer to the pagination section.                                                  |
-| `walletId` - [`WalletId!`](types.md#walletid)                | Wallet id of the user.                                                                                    |
+| Name                                                            | Description                                                                                                                    |
+|-----------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| `factoryIds` - [`[BigInt!]`](types.md#bigint)                | Optional: Specifies a list of Uniq Factory IDs to refine the query results, focusing on Uniqs from specific factories.         |
+| `ids` - [`[BigInt!]`](types.md#bigint)                       | Optional: Specifies a list of Uniq IDs to filter the query results. Useful for identifying specific Uniqs owned by the user.   |
+| `pagination` - [`PaginationInput`](types.md#paginationinput) | Applies pagination to manage the data volume, facilitating efficient data retrieval and display.                               |
+| `resale` - [`Boolean`](types.md#boolean)                     | Optional: Filters the Uniqs based on their resale status, allowing users to segregate Uniqs that are currently on sale or not. |
+| `walletId` - [`WalletId!`](types.md#walletid)                | The unique identifier for the user's wallet, essential for retrieving Uniqs associated with this particular user.              |
 
 #### Example
 
@@ -17718,12 +17918,14 @@ query UniqsOfWallet(
   $factoryIds: [BigInt!],
   $ids: [BigInt!],
   $pagination: PaginationInput,
+  $resale: Boolean,
   $walletId: WalletId!
 ) {
   uniqsOfWallet(
     factoryIds: $factoryIds,
     ids: $ids,
     pagination: $pagination,
+    resale: $resale,
     walletId: $walletId
   ) {
     data {
@@ -17731,6 +17933,10 @@ query UniqsOfWallet(
         accountMintingLimit
         assetCreator
         assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
         conditionlessReceivers
         defaultUniqMetadata {
           cachedSource {
@@ -17822,6 +18028,40 @@ query UniqsOfWallet(
             uri
           }
           status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
         }
         id
         metadata {
@@ -18077,6 +18317,7 @@ query UniqsOfWallet(
   "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
+  "resale": true,
   "walletId": "aa1aa2aa3ag4"
 }
 ```
@@ -18089,7 +18330,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
@@ -18097,14 +18338,14 @@ query UniqsOfWallet(
 
 
 ---
-title: 'Release Notes'
+title: 'release'
 deploy: ['staging', 'mainnet']
 order: 1
 ---
 
-# Release Notes
+# Release notes
 
-We're thrilled to announce the release of new version of the NFT API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
+We're thrilled to announce the release of a new version of the Ultra API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
 
 ## Key Highlights
 
@@ -18114,7 +18355,7 @@ We're thrilled to announce the release of new version of the NFT API. This updat
 
 ## Breaking changes
 
--   **Removed** enum `BlockStep` - The NFT API will now reflect only irreversible transactions.
+-   **Removed** enum `BlockStep` - The Ultra API will now reflect only irreversible transactions.
 
 -   **Removed** type `UniqRevenue`
 
@@ -18152,13 +18393,11 @@ order: 5
 
 ## `uniqFactories`
 
-Use uniqFactorySnapshots instead. This subscription will be removed in a
-next version.
+Transition to uniqFactorySnapshots for improved data management. This method will be phased out in future updates.
 
 ##### Description
 
-This subscription is used to find information about uniq factories. If
-no filter is applied, it will return all existing factories.
+Subscribes to updates on Uniq Factories, providing a mechanism for real-time monitoring and data synchronization based on specified criteria.
 
 ##### Response
 
@@ -18166,9 +18405,9 @@ Returns a [`UniqFactory!`](types.md#uniqfactory)
 
 ##### Arguments
 
-| Name                                                | Description                                                                                                    |
-|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `assetManager` - [`WalletId`](types.md#walletid) | Filter to help you to retrieve only factories related to a specific asset manager. For example 'ultra.nft.ft'. |
+| Name                                                | Description                                                                                                                   |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `assetManager` - [`WalletId`](types.md#walletid) | Optional filter to narrow down factories by their associated asset manager, enhancing focus and relevance of the data stream. |
 
 #### Example
 
@@ -18180,6 +18419,10 @@ subscription UniqFactories($assetManager: WalletId) {
     accountMintingLimit
     assetCreator
     assetManager
+    authorizedMinters {
+      quantity
+      walletId
+    }
     conditionlessReceivers
     defaultUniqMetadata {
       cachedSource {
@@ -18271,6 +18514,40 @@ subscription UniqFactories($assetManager: WalletId) {
         uri
       }
       status
+    }
+    firsthandPurchases {
+      groupRestriction {
+        excludes
+        includes
+      }
+      id
+      option {
+        factories {
+          count
+          id
+          strategy
+        }
+        transferUniqsReceiver
+      }
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      promoterBasisPoints
+      purchaseLimit
+      purchaseWindow {
+        endDate
+        startDate
+      }
+      purchasedUniqs
+      saleShares {
+        basisPoints
+        receiver
+      }
+      uosPayment
     }
     id
     metadata {
@@ -18406,10 +18683,14 @@ subscription UniqFactories($assetManager: WalletId) {
       "accountMintingLimit": 987,
       "assetCreator": "aa1aa2aa3ag4",
       "assetManager": "aa1aa2aa3ag4",
+      "authorizedMinters": [UniqFactoryAuthorizedMinter],
       "conditionlessReceivers": [
         "aa1aa2aa3ag4"
       ],
       "defaultUniqMetadata": UniqMetadata,
+      "firsthandPurchases": [
+        UniqFactoryFirsthandPurchase
+      ],
       "id": 987,
       "metadata": UniqFactoryMetadata,
       "mintableWindow": UniqFactoryMintableWindow,
@@ -18424,15 +18705,11 @@ subscription UniqFactories($assetManager: WalletId) {
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqFactorySnapshots`
 
 ##### Description
 
-Subscribes on uniq factory snapshots. A snapshot is fired when a state
-change occurs. Provides efficient state synchronization feature based on
-cursors with position reset strategy.
+Engages with Uniq Factory snapshots, offering an advanced model for tracking changes and state transitions within factories, powered by stream positions and optional cursors for continuity.
 
 ##### Response
 
@@ -18440,10 +18717,10 @@ Returns a [`UniqFactorySnapshot!`](types.md#uniqfactorysnapshot)
 
 ##### Arguments
 
-| Name                                                                                 | Description                                                                                                                               |
-|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | The optional stream cursor to resume snapshots position after. If the given cursor is unreachable, the given positionStrategy is applied. |
-| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | The stream position strategy to apply if no cursor provided or the given cursor is unreachable.                                           |
+| Name                                                                                 | Description                                                                                        |
+|--------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | An optional parameter to resume snapshot streaming, enhancing data recovery and stream management. |
+| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | Determines the starting point for snapshot updates, ensuring data relevance and stream continuity. |
 
 #### Example
 
@@ -18465,6 +18742,10 @@ subscription UniqFactorySnapshots(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -18556,6 +18837,40 @@ subscription UniqFactorySnapshots(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -18701,15 +19016,11 @@ subscription UniqFactorySnapshots(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqSnapshots`
 
 ##### Description
 
-Subscribes on uniq snapshots. A snapshot is fired when a state change
-occurs. Provides efficient state synchronization feature based on
-cursors with position reset strategy.
+Initiates a subscription to Uniq snapshots, offering a modern framework for observing Uniq state changes and updates, supported by strategic stream positioning and cursor-based continuity.
 
 ##### Response
 
@@ -18717,10 +19028,10 @@ Returns a [`UniqSnapshot!`](types.md#uniqsnapshot)
 
 ##### Arguments
 
-| Name                                                                                 | Description                                                                                                                               |
-|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | The optional stream cursor to resume snapshots position after. If the given cursor is unreachable, the given positionStrategy is applied. |
-| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | The stream position strategy to apply if no cursor provided or the given cursor is unreachable.                                           |
+| Name                                                                                 | Description                                                                                                      |
+|--------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](types.md#streamcursor)                                | Facilitates the resumption of snapshot updates, promoting efficient data streaming and enhanced user experience. |
+| `positionStrategy` - [`StreamPositionStrategy!`](types.md#streampositionstrategy) | Sets the framework for initiating snapshot updates, ensuring alignment with user needs and system capabilities.  |
 
 #### Example
 
@@ -18921,17 +19232,13 @@ subscription UniqSnapshots(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqsOfFactory`
 
-Use uniqSnapshots instead. This subscription will be removed in a next
-version.
+Adopt uniqSnapshots for enhanced state tracking and real-time updates. This method is slated for discontinuation.
 
 ##### Description
 
-This subscription is used to find uniqs that are associated with a
-factory based on their ID.
+Provides a subscription service for tracking Uniqs associated with a specific factory, leveraging serial number ranges and ID filters for targeted data retrieval.
 
 ##### Response
 
@@ -18939,11 +19246,11 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                                                       | Description                                                                                                    |
-|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| `factoryId` - [`BigInt!`](types.md#bigint)                              | On chain id of the factory.                                                                                    |
-| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Filter from a list of uniq id. It can be used to know with a list of uniq witch one is related to the factory. |
-| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Filter from a range of serial number.                                                                          |
+| Name                                                                       | Description                                                                                                                |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `factoryId` - [`BigInt!`](types.md#bigint)                              | Identifies the factory of interest, centralizing the focus of the subscription on its associated Uniqs.                    |
+| `ids` - [`[BigInt!]`](types.md#bigint)                                  | Optional list of specific Uniq IDs for filtering, enabling targeted tracking within the factory's scope.                   |
+| `serialRange` - [`UniqSerialRangeInput`](types.md#uniqserialrangeinput) | Optional range filter for focusing on Uniqs within specific serial number boundaries, adding precision to the data stream. |
 
 #### Example
 
@@ -18964,6 +19271,10 @@ subscription UniqsOfFactory(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -19055,6 +19366,40 @@ subscription UniqsOfFactory(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -19328,16 +19673,13 @@ subscription UniqsOfFactory(
 }
 ```
 
-[Subscriptions](#group-Operations-Subscriptions)
-
 ## `uniqsOfWallet`
 
-Use uniqSnapshots instead. This subscription will be removed in a next
-version.
+Shift to uniqSnapshots for a streamlined and updated approach to Uniq monitoring. This subscription will be phased out.
 
 ##### Description
 
-This subscription is used to recover user-specific uniqs.
+Facilitates user-centric tracking of Uniqs, catering to individual ownership patterns and preferences with optional filters for ID and factory association.
 
 ##### Response
 
@@ -19345,11 +19687,11 @@ Returns a [`Uniq!`](types.md#uniq)
 
 ##### Arguments
 
-| Name                                             | Description                                                                                                 |
-|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| `factoryIds` - [`[BigInt!]`](types.md#bigint) | Filter from a list of uniq factory id.                                                                      |
-| `ids` - [`[BigInt!]`](types.md#bigint)        | Filter from a list of uniq id. Can be used to know with a list of uniq witch one is related to the factory. |
-| `walletId` - [`WalletId!`](types.md#walletid) | Wallet id of the user.                                                                                      |
+| Name                                             | Description                                                                                                         |
+|--------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `factoryIds` - [`[BigInt!]`](types.md#bigint) | Optional filter for factory association, allowing users to monitor Uniqs from selected production sources.          |
+| `ids` - [`[BigInt!]`](types.md#bigint)        | Optional list of Uniq IDs for refined tracking, aligning the data stream with user-specific interests and holdings. |
+| `walletId` - [`WalletId!`](types.md#walletid) | The wallet ID of the user, providing a personalized data stream focused on owned Uniqs.                             |
 
 #### Example
 
@@ -19370,6 +19712,10 @@ subscription UniqsOfWallet(
       accountMintingLimit
       assetCreator
       assetManager
+      authorizedMinters {
+        quantity
+        walletId
+      }
       conditionlessReceivers
       defaultUniqMetadata {
         cachedSource {
@@ -19461,6 +19807,40 @@ subscription UniqsOfWallet(
           uri
         }
         status
+      }
+      firsthandPurchases {
+        groupRestriction {
+          excludes
+          includes
+        }
+        id
+        option {
+          factories {
+            count
+            id
+            strategy
+          }
+          transferUniqsReceiver
+        }
+        price {
+          amount
+          currency {
+            code
+            symbol
+          }
+        }
+        promoterBasisPoints
+        purchaseLimit
+        purchaseWindow {
+          endDate
+          startDate
+        }
+        purchasedUniqs
+        saleShares {
+          basisPoints
+          receiver
+        }
+        uosPayment
       }
       id
       metadata {
@@ -19747,9 +20127,7 @@ order: 6
 
 ##### Description
 
-A binary integer decimal representation of a 128-bit decimal value,
-supporting 34 decimal digits of significand and an exponent range of
--6143 to +6144.
+A binary integer decimal representation of a 128-bit decimal value, supporting 34 decimal digits of significand and an exponent range of -6143 to +6144.
 
 ##### Example
 
@@ -19757,14 +20135,11 @@ supporting 34 decimal digits of significand and an exponent range of
 987.65
 ```
 
-[Types](#group-Types)
-
 ## BigInt
 
 ##### Description
 
-Defines a Long class for representing a 64-bit two’s-complement integer
-value.
+Defines a Long class for representing a 64-bit two’s-complement integer value.
 
 ##### Example
 
@@ -19772,7 +20147,7 @@ value.
 987
 ```
 
-[Types](#group-Types)
+
 
 ## Boolean
 
@@ -19780,45 +20155,37 @@ value.
 
 The `Boolean` scalar type represents `true` or `false`.
 
-##### Example
 
-``` js
-true
-```
-
-[Types](#group-Types)
 
 ## Currency
 
 ##### Description
 
-Represents a currency, can be used to display pricing unit.
+Defines a currency unit for displaying pricing information, adhering to ISO 4217 standards for currency representation.
 
 ##### Fields
 
-| Field Name                                 | Description                                                                                                                              |
-|--------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| `code` - [`String!`](#string)   | Country currency code, defines alpha codes and numeric codes for the representation of currencies. This field follow ISO 4217 code list. |
-| `symbol` - [`String!`](#string) | The currency symbol or currency sign is a graphic symbol used to denote a currency unit.                                                 |
+| Field Name                                 | Description                                                                                                      |
+|--------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `code` - [`String!`](#string)   | Alpha and numeric codes for currencies as defined by ISO 4217. Identifies the currency in a standardized format. |
+| `symbol` - [`String!`](#string) | A graphical symbol used to denote the currency unit, making it easily recognizable.                              |
 
 ##### Example
 
 ``` js
 {
   "code": "xyz789",
-  "symbol": "abc123"
+  "symbol": "xyz789"
 }
 ```
 
-[Types](#group-Types)
+
 
 ## Date
 
 ##### Description
 
-ISO 8601 date format. The timezone is always zero UTC offset, as denoted
-by the suffix Z. Milliseconds since epoch is an alternative input
-format.
+ISO 8601 date format. The timezone is always zero UTC offset, as denoted by the suffix Z. Milliseconds since epoch is an alternative input format.
 
 ##### Example
 
@@ -19826,15 +20193,13 @@ format.
 "Thu Jul 13 2023 13:27:11 GMT+0200"
 ```
 
-[Types](#group-Types)
+
 
 ## Float
 
 ##### Description
 
-The `Float` scalar type represents signed double-precision fractional
-values as specified by [IEEE
-754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
 
 ##### Example
 
@@ -19842,14 +20207,13 @@ values as specified by [IEEE
 123.45
 ```
 
-[Types](#group-Types)
+
 
 ## Int
 
 ##### Description
 
-The `Int` scalar type represents non-fractional signed whole numeric
-values. Int can represent values between -(2^31) and 2^31 - 1.
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 
 ##### Example
 
@@ -19857,7 +20221,7 @@ values. Int can represent values between -(2^31) and 2^31 - 1.
 987
 ```
 
-[Types](#group-Types)
+
 
 ## JSONObject
 
@@ -19871,7 +20235,7 @@ Represent a JSON object.
 {"someProperty": "myStringValue", "otherProperty": 987}
 ```
 
-[Types](#group-Types)
+
 
 ## JSONPrimitive
 
@@ -19885,21 +20249,20 @@ Represent all supported primitive type for json object.
 "true | "myStringValue" | 987 | 987.65"
 ```
 
-[Types](#group-Types)
+
 
 ## MonetaryAmount
 
 ##### Description
 
-The MonetaryAmount object represents a monetary value using a currency's
-unit.
+Encapsulates a monetary value in a specific currency, allowing for precise financial transactions.
 
 ##### Fields
 
-| Field Name                                       | Description                                |
-|--------------------------------------------------|--------------------------------------------|
-| `amount` - [`BigFloat!`](#bigfloat)   | Amount value with a precision of 8 digits. |
-| `currency` - [`Currency!`](#currency) | Currency unit related to the amount.       |
+| Field Name                                       | Description                                                                                                       |
+|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `amount` - [`BigFloat!`](#bigfloat)   | Represents the monetary value, supporting a precision up to 8 decimal places for accurate financial calculations. |
+| `currency` - [`Currency!`](#currency) | The currency in which this amount is denominated, providing context for the value.                                |
 
 ##### Example
 
@@ -19907,14 +20270,13 @@ unit.
 {"amount": 987.65, "currency": Currency}
 ```
 
-[Types](#group-Types)
+
 
 ## Pagination
 
 ##### Description
 
-Pagination applied to the result. Maximum limit allowed result per page
-is 25.
+Pagination applied to the result. Maximum limit allowed result per page is 25.
 
 ##### Fields
 
@@ -19926,18 +20288,16 @@ is 25.
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 123}
+{"limit": 123, "skip": 123}
 ```
 
-[Types](#group-Types)
+
 
 ## PaginationInput
 
 ##### Description
 
-Pagination filter. Used as query argument, it's optional filter. If not
-provided, default pagination will be applied with skip value to 0 and
-limit to 25 maximum results per page.
+Pagination filter. Used as query argument, it's optional filter. If not provided, default pagination will be applied with skip value to 0 and limit to 25 maximum results per page.
 
 ##### Fields
 
@@ -19952,7 +20312,7 @@ limit to 25 maximum results per page.
 {"limit": 987, "skip": 987}
 ```
 
-[Types](#group-Types)
+
 
 ## StreamCursor
 
@@ -19966,7 +20326,7 @@ An opaque string used to resume a stream.
 "0"
 ```
 
-[Types](#group-Types)
+
 
 ## StreamPosition
 
@@ -19988,7 +20348,7 @@ The stream position.
 "CURSOR"
 ```
 
-[Types](#group-Types)
+
 
 ## StreamPositionStrategy
 
@@ -20009,44 +20369,42 @@ The stream position strategy.
 "EARLIEST"
 ```
 
-[Types](#group-Types)
+
 
 ## String
 
 ##### Description
 
-The `String` scalar type represents textual data, represented as UTF-8
-character sequences. The String type is most often used by GraphQL to
-represent free-form human-readable text.
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 
 ##### Example
 
 ``` js
-"xyz789"
+"abc123"
 ```
 
-[Types](#group-Types)
+
 
 ## Uniq
 
 ##### Description
 
-The Uniq object represents all information about a uniq.
+Encapsulates all pertinent details of a Uniq, including its blockchain ID, asset type, ownership, and associated metadata, providing a comprehensive overview of its identity and status.
 
 ##### Fields
 
-| Field Name                                                                | Description                                                                 |
-|---------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| `factory` - [`UniqFactory!`](#uniqfactory)                     | Information on factory related to this uniq.                                |
-| `id` - [`BigInt!`](#bigint)                                    | On chain id of the uniq.                                                    |
-| `metadata` - [`UniqMetadata!`](#uniqmetadata)                  | Information on uniq metadata.                                               |
-| `mintDate` - [`Date!`](#date)                                  | Date of uniq mint.                                                          |
-| `owner` - [`WalletId!`](#walletid)                             | WalletId of the uniq owner.                                                 |
-| `resale` - [`UniqResale`](#uniqresale)                         | Information about the uniq resale. Null means not on sale.                  |
-| `serialNumber` - [`BigInt!`](#bigint)                          | Serial number of the uniq.                                                  |
-| `tradingPeriod` - [`UniqTradingPeriod`](#uniqtradingperiod)    | Window time which trading actions are allowed. Null means not tradable      |
-| `transferPeriod` - [`UniqTransferPeriod`](#uniqtransferperiod) | Window time which transfer actions are allowed. Null means not transferable |
-| `type` - [`UniqType!`](#uniqtype)                              | Specify the type of the uniq asset.                                         |
+| Field Name                                                                | Description                                                                                                                                                   |
+|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `factory` - [`UniqFactory!`](#uniqfactory)                     | Details on the factory that produced the Uniq, linking it to its origin and the broader context of its issuance.                                              |
+| `id` - [`BigInt!`](#bigint)                                    | The blockchain identifier for the Uniq, serving as its unique reference within the ecosystem.                                                                 |
+| `metadata` - [`UniqMetadata!`](#uniqmetadata)                  | Comprehensive metadata providing insight into the Uniq's attributes, visual representation, and narrative context.                                            |
+| `mintDate` - [`Date!`](#date)                                  | The date and time when the Uniq was minted, chronicling its creation within the blockchain.                                                                   |
+| `owner` - [`WalletId!`](#walletid)                             | The Wallet ID of the current owner, establishing possession and control over the Uniq.                                                                        |
+| `resale` - [`UniqResale`](#uniqresale)                         | Data pertaining to the resale status of the Uniq, including availability and conditions for secondary market transactions. Absence indicates non-sale status. |
+| `serialNumber` - [`BigInt!`](#bigint)                          | A unique serial number assigned to the Uniq, facilitating identification and differentiation among similar items.                                             |
+| `tradingPeriod` - [`UniqTradingPeriod`](#uniqtradingperiod)    | Specifies the period during which trading actions are permitted, defining market participation conditions.                                                    |
+| `transferPeriod` - [`UniqTransferPeriod`](#uniqtransferperiod) | Defines the timeframe for allowed transfer actions, setting the parameters for ownership changes.                                                             |
+| `type` - [`UniqType!`](#uniqtype)                              | Clarifies the Uniq's asset category, aiding in its classification and interaction within the platform.                                                        |
 
 ##### Example
 
@@ -20065,57 +20423,58 @@ The Uniq object represents all information about a uniq.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqDynamicResource
 
 ##### Description
 
-The UniqDynamicResource object represents a resource, it's an image,
-video or a file. It can be refreshed to discover changes.
+Represents a dynamic Uniq resource capable of being refreshed to reflect changes, including multiple URIs for alternate versions or updates.
 
 ##### Fields
 
-| Field Name                                      | Description                        |
-|-------------------------------------------------|------------------------------------|
-| `contentType` - [`String!`](#string) | Type of resource image,video etc.  |
-| `uris` - [`[String!]!`](#string)     | Uris where the resource is stored. |
+| Field Name                                      | Description                                                                                                             |
+|-------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `contentType` - [`String!`](#string) | The MIME type of the dynamic resource, identifying its content format for appropriate handling and display.             |
+| `uris` - [`[String!]!`](#string)     | A list of URIs for the dynamic resource, allowing for access to different versions or updates as they become available. |
 
 ##### Example
 
 ``` js
 {
-  "contentType": "abc123",
-  "uris": ["abc123"]
+  "contentType": "xyz789",
+  "uris": ["xyz789"]
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactory
 
 ##### Description
 
-The UniqFactory object represents all information about a uniq factory.
+Aggregates all relevant information about a Uniq factory, encompassing types, statuses, and operational details.
 
 ##### Fields
 
-| Field Name                                                                               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `accountMintingLimit` - [`BigInt`](#bigint)                                   | The number of minting limit per account.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `assetCreator` - [`WalletId!`](#walletid)                                     | Wallet id of who created the uniq factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `assetManager` - [`WalletId!`](#walletid)                                     | Wallet id of whom manages the uniq lifecycle - issuing, burning, reselling etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `conditionlessReceivers` - [`[WalletId!]!`](#walletid)                        | A set of receiver account which uniqs can be transferred to without any restrictions. Without taking in account the trading windows, minimum resell price, etc.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `defaultUniqMetadata` - [`UniqMetadata`](#uniqmetadata)                       | uniq default metadata are utilized whenever any token is the reference that does not have a dedicated metadata uri. this can happen either intentionally if the tokens minted from the factory are identical (so there is no need for anything except default metadata) or accidentally in case due to some issue, tokens are minted without a dedicated metadata URI. In any case, the default metadata function identically to individual Uniq metadata with only exceptions that it is utilized when there is no override and the URI for this metadata is placed in the dedicated field of the factory on-chain data default_token_uri. It can be used as a fallback when uniq metadata is not yet available. |
-| `id` - [`BigInt!`](#bigint)                                                   | On chain id of the uniq factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `metadata` - [`UniqFactoryMetadata!`](#uniqfactorymetadata)                   | Metadata information of the uniq factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `mintableWindow` - [`UniqFactoryMintableWindow!`](#uniqfactorymintablewindow) | Period of time which minting actions are allowed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `resale` - [`UniqFactoryResale!`](#uniqfactoryresale)                         | Information about resale operations that will be applied on uniqs on the second hand market.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `status` - [`UniqFactoryStatus!`](#uniqfactorystatus)                         | The uniq factory on chain status.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `stock` - [`UniqFactoryStock!`](#uniqfactorystock)                            | Information about the circulation quantity of uniqs related to the factory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `tradingWindow` - [`UniqFactoryTradingWindow!`](#uniqfactorytradingwindow)    | Period of time which trading actions are allowed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `transferWindow` - [`UniqFactoryTransferWindow!`](#uniqfactorytransferwindow) | Period of time which transfer actions are allowed.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `type` - [`UniqType!`](#uniqtype)                                             | Specify the type of the uniq factory asset.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Field Name                                                                                            | Description                                                                                                             |
+|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `accountMintingLimit` - [`BigInt`](#bigint)                                                | The limit on the number of Uniqs an individual account can mint, controlling distribution and access.                   |
+| `assetCreator` - [`WalletId!`](#walletid)                                                  | The wallet ID of the individual or entity that created the Uniq factory.                                                |
+| `assetManager` - [`WalletId!`](#walletid)                                                  | The wallet ID responsible for managing the lifecycle of Uniqs issued by this factory.                                   |
+| `authorizedMinters` - [`[UniqFactoryAuthorizedMinter!]!`](#uniqfactoryauthorizedminter)    | A list of authorized minters, detailing who can issue new Uniqs under this factory.                                     |
+| `conditionlessReceivers` - [`[WalletId!]!`](#walletid)                                     | A list of wallets to which Uniqs can be transferred without restrictions, bypassing standard transfer checks.           |
+| `defaultUniqMetadata` - [`UniqMetadata`](#uniqmetadata)                                    | Default metadata for Uniqs minted from this factory, used in the absence of specific metadata URIs.                     |
+| `firsthandPurchases` - [`[UniqFactoryFirsthandPurchase!]!`](#uniqfactoryfirsthandpurchase) | Information on firsthand purchase options available for this factory, detailing pricing, limits, and strategies.        |
+| `id` - [`BigInt!`](#bigint)                                                                | The unique identifier for the Uniq factory on the blockchain.                                                           |
+| `metadata` - [`UniqFactoryMetadata!`](#uniqfactorymetadata)                                | Metadata describing the Uniq factory, including its verification status and content details.                            |
+| `mintableWindow` - [`UniqFactoryMintableWindow!`](#uniqfactorymintablewindow)              | Defines the timeframe during which minting of Uniqs is permitted, governing new issuances.                              |
+| `resale` - [`UniqFactoryResale!`](#uniqfactoryresale)                                      | Details regarding second-hand market resale operations, including minimum pricing and commission structures.            |
+| `status` - [`UniqFactoryStatus!`](#uniqfactorystatus)                                      | The operational status of the Uniq factory, indicating its current functional state.                                    |
+| `stock` - [`UniqFactoryStock!`](#uniqfactorystock)                                         | Information on the stock of Uniqs associated with the factory, including minted, circulating, and available quantities. |
+| `tradingWindow` - [`UniqFactoryTradingWindow!`](#uniqfactorytradingwindow)                 | Specifies the period during which trading of Uniqs is allowed, regulating market activities.                            |
+| `transferWindow` - [`UniqFactoryTransferWindow!`](#uniqfactorytransferwindow)              | Delineates the timeframe for transferring Uniqs, ensuring transfers comply with designated periods.                     |
+| `type` - [`UniqType!`](#uniqtype)                                                          | Categorizes the asset type of the Uniq factory, aiding in classification and sorting.                                   |
 
 ##### Example
 
@@ -20124,10 +20483,12 @@ The UniqFactory object represents all information about a uniq factory.
   "accountMintingLimit": 987,
   "assetCreator": "aa1aa2aa3ag4",
   "assetManager": "aa1aa2aa3ag4",
+  "authorizedMinters": [UniqFactoryAuthorizedMinter],
   "conditionlessReceivers": [
     "aa1aa2aa3ag4"
   ],
   "defaultUniqMetadata": UniqMetadata,
+  "firsthandPurchases": [UniqFactoryFirsthandPurchase],
   "id": 987,
   "metadata": UniqFactoryMetadata,
   "mintableWindow": UniqFactoryMintableWindow,
@@ -20140,13 +20501,13 @@ The UniqFactory object represents all information about a uniq factory.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryActionWindow
 
 ##### Description
 
-Interface for actions on a window period.
+Provides a timeframe for actions related to a Uniq factory, such as minting, trading, or transferring.
 
 ##### Fields
 
@@ -20160,6 +20521,7 @@ Interface for actions on a window period.
 | UniqFactoryActionWindow Types                                        |
 |----------------------------------------------------------------------|
 | [`UniqFactoryMintableWindow`](#uniqfactorymintablewindow) |
+| [`UniqFactoryPurchaseWindow`](#uniqfactorypurchasewindow) |
 | [`UniqFactoryTradingWindow`](#uniqfactorytradingwindow)   |
 | [`UniqFactoryTransferWindow`](#uniqfactorytransferwindow) |
 
@@ -20172,28 +20534,51 @@ Interface for actions on a window period.
 }
 ```
 
-[Types](#group-Types)
+
+
+## UniqFactoryAuthorizedMinter
+
+##### Description
+
+Information about authorized minters for a Uniq factory, including wallet IDs and minting quotas.
+
+##### Fields
+
+| Field Name                                       | Description                                                |
+|--------------------------------------------------|------------------------------------------------------------|
+| `quantity` - [`BigInt!`](#bigint)     | The quantity of Uniqs the minter is authorized to produce. |
+| `walletId` - [`WalletId!`](#walletid) | The wallet ID of the authorized minter.                    |
+
+##### Example
+
+``` js
+{
+  "quantity": 987,
+  "walletId": "aa1aa2aa3ag4"
+}
+```
+
+
 
 ## UniqFactoryDigest
 
 ##### Description
 
-The UniqFactory digest object represents all immutable informations
-about a uniq factory.
+Summarizes immutable information about a Uniq Factory, capturing its identity, operational parameters, and lifecycle management details.
 
 ##### Fields
 
-| Field Name                                                                               | Description                                                                                  |
-|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
-| `assetCreator` - [`WalletId!`](#walletid)                                     | Wallet id of who created the uniq factory.                                                   |
-| `assetManager` - [`WalletId!`](#walletid)                                     | Wallet id of whom manages the uniq lifecycle - issuing, burning, reselling etc.              |
-| `id` - [`BigInt!`](#bigint)                                                   | On chain id of the uniq factory.                                                             |
-| `maxMintableUniqs` - [`BigInt`](#bigint)                                      | The maximal number of uniq that can be minted with the factory. Null means infinite.         |
-| `mintableWindow` - [`UniqFactoryMintableWindow!`](#uniqfactorymintablewindow) | Period of time which minting actions are allowed.                                            |
-| `resale` - [`UniqFactoryResale!`](#uniqfactoryresale)                         | Information about resale operations that will be applied on uniqs on the second hand market. |
-| `tradingWindow` - [`UniqFactoryTradingWindow!`](#uniqfactorytradingwindow)    | Period of time which trading actions are allowed.                                            |
-| `transferWindow` - [`UniqFactoryTransferWindow!`](#uniqfactorytransferwindow) | Period of time which transfer actions are allowed.                                           |
-| `type` - [`UniqType!`](#uniqtype)                                             | Specify the type of the uniq factory asset.                                                  |
+| Field Name                                                                               | Description                                                                                                                   |
+|------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `assetCreator` - [`WalletId!`](#walletid)                                     | Identifies the wallet responsible for creating the factory, linking ownership and initiation rights.                          |
+| `assetManager` - [`WalletId!`](#walletid)                                     | Designates the wallet charged with managing the Uniq lifecycle, including issuance, burning, and resale activities.           |
+| `id` - [`BigInt!`](#bigint)                                                   | The blockchain ID of the Uniq Factory, uniquely identifying it across the platform.                                           |
+| `maxMintableUniqs` - [`BigInt`](#bigint)                                      | Indicates the maximum number of Uniqs that can be minted, with a null value signifying no upper limit.                        |
+| `mintableWindow` - [`UniqFactoryMintableWindow!`](#uniqfactorymintablewindow) | Specifies the timeframe during which minting is permissible, outlining the operational window for creating new Uniqs.         |
+| `resale` - [`UniqFactoryResale!`](#uniqfactoryresale)                         | Details the resale conditions applied to Uniqs on the secondary market, including restrictions and profit-sharing mechanisms. |
+| `tradingWindow` - [`UniqFactoryTradingWindow!`](#uniqfactorytradingwindow)    | Defines the period when Uniq trading is allowed, establishing guidelines for market transactions.                             |
+| `transferWindow` - [`UniqFactoryTransferWindow!`](#uniqfactorytransferwindow) | Delineates the timeframe for Uniq transfers, ensuring compliance with predetermined transfer policies.                        |
+| `type` - [`UniqType!`](#uniqtype)                                             | Clarifies the type of assets managed by the factory, providing context for its production and lifecycle capabilities.         |
 
 ##### Example
 
@@ -20211,22 +20596,155 @@ about a uniq factory.
 }
 ```
 
-[Types](#group-Types)
+
+
+## UniqFactoryFirsthandPurchase
+
+##### Description
+
+Details firsthand purchase information for a Uniq factory, including pricing, limits, and applicable restrictions.
+
+##### Fields
+
+| Field Name                                                                                                                         | Description                                                                                         |
+|------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| `groupRestriction` - [`[UniqFactoryFirsthandPurchaseGroupRestriction!]`](#uniqfactoryfirsthandpurchasegrouprestriction) | Optional group restrictions, refining who can access the purchase option based on group membership. |
+| `id` - [`BigInt!`](#bigint)                                                                                             | Unique identifier for the firsthand purchase option.                                                |
+| `option` - [`UniqFactoryFirsthandPurchaseOption`](#uniqfactoryfirsthandpurchaseoption)                                  | Detailed purchase options for the factory, including strategies and quantities.                     |
+| `price` - [`MonetaryAmount!`](#monetaryamount)                                                                          | The set price for purchasing Uniqs under this option.                                               |
+| `promoterBasisPoints` - [`Int!`](#int)                                                                                  | Commission points for promoters, incentivizing marketing and sales efforts.                         |
+| `purchaseLimit` - [`BigInt`](#bigint)                                                                                   | An optional limit on the number of purchases, controlling availability.                             |
+| `purchaseWindow` - [`UniqFactoryPurchaseWindow!`](#uniqfactorypurchasewindow)                                           | The purchase window, specifying when the Uniqs can be bought from the factory.                      |
+| `purchasedUniqs` - [`BigInt!`](#bigint)                                                                                 | The number of Uniqs purchased under this option, tracking sales.                                    |
+| `saleShares` - [`[UniqSaleShare!]!`](#uniqsaleshare)                                                                    | Commission shares for secondary sales, detailing distribution of proceeds.                          |
+| `uosPayment` - [`BigInt!`](#bigint)                                                                                     | Payment made using UOS, Ultra's native currency, for the purchase.                                  |
+
+##### Example
+
+``` js
+{
+  "groupRestriction": [
+    UniqFactoryFirsthandPurchaseGroupRestriction
+  ],
+  "id": 987,
+  "option": UniqFactoryFirsthandPurchaseOption,
+  "price": MonetaryAmount,
+  "promoterBasisPoints": 123,
+  "purchaseLimit": 987,
+  "purchaseWindow": UniqFactoryPurchaseWindow,
+  "purchasedUniqs": 987,
+  "saleShares": [UniqSaleShare],
+  "uosPayment": 987
+}
+```
+
+
+
+## UniqFactoryFirsthandPurchaseGroupRestriction
+
+##### Description
+
+Represents group-based restrictions for firsthand purchases, allowing for inclusion and exclusion criteria based on group memberships.
+
+##### Fields
+
+| Field Name                                      | Description                                                                                                |
+|-------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `excludes` - [`[BigInt!]!`](#bigint) | Groups from which members are excluded from the purchase option, allowing for precise market segmentation. |
+| `includes` - [`[BigInt!]!`](#bigint) | Groups whose members are included in the purchase option, enabling targeted offerings.                     |
+
+##### Example
+
+``` js
+{"excludes": [987], "includes": [987]}
+```
+
+
+
+## UniqFactoryFirsthandPurchaseOption
+
+##### Description
+
+Outlines firsthand purchase options, including potential restrictions and strategies for managing factory-related purchases.
+
+##### Fields
+
+| Field Name                                                                                                             | Description                                                                                                         |
+|------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `factories` - [`[UniqFactoryFirsthandPurchaseOptionFactory!]!`](#uniqfactoryfirsthandpurchaseoptionfactory) | A list of related factories, each with its own set of purchase options.                                             |
+| `transferUniqsReceiver` - [`WalletId`](#walletid)                                                           | Optional receiver for transferred Uniqs, specifying where Uniqs are sent if not retained by the original purchaser. |
+
+##### Example
+
+``` js
+{
+  "factories": [
+    UniqFactoryFirsthandPurchaseOptionFactory
+  ],
+  "transferUniqsReceiver": "aa1aa2aa3ag4"
+}
+```
+
+
+
+## UniqFactoryFirsthandPurchaseOptionFactory
+
+##### Description
+
+Describes firsthand purchase options associated with a Uniq factory, including applicable strategies and quantities.
+
+##### Fields
+
+| Field Name                                                                                                                         | Description                                                                           |
+|------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `count` - [`BigInt!`](#bigint)                                                                                          | The number of Uniqs involved in the purchase option.                                  |
+| `id` - [`BigInt!`](#bigint)                                                                                             | The ID of the related factory, linking the purchase option to its origin.             |
+| `strategy` - [`UniqFactoryFirsthandPurchaseOptionFactoryStrategy!`](#uniqfactoryfirsthandpurchaseoptionfactorystrategy) | The strategy applied to the firsthand purchase option, determining how it is managed. |
+
+##### Example
+
+``` js
+{"count": 987, "id": 987, "strategy": "BURN"}
+```
+
+
+
+## UniqFactoryFirsthandPurchaseOptionFactoryStrategy
+
+##### Description
+
+Outlines strategies for managing firsthand purchase options within a
+Uniq Factory.
+
+##### Values
+
+| Enum Value | Description                                                                                                                                           |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `BURN`     | Removes the option for firsthand purchase by destroying the associated asset.                                                                         |
+| `CHECK`    | Verifies the eligibility for firsthand purchase without altering ownership status.                                                                    |
+| `TRANSFER` | If any of the factories specified contain a requirement with transfer strategy then this account will be the one to receive the uniq during purchase. |
+
+##### Example
+
+``` js
+"BURN"
+```
+
+
 
 ## UniqFactoryList
 
 ##### Description
 
-The UniqFactoryList object represents a list of uniq factory with
-pagination information.
+Provides a paginated list of Uniq factories, including data on individual factories and total counts for navigation and display purposes.
 
 ##### Fields
 
-| Field Name                                             | Description                           |
-|--------------------------------------------------------|---------------------------------------|
-| `data` - [`[UniqFactory!]!`](#uniqfactory)  | List of factory results.              |
-| `pagination` - [`Pagination!`](#pagination) | Pagination applied.                   |
-| `totalCount` - [`Int!`](#int)               | Total number of uniq factory results. |
+| Field Name                                             | Description                                                                                            |
+|--------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| `data` - [`[UniqFactory!]!`](#uniqfactory)  | A collection of Uniq factories, presented according to specified filters and pagination settings.      |
+| `pagination` - [`Pagination!`](#pagination) | Details on the applied pagination, aiding in the navigation of large datasets.                         |
+| `totalCount` - [`Int!`](#int)               | The total number of Uniq factories matching the query criteria, useful for pagination and UI displays. |
 
 ##### Example
 
@@ -20238,24 +20756,23 @@ pagination information.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryMetadata
 
 ##### Description
 
-The UniqFactoryMetadata object represents global metadata information
-related to a uniq factory.
+Encapsulates global metadata for a Uniq factory, including status, source, cached content, and resolved information.
 
 ##### Fields
 
-| Field Name                                                                         | Description                                                                                                                                                                          |
-|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cachedSource` - [`UniqResource`](#uniqresource)                        | Copy of the source metadata inside ultra system. Optimized access to the metadata file, should be preferred over source field if provided. Null if not stored yet into ultra system. |
-| `content` - [`UniqFactoryMetadataContent`](#uniqfactorymetadatacontent) | Resolved content of the metadata file, ideal to display all metadata information about a uniq factory. Null if not resolved yet.                                                     |
-| `locked` - [`Boolean!`](#boolean)                                       | Metadata modification allowed. False means metadata can change over the time. True means metadata are immutable and cannot be changed.                                               |
-| `source` - [`UniqResource!`](#uniqresource)                             | All information related to the source of the metadata information.                                                                                                                   |
-| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)                 | Internal status of verification and caching metadata into ultra system. It can be used to know if the metadata content is available/displayable.                                     |
+| Field Name                                                                         | Description                                                                                                  |
+|------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
+| `cachedSource` - [`UniqResource`](#uniqresource)                        | A copy of the metadata optimized for access, preferred for use over the original source. Null if not stored. |
+| `content` - [`UniqFactoryMetadataContent`](#uniqfactorymetadatacontent) | The fully resolved content of the metadata, ready for display. Null if resolution is pending.                |
+| `locked` - [`Boolean!`](#boolean)                                       | Indicates whether the metadata is locked and immutable or can be altered over time.                          |
+| `source` - [`UniqResource`](#uniqresource)                              | The original source of the metadata, with details on the metadata's origin. Null if restricted.              |
+| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)                 | The processing status of the metadata, indicating its availability and compliance.                           |
 
 ##### Example
 
@@ -20263,27 +20780,26 @@ related to a uniq factory.
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": false,
+  "locked": true,
   "source": UniqResource,
   "status": "INVALID"
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryMetadataAttribute
 
 ##### Description
 
-The UniqFactoryMetadataAttribute object represents a key value store
-describing attributes available for uniqs related to a factory.
+Stores key-value pairs describing attributes for Uniqs related to a factory, providing detailed information about each attribute.
 
 ##### Fields
 
-| Field Name                                                                                  | Description                               |
-|---------------------------------------------------------------------------------------------|-------------------------------------------|
-| `key` - [`String!`](#string)                                                     | Key that allow to retrieve the attribute. |
-| `value` - [`UniqMetadataAttributeDescriptor!`](#uniqmetadataattributedescriptor) | Information details about the attribute.  |
+| Field Name                                                                                  | Description                                                                             |
+|---------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `key` - [`String!`](#string)                                                     | The key for retrieving the attribute.                                                   |
+| `value` - [`UniqMetadataAttributeDescriptor!`](#uniqmetadataattributedescriptor) | Detailed information about the attribute, including its type and whether it is dynamic. |
 
 ##### Example
 
@@ -20294,33 +20810,32 @@ describing attributes available for uniqs related to a factory.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryMetadataContent
 
 ##### Description
 
-The UniqFactoryMetadataContent object represents the content that
-follows the uniq factory metadata structure of the NFT standard.
+Represents content associated with Uniq factory metadata, including names, descriptions, media, and additional properties.
 
 ##### Fields
 
-| Field Name                                                                                   | Description                                                                                |
-|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
-| `attributes` - [`[UniqFactoryMetadataAttribute!]`](#uniqfactorymetadataattribute) | This field allows you to specify structured numeric or string data for the factory.        |
-| `description` - [`String`](#string)                                               | A detailed explanation about what this factory represents, mints and/or used for.          |
-| `medias` - [`UniqMedias!`](#uniqmedias)                                           | Contains the media used to display this factory. Refer to Metadata media for more details. |
-| `name` - [`String!`](#string)                                                     | Name of the factory as a whole. Can represent the collection name.                         |
-| `properties` - [`JSONObject`](#jsonobject)                                        | An arbitrary data that you can supply that does not fit any other category.                |
-| `resources` - [`[UniqMetadataResource!]`](#uniqmetadataresource)                  | Allows additional media or reference data to be added as a part of the metadata.           |
-| `subName` - [`String`](#string)                                                   | An additional flavor name used to describe this Uniq factory.                              |
+| Field Name                                                                                   | Description                                                                                          |
+|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| `attributes` - [`[UniqFactoryMetadataAttribute!]`](#uniqfactorymetadataattribute) | Structured data detailing specific attributes of the factory.                                        |
+| `description` - [`String`](#string)                                               | An explanatory text describing the purpose and scope of the factory.                                 |
+| `medias` - [`UniqMedias!`](#uniqmedias)                                           | Media assets associated with the factory, including images and other forms of visual representation. |
+| `name` - [`String!`](#string)                                                     | The overall name of the factory, often representing a collection.                                    |
+| `properties` - [`JSONObject`](#jsonobject)                                        | Arbitrary data offering further insight into the factory's attributes or properties.                 |
+| `resources` - [`[UniqMetadataResource!]`](#uniqmetadataresource)                  | Additional resources or media enhancing the factory's metadata.                                      |
+| `subName` - [`String`](#string)                                                   | A secondary name providing additional context or flavor to the factory.                              |
 
 ##### Example
 
 ``` js
 {
   "attributes": [UniqFactoryMetadataAttribute],
-  "description": "xyz789",
+  "description": "abc123",
   "medias": UniqMedias,
   "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
@@ -20329,24 +20844,20 @@ follows the uniq factory metadata structure of the NFT standard.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryMintableWindow
 
 ##### Description
 
-The UniqFactoryMintableWindow object represents a period of time when a
-uniq can be minted from a factory. \[no start, no end\], forever
-mintable. \[no start, end\], can only be minted before the ending date.
-\[start, no end\], can only be minted after the starting date. \[start,
-end\], can only be minted between the start and end dates
+Specifies the time window during which Uniqs can be minted from a factory, with various combinations of start and end dates dictating minting availability.
 
 ##### Fields
 
-| Field Name                               | Description                                                                                         |
-|------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| `endDate` - [`Date`](#date)   | The end of the time period when uniq can be minted. Null means no ending date to mint a uniq.       |
-| `startDate` - [`Date`](#date) | The beginning of a time period when uniq can be minted. Null means no starting date to mint a uniq. |
+| Field Name                               | Description                                                                                             |
+|------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `endDate` - [`Date`](#date)   | The end date after which minting is no longer available. Null indicates no restriction on the end date. |
+| `startDate` - [`Date`](#date) | The start date for when minting becomes available. Null indicates no restriction from the start date.   |
 
 ##### Example
 
@@ -20357,22 +20868,44 @@ end\], can only be minted between the start and end dates
 }
 ```
 
-[Types](#group-Types)
+
+
+## UniqFactoryPurchaseWindow
+
+##### Description
+
+Defines a purchase window for Uniq factories, indicating when Uniqs can be bought directly from the factory.
+
+##### Fields
+
+| Field Name                               | Description                                                                                          |
+|------------------------------------------|------------------------------------------------------------------------------------------------------|
+| `endDate` - [`Date`](#date)   | The end date for the purchase period, with null indicating that purchases can continue indefinitely. |
+| `startDate` - [`Date`](#date) | The start date for the purchase period, with null indicating no start date restriction.              |
+
+##### Example
+
+``` js
+{
+  "endDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
+}
+```
+
+
 
 ## UniqFactoryResale
 
 ##### Description
 
-The UniqFactoryResale object represents information about second hand
-market resale operations that will be applied to a uniq related to this
-factory.
+Details the resale information for a Uniq factory, including minimum pricing and commission shares for secondary market sales.
 
 ##### Fields
 
-| Field Name                                                       | Description                                                                                                                                                                   |
-|------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `minimumPrice` - [`MonetaryAmount!`](#monetaryamount) | The minimum price allowed when a resell is performed on a secondhand marketplace.                                                                                             |
-| `shares` - [`[UniqSaleShare!]!`](#uniqsaleshare)      | A vector of \[account, share\] pairs setting the share each account receives during the token resale. Total limit to 7000 basis_point or 70%. The receiver can be duplicated. |
+| Field Name                                                       | Description                                                                                              |
+|------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| `minimumPrice` - [`MonetaryAmount!`](#monetaryamount) | The minimum allowable price for reselling Uniqs, enforcing price floors on the secondary market.         |
+| `shares` - [`[UniqSaleShare!]!`](#uniqsaleshare)      | Commission shares distributed during resale, detailed as pairs of receivers and their respective shares. |
 
 ##### Example
 
@@ -20383,22 +20916,22 @@ factory.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactorySnapshot
 
 ##### Description
 
-The Uniq Factory Snapshot.
+Represents a momentary snapshot of a Uniq Factory's state, including its blockchain ID and operational status, facilitating real-time data synchronization and monitoring.
 
 ##### Fields
 
-| Field Name                                                   | Description                                           |
-|--------------------------------------------------------------|-------------------------------------------------------|
-| `cursor` - [`StreamCursor`](#streamcursor)        | The optional stream cursor to resume snapshots after. |
-| `id` - [`BigInt!`](#bigint)                       | On chain id of the uniq factory.                      |
-| `position` - [`StreamPosition!`](#streamposition) | The stream position.                                  |
-| `state` - [`UniqFactory`](#uniqfactory)           | The optional state, null means deleted.               |
+| Field Name                                                   | Description                                                                                                                  |
+|--------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](#streamcursor)        | An optional cursor for resuming snapshot updates, ensuring continuity and relevance of the data stream.                      |
+| `id` - [`BigInt!`](#bigint)                       | The blockchain ID of the Uniq Factory, essential for identifying the factory within the system.                              |
+| `position` - [`StreamPosition!`](#streamposition) | Indicates the position in the stream of updates, critical for tracking changes and updates to the factory's state.           |
+| `state` - [`UniqFactory`](#uniqfactory)           | Represents the current state of the factory, with a null value indicating deletion or absence from the current data context. |
 
 ##### Example
 
@@ -20411,21 +20944,21 @@ The Uniq Factory Snapshot.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryStatus
 
 ##### Description
 
-Uniq factory on chain status.
+Represents the operational status of a Uniq factory within the blockchain environment.
 
 ##### Values
 
-| Enum Value | Description                                             |
-|------------|---------------------------------------------------------|
-| `ACTIVE`   | On chain value 0 = active - fully functional            |
-| `INACTIVE` | On chain value 1 = inactive - cannot mint               |
-| `SHUTDOWN` | On chain value 2 = shutdown - cannot mint or set active |
+| Enum Value | Description                                                                                                                   |
+|------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `ACTIVE`   | Indicates the factory is fully operational, with capabilities to mint new Uniqs. (On-chain value 0)                           |
+| `INACTIVE` | The factory is currently not operational for minting new Uniqs, but may still perform other functions. (On-chain value 1)     |
+| `SHUTDOWN` | The factory is completely non-operational, with no ability to mint new Uniqs or revert to an active state. (On-chain value 2) |
 
 ##### Example
 
@@ -20433,24 +20966,23 @@ Uniq factory on chain status.
 "ACTIVE"
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryStock
 
 ##### Description
 
-The UniqFactoryStock object represents quantity available for minting
-purpose.
+Represents the stock information of a Uniq factory, detailing mintable quantities and existing circulation.
 
 ##### Fields
 
-| Field Name                                     | Description                                                                            |
-|------------------------------------------------|----------------------------------------------------------------------------------------|
-| `authorized` - [`BigInt`](#bigint)  | The number of uniq authorized by the asset_manager to be minted by authorized minters. |
-| `existing` - [`BigInt!`](#bigint)   | The number circulating uniqs, corresponding to minted uniq minus number of burnt uniq. |
-| `maxMintable` - [`BigInt`](#bigint) | The maximal number of uniq that can be minted with the factory. Null means infinite.   |
-| `mintable` - [`BigInt`](#bigint)    | The number of uniq left that can be minted. Null means infinite.                       |
-| `minted` - [`BigInt!`](#bigint)     | The total number of minted uniq.                                                       |
+| Field Name                                     | Description                                                                                   |
+|------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| `authorized` - [`BigInt`](#bigint)  | The quantity of Uniqs authorized for minting by designated minters.                           |
+| `existing` - [`BigInt!`](#bigint)   | The current circulating number of Uniqs, derived from minted minus burned quantities.         |
+| `maxMintable` - [`BigInt`](#bigint) | The maximum number of Uniqs that can be minted, with null indicating no upper limit.          |
+| `mintable` - [`BigInt`](#bigint)    | The remaining number of Uniqs that can be minted, with null indicating an unlimited quantity. |
+| `minted` - [`BigInt!`](#bigint)     | The total number of Uniqs that have been minted.                                              |
 
 ##### Example
 
@@ -20464,25 +20996,20 @@ purpose.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryTradingWindow
 
 ##### Description
 
-The UniqFactoryTradingWindow object represents a period of time when a
-uniq can be traded. \[no start, no end\], forever tradable. \[no start,
-end\], can only be traded before the ending date. \[start, no end\], can
-only be traded after the starting date. \[start, end\], can only be
-traded between the start and end dates It's being checked when a
-buy/resell action is performed.
+Specifies the time window during which Uniqs can be traded. This window is checked during buy/resell actions to enforce trading periods.
 
 ##### Fields
 
-| Field Name                               | Description                                                                                          |
-|------------------------------------------|------------------------------------------------------------------------------------------------------|
-| `endDate` - [`Date`](#date)   | The end of a time period when uniq can be traded. Null means no ending date to trade a uniq.         |
-| `startDate` - [`Date`](#date) | The beginning of a time period when uniq can be traded. Null means no starting date to trade a uniq. |
+| Field Name                               | Description                                                                                             |
+|------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `endDate` - [`Date`](#date)   | The end date after which trading is no longer available. Null indicates no restriction on the end date. |
+| `startDate` - [`Date`](#date) | The start date for when trading becomes available. Null indicates no restriction from the start date.   |
 
 ##### Example
 
@@ -20493,25 +21020,20 @@ buy/resell action is performed.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqFactoryTransferWindow
 
 ##### Description
 
-The UniqFactoryTransferWindow object represents a period of time when a
-uniq can be transferred. \[no start, no end\], forever transferable.
-\[no start, end\], can only be transferred before the ending date.
-\[start, no end\], can only be transferred after the starting date.
-\[start, end\], can only be transferred between the start and end dates
-It's being checked when a transfer action is performed.
+Defines the time window during which Uniqs can be transferred. This is checked during transfer actions to ensure compliance with specified periods.
 
 ##### Fields
 
-| Field Name                               | Description                                                                                                  |
-|------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| `endDate` - [`Date`](#date)   | The end of a time period when uniq can be transferred. Null means no ending date to transfer a uniq.         |
-| `startDate` - [`Date`](#date) | The beginning of a time period when uniq can be transferred. Null means no starting date to transfer a uniq. |
+| Field Name                               | Description                                                                                           |
+|------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| `endDate` - [`Date`](#date)   | The end date after which transferring is no longer available. Null indicates no end date restriction. |
+| `startDate` - [`Date`](#date) | The start date for when transferring becomes available. Null indicates no start date restriction.     |
 
 ##### Example
 
@@ -20522,22 +21044,21 @@ It's being checked when a transfer action is performed.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqList
 
 ##### Description
 
-The UniqList object represents a list of uniq with pagination
-information.
+Organizes a collection of Uniqs into a structured list, incorporating pagination to manage and navigate through large datasets effectively.
 
 ##### Fields
 
-| Field Name                                             | Description                            |
-|--------------------------------------------------------|----------------------------------------|
-| `data` - [`[Uniq!]!`](#uniq)                | List of uniq results.                  |
-| `pagination` - [`Pagination!`](#pagination) | Pagination applied.                    |
-| `totalCount` - [`Int!`](#int)               | Total amount of uniq matching results. |
+| Field Name                                             | Description                                                                                                                       |
+|--------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `data` - [`[Uniq!]!`](#uniq)                | An array of Uniqs, each representing a unique asset within the platform, selected according to specified criteria.                |
+| `pagination` - [`Pagination!`](#pagination) | Pagination details, facilitating the efficient browsing of large collections by segmenting the data into manageable portions.     |
+| `totalCount` - [`Int!`](#int)               | The total count of Uniqs matching the query parameters, essential for understanding the scope of results and planning navigation. |
 
 ##### Example
 
@@ -20545,27 +21066,26 @@ information.
 {
   "data": [Uniq],
   "pagination": Pagination,
-  "totalCount": 123
+  "totalCount": 987
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMedias
 
 ##### Description
 
-Each token and factory must have some visual representation added to it
-so it could be nicely displayed in the frontend.
+Centralizes visual representation details of tokens and factories, ensuring an engaging and informative display across frontend interfaces.
 
 ##### Fields
 
-| Field Name                                                 | Description                                                                                                                                                                                                                         |
-|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `gallery` - [`[UniqResource!]!`](#uniqresource) | Here you provide a list of multiple media files. Not always would it make sense to have multiple images, but if this token is representing an in-game item then gallery images could be screenshots of this item in the game itself |
-| `hero` - [`UniqResource`](#uniqresource)        | Hero image is a big banner image that is typically placed in the top middle of the page. You can think of it as a movie poster buy applied to Uniq token.                                                                           |
-| `product` - [`UniqResource!`](#uniqresource)    | This is a main media resource visually representing your token. If your token is a picture of an apple, then product media would be this picture by itself.                                                                         |
-| `square` - [`UniqResource!`](#uniqresource)     | Square image is used whenever multiple tokens are shown on the same page, by providing a square image you make it easy to display your token by making its representation tileable.                                                 |
+| Field Name                                                 | Description                                                                                                                                                    |
+|------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `gallery` - [`[UniqResource!]!`](#uniqresource) | A curated collection of images providing diverse perspectives or contexts of the token, such as different angles or in-situ representations for in-game items. |
+| `hero` - [`UniqResource`](#uniqresource)        | A large, banner-style image serving as the focal point for showcasing the token, akin to a feature image in a gallery or a promotional banner.                 |
+| `product` - [`UniqResource!`](#uniqresource)    | The primary visual representation of the token. For example, if the token represents an artwork, this media would be the artwork itself.                       |
+| `square` - [`UniqResource!`](#uniqresource)     | A square-formatted image designed for uniform display in listings, enhancing visual harmony when presenting multiple tokens.                                   |
 
 ##### Example
 
@@ -20578,29 +21098,22 @@ so it could be nicely displayed in the frontend.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadata
 
 ##### Description
 
-Uniq metadata represent what this specific token is - it's name,
-description and attached media and data. When the token is issued, you
-can attach a URI of this Uniq metadata to the token and this way you
-would create a link between on-chain token and off-chain metadata.
-Example of what this metadata could represent can be an image from a
-collection of various other images and in this case you would put this
-image as one of the media fields and fill out the name and description
-to give some flavour to the token.
+Represents the essence of a Uniq token, encapsulating its name, description, visual identity, and associated metadata to forge a link between on-chain presence and off-chain representation. This forms the basis for understanding and interacting with the token within digital environments.
 
 ##### Fields
 
-| Field Name                                                           | Description                                                                                                                                                                          |
-|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cachedSource` - [`UniqResource`](#uniqresource)          | Copy of the source metadata inside ultra system. Optimized access to the metadata file, should be preferred over source field if provided. Null if not stored yet into ultra system. |
-| `content` - [`UniqMetadataContent`](#uniqmetadatacontent) | Resolved content of the metadata file, ideal to display all metadata information about a uniq. Null if not resolved yet.                                                             |
-| `source` - [`UniqResource!`](#uniqresource)               | All information related to the source of the metadata information.                                                                                                                   |
-| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)   | Internal status of verification and caching metadata inside ultra system. Can be used to know if the metadata content is available/displayable.                                      |
+| Field Name                                                           | Description                                                                                                                                                                       |
+|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cachedSource` - [`UniqResource`](#uniqresource)          | A system-optimized copy of the metadata intended for efficient access, offering an alternative to the original source for enhanced performance. Absent if integration is pending. |
+| `content` - [`UniqMetadataContent`](#uniqmetadatacontent) | The fully resolved and structured metadata content, ready for presentation, outlining the Uniq's identity and characteristics. Absent if resolution is incomplete.                |
+| `source` - [`UniqResource`](#uniqresource)                | The origin of the metadata, providing context and source verification. Absent if access is restricted or the content is confidential.                                             |
+| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)   | Reflects the current processing state of the metadata within the system, indicating availability and conformity to standards for display purposes.                                |
 
 ##### Example
 
@@ -20613,78 +21126,76 @@ to give some flavour to the token.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataAttribute
 
 ##### Description
 
-The UniqMetadataAttribute object represents a key value store describing
-attributes available for the uniq.
+Associates key-value pairs with a Uniq, describing its attributes in a structured format for easy reference and interpretation.
 
 ##### Fields
 
-| Field Name                                                                                      | Description                                                                              |
-|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| `descriptor` - [`UniqMetadataAttributeDescriptor`](#uniqmetadataattributedescriptor) | Details about the attribute.                                                             |
-| `key` - [`String!`](#string)                                                         | Key that allow to retrieve the attribute.                                                |
-| `value` - [`JSONPrimitive`](#jsonprimitive)                                          | The value of the attribute, the type can be determined thanks to the "descriptor" field. |
+| Field Name                                                                                      | Description                                                                                                            |
+|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `descriptor` - [`UniqMetadataAttributeDescriptor`](#uniqmetadataattributedescriptor) | Provides context and details about the attribute, including its name, type, and potential dynamic nature.              |
+| `key` - [`String!`](#string)                                                         | The key used to access the attribute, acting as a unique identifier within the metadata structure.                     |
+| `value` - [`JSONPrimitive`](#jsonprimitive)                                          | The attribute's value, with its type inferred from the associated descriptor, supporting flexible data representation. |
 
 ##### Example
 
 ``` js
 {
   "descriptor": UniqMetadataAttributeDescriptor,
-  "key": "xyz789",
+  "key": "abc123",
   "value": "true | \"myStringValue\" | 987 | 987.65"
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataAttributeDescriptor
 
 ##### Description
 
-The UniqMetadataAttributeDescriptor allows you to specify structured
-numerical or string data for the factory.
+Allows the specification of structured data attributes for Uniqs, including whether the attribute is dynamic and its data type.
 
 ##### Fields
 
-| Field Name                                                                     | Description                                                                                                                       |
-|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `description` - [`String`](#string)                                 | Details about what this attribute is.                                                                                             |
-| `dynamic` - [`Boolean`](#boolean)                                   | Information flag to tag if the attribute is intended to change over time or not.                                                  |
-| `name` - [`String!`](#string)                                       | Title of the attribute                                                                                                            |
-| `type` - [`UniqMetadataAttributeType!`](#uniqmetadataattributetype) | Type of value expected. Can be used to know how to display the attribute. It can be boolean \| number \| string \| ISODateString. |
+| Field Name                                                                     | Description                                                                                |
+|--------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| `description` - [`String`](#string)                                 | A description of what the attribute represents or signifies.                               |
+| `dynamic` - [`Boolean`](#boolean)                                   | Indicates whether the attribute is dynamic and may change over time.                       |
+| `name` - [`String!`](#string)                                       | The name of the attribute, serving as an identifier.                                       |
+| `type` - [`UniqMetadataAttributeType!`](#uniqmetadataattributetype) | The expected data type of the attribute, aiding in appropriate display and interpretation. |
 
 ##### Example
 
 ``` js
 {
-  "description": "abc123",
-  "dynamic": false,
+  "description": "xyz789",
+  "dynamic": true,
   "name": "abc123",
   "type": "ISODateString"
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataAttributeType
 
 ##### Description
 
-Primitive type of the attribute.
+Defines the data type of attributes associated with Uniq metadata.
 
 ##### Values
 
-| Enum Value      | Description             |
-|-----------------|-------------------------|
-| `ISODateString` | Date primitive type.    |
-| `boolean`       | Boolean primitive type. |
-| `number`        | Number primitive type.  |
-| `string`        | String primitive type.  |
+| Enum Value      | Description                                                   |
+|-----------------|---------------------------------------------------------------|
+| `ISODateString` | Represents dates in ISO 8601 format.                          |
+| `boolean`       | Represents a true or false value.                             |
+| `number`        | Represents numerical values, both integer and floating-point. |
+| `string`        | Represents sequences of characters.                           |
 
 ##### Example
 
@@ -20692,111 +21203,108 @@ Primitive type of the attribute.
 "ISODateString"
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataContent
 
 ##### Description
 
-The UniqMetadataContent object represents the content that follows the
-uniq metadata structure of the NFT standard.
+Defines the comprehensive content structure of Uniq metadata according to the NFT standard, encompassing names, descriptions, media, and additional data attributes.
 
 ##### Fields
 
-| Field Name                                                                                       | Description                                                                                                                                                                |
-|--------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `attributes` - [`[UniqMetadataAttribute!]`](#uniqmetadataattribute)                   | Here you can specify a list of simple numerical or string attributes to go with the token. Allowed types for each of the attributes are: boolean, string and number        |
-| `description` - [`String`](#string)                                                   | A detailed explanation about what this token is. The description could include some trivia or details about how it can be sued.                                            |
-| `dynamicAttributes` - [`UniqDynamicResource`](#uniqdynamicresource)                   | This field is represented as a single dynamic resource and it is used to provide a URI to an external resource detailing the content of dynamic attributes for this token. |
-| `dynamicResources` - [`[UniqMetadataDynamicResource!]`](#uniqmetadatadynamicresource) | Allows additional dynamic media or reference data to be added as a part of the metadata. Each resource must be described as a dynamic resource.                            |
-| `medias` - [`UniqMedias!`](#uniqmedias)                                               | Contains the media used to display this token. Refer to Metadata media for more details.                                                                                   |
-| `name` - [`String!`](#string)                                                         | Name of this uniq. Used for identification purposes so best to make it distinguishable from other uniqs.                                                                   |
-| `properties` - [`JSONObject`](#jsonobject)                                            | An arbitrary data that you can supply that does not fit any other category.                                                                                                |
-| `resources` - [`[UniqMetadataResource!]`](#uniqmetadataresource)                      | Allows additional media or reference data to be added as a part of the metadata. Each resource must be described as a static resource.                                     |
-| `subName` - [`String`](#string)                                                       | An additional flavor name used to describe this Uniq token.                                                                                                                |
+| Field Name                                                                                       | Description                                                                                                                                                 |
+|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `attributes` - [`[UniqMetadataAttribute!]`](#uniqmetadataattribute)                   | A selection of attributes that define specific characteristics of the Uniq, supporting a variety of types for detailed specification.                       |
+| `description` - [`String`](#string)                                                   | An elaborate description providing insights into the Uniq's backstory, usage, or conceptual significance, potentially including lore or functional details. |
+| `dynamicAttributes` - [`UniqDynamicResource`](#uniqdynamicresource)                   | A link to an external resource providing dynamic content, enabling live updates or changes to attributes that may evolve over time.                         |
+| `dynamicResources` - [`[UniqMetadataDynamicResource!]`](#uniqmetadatadynamicresource) | Supplementary dynamic resources that introduce variability or real-time updates to the metadata, each clearly delineated for dynamic content integration.   |
+| `medias` - [`UniqMedias!`](#uniqmedias)                                               | A comprehensive set of media assets that visually represent the Uniq, including primary images, icons, and galleries for a multi-faceted display.           |
+| `name` - [`String!`](#string)                                                         | The identifiable name of the Uniq, crucial for distinguishing it among a collection or within its ecosystem.                                                |
+| `properties` - [`JSONObject`](#jsonobject)                                            | Customizable data points that do not conform to standard metadata fields, offering flexibility for unique or specialized information.                       |
+| `resources` - [`[UniqMetadataResource!]`](#uniqmetadataresource)                      | Additional static resources that further describe or complement the Uniq, each distinctly defined to ensure clarity and purpose within the metadata.        |
+| `subName` - [`String`](#string)                                                       | A secondary name or tagline that adds depth or context to the Uniq, enriching its narrative or thematic connection.                                         |
 
 ##### Example
 
 ``` js
 {
   "attributes": [UniqMetadataAttribute],
-  "description": "abc123",
+  "description": "xyz789",
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
-  "name": "abc123",
+  "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "xyz789"
+  "subName": "abc123"
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataDynamicResource
 
 ##### Description
 
-Allows additional dynamic media or reference data to be added as a part
-of the metadata. Each resource must be described as a dynamicResource.
+Facilitates the inclusion of dynamic media or reference data within Uniq metadata, allowing for content that may update or change over time. Each resource must be identified and managed as a dynamic resource to accommodate variability and updates.
 
 ##### Fields
 
-| Field Name                                                          | Description                                              |
-|---------------------------------------------------------------------|----------------------------------------------------------|
-| `key` - [`String!`](#string)                             | Key that allow to retrieve the additional dynamic media. |
-| `value` - [`UniqDynamicResource!`](#uniqdynamicresource) | The additional dynamic media data.                       |
+| Field Name                                                          | Description                                                                                                                               |
+|---------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `key` - [`String!`](#string)                             | A unique key for fetching the dynamic media or reference data, supporting content flexibility and dynamism within the metadata.           |
+| `value` - [`UniqDynamicResource!`](#uniqdynamicresource) | Specifies the dynamic content, represented through a UniqDynamicResource, to accommodate evolving media or data associated with the Uniq. |
 
 ##### Example
 
 ``` js
 {
-  "key": "xyz789",
+  "key": "abc123",
   "value": UniqDynamicResource
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataResource
 
 ##### Description
 
-The UniqMetadataResource object allows additional media or reference
-data to be added as a part of the metadata. Each resource must be
-described as a staticResource.
+Enables the addition of extra media or reference data to Uniq metadata, enhancing its descriptive and visual elements. Each media or reference is strictly categorized as a static resource for consistency and reliability.
 
 ##### Fields
 
-| Field Name                                                        | Description                                      |
-|-------------------------------------------------------------------|--------------------------------------------------|
-| `key` - [`String!`](#string)                           | Key that allow to retrieve the additional media. |
-| `value` - [`UniqStaticResource!`](#uniqstaticresource) | The additional media data.                       |
+| Field Name                                                        | Description                                                                                                                           |
+|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| `key` - [`String!`](#string)                           | A unique identifier used to access the corresponding media or reference data within the metadata structure.                           |
+| `value` - [`UniqStaticResource!`](#uniqstaticresource) | Detailed information about the media, encapsulated within a UniqStaticResource, providing a consistent data model for static content. |
 
 ##### Example
 
 ``` js
 {
-  "key": "xyz789",
+  "key": "abc123",
   "value": UniqStaticResource
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqMetadataStatus
 
 ##### Description
 
-Internal status of the metadata resolution.
+Tracks the progress and outcome of metadata processing for Uniqs.
 
 ##### Values
 
-| Enum Value   | Description                                                                                                                                            |
-|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `INVALID`    | Metadata resolution are in error, resources are misisng or metadata are not compliant, all informations about metadata are not or partially available. |
-| `PROCESSING` | Metadata resolution is in progress inside ultra backend system.                                                                                        |
-| `VALID`      | Metadata resolution are done, all informations about metadata are compliant and available.                                                             |
+| Enum Value   | Description                                                                                                                                     |
+|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `INVALID`    | Encountered issues during metadata resolution, such as missing resources or non-compliance, resulting in incomplete or unavailable information. |
+| `PROCESSING` | Indicates that the metadata resolution process is currently underway within the Ultra backend system.                                           |
+| `RESTRICTED` | The metadata has been deemed restricted due to platform policies, leading to a lack of available information.                                   |
+| `VALID`      | Metadata resolution has been successfully completed, ensuring compliance and availability of all related information.                           |
 
 ##### Example
 
@@ -20804,22 +21312,22 @@ Internal status of the metadata resolution.
 "INVALID"
 ```
 
-[Types](#group-Types)
+
 
 ## UniqResale
 
 ##### Description
 
-The UniqResale object represents information about the resale action.
+Details a specific resale transaction for a Uniq, including the date, price, shares, and promoter fees involved.
 
 ##### Fields
 
-| Field Name                                                  | Description                                                                                                                                                                   |
-|-------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `onSaleDate` - [`Date!`](#date)                  | Date of the resale.                                                                                                                                                           |
-| `price` - [`MonetaryAmount!`](#monetaryamount)   | Selling price.                                                                                                                                                                |
-| `promoterBasisPoints` - [`Int`](#int)            | Promoter fees basis points. 1 means 0.0001, which means 0.01%                                                                                                                 |
-| `shares` - [`[UniqSaleShare!]!`](#uniqsaleshare) | A vector of \[account, share\] pairs setting the share each account receives during the token resale. Total limit to 7000 basis_point or 70%. The receiver can be duplicated. |
+| Field Name                                                  | Description                                                                                      |
+|-------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| `onSaleDate` - [`Date!`](#date)                  | The date when the Uniq was put on sale, providing a timestamp for the transaction.               |
+| `price` - [`MonetaryAmount!`](#monetaryamount)   | The agreed-upon selling price for the Uniq, facilitating financial transactions.                 |
+| `promoterBasisPoints` - [`Int`](#int)            | The commission points allocated to promoters, rewarding marketing and promotional efforts.       |
+| `shares` - [`[UniqSaleShare!]!`](#uniqsaleshare) | A breakdown of commission shares for the resale, specifying the distribution among participants. |
 
 ##### Example
 
@@ -20827,27 +21335,26 @@ The UniqResale object represents information about the resale action.
 {
   "onSaleDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "price": MonetaryAmount,
-  "promoterBasisPoints": 123,
+  "promoterBasisPoints": 987,
   "shares": [UniqSaleShare]
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqResource
 
 ##### Description
 
-The UniqResource object represents a resource, it's an image, video or a
-file.
+Represents a digital resource, such as an image or video, associated with a Uniq, providing a URI for access and integrity information for verification.
 
 ##### Fields
 
-| Field Name                                                                 | Description                               |
-|----------------------------------------------------------------------------|-------------------------------------------|
-| `contentType` - [`String`](#string)                             | Type of resource image, video etc.        |
-| `integrity` - [`UniqResourceIntegrity`](#uniqresourceintegrity) | Information about the resource integrity. |
-| `uri` - [`String!`](#string)                                    | Uri where the resource is stored.         |
+| Field Name                                                                 | Description                                                                            |
+|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| `contentType` - [`String`](#string)                             | the mime type of the resource, indicating its format and nature (e.g., image, video).  |
+| `integrity` - [`UniqResourceIntegrity`](#uniqresourceintegrity) | Integrity information for the resource, ensuring its authenticity and unchanged state. |
+| `uri` - [`String!`](#string)                                    | The URI where the resource is stored, facilitating access and retrieval.               |
 
 ##### Example
 
@@ -20855,26 +21362,24 @@ file.
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "abc123"
+  "uri": "xyz789"
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqResourceIntegrity
 
 ##### Description
 
-The UniqResourceIntegrity object provides information about the
-integrity of the resource. Can be used to verify that the resource is
-the attended one.
+Details the integrity of a Uniq resource, ensuring that the resource is authentic and unaltered through cryptographic verification.
 
 ##### Fields
 
-| Field Name                                                                     | Description                   |
-|--------------------------------------------------------------------------------|-------------------------------|
-| `hash` - [`String!`](#string)                                       | Hash related to the resource. |
-| `type` - [`UniqResourceIntegrityType!`](#uniqresourceintegritytype) | Type of cryptographic hash.   |
+| Field Name                                                                     | Description                                                                                         |
+|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| `hash` - [`String!`](#string)                                       | The hash value associated with the resource, serving as a digital fingerprint for integrity checks. |
+| `type` - [`UniqResourceIntegrityType!`](#uniqresourceintegritytype) | Specifies the type of cryptographic hash used, aiding in the verification process.                  |
 
 ##### Example
 
@@ -20882,19 +21387,19 @@ the attended one.
 {"hash": "abc123", "type": "SHA256"}
 ```
 
-[Types](#group-Types)
+
 
 ## UniqResourceIntegrityType
 
 ##### Description
 
-Type of cryptographic hash used.
+Specifies the cryptographic hash algorithm used for ensuring the integrity of Uniq resources.
 
 ##### Values
 
-| Enum Value | Description                  |
-|------------|------------------------------|
-| `SHA256`   | SHA256 encryption algorithm. |
+| Enum Value | Description                                                                                                      |
+|------------|------------------------------------------------------------------------------------------------------------------|
+| `SHA256`   | Utilizes the SHA256 hashing algorithm for encryption, providing a secure method of verifying resource integrity. |
 
 ##### Example
 
@@ -20902,22 +21407,20 @@ Type of cryptographic hash used.
 "SHA256"
 ```
 
-[Types](#group-Types)
+
 
 ## UniqSaleShare
 
 ##### Description
 
-The UniqSaleShare object represents a share commission on second hand
-market. It can be used to display details about commissions that will be
-applied when the uniq is sold.
+Describes the commission structure for secondary market sales, including the receiver and the commission rate.
 
 ##### Fields
 
-| Field Name                                       | Description                                              |
-|--------------------------------------------------|----------------------------------------------------------|
-| `basisPoints` - [`Int!`](#int)        | The resale commission. 1 means 0.0001, which means 0.01% |
-| `receiver` - [`WalletId!`](#walletid) | WalletId receiving the share.                            |
+| Field Name                                       | Description                                                                       |
+|--------------------------------------------------|-----------------------------------------------------------------------------------|
+| `basisPoints` - [`Int!`](#int)        | The commission rate, expressed in basis points, where 1 basis point equals 0.01%. |
+| `receiver` - [`WalletId!`](#walletid) | The wallet ID entitled to receive the commission.                                 |
 
 ##### Example
 
@@ -20928,21 +21431,20 @@ applied when the uniq is sold.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqSerialRangeInput
 
 ##### Description
 
-The UniqSerialRangeInput object represent a range of value. Can be used
-to filter uniqs by a range of serial number inside a factory.
+Defines a range of serial numbers for Uniqs, facilitating filtering based on serial number criteria.
 
 ##### Fields
 
-| Input Field                             | Description                                                                                                                                                                                     |
-|-----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `max` - [`BigInt`](#bigint)  | Maximum value of the range. If provided, it has to be greater or equal than min field. Null value means it will return all existing uniqs with a serial number greater or equal than min field. |
-| `min` - [`BigInt!`](#bigint) | Minimum value of the range.                                                                                                                                                                     |
+| Input Field                             | Description                                                                                                                                                                                |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `max` - [`BigInt`](#bigint)  | The upper bound of the range, inclusive. Must be greater than or equal to the min value. A null value indicates no upper limit, including all serial numbers greater than or equal to min. |
+| `min` - [`BigInt!`](#bigint) | The lower bound of the range, inclusive. Must be a positive value.                                                                                                                         |
 
 ##### Example
 
@@ -20950,22 +21452,22 @@ to filter uniqs by a range of serial number inside a factory.
 {"max": 987, "min": 987}
 ```
 
-[Types](#group-Types)
+
 
 ## UniqSnapshot
 
 ##### Description
 
-The Uniq Snapshot.
+Enables real-time tracking of Uniq states within the ecosystem, offering a snapshot-based approach to data synchronization and monitoring.
 
 ##### Fields
 
-| Field Name                                                   | Description                                           |
-|--------------------------------------------------------------|-------------------------------------------------------|
-| `cursor` - [`StreamCursor`](#streamcursor)        | The optional stream cursor to resume snapshots after. |
-| `id` - [`BigInt!`](#bigint)                       | On chain id of the uniq.                              |
-| `position` - [`StreamPosition!`](#streamposition) | The stream position.                                  |
-| `state` - [`UniqState`](#uniqstate)               | The optional state, null means deleted.               |
+| Field Name                                                   | Description                                                                                                          |
+|--------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `cursor` - [`StreamCursor`](#streamcursor)        | An optional cursor facilitating the continuation of snapshot updates, enabling seamless data streaming and recovery. |
+| `id` - [`BigInt!`](#bigint)                       | The blockchain ID of the Uniq, serving as a foundational identifier for tracking and interaction.                    |
+| `position` - [`StreamPosition!`](#streamposition) | Marks the position in the update stream, essential for managing data flow and ensuring chronological integrity.      |
+| `state` - [`UniqState`](#uniqstate)               | Reflects the current state of the Uniq, with a null value denoting its removal or absence in the current dataset.    |
 
 ##### Example
 
@@ -20978,29 +21480,28 @@ The Uniq Snapshot.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqState
 
 ##### Description
 
-The Uniq State object represents all information about a uniq in
-snapshot stream.
+Captures the comprehensive state of a Uniq within a streaming data model, facilitating dynamic updates and real-time monitoring.
 
 ##### Fields
 
-| Field Name                                                                | Description                                                                 |
-|---------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| `factory` - [`UniqFactoryDigest!`](#uniqfactorydigest)         | Information on factory related to this uniq.                                |
-| `id` - [`BigInt!`](#bigint)                                    | On chain id of the uniq.                                                    |
-| `metadata` - [`UniqMetadata!`](#uniqmetadata)                  | Information on uniq metadata.                                               |
-| `mintDate` - [`Date!`](#date)                                  | Date of uniq mint.                                                          |
-| `owner` - [`WalletId!`](#walletid)                             | WalletId of the uniq owner.                                                 |
-| `resale` - [`UniqResale`](#uniqresale)                         | Information about the uniq resale. Null means not on sale.                  |
-| `serialNumber` - [`BigInt!`](#bigint)                          | Serial number of the uniq.                                                  |
-| `tradingPeriod` - [`UniqTradingPeriod`](#uniqtradingperiod)    | Window time which trading actions are allowed. Null means not tradable      |
-| `transferPeriod` - [`UniqTransferPeriod`](#uniqtransferperiod) | Window time which transfer actions are allowed. Null means not transferable |
-| `type` - [`UniqType!`](#uniqtype)                              | Specify the type of the uniq asset.                                         |
+| Field Name                                                                | Description                                                                                                                             |
+|---------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `factory` - [`UniqFactoryDigest!`](#uniqfactorydigest)         | Summarizes details about the factory associated with this Uniq, linking it to its origin and production parameters.                     |
+| `id` - [`BigInt!`](#bigint)                                    | The unique blockchain ID of the Uniq, central to its identification and tracking within the ecosystem.                                  |
+| `metadata` - [`UniqMetadata!`](#uniqmetadata)                  | Presents detailed metadata about the Uniq, encompassing its identity, description, and associated media content.                        |
+| `mintDate` - [`Date!`](#date)                                  | The date when the Uniq was minted, capturing its inception and contributing to its provenance.                                          |
+| `owner` - [`WalletId!`](#walletid)                             | The wallet ID of the current Uniq owner, providing clarity on ownership and custody.                                                    |
+| `resale` - [`UniqResale`](#uniqresale)                         | Provides information on the resale status of the Uniq, with a null value indicating that it is not currently offered for sale.          |
+| `serialNumber` - [`BigInt!`](#bigint)                          | The serial number assigned to the Uniq, offering additional granularity for identification and sorting.                                 |
+| `tradingPeriod` - [`UniqTradingPeriod`](#uniqtradingperiod)    | Outlines the trading window, specifying when the Uniq is eligible for market transactions. A null value indicates trading restrictions. |
+| `transferPeriod` - [`UniqTransferPeriod`](#uniqtransferperiod) | Defines the transfer window, clarifying when the Uniq can be transferred between parties. A null value signals transfer limitations.    |
+| `type` - [`UniqType!`](#uniqtype)                              | Specifies the type of asset the Uniq represents, aiding in classification and management.                                               |
 
 ##### Example
 
@@ -21019,52 +21520,45 @@ snapshot stream.
 }
 ```
 
-[Types](#group-Types)
+
 
 ## UniqStaticResource
 
 ##### Description
 
-The UniqStaticResource object represents a resource, it's an image,
-video or a file. Represented as a UniqResource with a hash specified.
+A static representation of a Uniq resource, including a predefined hash for integrity verification and a specific URI for retrieval.
 
 ##### Fields
 
-| Field Name                                                                  | Description                               |
-|-----------------------------------------------------------------------------|-------------------------------------------|
-| `contentType` - [`String!`](#string)                             | Type of resource image,video etc.         |
-| `integrity` - [`UniqResourceIntegrity!`](#uniqresourceintegrity) | Information about the resource integrity. |
-| `uri` - [`String!`](#string)                                     | Uri where the resource is stored.         |
+| Field Name                                                                  | Description                                                                                                    |
+|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| `contentType` - [`String!`](#string)                             | the mime type of the static resource, defining its specific format (e.g., image/jpeg, video/mp4).              |
+| `integrity` - [`UniqResourceIntegrity!`](#uniqresourceintegrity) | Integrity details for the static resource, affirming its authenticity through cryptographic hash verification. |
+| `uri` - [`String!`](#string)                                     | The URI for accessing the static resource, providing a direct link to the content.                             |
 
 ##### Example
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
   "uri": "xyz789"
 }
 ```
 
-[Types](#group-Types)
-
 ## UniqTradingPeriod
 
 ##### Description
 
-The UniqTradingPeriod object represents a period of time when a uniq can
-be traded. \[no start, no end\], forever tradable. \[no start, end\],
-can only be traded before the ending date. \[start, no end\], can only
-be traded after the starting date. \[start, end\], can only be traded
-between the start and end dates.
+Defines a trading period for a Uniq, specifying start and end dates, as well as the duration of the trading opportunity.
 
 ##### Fields
 
-| Field Name                                  | Description                                                                                                                                   |
-|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-| `duration` - [`BigInt`](#bigint) | Duration of trading period, number of milliseconds. Ideal to display the remaining time before the period ends. Null means infinite duration. |
-| `endDate` - [`Date`](#date)      | The ending of a time period when uniq can be traded. Null means no ending date to trade a uniq.                                               |
-| `startDate` - [`Date!`](#date)   | The beginning of a time period when uniq can be traded.                                                                                       |
+| Field Name                                  | Description                                                                                                   |
+|---------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| `duration` - [`BigInt`](#bigint) | The total duration of the trading period, measured in milliseconds, aiding in time-sensitive decision-making. |
+| `endDate` - [`Date`](#date)      | Indicates the end of the trading period, with null implying no fixed conclusion and ongoing tradeability.     |
+| `startDate` - [`Date!`](#date)   | Marks the beginning of the period during which the Uniq can be traded, setting temporal boundaries.           |
 
 ##### Example
 
@@ -21075,26 +21569,20 @@ between the start and end dates.
   "startDate": "Thu Jul 13 2023 13:27:11 GMT+0200"
 }
 ```
-
-[Types](#group-Types)
 
 ## UniqTransferPeriod
 
 ##### Description
 
-The UniqTransferPeriod object represents a period of time when a uniq
-can be transferred. \[no start, no end\], forever transferable. \[no
-start, end\], can only be transferred before the ending date. \[start,
-no end\], can only be transferred after the starting date. \[start,
-end\], can only be transferred between the start and end dates.
+Specifies a transfer period for a Uniq, outlining when the asset can be transferred between parties within designated timeframes.
 
 ##### Fields
 
-| Field Name                                  | Description                                                                                                                                    |
-|---------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| `duration` - [`BigInt`](#bigint) | Duration of transfer period, number of milliseconds. Ideal to display the remaining time before the period ends. Null means infinite duration. |
-| `endDate` - [`Date`](#date)      | The ending of a time period when uniq can be transferred. Null means no ending date to transfer a uniq.                                        |
-| `startDate` - [`Date!`](#date)   | The beginning of a time period when uniq can be transferred.                                                                                   |
+| Field Name                                  | Description                                                                                                 |
+|---------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| `duration` - [`BigInt`](#bigint) | The length of the transfer window, expressed in milliseconds, providing clarity on the available timeframe. |
+| `endDate` - [`Date`](#date)      | The end date beyond which the Uniq cannot be transferred, with null indicating no such limitation.          |
+| `startDate` - [`Date!`](#date)   | The start date for when transfers of the Uniq become permissible, establishing a window of action.          |
 
 ##### Example
 
@@ -21106,28 +21594,24 @@ end\], can only be transferred between the start and end dates.
 }
 ```
 
-[Types](#group-Types)
-
 ## UniqType
 
 ##### Description
 
-Specify the type of the uniq asset.
+Categorizes the nature of a Uniq asset within the ecosystem.
 
 ##### Values
 
-| Enum Value    | Description                         |
-|---------------|-------------------------------------|
-| `COLLECTIBLE` | Asset available on the marketplace. |
-| `GAME`        | Asset of type Game.                 |
+| Enum Value    | Description                                                            |
+|---------------|------------------------------------------------------------------------|
+| `COLLECTIBLE` | A tradable asset, typically available on the marketplace for exchange. |
+| `GAME`        | Represents assets specifically categorized as part of a game.          |
 
 ##### Example
 
 ``` js
 "COLLECTIBLE"
 ```
-
-[Types](#group-Types)
 
 ## WalletId
 

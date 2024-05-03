@@ -182,7 +182,7 @@ Meaning, developers who wish **to deploy a smart contract** on the production ne
 
 Account names are automatically generated sequentially based on the previous name. Developers are not required to provide a name for an account, developers are given one.
 
-_Requires system contracts to be deployed, and applied on Testnet and production networks._
+_Requires system contracts to be deployed, and applied on Testnet and Mainnet._
 
 ### Name Type Rules
 

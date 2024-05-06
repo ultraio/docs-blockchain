@@ -14,7 +14,7 @@ For Ultra's platform, KYC is required if a user wants to access more advanced bl
 
 ## Features for KYC accounts
 
-Currently no features require you to have KYC provided
+Currently, no features require KYC
 
 ## KYC request for developers
 

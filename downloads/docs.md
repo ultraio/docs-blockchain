@@ -1909,7 +1909,7 @@ For Ultra's platform, KYC is required if a user wants to access more advanced bl
 
 ## Features for KYC accounts
 
-Currently no features require you to have KYC provided
+Currently, no features require KYC
 
 ## KYC request for developers
 
@@ -11930,7 +11930,7 @@ In traditional EOS blockchain accounts, the OWNER permission may change the ACTI
 
 ## Ultra Account
 
-Accounts created using Ultra client are referred to as Ultra Accounts. Formerly referred to as `Easy Blockchain Account` (or EBA). This type of account is managed by Ultra Backend and provides users account recovery options in case you lose access to your account.
+Accounts created using Ultra client are referred to as Ultra Accounts. Formerly referred to as `Easy Blockchain Account` (or EBA). This type of account is managed by Ultra Backend and provides users with account recovery options in case they lose access to their account.
 
 The name in this case is auto-generated on chain with format of `aa1aa2aa3aa4` where the positional numerals 1, 2, 3 and 4 remain in the same place for all accounts, but the letters `a` will be incremented for each new account starting from `a` and ending at `z` after which the next `a` will be incremented to a `b` and so on (e.g. `aa1aa2aa3aa4`, `aa1aa2aa3ab4`, `aa1aa2aa3ac4`, ... `aa1aa2aa3az4`, `aa1aa2aa3ba4`).
 
@@ -11946,13 +11946,13 @@ Ownership of the account and private keys is the same as for Ultra Pro Wallet. I
 
 ## Ultra Corporate Wallet
 
-Ownership of the account and private keys is the same as for Ultra Pro Wallet. Ultra in this case is also responsible for creating such accounts. The name format follows a format like `partner.contract`, `partner.data`, `partner.account` or `contract.partner`, etc. Requests for this type of account should be directed to [developers@ultra.io](developers@ultra.io).
+Ownership of the account and private keys mirrors that of Ultra Pro Wallet. Ultra is responsible for creating these accounts. Names follow the pattern `partner.contract`, `partner.data`, `partner.account`, or `contract.partner`, etc. Requests for this type of account should be directed to [developers@ultra.io](developers@ultra.io).
 
 ## Okay, how do I make an account?
 
 We currently allow **Ultra Accounts** to be created through the official ultra.io client which can be found at [https://ultra.io](https://ultra.io).
 
-For creating **Ultra Pro Wallet** refer to this [Testnet tutorial](../../../tutorials/fundamentals/tutorial-generate-key-and-create-testnet-account.md) or to a [Mainnet guide](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md)
+To create **Ultra Pro Wallet**, refer to either [Testnet tutorial](../../../tutorials/fundamentals/tutorial-generate-key-and-create-testnet-account.md) or [Mainnet guide](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md).
 
 Using our docker image you can create local accounts for testing.
 
@@ -13003,7 +13003,7 @@ Meaning, developers who wish **to deploy a smart contract** on the production ne
 
 Account names are automatically generated sequentially based on the previous name. Developers are not required to provide a name for an account, developers are given one.
 
-_Requires system contracts to be deployed, and applied on Testnet and production networks._
+_Requires system contracts to be deployed, and applied on Testnet and Mainnet._
 
 ### Name Type Rules
 

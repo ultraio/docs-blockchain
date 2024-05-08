@@ -393,6 +393,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/products/uniq-discord-bot'),
             collapsed: true,
         },
+        {
+            text: 'Uniq Metadata Tool',
+            items: getMarkdownFiles('/products/uniq-metadata-tool'),
+            collapsed: true,
+        },
     ],
     // ################
     // blockchain/general

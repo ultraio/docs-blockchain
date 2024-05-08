@@ -88,4 +88,10 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
         <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
     </tr>
+     <tr>
+        <td>Uniq Metadata Tool</td>
+        <td>A bot that links Discord Users with Ultra Accounts, and allows custom role integration based on owned uniqs.</td>
+        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
+        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
+    </tr>
 </table>

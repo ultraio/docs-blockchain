@@ -85,6 +85,26 @@ General tutorials to help feed your curiosity.
 
 </table>
 
+## Advanced Guides
+
+<table>
+    <tr>
+        <td>Guide Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>How to log in to the Ultra Toolkit using Anchor Wallet</td>
+        <td>Learn how to setup your keys with Anchor wallet and log in to the toolkit using Anchor wallet.</td>
+        <td><a href="../advanced-guides/how-to-login-to-toolkit-using-anchor-wallet">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to log in to the Ultra Toolkit using Ledger</td>
+        <td>Learn how to create your account and log in to the toolkit using a Ledger device.</td>
+        <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
+    </tr>
+</table>
+
 ## Projects
 
 <table>

@@ -21,8 +21,13 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Guides',
+            text: 'Guides - Basics',
             items: getMarkdownFiles('/tutorials/guides'),
+            collapsed: true,
+        },
+        {
+            text: 'Guides - Advanced',
+            items: getMarkdownFiles('/tutorials/advanced-guides'),
             collapsed: true,
         },
         {
@@ -135,7 +140,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/guides': [
         {
-            text: 'Guides',
+            text: 'Guides - Basics',
             items: [
                 {
                     text: '< Go Back to Tutorials',
@@ -144,8 +149,24 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Guides',
+            text: 'Guides - Basics',
             items: getMarkdownFiles('/tutorials/guides'),
+            collapsed: true,
+        },
+    ],
+    '/tutorials/advanced-guides': [
+        {
+            text: 'Guides - Advanced',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Guides - Advanced',
+            items: getMarkdownFiles('/tutorials/advanced-guides'),
             collapsed: true,
         },
     ],

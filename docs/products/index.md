@@ -88,4 +88,10 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
         <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
     </tr>
+     <tr>
+        <td>Uniq Metadata Tool</td>
+        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
+        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
+        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
+    </tr>
 </table>

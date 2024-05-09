@@ -85,7 +85,7 @@ Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool
     3. Under `active` section:
         1. **threshold**: Input `1` as the threshold for active authority.
         2. Click on the `Add` button for `keys` section and enter your public key in the **key** input, and `1` in the **weight** input.
-    4. **max_payment**: You need to specify the maximum amount of UOS your are willing to pay to create your Ultra Pro Wallet. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to input at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations (e.g. put 1 UOS over the current price).
+    4. **max_payment**: You need to specify the maximum amount of UOS you are willing to pay to create the Ultra Pro Wallet. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to input at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations (e.g. increase the current price by 1 UOS).
     5. Once you have inputted all the values, click on the `Send 1 Action` button.
 
 ![](./images/toolkit-newnonebact-form.png)
@@ -107,4 +107,4 @@ For more information on the action, please refer to the [`newnonebact` action do
 
 ## Sign In to the Ultra Wallet using Ultra Pro Wallet
 
-The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` network when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is if you wish to continue using the `Mainnet` network when logging into the Wallet, as the Ultra Pro Wallet you've just made is exclusively for Mainnet.

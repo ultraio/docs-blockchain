@@ -21,8 +21,13 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Guides',
+            text: 'Guides - Basics',
             items: getMarkdownFiles('/tutorials/guides'),
+            collapsed: true,
+        },
+        {
+            text: 'Guides - Advanced',
+            items: getMarkdownFiles('/tutorials/advanced-guides'),
             collapsed: true,
         },
         {
@@ -144,8 +149,24 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Guides',
+            text: 'Guides - Basics',
             items: getMarkdownFiles('/tutorials/guides'),
+            collapsed: true,
+        },
+    ],
+    '/tutorials/advanced-guides': [
+        {
+            text: 'Guides',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Guides - Advanced',
+            items: getMarkdownFiles('/tutorials/advanced-guides'),
             collapsed: true,
         },
     ],
@@ -370,6 +391,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Uniq Discord Bot',
             items: getMarkdownFiles('/products/uniq-discord-bot'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq Metadata Tool',
+            items: getMarkdownFiles('/products/uniq-metadata-tool'),
             collapsed: true,
         },
     ],

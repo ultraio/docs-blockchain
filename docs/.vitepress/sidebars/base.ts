@@ -140,7 +140,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/guides': [
         {
-            text: 'Guides - Basics',
+            text: 'Guides',
             items: [
                 {
                     text: '< Go Back to Tutorials',
@@ -156,7 +156,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     ],
     '/tutorials/advanced-guides': [
         {
-            text: 'Guides - Advanced',
+            text: 'Guides',
             items: [
                 {
                     text: '< Go Back to Tutorials',

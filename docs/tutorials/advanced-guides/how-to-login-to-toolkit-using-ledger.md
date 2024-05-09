@@ -48,7 +48,7 @@ The new prompt will ask you to input your Ledger index. Enter `0` (or whatever i
 
 ![](./images/toolkit-legder-login-show-pub-key.png)
 
-**Copy this public key and save it as you will need it in the proceeding steps.**
+**Copy this public key and save it as you will need it in the next steps.**
 
 ## Creating Ultra Pro Wallet for your Ledger
 

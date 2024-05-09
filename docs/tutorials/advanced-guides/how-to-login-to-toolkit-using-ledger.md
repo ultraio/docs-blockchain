@@ -1,7 +1,8 @@
----
+[8---
 title: 'How to log in to the Ultra Toolkit using Ledger'
 order: -99997
 oultine: [0, 5]
+
 ---
 
 # How to log in to the Ultra Toolkit using Ledger
@@ -51,48 +52,11 @@ The new prompt will ask you to input your Ledger index. Enter `0` (or whatever i
 
 ## Creating Ultra Pro Wallet for your Ledger
 
-Once you have copied the public key associated with your Ledger device, it is now time to create an Ultra Pro Wallet for that public key. To do so, open your Ultra Wallet extension and select `Mainnet` network.
-
-![](../guides/images/UltraProWallet/wallet-mainnet-selection.png)
-
-Now sign in with your existing Ultra Account, using the `Sign In` option. To be able to create an Ultra Pro Wallet you will need some UOS available on your Ultra Account. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to have at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations.
-
-If you don't have the required amount yet then you can utilize the `Buy UOS` option of the Ultra Wallet extension.
-
-![](../guides/images/UltraProWallet/wallet-buy-uos.png)
-
-When you have enough funds you can proceed with the creation of the Ultra Pro Wallet. For this you need to click on the profile icon and select the `Create an Ultra Pro Wallet` button.
-
-![](../guides/images/UltraProWallet/wallet-create-pro-wallet.png)
-
-This will open a new browser tab where you will have 2 options:
-
--   Generate a new private and public key pair
--   Use an existing pair to create an Ultra Pro Wallet
-
-![](../guides/images/UltraProWallet/wallet-generate-or-paste-public-key.png)
-
-Since we already have the public key associated with our Ledger, we will simply paste the public key in the input.
-
-![](./images/ultra-wallet-create-ultra-pro-wallet.png)
-
-Before finishing the Ultra Pro Wallet creation you need to specify the maximum amount of UOS your are willing to pay to create it. The price fluctuates over time due to USD to UOS conversion fluctuations and may be a bit different then the estimate shown on the page. Pick a value that is a bit over the estimated price or just put a large number there, we will charge only the current equivalent of 2 USD converted to UOS.
-
-Now you can press the `Create Account` button to proceed. You will be prompted to approve the transaction with its details listed. Check it and click `Confirm`
-
-![](../guides/images/UltraProWallet/wallet-approve-transaction.png)
-
-If everything was done correctly you will get a successful transaction screen. You can click on `Block Explorer` button to view the transaction status.
-
-![](../guides/images/UltraProWallet/wallet-transaction-successful.png)
-
-Your new Ultra Pro Wallet name will be listed in the actions list. This Ultra Pro Wallet name is now associated with your Ledger device.
-
-![](../guides/images/UltraProWallet/wallet-check-block-explorer.png)
+Once you have copied the public key associated with your Ledger device, it is now time to create an Ultra Pro Wallet for that public key. To do so, follow the [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet.md#create-an-ultra-pro-wallet) guide, and instead of generating a new key pair, use the public key that you have obtained in the previous steps.
 
 ## Login to Toolkit
 
-Return to Ultra Toolkit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
+Once you have created an Ultra Pro Wallet for your Ledger, return to Ultra Toolkit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
 
 ![](../fundamentals/images/toolkit-network-selection.png)
 

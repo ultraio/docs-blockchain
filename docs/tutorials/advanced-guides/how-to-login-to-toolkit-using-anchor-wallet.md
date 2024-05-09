@@ -4,7 +4,7 @@ order: -99997
 oultine: [0, 5]
 ---
 
-# Tutorial - Log in to the Ultra Toolkit using Anchor Wallet
+# How to log in to the Ultra Toolkit using Anchor Wallet
 
 Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
@@ -115,5 +115,4 @@ You have now successfully logged in to the Ultra Toolkit using Anchor Wallet.
 
 After logging in to the toolkit, you can utilize it to sign transactions with your Anchor Wallet. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Anchor Wallet.
 
--   [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../fundamentals/tutorial-obtain-token-and-purchase-ram.md)
 -   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)

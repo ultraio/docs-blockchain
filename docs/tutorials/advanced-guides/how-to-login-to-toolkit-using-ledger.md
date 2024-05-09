@@ -4,7 +4,7 @@ order: -99997
 oultine: [0, 5]
 ---
 
-# Tutorial - Log in to the Ultra Toolkit using Ledger
+# How to log in to the Ultra Toolkit using Ledger
 
 Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
@@ -51,7 +51,7 @@ The new prompt will ask you to input your Ledger index. Enter `0` (or whatever i
 
 ## Creating Ultra Pro Wallet for your Ledger
 
-Once you have copied the public key associated with your Ledger device, it is not time to create a Ultra Pro Wallet for that public key. To do so, open your Ultra Wallet extension and select `Mainnet` network.
+Once you have copied the public key associated with your Ledger device, it is now time to create an Ultra Pro Wallet for that public key. To do so, open your Ultra Wallet extension and select `Mainnet` network.
 
 ![](../guides/images/UltraProWallet/wallet-mainnet-selection.png)
 
@@ -120,5 +120,4 @@ You have now successfully logged in to the Ultra Toolkit using Ledger.
 
 After logging in to the toolkit, you can utilize it to sign transactions with your Ledger device. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Ledger device.
 
--   [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../fundamentals/tutorial-obtain-token-and-purchase-ram.md)
 -   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)

@@ -7,21 +7,15 @@ export function getSidebar(type: 'base' | 'staging' | 'mainnet'): { [key: string
     let newSidebar = base;
 
     if (type === 'base') {
-        console.log('BASE');
-        console.log(newSidebar);
         return newSidebar;
     }
 
     if (type === 'staging') {
         newSidebar = { ...newSidebar, ...stagingSidebar };
-        console.log('staging');
-        console.log(newSidebar);
     }
 
     if (type === 'mainnet') {
         newSidebar = { ...newSidebar, ...mainnetSidebar };
-        console.log('mainnet');
-        console.log(newSidebar);
     }
 
     return newSidebar;

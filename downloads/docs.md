@@ -16125,6 +16125,12 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
         <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
     </tr>
+     <tr>
+        <td>Uniq Metadata Tool</td>
+        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
+        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
+        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
+    </tr>
 </table>
 
 ---
@@ -23194,6 +23200,245 @@ MONGODB_URL=mongodb://USERNAME:PASSWORD@HOST
 ```
 
 ---
+title: 'Introduction'
+
+order: -99999999
+---
+
+# Uniq Metadata Tool
+
+The metadata tool simplifies the process for creating complicated uniq factories and associating tokens with those factories. This tool allows the user to specify token factory specifications and corresponding token(s) specifications in an easy to use CSV template.
+
+This tool takes CSVs and media files (Uniq images, videos and other supported media files) as input, converts to files to JSON objects, validates the JSON data, generates sha256 hashes of the JSON objects and outputs the generated JSON files.
+
+![Metadata Tool](/images/token-factories/metadatatool.png)
+
+**Note that the tool itself does not interact with the blockchain; rather, it simplifies the process of creating complicated uniq factories and the associated tokens.**
+
+## Install
+
+You can download the latest version of the tool from the [GitHub Releases Page](https://github.com/ultraio/metadata-tool/releases)
+
+## Features
+
+-   Simplifies factory creation
+-   Supports multiple media types
+-   Converts CSV to JSON metadata
+-   Hash Validation
+-   Schema Validation
+
+## Tutorials & Help
+
+-   TODO
+
+---
+title: 'How to log in to the Ultra Toolkit using Anchor Wallet'
+order: -99999
+oultine: [0, 5]
+---
+
+# How to log in to the Ultra Toolkit using Anchor Wallet
+
+Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+
+This tutorial will cover the simplest process of logging in into the Ultra Toolkit using [Anchor Wallet](https://www.greymass.com/anchor).
+Anchor is a security and privacy focused open-source digital wallet for all Antelope-based networks.
+
+## Prerequisites
+
+-   You must have created your Ultra Pro Wallet. If you need help creating your Ultra Pro Wallet, please refer to [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet-using-toolkit.md) tutorial.
+
+## Goal
+
+The goal of this tutorial is to login into the Ultra Toolkit using Anchor Wallet.
+
+## Setting Up Anchor Wallet
+
+1. Download Anchor (https://www.greymass.com/anchor#download) and follow the installation instructions.
+2. Once installed, open Anchor Wallet and click on the `Setup an Account` button.
+   ![](./images/anchor-wallet-setup-account.png)
+3. Enter a password for the Anchor Wallet, and click on `Set Password` button. Remember this password as this will be used every time you sign a transaction through Anchor.
+   ![](./images/anchor-wallet-set-pwd.png)
+4. Re-enter the password in the password confirmation screen and click `Set Password` again.
+   ![](./images/anchor-wallet-confirm-pwd.png)
+5. You will now see a list of different blockchains. From the list, click on `EOS`.
+   ![](./images/anchor-wallet-chains-page.png)
+6. Click on the top left EOS icon and then click on `Manage Blockchains`.
+   ![](./images/anchor-wallet-manage-chains.png)
+7. On the manage blockchains page, click on `Add/Remove`.
+   ![](./images/anchor-wallet-manage-add-remove.png)
+8. You will see a list of available blockchain networks, from the list find `EOS` and uncheck the checkbox next to it, and then click on the `+ Custom Blockchain` button on the top right.
+   ![](./images/anchor-wallet-uncheck-eos.png)
+9. You will be prompted to add a new chain. Use the following details:
+
+    - **For Mainnet:**
+        - Chain ID: `a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097`
+        - Name of Blockchain: `Ultra Mainnet`
+        - Default Node: `https://ultra.api.eosnation.io`
+        - Default Token Symbol: `UOS`
+
+    ![](./images/anchor-wallet-add-new-chain.png)
+    For the sake of this tutorial, we are using `Mainnet` network, but you can follow the same steps to add Ultra `Testnet` network too.
+
+    - **For Testnet:**
+        - Chain ID: `7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9`
+        - Name of Blockchain: `Ultra Testnet`
+        - Default Node: `https://ultratest.api.eosnation.io`
+        - Default Token Symbol: `UOS`
+
+    Click on the `Save` button to proceed.
+
+10. You will now see `Ultra Mainnet` added to the list of available blockchain networks. Check the checkbox next to `Ultra Mainnet` and click on the `Enable 1 blockchains` button.
+    ![](./images/anchor-wallet-enable-chain.png)
+11. After enabling `Ultra Mainnet`, you'll be redirected to `Manage Available Blockchains` page. From this page, select `Ultra Mainnet`.
+    ![](./images/anchor-wallet-available-chains.png)
+12. You will now see the `Setup a Wallet` page. Click on the `Import an existing Account` button, and then click on `Import Private Key`.
+    ![](./images/anchor-wallet-import-account.png)
+    ![](./images/anchor-wallet-import-pvt-key.png)
+
+    Enter the private key associated with your Ultra Pro account, and it will load a list of all associated accounts for that private key. From the list of accounts, select the one that you want to use. This is usually the account with `@active` in its name.
+
+    Once selected, click on the `Import Account(s)` button.
+    ![](./images/anchor-wallet-import-pvt-key-pt2.png)
+
+13. After importing your account, you will see the account home page. On this page you can see your account balance and your account name.
+    ![](./images/anchor-wallet-account-imported.png)
+
+    You have now successfully added your Ultra Pro account to Anchor wallet.
+
+## Accessing the Toolkit
+
+To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+
+## Network Selection
+
+Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+
+![](../fundamentals/images/toolkit-network-selection.png)
+
+Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Mainnet. From the list of available networks, click on `Mainnet`.
+
+## Login to Toolkit
+
+Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Anchor` option.
+
+![](../fundamentals/images/toolkit-login-button.png)
+
+![](./images/toolkit-login-options-anchor.png)
+
+Once you click on `Anchor` option, a login modal will be opened. This may automatically launch your Anchor wallet. If not, you can click on the `Launch Anchor` button to open Anchor wallet on your machine.
+
+![](./images/toolkit-login-anchor-prompt.png)
+
+From your Anchor wallet window, you will see a prompt for signing request. Click on the `Unlock Wallet + Sign` button to continue.
+
+![](./images/anchor-authorize-login.png)
+
+Enter your Anchor password and click on `Authorize` button.
+
+![](./images/anchor-authorize-login-pwd.png)
+
+Once authorized, you will be logged in to the toolkit. You can verify this by checking for your account name in the top left corner of your screen.
+
+![](./images/toolkit-login-account-name.png)
+
+You have now successfully logged in to the Ultra Toolkit using Anchor Wallet.
+
+## What's next?
+
+After logging in to the toolkit, you can utilize it to sign transactions with your Anchor Wallet. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Anchor Wallet.
+
+-   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)
+
+---
+title: 'How to log in to the Ultra Toolkit using Ledger'
+order: -99998
+oultine: [0, 5]
+
+---
+
+# How to log in to the Ultra Toolkit using Ledger
+
+Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+
+This tutorial will cover the simplest process of logging in into the Ultra Toolkit using a [Ledger Device](https://www.ledger.com).
+Ledger devices are hardware crypto wallets that store your private keys offline.
+
+## Prerequisites
+
+-   You must have a [Ledger Device](https://www.ledger.com). For the sake of this tutorial, we are going to use a Ledger Nano X.
+-   You must have already an account created via official [Ultra client](https://ultra.io/) or Ultra Wallet extension. Refer to the [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet.md) tutorial to create an account.
+-   Your account must have sufficient UOS tokens for a new account creation transactions fees. Current Ultra Pro Wallet creation price is <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" />.
+
+## Goal
+
+The goal of this tutorial is to login into the Ultra Toolkit using Ledger.
+
+## Setting Up Ledger for EOS
+
+1. Follow instructions provided with your Ledger device and ensure you install the companion [Ledger Live](https://www.ledger.com/ledger-live) application.
+2. Once installed, connect your Ledger and open Ledger Live application. Navigate to `My Ledger` section from the sidebar and search for `EOS` application in the `App Catalog` section.
+   ![](./images/ledger-search-eos-app.png)
+3. Install the EOS application by clicking the `Install` button.
+4. After you install the EOS application, you will need to go open the EOS application from your Ledger device and then go into it's settings, and set "Contract data" setting to be allowed.
+   ![](./images/ledger1.jpg)
+   ![](./images/ledger2.jpg)
+   ![](./images/ledger3.jpg)
+
+## Getting Public Key from Ledger
+
+Your ledger device comes with multiple public keys. Each public key is assigned an index value starting from `0`. For the sake of this tutorial, we will use the first public key (i.e; the public key at index `0`).
+
+To obtain the public key of your Ledger, go to Ultra Toolkit (https://toolkit.ultra.io), and
+click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ledger` option.
+
+![](../fundamentals/images/toolkit-login-button.png)
+
+![](./images/toolkit-login-options-ledger.png)
+
+The new prompt will ask you to input your Ledger index. Enter `0` (or whatever index you want to use), and click `Select` button. It will load your public key associated with that specific index.
+
+![](./images/toolkit-legder-login-show-pub-key.png)
+
+**Copy this public key and save it as you will need it in the next steps.**
+
+## Creating Ultra Pro Wallet for your Ledger
+
+Once you have copied the public key associated with your Ledger device, it is now time to create an Ultra Pro Wallet for that public key. To do so, follow the [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet.md#create-an-ultra-pro-wallet) guide, and instead of generating a new key pair, use the public key that you have obtained in the previous steps.
+
+## Login to Toolkit
+
+Once you have created an Ultra Pro Wallet for your Ledger, return to Ultra Toolkit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
+
+![](../fundamentals/images/toolkit-network-selection.png)
+
+Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. From the list of available networks, click on `Mainnet`.
+
+Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ledger` option.
+
+![](../fundamentals/images/toolkit-login-button.png)
+
+![](./images/toolkit-login-options-ledger.png)
+
+The new prompt will ask you to input your Ledger index. Enter the index number that you selected earlier and click `Select` button. It will load your Ultra Pro Wallet account associated with that specific index.
+
+![](./images/toolkit-ledger-login-index.png)
+
+![](./images/toolkit-ledger-account-selection.png)
+
+From the list of accounts, select the one that you want to use. This is usually the account with `@active` in its name. You will now be logged in to the toolkit. You can verify this by checking for your account name in the top left corner of your screen.
+
+![](./images/toolkit-login-account-name.png)
+
+You have now successfully logged in to the Ultra Toolkit using Ledger.
+
+## What's next?
+
+After logging in to the toolkit, you can utilize it to sign transactions with your Ledger device. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Ledger device.
+
+-   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)
+
+---
 title: 'Development Environment Setup'
 
 order: -9998
@@ -24932,7 +25177,7 @@ Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool
     3. Under `active` section:
         1. **threshold**: Input `1` as the threshold for active authority.
         2. Click on the `Add` button for `keys` section and enter your public key in the **key** input, and `1` in the **weight** input.
-    4. **max_payment**: You need to specify the maximum amount of UOS your are willing to pay to create your Ultra Pro Wallet. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to input at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations (e.g. put 1 UOS over the current price).
+    4. **max_payment**: You need to specify the maximum amount of UOS you are willing to pay to create the Ultra Pro Wallet. The current Ultra Pro Wallet creation price is 2 USD which is approximately <OracleConversion :amount="2.0" scope="......2nf5.o4" :param="70000" /> so you need to input at least this amount of UOS and, preferably, a bit more to account for UOS price fluctuations (e.g. increase the current price by 1 UOS).
     5. Once you have inputted all the values, click on the `Send 1 Action` button.
 
 ![](./images/toolkit-newnonebact-form.png)
@@ -24954,7 +25199,7 @@ For more information on the action, please refer to the [`newnonebact` action do
 
 ## Sign In to the Ultra Wallet using Ultra Pro Wallet
 
-The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` network when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is if you wish to continue using the `Mainnet` network when logging into the Wallet, as the Ultra Pro Wallet you've just made is exclusively for Mainnet.
 
 ---
 title: 'How to create an Ultra Pro Wallet using Ultra Wallet Extension'
@@ -25031,7 +25276,7 @@ Your new Ultra Pro Wallet name will be listed in the actions list. You cannot ch
 
 ## Sign In to the Ultra Wallet using Ultra Pro Wallet
 
-The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is that you want to keep using the `Mainnet` network when signing in to the Wallet since the Ultra Pro Wallet you have just created is for Mainnet only.
+The process of using your new Ultra Pro Wallet through the Ultra Wallet extension is identical to the [Tutorial - Setup Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). The only exception is if you wish to continue using the `Mainnet` network when logging into the Wallet, as the Ultra Pro Wallet you've just made is exclusively for Mainnet.
 
 ---
 title: 'How to get RAM'
@@ -25419,6 +25664,26 @@ General tutorials to help feed your curiosity.
         <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
     </tr>
 
+</table>
+
+## Advanced Guides
+
+<table>
+    <tr>
+        <td>Guide Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>How to log in to the Ultra Toolkit using Anchor Wallet</td>
+        <td>Learn how to setup your keys with Anchor wallet and log in to the toolkit using Anchor wallet.</td>
+        <td><a href="../advanced-guides/how-to-login-to-toolkit-using-anchor-wallet">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to log in to the Ultra Toolkit using Ledger</td>
+        <td>Learn how to create your account and log in to the toolkit using a Ledger device.</td>
+        <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
+    </tr>
 </table>
 
 ## Projects

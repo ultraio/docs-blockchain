@@ -42,6 +42,16 @@ General tutorials to help feed your curiosity.
         <td>Demonstrating token transfer and Uniq purchasing</td>
         <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
     </tr>
+    <tr>
+        <td>Tutorial - Purcashing UOS token</td>
+        <td>Tutorial for purchasing native UOS token</td>
+        <td><a href="../fundamentals/tutorial-buy-uos">Link</a></td>
+    </tr>
+    <tr>
+        <td>Tutorial - Swapping UOS token</td>
+        <td>Tutorial for swapping UOS tokens.</td>
+        <td><a href="../fundamentals/tutorial-swapping-token">Link</a></td>
+    </tr>
 </table>
 
 ## Guides

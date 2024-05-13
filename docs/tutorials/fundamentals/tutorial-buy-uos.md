@@ -1,12 +1,18 @@
 ---
-title: 'Tutorial - How to Buy UOS Tokens Using the Ultra Wallet'
+title: 'Tutorial - How to Buy UOS Tokens on Ultra Mainnet Using the Ultra Wallet'
 order: -99994
 outline: [0, 6]
 ---
 
-# Tutorial - How to Buy UOS Tokens Using the Ultra Wallet
+# Tutorial - How to Buy UOS Tokens on Ultra Mainnet Using the Ultra Wallet
 
-This tutorial will guide you through the process of purchasing UOS tokens using the Ultra Wallet extension. UOS is the native token of the Ultra Network, and having it enables you to participate in various activities within the Ultra ecosystem.
+This tutorial will guide you through the process of purchasing UOS tokens on Ultra Mainnet using the Ultra Wallet extension. UOS is the native token of the Ultra Network, and having it enables you to participate in various activities within the Ultra ecosystem.
+
+## Prerequisites
+
+Before you begin, ensure that you have completed the following steps:
+- **Wallet Setup**: You must have the Ultra Wallet extension installed and set up in your browser. If you haven't done this yet, please refer to our tutorial on [Setting Up the Ultra Wallet](./tutorial-setup-the-wallet.md).
+- **Account Creation**: You need to have an Ultra account linked to your wallet. If you need to create an account, follow the instructions in our [Account Creation Guide](./tutorial-generate-key-and-create-testnet-account.md).
 
 ## Step 1: Open the Ultra Wallet Extension
 
@@ -19,6 +25,12 @@ Begin by opening the Ultra Wallet extension in your browser. This is where all y
 Click on the 'Buy UOS' button within the Ultra Wallet interface to start the purchasing process.
 
 ![](./images/buying-UOS-ultra-wallet.png)
+
+### Step 2a: Alternative Method - Purchasing UOS via the Ultra Client
+
+Alternatively, you can also purchase UOS tokens directly through the Ultra Client. Simply navigate to your wallet screen within the Ultra Client and click on the `Buy UOS coins` button. This method provides another convenient option for acquiring UOS tokens.
+
+![](./images/buying-UOS-ultra-client.png)
 
 ## Step 3: Acknowledge the Disclaimer
 

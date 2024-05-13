@@ -43,14 +43,9 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Purcashing UOS token</td>
-        <td>Tutorial for purchasing native UOS token</td>
+        <td>Tutorial - Purcashing UOS token on Ultra Mainnet</td>
+        <td>Tutorial for purchasing native UOS token on Ultra Mainnet</td>
         <td><a href="../fundamentals/tutorial-buy-uos">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Swapping UOS token</td>
-        <td>Tutorial for swapping UOS tokens.</td>
-        <td><a href="../fundamentals/tutorial-swapping-token">Link</a></td>
     </tr>
 </table>
 
@@ -92,7 +87,11 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
     </tr>
-
+    <tr>
+        <td>How to swap UOS from Ultra Mainnet to Ethereum</td>
+        <td>How to swap UOS from Ultra Mainnet to Ethereum by using Ultra Client</td>
+        <td><a href="../guides/how-to-swap-tokens">Link</a></td>
+    </tr>
 </table>
 
 ## Advanced Guides

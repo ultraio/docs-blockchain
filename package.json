@@ -22,7 +22,7 @@
         "verifylinks": "npx tsx ./scripts/verifyLinks.ts"
     },
     "devDependencies": {
-        "@types/node": "^20.10.4",
+        "@types/node": "^20.12.11",
         "@vitejs/plugin-basic-ssl": "^1.0.2",
         "tsx": "^4.6.2",
         "vitepress": "^1.0.0-rc.31",

@@ -82,7 +82,16 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
     </tr>
-
+    <tr>
+        <td>How to purchase UOS tokens on Ultra Mainnet</td>
+        <td>How to purchase native UOS token on Ultra Mainnet using Ultra Wallet Extension</td>
+        <td><a href="../guides/how-to-buy-uos">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to swap UOS from Ultra Mainnet to Ethereum</td>
+        <td>How to swap UOS from Ultra Mainnet to Ethereum by using Ultra Client</td>
+        <td><a href="../guides/how-to-swap-tokens">Link</a></td>
+    </tr>
 </table>
 
 ## Advanced Guides

@@ -25091,6 +25091,69 @@ oultine: [0, 4]
 
 
 ---
+title: 'How to buy UOS tokens on Ultra Mainnet using the Ultra Wallet'
+order: -99983
+outline: [0, 6]
+---
+
+# How to buy UOS tokens on Ultra Mainnet using the Ultra Wallet
+
+This guide will guide you through the process of purchasing UOS tokens on Ultra Mainnet using the Ultra Wallet extension. UOS is the native token of the Ultra Network, and having it enables you to participate in various activities within the Ultra ecosystem.
+
+## Prerequisites
+
+Before you begin, ensure that you have completed the following steps:
+- **Wallet Setup**: You must have the Ultra Wallet extension installed and set up in your browser. If you haven't done this yet, please refer to our tutorial on [Setting Up the Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). Note that you must select `Mainnet` environment and log in using your Mainnet account (either Ultra Account or Ultra Pro Wallet).
+- **Account Creation**: Account created using official [Ultra client](https://ultra.io/) or Wallet Extension. You need to have an Ultra account linked to your wallet. For details refer to [Account Creation Guide](./how-to-create-ultra-pro-wallet.md).
+
+## Step 1: Open the Ultra Wallet Extension
+
+Begin by opening the Ultra Wallet extension in your browser. This is where all your transactions for buying UOS will initiate.
+
+![](./images/buying-UOS-open-wallet-extension.png)
+
+## Step 2: Initiate Purchase
+
+Click on the 'Buy UOS' button within the Ultra Wallet interface to start the purchasing process.
+
+![](./images/buying-UOS-ultra-wallet.png)
+
+### Step 2a: Alternative Method - Purchasing UOS via the Ultra Client
+
+Alternatively, you can also purchase UOS tokens directly through the Ultra Client. Simply navigate to your wallet screen within the Ultra Client and click on the `Buy UOS coins` button. This method provides another convenient option for acquiring UOS tokens.
+
+![](./images/buying-UOS-ultra-client.png)
+
+## Step 3: Acknowledge the Disclaimer
+
+Upon clicking `Buy UOS`, you will be presented with a disclaimer page. It's important to read and understand this as it informs you that you are leaving the site managed by Ultra to a third-party website. Ultra does not control the quality, content, reliability, or security of the third-party website.
+
+![](./images/buying-UOS-disclaimer.png)
+
+## Step 4: Specify Purchase Amount
+
+On the wallet application page, you need to specify how much UOS you want to buy. Note: The minimum transaction amount must be equivalent to at least $50, and the maximum is $20,000. For example, if you decide to buy 500 UOS, it might cost approximately $86.14 USD. Click `Continue` after entering your desired amount.
+
+![](./images/buying-UOS-wallet-app.png)
+
+## Step 5: Choose Payment Method
+
+Next, choose your preferred payment method from the options available, which could include credit cards, bank transfers, or other payment services. Select your option, then click `Continue`.
+
+![](./images/buying-UOS-choose-payment-method.png)
+
+## Step 6: Enter Payment Details
+
+Enter your payment details on the provided form. This usually requires entering your credit card information. Double-check all details for accuracy before clicking the `Next` button to complete your purchase.
+
+![](./images/buying-UOS-card-information.png)
+
+## Conclusion
+
+Once you have completed these steps, your transaction will be processed, and the UOS tokens will be credited to your wallet. Always verify the transaction within your wallet and check your new UOS balance to ensure the purchase was successful.
+
+
+---
 title: 'How to create an Ultra Pro Wallet using Ultra Toolkit'
 order: -99988
 oultine: [0, 5]
@@ -25580,6 +25643,64 @@ It's highly recommended to use `curl` requests against [REST API Endpoints](./ho
 ![](./images/block-explorer/explorer-tables.png)
 
 ---
+title: 'How to swap UOS from Ultra to Ethereum'
+order: -99982
+outline: [0, 5]
+---
+
+# How to swap UOS from Ultra Mainnet to Ethereum
+
+This document guides you through the process of swapping UOS tokens from the Ultra Mainnet to UOS ERC-20 tokens on the Ethereum network using the Ultra Client. This process is designed for users who already have an Ethereum account and are familiar with cryptocurrency transactions.
+
+## Prerequisites
+
+Before you begin the swapping process, ensure that you meet the following requirements:
+- **Ultra Account**: You must have an active account on the Ultra Mainnet with UOS tokens available for swapping.
+- **Ethereum Account**: You should already have an Ethereum account set up to receive the UOS ERC-20 tokens. This account should be able to interact with ERC-20 tokens and possibly have some ETH for transaction fees on the Ethereum network.
+
+Make sure both accounts are secure and that you have access to all necessary credentials.
+
+## Step 1: Prepare the Swap in the Ultra Client
+
+Start the swap process by opening the Ultra Client. Navigate to the Token Swap section.
+
+1. Enter the amount of UOS you want to swap. In this example, we will swap 3000 UOS.
+2. Enter your Ethereum address where you want to receive the UOS ERC-20 tokens. Make sure this is an address you control.
+
+![](./images/ultra-swap-ultra-client.png)
+
+Once you have entered the UOS amount and your Ethereum address, confirm the details and initiate the swap. This process will interact with the blockchain to transfer your UOS tokens and issue the equivalent amount in UOS ERC-20 on the Ethereum network.
+
+## Step 2: Verify the Transaction on the Ultra Network
+
+To ensure that everything went smoothly on the Ultra side:
+1. Visit the Ultra blockchain explorer at [https://explorer.mainnet.ultra.io/](https://explorer.mainnet.ultra.io/).
+2. Search for the transaction using the transaction ID provided by the Ultra Client.
+
+This step will help you confirm that the tokens were correctly deducted from your Ultra account.
+
+![](./images/ultra-swap-ultra-explorer.png)
+
+## Step 3: Verify the Swap on Ethereum
+
+After executing the swap transaction, you can verify your ERC-20 UOS tokens on the Ethereum network using Etherscan.
+
+1. Go to [https://etherscan.io](https://etherscan.io).
+2. Search for your Ethereum address to view the updated balance and incoming transactions under `Token Transfer (ERC-20)` tab.
+
+![](./images/ultra-swap-ether-scan.png)
+
+### Check Transaction Details
+
+To see the details of the transaction, including the amount of UOS ERC-20 received and the transaction hash, click on the specific transaction listed in your transaction history.
+
+![](./images/ultra-swap-ether-scan-txn-details.png)
+
+## Conclusion
+
+Following these steps ensures that you successfully swap your UOS tokens from the Ultra network to ERC-20 tokens on the Ethereum network. Remember to double-check all addresses and transaction details during the process to avoid any errors.
+
+---
 title: 'Tutorials'
 
 order: -99994
@@ -25663,7 +25784,16 @@ General tutorials to help feed your curiosity.
         <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
         <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
     </tr>
-
+    <tr>
+        <td>How to purchase UOS tokens on Ultra Mainnet</td>
+        <td>How to purchase native UOS token on Ultra Mainnet using Ultra Wallet Extension</td>
+        <td><a href="../guides/how-to-buy-uos">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to swap UOS from Ultra Mainnet to Ethereum</td>
+        <td>How to swap UOS from Ultra Mainnet to Ethereum by using Ultra Client</td>
+        <td><a href="../guides/how-to-swap-tokens">Link</a></td>
+    </tr>
 </table>
 
 ## Advanced Guides

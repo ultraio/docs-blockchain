@@ -1,18 +1,18 @@
 ---
-title: 'Tutorial - How to Buy UOS Tokens on Ultra Mainnet Using the Ultra Wallet'
-order: -99994
+title: 'How to buy UOS tokens on Ultra Mainnet using the Ultra Wallet'
+order: -99983
 outline: [0, 6]
 ---
 
-# Tutorial - How to Buy UOS Tokens on Ultra Mainnet Using the Ultra Wallet
+# How to buy UOS tokens on Ultra Mainnet using the Ultra Wallet
 
-This tutorial will guide you through the process of purchasing UOS tokens on Ultra Mainnet using the Ultra Wallet extension. UOS is the native token of the Ultra Network, and having it enables you to participate in various activities within the Ultra ecosystem.
+This guide will guide you through the process of purchasing UOS tokens on Ultra Mainnet using the Ultra Wallet extension. UOS is the native token of the Ultra Network, and having it enables you to participate in various activities within the Ultra ecosystem.
 
 ## Prerequisites
 
 Before you begin, ensure that you have completed the following steps:
-- **Wallet Setup**: You must have the Ultra Wallet extension installed and set up in your browser. If you haven't done this yet, please refer to our tutorial on [Setting Up the Ultra Wallet](./tutorial-setup-the-wallet.md).
-- **Account Creation**: You need to have an Ultra account linked to your wallet. If you need to create an account, follow the instructions in our [Account Creation Guide](./tutorial-generate-key-and-create-testnet-account.md).
+- **Wallet Setup**: You must have the Ultra Wallet extension installed and set up in your browser. If you haven't done this yet, please refer to our tutorial on [Setting Up the Ultra Wallet](../fundamentals/tutorial-setup-the-wallet.md). Note that you must select `Mainnet` environment and log in using your Mainnet account (either Ultra Account or Ultra Pro Wallet).
+- **Account Creation**: Account created using official [Ultra client](https://ultra.io/) or Wallet Extension. You need to have an Ultra account linked to your wallet. For details refer to [Account Creation Guide](./how-to-create-ultra-pro-wallet.md).
 
 ## Step 1: Open the Ultra Wallet Extension
 

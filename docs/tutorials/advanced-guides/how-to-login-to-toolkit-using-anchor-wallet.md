@@ -8,7 +8,7 @@ oultine: [0, 5]
 
 Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
-This tutorial will cover the simplest process of logging in into the Ultra Toolkit using [Anchor Wallet](https://www.greymass.com/anchor).
+This tutorial will cover the simplest process of logging in to the Ultra Toolkit using [Anchor Wallet](https://www.greymass.com/anchor).
 Anchor is a security and privacy focused open-source digital wallet for all Antelope-based networks.
 
 ## Prerequisites

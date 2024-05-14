@@ -25132,7 +25132,7 @@ Upon clicking `Buy UOS`, you will be presented with a disclaimer page. It's impo
 
 ## Step 4: Specify Purchase Amount
 
-On the wallet application page, you need to specify how much UOS you want to buy. Note: The minimum transaction amount must be equivalent to at least $50, and the maximum is $20,000. For example, if you decide to buy 500 UOS, it might cost approximately $86.14 USD. Click `Continue` after entering your desired amount.
+On the wallet application page, you need to specify how much UOS you want to buy. Note: The minimum transaction amount must be equivalent to at least $50, and the maximum is $20,000. For example, if you decide to buy 500 UOS, it might cost approximately $86.14. Click `Continue` after entering your desired amount.
 
 ![](./images/buying-UOS-wallet-app.png)
 

@@ -28,7 +28,7 @@ The goal of this tutorial is to login into the Ultra Toolkit using Ledger.
 2. Once installed, connect your Ledger and open Ledger Live application. Navigate to `My Ledger` section from the sidebar and search for `EOS` application in the `App Catalog` section.
    ![](./images/ledger-search-eos-app.png)
 3. Install the EOS application by clicking the `Install` button.
-4. After you install the EOS application, you will need to go open the EOS application from your Ledger device and then go into it's settings, and set "Contract data" setting to be allowed.
+4. After you install the EOS application, you will need to go open the EOS application from your Ledger device and then head into settings, and set "Contract data" setting to be allowed.
    ![](./images/ledger1.jpg)
    ![](./images/ledger2.jpg)
    ![](./images/ledger3.jpg)

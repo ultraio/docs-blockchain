@@ -36,6 +36,3 @@ For Ultra, core token `UOS` are issued under account `eosio.token` using this co
 -   1 Billion Ultra UOS were issued at genesis to support swapping with ERC20 UOS and we will use inflation to pay Block Producers.
 -   The UOS token is used to transfer value in the network, and as a way to gain access to required network resources like RAM or POWER.
 
-### 5 - Other Fungible Token
-
--   We currently accept request for creating new Fungible Token on out Public Testnet. Please follow this [guide](../../../products/fungible-tokens/index.md).

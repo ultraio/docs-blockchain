@@ -7,14 +7,14 @@ oultine: [0, 4]
 
 # Creating a Testnet Account
 
-It's easy to create an account on our public Testnet. These accounts are used for interacting with smart contracts, or for deploying smart contracts to. If you wish to do the latter, please reach out to developers@ultra.io so that we can help set the flag which enables you to do so. We restrict direct access to reduce spam and malicious behaviour on the network.
+It's easy to create an account on our public Testnet. These accounts are used for interacting with smart contracts, or for deploying smart contracts to.
 
 ## Faucets
 
 Ultra provides two types of faucets on our public Testnet.
 
--   `Account Faucet` - Here you can provide a public key and we will generate an account.
--   `Token Faucet` - Here you can fund your Testnet account with some fake UOS for testing purposes.
+-   `Account Faucet` - Here you can provide a public key and we will generate an account. Refer to [this tutorial](../../fundamentals/tutorial-generate-key-and-create-testnet-account.md) for details
+-   `Token Faucet` - Here you can fund your Testnet account with some fake UOS for testing purposes. Refer to [this tutorial](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for details
 
 ## Using your account with Ultra's Authenticator
 

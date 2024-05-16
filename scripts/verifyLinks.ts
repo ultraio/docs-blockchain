@@ -139,7 +139,6 @@ function defineLink(original: string, link: string): LinkInfo {
     let types = [];
 
     if (link.startsWith('http')) {
-        console.log(`Ignored link: ${link}`);
         types.push('invalid');
     }
 
@@ -171,7 +170,6 @@ function defineLink(original: string, link: string): LinkInfo {
     }
 
     if (types.length == 0) {
-        console.log(`Ignored link: ${link}`);
         types.push('bad');
     }
 
@@ -276,7 +274,8 @@ async function verify() {
                 const linkInfo = defineLink(result.original, result.link);
                 addMdIfMissing(linkInfo);
 
-                if (linkInfo.type.indexOf('invalid') >= 0 || linkInfo.type.indexOf('bad') >= 0) {
+                if (linkInfo.type.includes('invalid') || linkInfo.type.includes('bad')) {
+                    console.log(`Ignored link: ${linkInfo.link} at ${filePath}:${i+1}`);
                     continue;
                 }
 

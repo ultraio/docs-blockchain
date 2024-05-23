@@ -8,7 +8,7 @@ order: 2
 
 ## Introduction
 
-Welcome to the API Authentication Documentation for the Ultra API . This document provides guidelines and instructions for managing authentication when interacting with our API.
+Welcome to the API Authentication Documentation for Ultra API . This document provides guidelines and instructions for managing authentication when interacting with our API.
 
 ## How to register
 
@@ -26,7 +26,7 @@ For backend applications, you'll need a client ID and a client secret. To set up
 
 ## Authentication Flow
 
-The authentication flow for Ultra API depends on the type of application.
+The authentication flow for the Ultra API depends on the type of application.
 
 ### Frontend Application Authentication Flow
 

@@ -8,7 +8,7 @@ order: -9999
 
 Ultra is excited to offer external developers enhanced access to on-chain data through an easily consumable package, designed to streamline the integration process within their applications.
 
-Leveraging the power of [graphQL](https://graphql.org/), the Ultra API adopts a schema-driven approach, making data more accessible and developer-friendly.
+Leveraging the power of [GraphQL](https://graphql.org/), the Ultra API adopts a schema-driven approach, making data more accessible and developer-friendly.
 
 Resources provided include:
 

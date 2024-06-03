@@ -61,8 +61,8 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Build a Uniq Factory',
-            items: getMarkdownFiles('/tutorials/uniq-factories/building-uniq-factories'),
+            text: 'Create a Uniq Factory',
+            items: getMarkdownFiles('/tutorials/uniq-factories/creating-uniq-factories'),
             collapsed: true,
         },
         {
@@ -236,8 +236,8 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Build a Uniq Factory',
-            items: getMarkdownFiles('/tutorials/uniq-factories/building-uniq-factories'),
+            text: 'Create a Uniq Factory',
+            items: getMarkdownFiles('/tutorials/uniq-factories/creating-uniq-factories'),
             collapsed: false,
         },
         {

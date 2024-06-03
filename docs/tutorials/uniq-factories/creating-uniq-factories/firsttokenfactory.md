@@ -9,7 +9,7 @@ outline: [0, 4]
 
 ## Make sure you're ready
 
-Once you have your [metadata set up](./creatingmetadata.md), you'll be ready to create your first token factory.
+Once you have your [metadata set up](how-to-create-uniq-metadata.md), you'll be ready to create your first token factory.
 
 Just to be absolutely clear, the expected flow for building a Token Factory is:
 
@@ -30,7 +30,7 @@ If you'd prefer to focus just on this section and learn how to push the on-chain
 
 [![Download](/images/token-factories/download.png)](/zip/example_token_factory.zip)
 
-To create a Token Factory on Testnet, you'll be using the Ultra Developer Tools. If you haven't set up your developer environment, we've [set up a quick checklist](./yourdevelopmentenv.md) for you to be able to hit the ground running.
+To create a Token Factory on Testnet, you'll be using the Ultra Developer Tools.
 
 Once you're inside your docker image, have your wallet set up, and have your Testnet account ready, you're good to go for the next step.
 

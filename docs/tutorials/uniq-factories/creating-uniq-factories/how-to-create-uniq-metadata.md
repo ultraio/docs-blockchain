@@ -133,7 +133,7 @@ AngryBananas/ 📁 (This is your Root Folder)
 
 We provide a template example for you to use in the context of this guide.
 
-[![Download](/images/token-factories/download.png)](/zip/example.zip)
+[![Download](/images/token-factories/download.png)](/zip/AngryBananas.zip)
 
 ## Setup CSV Template
 
@@ -275,11 +275,11 @@ Follow these steps to run the linux binary:
 
 2.  Make it executable by running this command in your terminal:
 
-    `sudo chmod +x metadata-tool-v1-4-7-linux`
+    `sudo chmod +x metadata-tool-v1-4-8-linux`
 
 3.  Start the tool by running this command in your terminal:
 
-    `./metadata-tool-v1-4-7-linux`
+    `./metadata-tool-v1-4-8-linux`
 
 #### MacOS
 
@@ -289,7 +289,7 @@ Follow these steps to run the MacOS binary:
 
 2.  Make it executable by running this command in your terminal:
 
-    `sudo chmod +x metadata-tool-v1-4-7-macos`
+    `sudo chmod +x metadata-tool-v1-4-8-macos`
 
 3.  `Ctrl` + `Right Click` on the binary/executable and then click `Open`. It will ask you if you want to open it. Click on `Open` again.
     ![](./images/metadata-tool-macos-warning.png)
@@ -353,11 +353,10 @@ AngryBananas/ 📁 (This is your Root Folder)
  | |-8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png
  | |-969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png
  |-1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd.json
+ |-{serial_number}.json
  |-1.json
  |-2.json
- |-{serial_number}.json
  |-factory.csv
- |-factory.png
  |-gallery.png
  |-hero.png
  |-product.png
@@ -419,15 +418,15 @@ For our example collection, the `upload.json` file should look like this:
 
 Based on above details, we have uploaded the metadata and media files to the specified URLs:
 
--   Factory metadata: http://localhost:5173/uniq-collections/AngryBananas/1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd.json
--   Default uniq metadata: http://localhost:5173/uniq-collections/AngryBananas/{serial_number}.json
--   Uniq #1 metadata: http://localhost:5173/uniq-collections/AngryBananas/1.json
--   Uniq #2 metadata: http://localhost:5173/uniq-collections/AngryBananas/2.json
+-   Factory metadata: https://developers.ultra.io/uniq-collections/AngryBananas/1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd.json
+-   Default uniq metadata: https://developers.ultra.io/uniq-collections/AngryBananas/{serial_number}.json
+-   Uniq #1 metadata: https://developers.ultra.io/uniq-collections/AngryBananas/1.json
+-   Uniq #2 metadata: https://developers.ultra.io/uniq-collections/AngryBananas/2.json
 -   Generated medias:
-    -   http://localhost:5173/uniq-collections/AngryBananas/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png
-    -   http://localhost:5173/uniq-collections/AngryBananas/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png
-    -   http://localhost:5173/uniq-collections/AngryBananas/6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png
-    -   http://localhost:5173/uniq-collections/AngryBananas/8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png
 
 You have now successfully generated the metadata for your uniq collection.
 
@@ -435,5 +434,5 @@ You have now successfully generated the metadata for your uniq collection.
 
 Once you have generated the metadata for your uniq collection, the next steps are to:
 
--   How to validate metadata using Ultra Toolkit's Schema Validator
+-   [ How to validate metadata using Ultra Toolkit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
 -   How to create your first uniq factory and mint a uniq (TODO)

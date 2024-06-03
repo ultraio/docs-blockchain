@@ -41,6 +41,12 @@ value.
 
 The `Boolean` scalar type represents `true` or `false`.
 
+##### Example
+
+``` js
+true
+```
+
 
 ## Currency
 
@@ -60,8 +66,8 @@ ISO 4217 standards for currency representation.
 
 ``` js
 {
-  "code": "xyz789",
-  "symbol": "abc123"
+  "code": "abc123",
+  "symbol": "xyz789"
 }
 ```
 
@@ -196,7 +202,7 @@ limit to 25 maximum results per page.
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 987}
+{"limit": 987, "skip": 123}
 ```
 
 
@@ -265,7 +271,7 @@ represent free-form human-readable text.
 ##### Example
 
 ``` js
-"abc123"
+"xyz789"
 ```
 
 
@@ -377,6 +383,28 @@ offer.
 ```
 
 
+## UniqBuyOfferFilterInput
+
+##### Description
+
+Enable filtering on uniq buy offers only and provide the filter on uniq
+ID and/or burned.
+
+##### Fields
+
+| Input Field                                     | Description                                                                                                                             |
+|-------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled` - [`Boolean!`](#boolean)   | Enable filtering exclusively for uniq buy offers. Set this variable to `true` to activate the filter, ensuring clarity and readability. |
+| `uniqBurned` - [`Boolean`](#boolean) | The optional uniqBurned filter retrieves offers where the associated uniq has been burned, making the offer invalid.                    |
+| `uniqId` - [`BigInt`](#bigint)       | Optional filter to retrieve only offers related to a specific uniq.                                                                     |
+
+##### Example
+
+``` js
+{"enabled": false, "uniqBurned": true, "uniqId": 987}
+```
+
+
 ## UniqBuyOfferList
 
 ##### Description
@@ -399,12 +427,40 @@ effectively.
 {
   "data": [UniqBuyOffer],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
+}
+```
+
+
+## UniqBuyOfferOfTypeFilterInput
+
+##### Description
+
+Enable filtering on either uniq or uniq factory buy offers.
+
+##### Fields
+
+| Input Field                                                                                    | Description                     |
+|------------------------------------------------------------------------------------------------|---------------------------------|
+| `uniq` - [`UniqBuyOfferFilterInput`](#uniqbuyofferfilterinput)                      | Filter for uniq offers.         |
+| `uniqFactory` - [`UniqFactoryBuyOfferFilterInput`](#uniqfactorybuyofferfilterinput) | Filter for uniq factory offers. |
+
+##### Example
+
+``` js
+{
+  "uniq": UniqBuyOfferFilterInput,
+  "uniqFactory": UniqFactoryBuyOfferFilterInput
 }
 ```
 
 
 ## UniqBuyOfferSubjectInput
+
+##### Description
+
+Enable filtering of effective buy offers based on either a uniq ID or an
+owner.
 
 ##### Fields
 
@@ -458,8 +514,8 @@ changes, including multiple URIs for alternate versions or updates.
 
 ``` js
 {
-  "contentType": "xyz789",
-  "uris": ["abc123"]
+  "contentType": "abc123",
+  "uris": ["xyz789"]
 }
 ```
 
@@ -521,7 +577,7 @@ effectively.
 {
   "data": [UniqEffectiveBuyOffer],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -637,6 +693,25 @@ wallet IDs and minting quotas.
 ```
 
 
+## UniqFactoryBuyOfferFilterInput
+
+##### Description
+
+Enable filtering on uniq factory buy offers.
+
+##### Fields
+
+| Input Field                                   | Description                                                                                                                                     |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled` - [`Boolean!`](#boolean) | Enable filtering exclusively for uniq factory buy offers. Set this variable to `true` to activate the filter, ensuring clarity and readability. |
+
+##### Example
+
+``` js
+{"enabled": false}
+```
+
+
 ## UniqFactoryDigest
 
 ##### Description
@@ -707,7 +782,7 @@ pricing, limits, and applicable restrictions.
   "id": 987,
   "option": UniqFactoryFirsthandPurchaseOption,
   "price": MonetaryAmount,
-  "promoterBasisPoints": 123,
+  "promoterBasisPoints": 987,
   "purchaseLimit": 987,
   "purchaseWindow": UniqFactoryPurchaseWindow,
   "purchasedUniqs": 987,
@@ -858,7 +933,7 @@ source, cached content, and resolved information.
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": true,
+  "locked": false,
   "source": UniqResource,
   "status": "INVALID"
 }
@@ -1257,7 +1332,7 @@ including whether the attribute is dynamic and its data type.
 
 ``` js
 {
-  "description": "abc123",
+  "description": "xyz789",
   "dynamic": false,
   "name": "xyz789",
   "type": "ISODateString"
@@ -1314,11 +1389,11 @@ additional data attributes.
 ``` js
 {
   "attributes": [UniqMetadataAttribute],
-  "description": "abc123",
+  "description": "xyz789",
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
-  "name": "xyz789",
+  "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -1346,7 +1421,7 @@ accommodate variability and updates.
 
 ``` js
 {
-  "key": "xyz789",
+  "key": "abc123",
   "value": UniqDynamicResource
 }
 ```
@@ -1422,7 +1497,7 @@ price, shares, and promoter fees involved.
 {
   "onSaleDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "price": MonetaryAmount,
-  "promoterBasisPoints": 987,
+  "promoterBasisPoints": 123,
   "shares": [UniqSaleShare]
 }
 ```
@@ -1514,7 +1589,7 @@ the receiver and the commission rate.
 
 ``` js
 {
-  "basisPoints": 987,
+  "basisPoints": 123,
   "receiver": "aa1aa2aa3ag4"
 }
 ```
@@ -1628,7 +1703,7 @@ for integrity verification and a specific URI for retrieval.
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
   "uri": "abc123"
 }

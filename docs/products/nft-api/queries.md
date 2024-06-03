@@ -486,10 +486,14 @@ query UniqBuyOfferConfig {
 
 ##### Description
 
-Facilitates the retrieval of offers based on the specified factory,
-uniq, or buyer. This functionality is designed to include offers that
-are no longer valid, allowing retrieval of any offer, even if it has
-expired or if the associated uniq has been burned.
+Simplifies the process of finding offers based on the factory, uniq, or
+buyer. This functionality is designed to include offers that are no
+longer valid, enabling the retrieval of any offer, whether expired or if
+the associated uniq has been burned. Please note that this query won't
+return the factory offer for each uniq it applies to, as factory offers
+don't have a uniq attached. If you prefer to see valid factory offer for
+each uniq it applies to, you should utilize the "uniqEffectiveBuyOffers"
+query instead.
 
 ##### Response
 
@@ -497,16 +501,14 @@ Returns a [`UniqBuyOfferList!`](types.md#uniqbuyofferlist)
 
 ##### Arguments
 
-| Name                                                            | Description                             |
-|-----------------------------------------------------------------|-----------------------------------------|
-| `buyer` - [`WalletId`](types.md#walletid)                    | The optional filter on buyer wallet ID. |
-| `expired` - [`Boolean`](types.md#boolean)                    | The optional filter expired.            |
-| `maxExpiryDate` - [`Date`](types.md#date)                    | The optional filter max expiry date.    |
-| `minExpiryDate` - [`Date`](types.md#date)                    | The optional filter min expiry date.    |
-| `pagination` - [`PaginationInput`](types.md#paginationinput) | The optional pagination input.          |
-| `type` - [`UniqBuyOfferType`](types.md#uniqbuyoffertype)     | The optional filter on buy offer type.  |
-| `uniqFactoryId` - [`BigInt`](types.md#bigint)                | The optional filter on uniq factory ID. |
-| `uniqId` - [`BigInt`](types.md#bigint)                       | The optional filter on uniq ID.         |
+| Name                                                                                    | Description                                                                                                                                                                                                                |
+|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `buyer` - [`WalletId`](types.md#walletid)                                            | The optional filter on buyer wallet ID.                                                                                                                                                                                    |
+| `maxExpiryDate` - [`Date`](types.md#date)                                            | The optional filter max expiry date.                                                                                                                                                                                       |
+| `minExpiryDate` - [`Date`](types.md#date)                                            | The optional filter min expiry date.                                                                                                                                                                                       |
+| `ofType` - [`UniqBuyOfferOfTypeFilterInput`](types.md#uniqbuyofferoftypefilterinput) | the optional filter to enable filtering on offer types. note that additional subfilters are available within this filter (example : uniqid or uniqburned), but the type of offer will be determined by the subfilter used. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)                         | The optional pagination input.                                                                                                                                                                                             |
+| `uniqFactoryId` - [`BigInt`](types.md#bigint)                                        | The optional filter on uniq factory ID.                                                                                                                                                                                    |
 
 #### Example
 
@@ -515,23 +517,19 @@ Returns a [`UniqBuyOfferList!`](types.md#uniqbuyofferlist)
 ``` js
 query UniqBuyOffers(
   $buyer: WalletId,
-  $expired: Boolean,
   $maxExpiryDate: Date,
   $minExpiryDate: Date,
+  $ofType: UniqBuyOfferOfTypeFilterInput,
   $pagination: PaginationInput,
-  $type: UniqBuyOfferType,
-  $uniqFactoryId: BigInt,
-  $uniqId: BigInt
+  $uniqFactoryId: BigInt
 ) {
   uniqBuyOffers(
     buyer: $buyer,
-    expired: $expired,
     maxExpiryDate: $maxExpiryDate,
     minExpiryDate: $minExpiryDate,
+    ofType: $ofType,
     pagination: $pagination,
-    type: $type,
-    uniqFactoryId: $uniqFactoryId,
-    uniqId: $uniqId
+    uniqFactoryId: $uniqFactoryId
   ) {
     data {
       buyer
@@ -1186,13 +1184,11 @@ query UniqBuyOffers(
 ``` js
 {
   "buyer": "aa1aa2aa3ag4",
-  "expired": true,
   "maxExpiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "minExpiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "ofType": UniqBuyOfferOfTypeFilterInput,
   "pagination": PaginationInput,
-  "type": "UNIQ",
-  "uniqFactoryId": 987,
-  "uniqId": 987
+  "uniqFactoryId": 987
 }
 ```
 
@@ -1215,9 +1211,9 @@ query UniqBuyOffers(
 
 ##### Description
 
-Enables the retrieval of effective offers. This feature provides a clear
-view of active offers for a specified uniq, factory, buyer, or owner. By
-default, this query returns offers grouped by uniq, including those made
+Enables the retrieval of effective offers. This feature provides active
+offers for a specified uniq, factory, buyer, or owner. By default, this
+query returns offers for each uniq it applies to, including those made
 on both the uniq and uniq factory sides, unless a specific filter is
 applied. Note: An active offer means the offer is not expired, and the
 associated uniq is not burned.
@@ -3024,7 +3020,7 @@ query UniqsOfFactory(
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": false,
+  "resale": true,
   "serialRange": UniqSerialRangeInput
 }
 ```
@@ -3037,7 +3033,7 @@ query UniqsOfFactory(
     "uniqsOfFactory": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -3473,7 +3469,7 @@ query UniqsOfWallet(
   "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": true,
+  "resale": false,
   "walletId": "aa1aa2aa3ag4"
 }
 ```
@@ -3486,7 +3482,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }

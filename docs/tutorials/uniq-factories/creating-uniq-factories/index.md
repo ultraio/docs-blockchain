@@ -25,6 +25,6 @@ The goal of these guides is to help you create your first Uniq factory and mint 
 Here are the steps to get started, and we will guide you through each one. By the end of these guides, you'll have successfully set up your Uniq Factory and issued your first Uniqs on the Testnet network.
 
 1. [How to create Uniq metadata](./how-to-create-uniq-metadata.md)
-2. How to validate metadata using Schema Validator.
+2. [How to validate metadata using Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
 3. [Your First Token Factory](./firsttokenfactory.md)
 4. [Minting Your First Uniq](./mintingyourfirstuniq.md)

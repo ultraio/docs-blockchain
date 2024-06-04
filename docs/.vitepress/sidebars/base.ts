@@ -11,7 +11,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: [
                 {
                     text: 'Overview',
-                    link: '/tutorials/index/index',
+                    link: '/tutorials/index/',
                 },
             ],
         },
@@ -231,7 +231,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: [
                 {
                     text: 'Overview',
-                    link: '/tutorials/uniq-factories/index',
+                    link: '/tutorials/uniq-factories/',
                 },
             ],
         },

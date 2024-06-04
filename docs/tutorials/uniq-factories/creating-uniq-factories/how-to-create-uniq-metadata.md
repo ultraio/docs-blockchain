@@ -13,12 +13,12 @@ Ultra has a specific format for how we expect metadata to be organized.
 ## Prerequisites
 
 -   A basic understanding of [Factory Metadata](../uniq-variants/factory-metadata.md), [Default Uniq Metadata](../uniq-variants/uniq-default-metadata.md) and [Uniq Metadata](../uniq-variants/uniq-metadata.md).
--   You will need to access, and make a copy of the [Metadata Template Google Sheet](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing) in your own Google account.
+-   You will need a Google account to make a copy of the [Metadata Template Google Sheet](https://docs.google.com/spreadsheets/d/1Gi0iuJis-riKkyhYgMRYVnhGD6PbjvBv8U7lhRwdhNk/edit?usp=sharing).
 -   A Windows, Linux or MacOS machine to run the metadata tool on.
 
 ## Goal
 
-The goal of this tutorial is to help you create JSON metadata files for your first Uniq Factory.
+The goal of this guide is to help you create JSON metadata files for your first Uniq Factory.
 
 ## What is Metadata Tool?
 
@@ -104,7 +104,7 @@ For our needs, we require a service that allows us to predict the URL prefix. Th
 
 ---
 
-For the sake of this tutorials, we'll be creating a `config.json` that looks like this:
+For the sake of this guide, we'll be creating a `config.json` that looks like this:
 
 ```json
 {
@@ -300,6 +300,10 @@ Once you have started the metadata tool, it will prompt you to enter the path to
 
 ![](./images/metadata-tool-path-prompt.png)
 
+We have used the relative path `../AngryBananas` here because on our system the `AngryBananas` directory exists at `../`, relative to the metadata tool executable. You should use the relative path depending on where your collection root directory exists. Or, you can also use the full absolute path to your collection root directory.
+
+On Windows if your metadata tool executable is next to the root directory then you can just enter the root directory name like `AngryBananas` and it will also work.
+
 ### Environment Selection
 
 You will now be prompted to select betweens the environments that you have specified in the config file. Use arrow keys to select the desired environment, and press `Enter` key to proceed.
@@ -318,7 +322,7 @@ Press the `Enter` key to exit and close the metadata tool. Once closed, a report
 [02:29:34] Started Metadata Tool v1.4.8
 [02:29:34] Initialized Exit Handlers
 [02:29:34] Reading specified folder path.
-[02:29:34] Processing folder path: /mnt/c/Users/smart/Desktop/Metadata Tool Demo/AngryBananas/
+[02:29:34] Processing folder path: ../AngryBananas/
 [02:29:34] Validating file list.
 [02:29:34] tokens.csv file was also found in the provided directory.
 [02:29:34] Prompting user for URL selection.
@@ -337,7 +341,7 @@ Press the `Enter` key to exit and close the metadata tool. Once closed, a report
 [02:29:36] Writing factory to file.
 [02:29:36] Writing token 1 to file.
 [02:29:36] Writing token 2 to file.
-[02:29:36] Writing final file: /mnt/c/Users/smart/Desktop/Metadata Tool Demo/AngryBananas/upload.json
+[02:29:36] Writing final file: ../AngryBananas/upload.json
 [02:29:36] Finished Processing. Press [Enter] to Exits
 ```
 
@@ -434,5 +438,5 @@ You have now successfully generated the metadata for your uniq collection.
 
 Once you have generated the metadata for your uniq collection, the next steps are to:
 
--   [ How to validate metadata using Ultra Toolkit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
+-   [How to validate metadata using Ultra Toolkit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
 -   How to create your first uniq factory and mint a uniq (TODO)

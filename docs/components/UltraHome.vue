@@ -97,17 +97,17 @@ const gamelinks = [
 
 const creatorlinks = [
     {
-        href: 'tutorials/uniq-factories/building-uniq-factories/firsttokenfactory.html',
+        href: 'tutorials/uniq-factories/creating-uniq-factories/firsttokenfactory.html',
         title: 'Create a Token Factory',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'tutorials/uniq-factories/building-uniq-factories/creatingmetadata.html',
+        href: 'tutorials/uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata.html',
         title: 'Create Metadata',
         icon: '/images/links/uniq.svg',
     },
     {
-        href: 'tutorials/uniq-factories/building-uniq-factories/mintingyourfirstuniq.html',
+        href: 'tutorials/uniq-factories/creating-uniq-factories/mintingyourfirstuniq.html',
         title: 'Minting your first Uniq',
         icon: '/images/links/uniq.svg',
     },

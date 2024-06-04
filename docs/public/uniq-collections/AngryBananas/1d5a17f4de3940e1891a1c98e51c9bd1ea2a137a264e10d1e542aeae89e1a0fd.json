@@ -1,0 +1,64 @@
+{
+  "specVersion": "1.0",
+  "name": "Angry Bananas",
+  "subName": "Angry Bananas Uniq Collection",
+  "description": "The Angry Bananas Uniq collection features a series of vibrant, high-resolution artworks depicting bananas with fierce, expressive faces. Each unique piece combines humor and bold design, capturing the playful yet intense spirit of these animated fruits.",
+  "author": "John Doe",
+  "defaultLocale": "en-US",
+  "media": {
+    "product": {
+      "contentType": "image/png",
+      "integrity": {
+        "type": "SHA256",
+        "hash": "969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2"
+      },
+      "uris": [
+        "https://developers.ultra.io/uniq-collections/AngryBananas/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png"
+      ]
+    },
+    "square": {
+      "contentType": "image/png",
+      "integrity": {
+        "type": "SHA256",
+        "hash": "6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61"
+      },
+      "uris": [
+        "https://developers.ultra.io/uniq-collections/AngryBananas/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png"
+      ]
+    },
+    "hero": {
+      "contentType": "image/png",
+      "integrity": {
+        "type": "SHA256",
+        "hash": "6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205"
+      },
+      "uris": [
+        "https://developers.ultra.io/uniq-collections/AngryBananas/6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png"
+      ]
+    },
+    "gallery": [
+      {
+        "contentType": "image/png",
+        "integrity": {
+          "type": "SHA256",
+          "hash": "8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c"
+        },
+        "uris": [
+          "https://developers.ultra.io/uniq-collections/AngryBananas/8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png"
+        ]
+      }
+    ]
+  },
+  "attributes": {
+    "Anger Level": {
+      "name": "Anger Level",
+      "type": "number",
+      "description": "Anger level of this banana"
+    },
+    "Is super angry?": {
+      "name": "Is super angry?",
+      "type": "boolean",
+      "description": "Is this banana super duper angry?"
+    }
+  }
+}

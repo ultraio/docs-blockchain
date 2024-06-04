@@ -1,13 +1,13 @@
 ---
 title: 'Uniq Factories'
 
-outline: [0,4]
+outline: [0, 4]
 order: -99
 ---
 
 # Uniq Factories
 
-A uniq factory also known as a uniq factory is our non-fungible token system that is built on top of Ultra's blockchain.
+A uniq factory also known as a token factory is our non-fungible token system that is built on top of Ultra's blockchain.
 
 ## Uniqs
 

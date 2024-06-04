@@ -1894,28 +1894,6 @@ cleos push action eosio.kyc updatekyc '["<OWNER>", "<PROVIDER>", "<CERTIFICATE_I
 ```
 
 ---
-title: 'KYC Policy'
-order: -99
-
----
-
-# KYC Policy
-
-## Overview
-
-KYC also known as Know Your Customer/Client is a way to bind verifiable information to a user such as an Identification Card, Driver’s License, or a Passport.
-
-For Ultra's platform, KYC is required if a user wants to access more advanced blockchain features.
-
-## Features for KYC accounts
-
-Currently, no features require KYC
-
-## KYC request for developers
-
-If you want to deploy a contract or register KYC for your account, please contact us at [developers@ultra.io](developers@ultra.io).
-
----
 title: 'KYC Tables'
 order: 1
 
@@ -10843,9 +10821,6 @@ For Ultra, core token `UOS` are issued under account `eosio.token` using this co
 -   1 Billion Ultra UOS were issued at genesis to support swapping with ERC20 UOS and we will use inflation to pay Block Producers.
 -   The UOS token is used to transfer value in the network, and as a way to gain access to required network resources like RAM or POWER.
 
-### 5 - Other Fungible Token
-
--   We currently accept request for creating new Fungible Token on out Public Testnet. Please follow this [guide](../../../products/fungible-tokens/index.md).
 
 ---
 title: 'close'
@@ -11942,11 +11917,11 @@ The name in this case is auto-generated on chain with format of `1aa2aa3aa4aa` w
 
 ## Ultra Premium Wallet
 
-Ownership of the account and private keys is the same as for Ultra Pro Wallet. In this case Ultra will be responsible for personally creating an account for you. The limitation on the name is that it is a single purpose name like `devname123` or `productname`. Request for this type of account should be directed to [developers@ultra.io](developers@ultra.io)
+Ownership of the account and private keys is the same as for Ultra Pro Wallet. In this case Ultra will be responsible for personally creating an account for you. The limitation on the name is that it is a single purpose name like `devname123` or `productname`.
 
 ## Ultra Corporate Wallet
 
-Ownership of the account and private keys mirrors that of Ultra Pro Wallet. Ultra is responsible for creating these accounts. Names follow the pattern `partner.contract`, `partner.data`, `partner.account`, or `contract.partner`, etc. Requests for this type of account should be directed to [developers@ultra.io](developers@ultra.io).
+Ownership of the account and private keys mirrors that of Ultra Pro Wallet. Ultra is responsible for creating these accounts. Names follow the pattern `partner.contract`, `partner.data`, `partner.account`, or `contract.partner`, etc.
 
 ## Okay, how do I make an account?
 
@@ -15967,75 +15942,6 @@ contract-builder -i ./test/example-contract -b "-DTEST=true"
 See [https://github.com/ultraio/contract-builder/tree/main/test](https://github.com/ultraio/contract-builder/tree/main/test) for example contracts to utilize with this project.
 
 ---
-title: 'Request Fungible Token'
-
-outline: [0, 4]
-order: -99
----
-
-# Request Fungible Token
-
-## Prerequisite
-
-By design, we do not allow developers to freely create new Fungible Token (FT) on our blockchain since developers might take advantage of our blockchain and spam the network by sending their FT to everyone. This action first of all wastes our RAM that can be put to much better use, and second of all it will annoy our users with a lot of junk FT.
-
-However, Ultra still allows developers to create their own FT on our network if they make a request and meet our requirements.
-
-## Requirements
-
--   You need to own a developer account before making a request. Please refer to this [process](../../blockchain/general/tools/cleos.md#creating-an-account).
--   Token you want to create must meet our standards. Please refer below for more info.
-
-## Make a request
-
--   Send request email to [developers@ultra.io](developers@ultra.io)
-
--   Or go to our [Discord](https://discord.com/invite/mkfkJexbV3).
-
--   Navigate to one of our development channels.
-
-![](/images/discord-dev-channels.png)
-
--   Create an FT creation request with your account. You can follow this example:
-
-```sh
-FT Creation Request
-Account: 1ab2cd3ef4gh
-Token Max Supply: 100000.000000 TOKEN
-```
-
--   If your token meet our requirements, we will process your token creation, and issue the token to your requested account.
-
-_Note_: Since creating token requires Ultra and Block Producers reviews, it might take up to 2-5 working days once your request is approved.
-
-## Token Requirements
-
--   Token Symbol
-    -   Can only be characters in capital
-    -   Can not have more than 7 characters
-    -   Must meet our community standards and regulations.
-    -   Must not be taken yet.
--   Token Supply
-    -   Cannot be 0
-    -   The maximum supply without decimal is `2^62 - 1` or `4611686018427387903`
-    -   You can define how many decimals you can have by moving the decimal point on your desired max supply.
-    -   The maximum number of digits you can have before the decimal point is `18`.
-
-Examples:
-
--   Valid Token
-    -   18273.21233 TEST
-    -   213.0 BDGA
-    -   123467889 A
--   Invalid Token
-    -   1000 G4H%A - Token symbol contains invalid character.
-    -   1000.0000 ABCDEFGH - Token symbol is too long
-    -   17268.9900 SEX - Token symbol might not meet our standards.
-    -   1000.000 UOS - UOS is our core token and it already taken.
-    -   0 HAGD - Max supply need to be larger than 0.
-    -   10000.0000000000000000 ABC - Max supply without decimal point is larger than `4611686018427387903`.
-
----
 title: 'Products'
 
 outline: [0, 5]
@@ -16106,12 +16012,6 @@ Check out some of the various libraries, code examples and products we have avai
         <td>Build smart contracts from the CLI with docker and this CLI tool.</td>
         <td><a href="https://www.npmjs.com/package/@ultraos/contract-builder">NPM</a></td>
         <td>N/A</td>
-    </tr>
-     <tr>
-        <td>Fungible Tokens</td>
-        <td>Request to create a fungible token alternative to UOS on our chain.</td>
-        <td>N/A</td>
-        <td><a href="./fungible-tokens/index">Tutorial</a></td>
     </tr>
     <tr>
         <td>Smart Contract Toolkit for VSCode</td>
@@ -24648,14 +24548,14 @@ oultine: [0, 4]
 
 # Creating a Testnet Account
 
-It's easy to create an account on our public Testnet. These accounts are used for interacting with smart contracts, or for deploying smart contracts to. If you wish to do the latter, please reach out to developers@ultra.io so that we can help set the flag which enables you to do so. We restrict direct access to reduce spam and malicious behaviour on the network.
+It's easy to create an account on our public Testnet. These accounts are used for interacting with smart contracts, or for deploying smart contracts to.
 
 ## Faucets
 
 Ultra provides two types of faucets on our public Testnet.
 
--   `Account Faucet` - Here you can provide a public key and we will generate an account.
--   `Token Faucet` - Here you can fund your Testnet account with some fake UOS for testing purposes.
+-   `Account Faucet` - Here you can provide a public key and we will generate an account. Refer to [this tutorial](../../fundamentals/tutorial-generate-key-and-create-testnet-account.md) for details
+-   `Token Faucet` - Here you can fund your Testnet account with some fake UOS for testing purposes. Refer to [this tutorial](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for details
 
 ## Using your account with Ultra's Authenticator
 
@@ -26626,7 +26526,7 @@ This should be the first place you will want to deploy your smart contract for o
 -   Begin writing frontend for your decentralized application.
 -   Need a way for others to easily interact and test your smart contract.
 
-Go to the [faucet documentation page]() to start working with testnet.
+Go to the [faucet tutorial page](../fundamentals/tutorial-generate-key-and-create-testnet-account.md) to start working with testnet.
 
 ## Main Network
 

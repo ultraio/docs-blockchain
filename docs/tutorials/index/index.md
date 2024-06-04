@@ -158,9 +158,19 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
+        <td>How to create Uniq Metadata</td>
+        <td>Learn how to create metadata for Uniq factories and Uniqs.</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata">Link</a></td>
+    </tr>
+        <tr>
+        <td>How to validate uniq metadata using Ultra Toolkit's Schema Validator</td>
+        <td>Learn how to validate uniq metadata files using Ultra Toolkit's schema validation feature</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
+    </tr>
+    <tr>
         <td>Build a Uniq Factory</td>
         <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
-        <td><a href="../uniq-factories/building-uniq-factories/index">Link</a></td>
+        <td><a href="../uniq-factories/creating-uniq-factories/index">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>

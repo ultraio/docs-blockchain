@@ -49,7 +49,7 @@ const popularresources = [
         icon: '/images/links/api.svg',
     },
     {
-        href: 'products/index',
+        href: 'products/index.html',
         title: 'Products',
         desc: 'Ultras ecosystem is full of useful tools that every developer should know about.',
         icon: '/images/links/tools.svg',

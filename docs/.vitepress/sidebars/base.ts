@@ -379,11 +379,6 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Fungible Tokens',
-            items: getMarkdownFiles('/products/fungible-tokens'),
-            collapsed: true,
-        },
-        {
             text: 'Ultratest',
             items: getMarkdownFiles('/products/ultratest'),
             collapsed: true,

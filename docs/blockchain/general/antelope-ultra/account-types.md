@@ -25,11 +25,11 @@ The name in this case is auto-generated on chain with format of `1aa2aa3aa4aa` w
 
 ## Ultra Premium Wallet
 
-Ownership of the account and private keys is the same as for Ultra Pro Wallet. In this case Ultra will be responsible for personally creating an account for you. The limitation on the name is that it is a single purpose name like `devname123` or `productname`. Request for this type of account should be directed to [developers@ultra.io](developers@ultra.io)
+Ownership of the account and private keys is the same as for Ultra Pro Wallet. In this case Ultra will be responsible for personally creating an account for you. The limitation on the name is that it is a single purpose name like `devname123` or `productname`.
 
 ## Ultra Corporate Wallet
 
-Ownership of the account and private keys mirrors that of Ultra Pro Wallet. Ultra is responsible for creating these accounts. Names follow the pattern `partner.contract`, `partner.data`, `partner.account`, or `contract.partner`, etc. Requests for this type of account should be directed to [developers@ultra.io](developers@ultra.io).
+Ownership of the account and private keys mirrors that of Ultra Pro Wallet. Ultra is responsible for creating these accounts. Names follow the pattern `partner.contract`, `partner.data`, `partner.account`, or `contract.partner`, etc.
 
 ## Okay, how do I make an account?
 

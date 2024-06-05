@@ -10,7 +10,9 @@ order: 6
 
 ##### Description
 
-A binary integer decimal representation of a 128-bit decimal value, supporting 34 decimal digits of significand and an exponent range of -6143 to +6144.
+A binary integer decimal representation of a 128-bit decimal value,
+supporting 34 decimal digits of significand and an exponent range of
+-6143 to +6144.
 
 ##### Example
 
@@ -18,11 +20,13 @@ A binary integer decimal representation of a 128-bit decimal value, supporting 3
 987.65
 ```
 
+
 ## BigInt
 
 ##### Description
 
-Defines a Long class for representing a 64-bit two’s-complement integer value.
+Defines a Long class for representing a 64-bit two’s-complement integer
+value.
 
 ##### Example
 
@@ -31,20 +35,25 @@ Defines a Long class for representing a 64-bit two’s-complement integer value.
 ```
 
 
-
 ## Boolean
 
 ##### Description
 
 The `Boolean` scalar type represents `true` or `false`.
 
+##### Example
+
+``` js
+true
+```
 
 
 ## Currency
 
 ##### Description
 
-Defines a currency unit for displaying pricing information, adhering to ISO 4217 standards for currency representation.
+Defines a currency unit for displaying pricing information, adhering to
+ISO 4217 standards for currency representation.
 
 ##### Fields
 
@@ -57,18 +66,19 @@ Defines a currency unit for displaying pricing information, adhering to ISO 4217
 
 ``` js
 {
-  "code": "xyz789",
+  "code": "abc123",
   "symbol": "xyz789"
 }
 ```
-
 
 
 ## Date
 
 ##### Description
 
-ISO 8601 date format. The timezone is always zero UTC offset, as denoted by the suffix Z. Milliseconds since epoch is an alternative input format.
+ISO 8601 date format. The timezone is always zero UTC offset, as denoted
+by the suffix Z. Milliseconds since epoch is an alternative input
+format.
 
 ##### Example
 
@@ -77,12 +87,13 @@ ISO 8601 date format. The timezone is always zero UTC offset, as denoted by the 
 ```
 
 
-
 ## Float
 
 ##### Description
 
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+The `Float` scalar type represents signed double-precision fractional
+values as specified by [IEEE
+754](https://en.wikipedia.org/wiki/IEEE_floating_point).
 
 ##### Example
 
@@ -91,19 +102,18 @@ The `Float` scalar type represents signed double-precision fractional values as 
 ```
 
 
-
 ## Int
 
 ##### Description
 
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `Int` scalar type represents non-fractional signed whole numeric
+values. Int can represent values between -(2^31) and 2^31 - 1.
 
 ##### Example
 
 ``` js
-987
+123
 ```
-
 
 
 ## JSONObject
@@ -119,7 +129,6 @@ Represent a JSON object.
 ```
 
 
-
 ## JSONPrimitive
 
 ##### Description
@@ -133,12 +142,12 @@ Represent all supported primitive type for json object.
 ```
 
 
-
 ## MonetaryAmount
 
 ##### Description
 
-Encapsulates a monetary value in a specific currency, allowing for precise financial transactions.
+Encapsulates a monetary value in a specific currency, allowing for
+precise financial transactions.
 
 ##### Fields
 
@@ -154,12 +163,12 @@ Encapsulates a monetary value in a specific currency, allowing for precise finan
 ```
 
 
-
 ## Pagination
 
 ##### Description
 
-Pagination applied to the result. Maximum limit allowed result per page is 25.
+Pagination applied to the result. Maximum limit allowed result per page
+is 25.
 
 ##### Fields
 
@@ -171,16 +180,17 @@ Pagination applied to the result. Maximum limit allowed result per page is 25.
 ##### Example
 
 ``` js
-{"limit": 123, "skip": 123}
+{"limit": 987, "skip": 987}
 ```
-
 
 
 ## PaginationInput
 
 ##### Description
 
-Pagination filter. Used as query argument, it's optional filter. If not provided, default pagination will be applied with skip value to 0 and limit to 25 maximum results per page.
+Pagination filter. Used as query argument, it's optional filter. If not
+provided, default pagination will be applied with skip value to 0 and
+limit to 25 maximum results per page.
 
 ##### Fields
 
@@ -192,9 +202,8 @@ Pagination filter. Used as query argument, it's optional filter. If not provided
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 987}
+{"limit": 987, "skip": 123}
 ```
-
 
 
 ## StreamCursor
@@ -208,7 +217,6 @@ An opaque string used to resume a stream.
 ``` js
 "0"
 ```
-
 
 
 ## StreamPosition
@@ -232,7 +240,6 @@ The stream position.
 ```
 
 
-
 ## StreamPositionStrategy
 
 ##### Description
@@ -253,26 +260,28 @@ The stream position strategy.
 ```
 
 
-
 ## String
 
 ##### Description
 
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `String` scalar type represents textual data, represented as UTF-8
+character sequences. The String type is most often used by GraphQL to
+represent free-form human-readable text.
 
 ##### Example
 
 ``` js
-"abc123"
+"xyz789"
 ```
-
 
 
 ## Uniq
 
 ##### Description
 
-Encapsulates all pertinent details of a Uniq, including its blockchain ID, asset type, ownership, and associated metadata, providing a comprehensive overview of its identity and status.
+Encapsulates all pertinent details of a Uniq, including its blockchain
+ID, asset type, ownership, and associated metadata, providing a
+comprehensive overview of its identity and status.
 
 ##### Fields
 
@@ -307,12 +316,192 @@ Encapsulates all pertinent details of a Uniq, including its blockchain ID, asset
 ```
 
 
+## UniqBuyOffer
+
+##### Description
+
+A buy offer record on a uniq factory or a uniq.
+
+##### Fields
+
+| Field Name                                                   | Description                      |
+|--------------------------------------------------------------|----------------------------------|
+| `buyer` - [`WalletId!`](#walletid)                | The buy offer wallet ID.         |
+| `expiryDate` - [`Date!`](#date)                   | The buy offer expry date.        |
+| `id` - [`BigInt!`](#bigint)                       | The buy offer ID.                |
+| `price` - [`MonetaryAmount!`](#monetaryamount)    | The buy offer price.             |
+| `receiver` - [`WalletId`](#walletid)              | The optional buy offer receiver. |
+| `type` - [`UniqBuyOfferType!`](#uniqbuyoffertype) | The buy offer type.              |
+| `uniq` - [`Uniq`](#uniq)                          | The buy offer Uniq.              |
+| `uniqFactory` - [`UniqFactory`](#uniqfactory)     | The buy offer Uniq Factory.      |
+| `uniqFactoryId` - [`BigInt`](#bigint)             | The buy offer Uniq Factory ID.   |
+| `uniqId` - [`BigInt`](#bigint)                    | The buy offer Uniq ID.           |
+
+##### Example
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "expiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "id": 987,
+  "price": MonetaryAmount,
+  "receiver": "aa1aa2aa3ag4",
+  "type": "UNIQ",
+  "uniq": Uniq,
+  "uniqFactory": UniqFactory,
+  "uniqFactoryId": 987,
+  "uniqId": 987
+}
+```
+
+
+## UniqBuyOfferConfig
+
+##### Description
+
+UniqBuyOfferConfig type represents the configuration for a uniq buy
+offer.
+
+##### Fields
+
+| Field Name                                                   | Description                                          |
+|--------------------------------------------------------------|------------------------------------------------------|
+| `maxActiveOfferPerUser` - [`BigInt!`](#bigint)    | The maximum number of active offers a user can have. |
+| `maxDuration` - [`BigInt!`](#bigint)              | The maximum duration of the offer.                   |
+| `minDuration` - [`BigInt!`](#bigint)              | The minimum duration of the offer.                   |
+| `minPrice` - [`MonetaryAmount!`](#monetaryamount) | The minimum price of the offer.                      |
+
+##### Example
+
+``` js
+{
+  "maxActiveOfferPerUser": 987,
+  "maxDuration": 987,
+  "minDuration": 987,
+  "minPrice": MonetaryAmount
+}
+```
+
+
+## UniqBuyOfferFilterInput
+
+##### Description
+
+Enable filtering on uniq buy offers only and provide the filter on uniq
+ID and/or burned.
+
+##### Fields
+
+| Input Field                                     | Description                                                                                                                             |
+|-------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled` - [`Boolean!`](#boolean)   | Enable filtering exclusively for uniq buy offers. Set this variable to `true` to activate the filter, ensuring clarity and readability. |
+| `uniqBurned` - [`Boolean`](#boolean) | The optional uniqBurned filter retrieves offers where the associated uniq has been burned, making the offer invalid.                    |
+| `uniqId` - [`BigInt`](#bigint)       | Optional filter to retrieve only offers related to a specific uniq.                                                                     |
+
+##### Example
+
+``` js
+{"enabled": false, "uniqBurned": true, "uniqId": 987}
+```
+
+
+## UniqBuyOfferList
+
+##### Description
+
+Organizes a collection of UniqBuyOffers into a structured list,
+incorporating pagination to manage and navigate through large datasets
+effectively.
+
+##### Fields
+
+| Field Name                                              | Description                                                                                                                               |
+|---------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `data` - [`[UniqBuyOffer!]!`](#uniqbuyoffer) | An array of UniqBuyOffers, each representing a unique asset within the platform, selected according to specified criteria.                |
+| `pagination` - [`Pagination!`](#pagination)  | Pagination details, facilitating the efficient browsing of large collections by segmenting the data into manageable portions.             |
+| `totalCount` - [`Int!`](#int)                | The total count of UniqBuyOffers matching the query parameters, essential for understanding the scope of results and planning navigation. |
+
+##### Example
+
+``` js
+{
+  "data": [UniqBuyOffer],
+  "pagination": Pagination,
+  "totalCount": 123
+}
+```
+
+
+## UniqBuyOfferOfTypeFilterInput
+
+##### Description
+
+Enable filtering on either uniq or uniq factory buy offers.
+
+##### Fields
+
+| Input Field                                                                                    | Description                     |
+|------------------------------------------------------------------------------------------------|---------------------------------|
+| `uniq` - [`UniqBuyOfferFilterInput`](#uniqbuyofferfilterinput)                      | Filter for uniq offers.         |
+| `uniqFactory` - [`UniqFactoryBuyOfferFilterInput`](#uniqfactorybuyofferfilterinput) | Filter for uniq factory offers. |
+
+##### Example
+
+``` js
+{
+  "uniq": UniqBuyOfferFilterInput,
+  "uniqFactory": UniqFactoryBuyOfferFilterInput
+}
+```
+
+
+## UniqBuyOfferSubjectInput
+
+##### Description
+
+Enable filtering of effective buy offers based on either a uniq ID or an
+owner.
+
+##### Fields
+
+| Input Field                                  | Description                    |
+|----------------------------------------------|--------------------------------|
+| `owner` - [`WalletId`](#walletid) | The filter on owner wallet ID. |
+| `uniqId` - [`BigInt`](#bigint)    | The filter on uniq ID.         |
+
+##### Example
+
+``` js
+{"owner": "aa1aa2aa3ag4", "uniqId": 987}
+```
+
+
+## UniqBuyOfferType
+
+##### Description
+
+The uniq buy offer type.
+
+##### Values
+
+| Enum Value     | Description                    |
+|----------------|--------------------------------|
+| `UNIQ`         | A buy offer on a uniq.         |
+| `UNIQ_FACTORY` | A buy offer on a uniq factory. |
+
+##### Example
+
+``` js
+"UNIQ"
+```
+
 
 ## UniqDynamicResource
 
 ##### Description
 
-Represents a dynamic Uniq resource capable of being refreshed to reflect changes, including multiple URIs for alternate versions or updates.
+Represents a dynamic Uniq resource capable of being refreshed to reflect
+changes, including multiple URIs for alternate versions or updates.
 
 ##### Fields
 
@@ -325,18 +514,80 @@ Represents a dynamic Uniq resource capable of being refreshed to reflect changes
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "uris": ["xyz789"]
 }
 ```
 
+
+## UniqEffectiveBuyOffer
+
+##### Description
+
+An effective buy offer on a uniq.
+
+##### Fields
+
+| Field Name                                                   | Description                      |
+|--------------------------------------------------------------|----------------------------------|
+| `buyer` - [`WalletId!`](#walletid)                | The buy offer wallet ID.         |
+| `expiryDate` - [`Date!`](#date)                   | The buy offer expry date.        |
+| `id` - [`BigInt!`](#bigint)                       | The buy offer ID.                |
+| `price` - [`MonetaryAmount!`](#monetaryamount)    | The buy offer price.             |
+| `receiver` - [`WalletId`](#walletid)              | The optional buy offer receiver. |
+| `type` - [`UniqBuyOfferType!`](#uniqbuyoffertype) | The buy offer type.              |
+| `uniq` - [`Uniq!`](#uniq)                         | The buy offer Uniq.              |
+| `uniqFactory` - [`UniqFactory!`](#uniqfactory)    | The buy offer Uniq Factory.      |
+
+##### Example
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "expiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "id": 987,
+  "price": MonetaryAmount,
+  "receiver": "aa1aa2aa3ag4",
+  "type": "UNIQ",
+  "uniq": Uniq,
+  "uniqFactory": UniqFactory
+}
+```
+
+
+## UniqEffectiveBuyOfferList
+
+##### Description
+
+Organizes a collection of UniqEffectiveBuyOffers into a structured list,
+incorporating pagination to manage and navigate through large datasets
+effectively.
+
+##### Fields
+
+| Field Name                                                                | Description                                                                                                                                        |
+|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `data` - [`[UniqEffectiveBuyOffer!]!`](#uniqeffectivebuyoffer) | An array of UniqEffectiveBuyOffers, each representing a unique asset within the platform, selected according to specified criteria.                |
+| `pagination` - [`Pagination!`](#pagination)                    | Pagination details, facilitating the efficient browsing of large collections by segmenting the data into manageable portions.                      |
+| `totalCount` - [`Int!`](#int)                                  | The total count of UniqEffectiveBuyOffers matching the query parameters, essential for understanding the scope of results and planning navigation. |
+
+##### Example
+
+``` js
+{
+  "data": [UniqEffectiveBuyOffer],
+  "pagination": Pagination,
+  "totalCount": 123
+}
+```
 
 
 ## UniqFactory
 
 ##### Description
 
-Aggregates all relevant information about a Uniq factory, encompassing types, statuses, and operational details.
+Aggregates all relevant information about a Uniq factory, encompassing
+types, statuses, and operational details.
 
 ##### Fields
 
@@ -385,12 +636,12 @@ Aggregates all relevant information about a Uniq factory, encompassing types, st
 ```
 
 
-
 ## UniqFactoryActionWindow
 
 ##### Description
 
-Provides a timeframe for actions related to a Uniq factory, such as minting, trading, or transferring.
+Provides a timeframe for actions related to a Uniq factory, such as
+minting, trading, or transferring.
 
 ##### Fields
 
@@ -418,12 +669,12 @@ Provides a timeframe for actions related to a Uniq factory, such as minting, tra
 ```
 
 
-
 ## UniqFactoryAuthorizedMinter
 
 ##### Description
 
-Information about authorized minters for a Uniq factory, including wallet IDs and minting quotas.
+Information about authorized minters for a Uniq factory, including
+wallet IDs and minting quotas.
 
 ##### Fields
 
@@ -442,12 +693,31 @@ Information about authorized minters for a Uniq factory, including wallet IDs an
 ```
 
 
+## UniqFactoryBuyOfferFilterInput
+
+##### Description
+
+Enable filtering on uniq factory buy offers.
+
+##### Fields
+
+| Input Field                                   | Description                                                                                                                                     |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled` - [`Boolean!`](#boolean) | Enable filtering exclusively for uniq factory buy offers. Set this variable to `true` to activate the filter, ensuring clarity and readability. |
+
+##### Example
+
+``` js
+{"enabled": false}
+```
+
 
 ## UniqFactoryDigest
 
 ##### Description
 
-Summarizes immutable information about a Uniq Factory, capturing its identity, operational parameters, and lifecycle management details.
+Summarizes immutable information about a Uniq Factory, capturing its
+identity, operational parameters, and lifecycle management details.
 
 ##### Fields
 
@@ -480,12 +750,12 @@ Summarizes immutable information about a Uniq Factory, capturing its identity, o
 ```
 
 
-
 ## UniqFactoryFirsthandPurchase
 
 ##### Description
 
-Details firsthand purchase information for a Uniq factory, including pricing, limits, and applicable restrictions.
+Details firsthand purchase information for a Uniq factory, including
+pricing, limits, and applicable restrictions.
 
 ##### Fields
 
@@ -512,7 +782,7 @@ Details firsthand purchase information for a Uniq factory, including pricing, li
   "id": 987,
   "option": UniqFactoryFirsthandPurchaseOption,
   "price": MonetaryAmount,
-  "promoterBasisPoints": 123,
+  "promoterBasisPoints": 987,
   "purchaseLimit": 987,
   "purchaseWindow": UniqFactoryPurchaseWindow,
   "purchasedUniqs": 987,
@@ -522,12 +792,12 @@ Details firsthand purchase information for a Uniq factory, including pricing, li
 ```
 
 
-
 ## UniqFactoryFirsthandPurchaseGroupRestriction
 
 ##### Description
 
-Represents group-based restrictions for firsthand purchases, allowing for inclusion and exclusion criteria based on group memberships.
+Represents group-based restrictions for firsthand purchases, allowing
+for inclusion and exclusion criteria based on group memberships.
 
 ##### Fields
 
@@ -543,12 +813,12 @@ Represents group-based restrictions for firsthand purchases, allowing for inclus
 ```
 
 
-
 ## UniqFactoryFirsthandPurchaseOption
 
 ##### Description
 
-Outlines firsthand purchase options, including potential restrictions and strategies for managing factory-related purchases.
+Outlines firsthand purchase options, including potential restrictions
+and strategies for managing factory-related purchases.
 
 ##### Fields
 
@@ -569,12 +839,12 @@ Outlines firsthand purchase options, including potential restrictions and strate
 ```
 
 
-
 ## UniqFactoryFirsthandPurchaseOptionFactory
 
 ##### Description
 
-Describes firsthand purchase options associated with a Uniq factory, including applicable strategies and quantities.
+Describes firsthand purchase options associated with a Uniq factory,
+including applicable strategies and quantities.
 
 ##### Fields
 
@@ -589,7 +859,6 @@ Describes firsthand purchase options associated with a Uniq factory, including a
 ``` js
 {"count": 987, "id": 987, "strategy": "BURN"}
 ```
-
 
 
 ## UniqFactoryFirsthandPurchaseOptionFactoryStrategy
@@ -614,12 +883,13 @@ Uniq Factory.
 ```
 
 
-
 ## UniqFactoryList
 
 ##### Description
 
-Provides a paginated list of Uniq factories, including data on individual factories and total counts for navigation and display purposes.
+Provides a paginated list of Uniq factories, including data on
+individual factories and total counts for navigation and display
+purposes.
 
 ##### Fields
 
@@ -640,12 +910,12 @@ Provides a paginated list of Uniq factories, including data on individual factor
 ```
 
 
-
 ## UniqFactoryMetadata
 
 ##### Description
 
-Encapsulates global metadata for a Uniq factory, including status, source, cached content, and resolved information.
+Encapsulates global metadata for a Uniq factory, including status,
+source, cached content, and resolved information.
 
 ##### Fields
 
@@ -663,19 +933,19 @@ Encapsulates global metadata for a Uniq factory, including status, source, cache
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": true,
+  "locked": false,
   "source": UniqResource,
   "status": "INVALID"
 }
 ```
 
 
-
 ## UniqFactoryMetadataAttribute
 
 ##### Description
 
-Stores key-value pairs describing attributes for Uniqs related to a factory, providing detailed information about each attribute.
+Stores key-value pairs describing attributes for Uniqs related to a
+factory, providing detailed information about each attribute.
 
 ##### Fields
 
@@ -694,12 +964,12 @@ Stores key-value pairs describing attributes for Uniqs related to a factory, pro
 ```
 
 
-
 ## UniqFactoryMetadataContent
 
 ##### Description
 
-Represents content associated with Uniq factory metadata, including names, descriptions, media, and additional properties.
+Represents content associated with Uniq factory metadata, including
+names, descriptions, media, and additional properties.
 
 ##### Fields
 
@@ -718,9 +988,9 @@ Represents content associated with Uniq factory metadata, including names, descr
 ``` js
 {
   "attributes": [UniqFactoryMetadataAttribute],
-  "description": "abc123",
+  "description": "xyz789",
   "medias": UniqMedias,
-  "name": "abc123",
+  "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -728,12 +998,13 @@ Represents content associated with Uniq factory metadata, including names, descr
 ```
 
 
-
 ## UniqFactoryMintableWindow
 
 ##### Description
 
-Specifies the time window during which Uniqs can be minted from a factory, with various combinations of start and end dates dictating minting availability.
+Specifies the time window during which Uniqs can be minted from a
+factory, with various combinations of start and end dates dictating
+minting availability.
 
 ##### Fields
 
@@ -752,12 +1023,12 @@ Specifies the time window during which Uniqs can be minted from a factory, with 
 ```
 
 
-
 ## UniqFactoryPurchaseWindow
 
 ##### Description
 
-Defines a purchase window for Uniq factories, indicating when Uniqs can be bought directly from the factory.
+Defines a purchase window for Uniq factories, indicating when Uniqs can
+be bought directly from the factory.
 
 ##### Fields
 
@@ -776,12 +1047,12 @@ Defines a purchase window for Uniq factories, indicating when Uniqs can be bough
 ```
 
 
-
 ## UniqFactoryResale
 
 ##### Description
 
-Details the resale information for a Uniq factory, including minimum pricing and commission shares for secondary market sales.
+Details the resale information for a Uniq factory, including minimum
+pricing and commission shares for secondary market sales.
 
 ##### Fields
 
@@ -800,12 +1071,13 @@ Details the resale information for a Uniq factory, including minimum pricing and
 ```
 
 
-
 ## UniqFactorySnapshot
 
 ##### Description
 
-Represents a momentary snapshot of a Uniq Factory's state, including its blockchain ID and operational status, facilitating real-time data synchronization and monitoring.
+Represents a momentary snapshot of a Uniq Factory's state, including its
+blockchain ID and operational status, facilitating real-time data
+synchronization and monitoring.
 
 ##### Fields
 
@@ -828,12 +1100,12 @@ Represents a momentary snapshot of a Uniq Factory's state, including its blockch
 ```
 
 
-
 ## UniqFactoryStatus
 
 ##### Description
 
-Represents the operational status of a Uniq factory within the blockchain environment.
+Represents the operational status of a Uniq factory within the
+blockchain environment.
 
 ##### Values
 
@@ -850,12 +1122,12 @@ Represents the operational status of a Uniq factory within the blockchain enviro
 ```
 
 
-
 ## UniqFactoryStock
 
 ##### Description
 
-Represents the stock information of a Uniq factory, detailing mintable quantities and existing circulation.
+Represents the stock information of a Uniq factory, detailing mintable
+quantities and existing circulation.
 
 ##### Fields
 
@@ -880,12 +1152,12 @@ Represents the stock information of a Uniq factory, detailing mintable quantitie
 ```
 
 
-
 ## UniqFactoryTradingWindow
 
 ##### Description
 
-Specifies the time window during which Uniqs can be traded. This window is checked during buy/resell actions to enforce trading periods.
+Specifies the time window during which Uniqs can be traded. This window
+is checked during buy/resell actions to enforce trading periods.
 
 ##### Fields
 
@@ -904,12 +1176,13 @@ Specifies the time window during which Uniqs can be traded. This window is check
 ```
 
 
-
 ## UniqFactoryTransferWindow
 
 ##### Description
 
-Defines the time window during which Uniqs can be transferred. This is checked during transfer actions to ensure compliance with specified periods.
+Defines the time window during which Uniqs can be transferred. This is
+checked during transfer actions to ensure compliance with specified
+periods.
 
 ##### Fields
 
@@ -928,12 +1201,12 @@ Defines the time window during which Uniqs can be transferred. This is checked d
 ```
 
 
-
 ## UniqList
 
 ##### Description
 
-Organizes a collection of Uniqs into a structured list, incorporating pagination to manage and navigate through large datasets effectively.
+Organizes a collection of Uniqs into a structured list, incorporating
+pagination to manage and navigate through large datasets effectively.
 
 ##### Fields
 
@@ -954,12 +1227,12 @@ Organizes a collection of Uniqs into a structured list, incorporating pagination
 ```
 
 
-
 ## UniqMedias
 
 ##### Description
 
-Centralizes visual representation details of tokens and factories, ensuring an engaging and informative display across frontend interfaces.
+Centralizes visual representation details of tokens and factories,
+ensuring an engaging and informative display across frontend interfaces.
 
 ##### Fields
 
@@ -982,12 +1255,15 @@ Centralizes visual representation details of tokens and factories, ensuring an e
 ```
 
 
-
 ## UniqMetadata
 
 ##### Description
 
-Represents the essence of a Uniq token, encapsulating its name, description, visual identity, and associated metadata to forge a link between on-chain presence and off-chain representation. This forms the basis for understanding and interacting with the token within digital environments.
+Represents the essence of a Uniq token, encapsulating its name,
+description, visual identity, and associated metadata to forge a link
+between on-chain presence and off-chain representation. This forms the
+basis for understanding and interacting with the token within digital
+environments.
 
 ##### Fields
 
@@ -1010,12 +1286,12 @@ Represents the essence of a Uniq token, encapsulating its name, description, vis
 ```
 
 
-
 ## UniqMetadataAttribute
 
 ##### Description
 
-Associates key-value pairs with a Uniq, describing its attributes in a structured format for easy reference and interpretation.
+Associates key-value pairs with a Uniq, describing its attributes in a
+structured format for easy reference and interpretation.
 
 ##### Fields
 
@@ -1036,12 +1312,12 @@ Associates key-value pairs with a Uniq, describing its attributes in a structure
 ```
 
 
-
 ## UniqMetadataAttributeDescriptor
 
 ##### Description
 
-Allows the specification of structured data attributes for Uniqs, including whether the attribute is dynamic and its data type.
+Allows the specification of structured data attributes for Uniqs,
+including whether the attribute is dynamic and its data type.
 
 ##### Fields
 
@@ -1057,12 +1333,11 @@ Allows the specification of structured data attributes for Uniqs, including whet
 ``` js
 {
   "description": "xyz789",
-  "dynamic": true,
-  "name": "abc123",
+  "dynamic": false,
+  "name": "xyz789",
   "type": "ISODateString"
 }
 ```
-
 
 
 ## UniqMetadataAttributeType
@@ -1087,12 +1362,13 @@ Defines the data type of attributes associated with Uniq metadata.
 ```
 
 
-
 ## UniqMetadataContent
 
 ##### Description
 
-Defines the comprehensive content structure of Uniq metadata according to the NFT standard, encompassing names, descriptions, media, and additional data attributes.
+Defines the comprehensive content structure of Uniq metadata according
+to the NFT standard, encompassing names, descriptions, media, and
+additional data attributes.
 
 ##### Fields
 
@@ -1117,7 +1393,7 @@ Defines the comprehensive content structure of Uniq metadata according to the NF
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
-  "name": "xyz789",
+  "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -1125,12 +1401,14 @@ Defines the comprehensive content structure of Uniq metadata according to the NF
 ```
 
 
-
 ## UniqMetadataDynamicResource
 
 ##### Description
 
-Facilitates the inclusion of dynamic media or reference data within Uniq metadata, allowing for content that may update or change over time. Each resource must be identified and managed as a dynamic resource to accommodate variability and updates.
+Facilitates the inclusion of dynamic media or reference data within Uniq
+metadata, allowing for content that may update or change over time. Each
+resource must be identified and managed as a dynamic resource to
+accommodate variability and updates.
 
 ##### Fields
 
@@ -1149,12 +1427,14 @@ Facilitates the inclusion of dynamic media or reference data within Uniq metadat
 ```
 
 
-
 ## UniqMetadataResource
 
 ##### Description
 
-Enables the addition of extra media or reference data to Uniq metadata, enhancing its descriptive and visual elements. Each media or reference is strictly categorized as a static resource for consistency and reliability.
+Enables the addition of extra media or reference data to Uniq metadata,
+enhancing its descriptive and visual elements. Each media or reference
+is strictly categorized as a static resource for consistency and
+reliability.
 
 ##### Fields
 
@@ -1171,7 +1451,6 @@ Enables the addition of extra media or reference data to Uniq metadata, enhancin
   "value": UniqStaticResource
 }
 ```
-
 
 
 ## UniqMetadataStatus
@@ -1196,12 +1475,12 @@ Tracks the progress and outcome of metadata processing for Uniqs.
 ```
 
 
-
 ## UniqResale
 
 ##### Description
 
-Details a specific resale transaction for a Uniq, including the date, price, shares, and promoter fees involved.
+Details a specific resale transaction for a Uniq, including the date,
+price, shares, and promoter fees involved.
 
 ##### Fields
 
@@ -1218,18 +1497,19 @@ Details a specific resale transaction for a Uniq, including the date, price, sha
 {
   "onSaleDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "price": MonetaryAmount,
-  "promoterBasisPoints": 987,
+  "promoterBasisPoints": 123,
   "shares": [UniqSaleShare]
 }
 ```
-
 
 
 ## UniqResource
 
 ##### Description
 
-Represents a digital resource, such as an image or video, associated with a Uniq, providing a URI for access and integrity information for verification.
+Represents a digital resource, such as an image or video, associated
+with a Uniq, providing a URI for access and integrity information for
+verification.
 
 ##### Fields
 
@@ -1245,17 +1525,17 @@ Represents a digital resource, such as an image or video, associated with a Uniq
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
-
 
 
 ## UniqResourceIntegrity
 
 ##### Description
 
-Details the integrity of a Uniq resource, ensuring that the resource is authentic and unaltered through cryptographic verification.
+Details the integrity of a Uniq resource, ensuring that the resource is
+authentic and unaltered through cryptographic verification.
 
 ##### Fields
 
@@ -1271,12 +1551,12 @@ Details the integrity of a Uniq resource, ensuring that the resource is authenti
 ```
 
 
-
 ## UniqResourceIntegrityType
 
 ##### Description
 
-Specifies the cryptographic hash algorithm used for ensuring the integrity of Uniq resources.
+Specifies the cryptographic hash algorithm used for ensuring the
+integrity of Uniq resources.
 
 ##### Values
 
@@ -1291,12 +1571,12 @@ Specifies the cryptographic hash algorithm used for ensuring the integrity of Un
 ```
 
 
-
 ## UniqSaleShare
 
 ##### Description
 
-Describes the commission structure for secondary market sales, including the receiver and the commission rate.
+Describes the commission structure for secondary market sales, including
+the receiver and the commission rate.
 
 ##### Fields
 
@@ -1309,18 +1589,18 @@ Describes the commission structure for secondary market sales, including the rec
 
 ``` js
 {
-  "basisPoints": 987,
+  "basisPoints": 123,
   "receiver": "aa1aa2aa3ag4"
 }
 ```
-
 
 
 ## UniqSerialRangeInput
 
 ##### Description
 
-Defines a range of serial numbers for Uniqs, facilitating filtering based on serial number criteria.
+Defines a range of serial numbers for Uniqs, facilitating filtering
+based on serial number criteria.
 
 ##### Fields
 
@@ -1336,12 +1616,12 @@ Defines a range of serial numbers for Uniqs, facilitating filtering based on ser
 ```
 
 
-
 ## UniqSnapshot
 
 ##### Description
 
-Enables real-time tracking of Uniq states within the ecosystem, offering a snapshot-based approach to data synchronization and monitoring.
+Enables real-time tracking of Uniq states within the ecosystem, offering
+a snapshot-based approach to data synchronization and monitoring.
 
 ##### Fields
 
@@ -1364,12 +1644,12 @@ Enables real-time tracking of Uniq states within the ecosystem, offering a snaps
 ```
 
 
-
 ## UniqState
 
 ##### Description
 
-Captures the comprehensive state of a Uniq within a streaming data model, facilitating dynamic updates and real-time monitoring.
+Captures the comprehensive state of a Uniq within a streaming data
+model, facilitating dynamic updates and real-time monitoring.
 
 ##### Fields
 
@@ -1404,12 +1684,12 @@ Captures the comprehensive state of a Uniq within a streaming data model, facili
 ```
 
 
-
 ## UniqStaticResource
 
 ##### Description
 
-A static representation of a Uniq resource, including a predefined hash for integrity verification and a specific URI for retrieval.
+A static representation of a Uniq resource, including a predefined hash
+for integrity verification and a specific URI for retrieval.
 
 ##### Fields
 
@@ -1425,15 +1705,17 @@ A static representation of a Uniq resource, including a predefined hash for inte
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
+
 
 ## UniqTradingPeriod
 
 ##### Description
 
-Defines a trading period for a Uniq, specifying start and end dates, as well as the duration of the trading opportunity.
+Defines a trading period for a Uniq, specifying start and end dates, as
+well as the duration of the trading opportunity.
 
 ##### Fields
 
@@ -1453,11 +1735,13 @@ Defines a trading period for a Uniq, specifying start and end dates, as well as 
 }
 ```
 
+
 ## UniqTransferPeriod
 
 ##### Description
 
-Specifies a transfer period for a Uniq, outlining when the asset can be transferred between parties within designated timeframes.
+Specifies a transfer period for a Uniq, outlining when the asset can be
+transferred between parties within designated timeframes.
 
 ##### Fields
 
@@ -1477,6 +1761,7 @@ Specifies a transfer period for a Uniq, outlining when the asset can be transfer
 }
 ```
 
+
 ## UniqType
 
 ##### Description
@@ -1495,6 +1780,7 @@ Categorizes the nature of a Uniq asset within the ecosystem.
 ``` js
 "COLLECTIBLE"
 ```
+
 
 ## WalletId
 

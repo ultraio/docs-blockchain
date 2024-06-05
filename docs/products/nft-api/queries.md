@@ -10,7 +10,8 @@ order: 4
 
 ##### Description
 
-Provides direct access to detailed information about a specific Uniq using its unique blockchain ID.
+Provides direct access to detailed information about a specific Uniq
+using its unique blockchain ID.
 
 ##### Response
 
@@ -431,11 +432,1506 @@ query Uniq($id: BigInt!) {
 }
 ```
 
+
+## `uniqBuyOfferConfig`
+
+##### Description
+
+Allows retrieving the configuration applied to all offers.
+
+##### Response
+
+Returns [`[UniqBuyOfferConfig!]!`](types.md#uniqbuyofferconfig)
+
+#### Example
+
+##### Query
+
+``` js
+query UniqBuyOfferConfig {
+  uniqBuyOfferConfig {
+    maxActiveOfferPerUser
+    maxDuration
+    minDuration
+    minPrice {
+      amount
+      currency {
+        code
+        symbol
+      }
+    }
+  }
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqBuyOfferConfig": [
+      {
+        "maxActiveOfferPerUser": 987,
+        "maxDuration": 987,
+        "minDuration": 987,
+        "minPrice": MonetaryAmount
+      }
+    ]
+  }
+}
+```
+
+
+## `uniqBuyOffers`
+
+##### Description
+
+Simplifies the process of finding offers based on the factory, uniq, or
+buyer. This functionality is designed to include offers that are no
+longer valid, enabling the retrieval of any offer, whether expired or if
+the associated uniq has been burned. Please note that this query won't
+return the factory offer for each uniq it applies to, as factory offers
+don't have a uniq attached. If you prefer to see valid factory offer for
+each uniq it applies to, you should utilize the "uniqEffectiveBuyOffers"
+query instead.
+
+##### Response
+
+Returns a [`UniqBuyOfferList!`](types.md#uniqbuyofferlist)
+
+##### Arguments
+
+| Name                                                                                    | Description                                                                                                                                                                                                                |
+|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `buyer` - [`WalletId`](types.md#walletid)                                            | The optional filter on buyer wallet ID.                                                                                                                                                                                    |
+| `maxExpiryDate` - [`Date`](types.md#date)                                            | The optional filter max expiry date.                                                                                                                                                                                       |
+| `minExpiryDate` - [`Date`](types.md#date)                                            | The optional filter min expiry date.                                                                                                                                                                                       |
+| `ofType` - [`UniqBuyOfferOfTypeFilterInput`](types.md#uniqbuyofferoftypefilterinput) | the optional filter to enable filtering on offer types. note that additional subfilters are available within this filter (example : uniqid or uniqburned), but the type of offer will be determined by the subfilter used. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)                         | The optional pagination input.                                                                                                                                                                                             |
+| `uniqFactoryId` - [`BigInt`](types.md#bigint)                                        | The optional filter on uniq factory ID.                                                                                                                                                                                    |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqBuyOffers(
+  $buyer: WalletId,
+  $maxExpiryDate: Date,
+  $minExpiryDate: Date,
+  $ofType: UniqBuyOfferOfTypeFilterInput,
+  $pagination: PaginationInput,
+  $uniqFactoryId: BigInt
+) {
+  uniqBuyOffers(
+    buyer: $buyer,
+    maxExpiryDate: $maxExpiryDate,
+    minExpiryDate: $minExpiryDate,
+    ofType: $ofType,
+    pagination: $pagination,
+    uniqFactoryId: $uniqFactoryId
+  ) {
+    data {
+      buyer
+      expiryDate
+      id
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      receiver
+      type
+      uniq {
+        factory {
+          accountMintingLimit
+          assetCreator
+          assetManager
+          authorizedMinters {
+            quantity
+            walletId
+          }
+          conditionlessReceivers
+          defaultUniqMetadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                descriptor {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+                key
+                value
+              }
+              description
+              dynamicAttributes {
+                contentType
+                uris
+              }
+              dynamicResources {
+                key
+                value {
+                  contentType
+                  uris
+                }
+              }
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          firsthandPurchases {
+            groupRestriction {
+              excludes
+              includes
+            }
+            id
+            option {
+              factories {
+                count
+                id
+                strategy
+              }
+              transferUniqsReceiver
+            }
+            price {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            promoterBasisPoints
+            purchaseLimit
+            purchaseWindow {
+              endDate
+              startDate
+            }
+            purchasedUniqs
+            saleShares {
+              basisPoints
+              receiver
+            }
+            uosPayment
+          }
+          id
+          metadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                key
+                value {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+              }
+              description
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            locked
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          mintableWindow {
+            endDate
+            startDate
+          }
+          resale {
+            minimumPrice {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            shares {
+              basisPoints
+              receiver
+            }
+          }
+          status
+          stock {
+            authorized
+            existing
+            maxMintable
+            mintable
+            minted
+          }
+          tradingWindow {
+            endDate
+            startDate
+          }
+          transferWindow {
+            endDate
+            startDate
+          }
+          type
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintDate
+        owner
+        resale {
+          onSaleDate
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        serialNumber
+        tradingPeriod {
+          duration
+          endDate
+          startDate
+        }
+        transferPeriod {
+          duration
+          endDate
+          startDate
+        }
+        type
+      }
+      uniqFactory {
+        accountMintingLimit
+        assetCreator
+        assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
+        conditionlessReceivers
+        defaultUniqMetadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              key
+              value {
+                description
+                dynamic
+                name
+                type
+              }
+            }
+            description
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          locked
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        status
+        stock {
+          authorized
+          existing
+          maxMintable
+          mintable
+          minted
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+      uniqFactoryId
+      uniqId
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "maxExpiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "minExpiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "ofType": UniqBuyOfferOfTypeFilterInput,
+  "pagination": PaginationInput,
+  "uniqFactoryId": 987
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqBuyOffers": {
+      "data": [UniqBuyOffer],
+      "pagination": Pagination,
+      "totalCount": 123
+    }
+  }
+}
+```
+
+
+## `uniqEffectiveBuyOffers`
+
+##### Description
+
+Enables the retrieval of effective offers. This feature provides active
+offers for a specified uniq, factory, buyer, or owner. By default, this
+query returns offers for each uniq it applies to, including those made
+on both the uniq and uniq factory sides, unless a specific filter is
+applied. Note: An active offer means the offer is not expired, and the
+associated uniq is not burned.
+
+##### Response
+
+Returns a
+[`UniqEffectiveBuyOfferList!`](types.md#uniqeffectivebuyofferlist)
+
+##### Arguments
+
+| Name                                                                           | Description                                        |
+|--------------------------------------------------------------------------------|----------------------------------------------------|
+| `buyer` - [`WalletId`](types.md#walletid)                                   | The optional filter on buyer wallet ID.            |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)                | The optional pagination input.                     |
+| `subject` - [`UniqBuyOfferSubjectInput`](types.md#uniqbuyoffersubjectinput) | The optional filter on uniq ID or owner wallet ID. |
+| `type` - [`UniqBuyOfferType`](types.md#uniqbuyoffertype)                    | The optional filter on buy offer type.             |
+| `uniqFactoryId` - [`BigInt`](types.md#bigint)                               | The optional filter on uniq factory ID.            |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqEffectiveBuyOffers(
+  $buyer: WalletId,
+  $pagination: PaginationInput,
+  $subject: UniqBuyOfferSubjectInput,
+  $type: UniqBuyOfferType,
+  $uniqFactoryId: BigInt
+) {
+  uniqEffectiveBuyOffers(
+    buyer: $buyer,
+    pagination: $pagination,
+    subject: $subject,
+    type: $type,
+    uniqFactoryId: $uniqFactoryId
+  ) {
+    data {
+      buyer
+      expiryDate
+      id
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      receiver
+      type
+      uniq {
+        factory {
+          accountMintingLimit
+          assetCreator
+          assetManager
+          authorizedMinters {
+            quantity
+            walletId
+          }
+          conditionlessReceivers
+          defaultUniqMetadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                descriptor {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+                key
+                value
+              }
+              description
+              dynamicAttributes {
+                contentType
+                uris
+              }
+              dynamicResources {
+                key
+                value {
+                  contentType
+                  uris
+                }
+              }
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          firsthandPurchases {
+            groupRestriction {
+              excludes
+              includes
+            }
+            id
+            option {
+              factories {
+                count
+                id
+                strategy
+              }
+              transferUniqsReceiver
+            }
+            price {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            promoterBasisPoints
+            purchaseLimit
+            purchaseWindow {
+              endDate
+              startDate
+            }
+            purchasedUniqs
+            saleShares {
+              basisPoints
+              receiver
+            }
+            uosPayment
+          }
+          id
+          metadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                key
+                value {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+              }
+              description
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            locked
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          mintableWindow {
+            endDate
+            startDate
+          }
+          resale {
+            minimumPrice {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            shares {
+              basisPoints
+              receiver
+            }
+          }
+          status
+          stock {
+            authorized
+            existing
+            maxMintable
+            mintable
+            minted
+          }
+          tradingWindow {
+            endDate
+            startDate
+          }
+          transferWindow {
+            endDate
+            startDate
+          }
+          type
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintDate
+        owner
+        resale {
+          onSaleDate
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        serialNumber
+        tradingPeriod {
+          duration
+          endDate
+          startDate
+        }
+        transferPeriod {
+          duration
+          endDate
+          startDate
+        }
+        type
+      }
+      uniqFactory {
+        accountMintingLimit
+        assetCreator
+        assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
+        conditionlessReceivers
+        defaultUniqMetadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              key
+              value {
+                description
+                dynamic
+                name
+                type
+              }
+            }
+            description
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          locked
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        status
+        stock {
+          authorized
+          existing
+          maxMintable
+          mintable
+          minted
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "pagination": PaginationInput,
+  "subject": UniqBuyOfferSubjectInput,
+  "type": "UNIQ",
+  "uniqFactoryId": 987
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqEffectiveBuyOffers": {
+      "data": [UniqEffectiveBuyOffer],
+      "pagination": Pagination,
+      "totalCount": 987
+    }
+  }
+}
+```
+
+
 ## `uniqFactories`
 
 ##### Description
 
-Retrieves a list of Uniq factories, optionally filtered by asset manager, and applies pagination for result management. Returns all factories if no specific filters are used.
+Retrieves a list of Uniq factories, optionally filtered by asset
+manager, and applies pagination for result management. Returns all
+factories if no specific filters are used.
 
 ##### Response
 
@@ -737,17 +2233,20 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
 ```
 
+
 ## `uniqFactory`
 
 ##### Description
 
-Fetches a specific Uniq factory by its blockchain ID, providing detailed information about its configuration, operations, and associated default Uniqs metadata.
+Fetches a specific Uniq factory by its blockchain ID, providing detailed
+information about its configuration, operations, and associated default
+Uniqs metadata.
 
 ##### Response
 
@@ -1055,6 +2554,7 @@ query UniqFactory($id: BigInt!) {
 }
 ```
 
+
 ## `uniqGlobalShares`
 
 ##### Response
@@ -1090,12 +2590,13 @@ query UniqGlobalShares {
 ```
 
 
-
 ## `uniqsOfFactory`
 
 ##### Description
 
-Lists Uniqs associated with a particular factory, allowing for advanced filtering based on serial numbers, IDs, resale status, and incorporates pagination for comprehensive result exploration.
+Lists Uniqs associated with a particular factory, allowing for advanced
+filtering based on serial numbers, IDs, resale status, and incorporates
+pagination for comprehensive result exploration.
 
 ##### Response
 
@@ -1532,17 +3033,19 @@ query UniqsOfFactory(
     "uniqsOfFactory": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
 ```
 
+
 ## `uniqsOfWallet`
 
 ##### Description
 
-Enables querying user-specific Uniqs, offering personalized insight into Uniq ownership and management based on wallet ID.
+Enables querying user-specific Uniqs, offering personalized insight into
+Uniq ownership and management based on wallet ID.
 
 ##### Response
 
@@ -1966,7 +3469,7 @@ query UniqsOfWallet(
   "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": true,
+  "resale": false,
   "walletId": "aa1aa2aa3ag4"
 }
 ```

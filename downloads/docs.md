@@ -16043,7 +16043,7 @@ order: 2
 
 ## Introduction
 
-Welcome to the API Authentication Documentation for the Ultra API . This document provides guidelines and instructions for managing authentication when interacting with our API.
+Welcome to the API Authentication Documentation for Ultra API . This document provides guidelines and instructions for managing authentication when interacting with our API.
 
 ## How to register
 
@@ -16061,7 +16061,7 @@ For backend applications, you'll need a client ID and a client secret. To set up
 
 ## Authentication Flow
 
-The authentication flow for Ultra API depends on the type of application.
+The authentication flow for the Ultra API depends on the type of application.
 
 ### Frontend Application Authentication Flow
 
@@ -16221,7 +16221,7 @@ order: -9999
 
 Ultra is excited to offer external developers enhanced access to on-chain data through an easily consumable package, designed to streamline the integration process within their applications.
 
-Leveraging the power of [graphQL](https://graphql.org/), the Ultra API adopts a schema-driven approach, making data more accessible and developer-friendly.
+Leveraging the power of [GraphQL](https://graphql.org/), the Ultra API adopts a schema-driven approach, making data more accessible and developer-friendly.
 
 Resources provided include:
 
@@ -16267,7 +16267,8 @@ order: 4
 
 ##### Description
 
-Provides direct access to detailed information about a specific Uniq using its unique blockchain ID.
+Provides direct access to detailed information about a specific Uniq
+using its unique blockchain ID.
 
 ##### Response
 
@@ -16688,11 +16689,1506 @@ query Uniq($id: BigInt!) {
 }
 ```
 
+
+## `uniqBuyOfferConfig`
+
+##### Description
+
+Allows retrieving the configuration applied to all offers.
+
+##### Response
+
+Returns [`[UniqBuyOfferConfig!]!`](types.md#uniqbuyofferconfig)
+
+#### Example
+
+##### Query
+
+``` js
+query UniqBuyOfferConfig {
+  uniqBuyOfferConfig {
+    maxActiveOfferPerUser
+    maxDuration
+    minDuration
+    minPrice {
+      amount
+      currency {
+        code
+        symbol
+      }
+    }
+  }
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqBuyOfferConfig": [
+      {
+        "maxActiveOfferPerUser": 987,
+        "maxDuration": 987,
+        "minDuration": 987,
+        "minPrice": MonetaryAmount
+      }
+    ]
+  }
+}
+```
+
+
+## `uniqBuyOffers`
+
+##### Description
+
+Simplifies the process of finding offers based on the factory, uniq, or
+buyer. This functionality is designed to include offers that are no
+longer valid, enabling the retrieval of any offer, whether expired or if
+the associated uniq has been burned. Please note that this query won't
+return the factory offer for each uniq it applies to, as factory offers
+don't have a uniq attached. If you prefer to see valid factory offer for
+each uniq it applies to, you should utilize the "uniqEffectiveBuyOffers"
+query instead.
+
+##### Response
+
+Returns a [`UniqBuyOfferList!`](types.md#uniqbuyofferlist)
+
+##### Arguments
+
+| Name                                                                                    | Description                                                                                                                                                                                                                |
+|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `buyer` - [`WalletId`](types.md#walletid)                                            | The optional filter on buyer wallet ID.                                                                                                                                                                                    |
+| `maxExpiryDate` - [`Date`](types.md#date)                                            | The optional filter max expiry date.                                                                                                                                                                                       |
+| `minExpiryDate` - [`Date`](types.md#date)                                            | The optional filter min expiry date.                                                                                                                                                                                       |
+| `ofType` - [`UniqBuyOfferOfTypeFilterInput`](types.md#uniqbuyofferoftypefilterinput) | the optional filter to enable filtering on offer types. note that additional subfilters are available within this filter (example : uniqid or uniqburned), but the type of offer will be determined by the subfilter used. |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)                         | The optional pagination input.                                                                                                                                                                                             |
+| `uniqFactoryId` - [`BigInt`](types.md#bigint)                                        | The optional filter on uniq factory ID.                                                                                                                                                                                    |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqBuyOffers(
+  $buyer: WalletId,
+  $maxExpiryDate: Date,
+  $minExpiryDate: Date,
+  $ofType: UniqBuyOfferOfTypeFilterInput,
+  $pagination: PaginationInput,
+  $uniqFactoryId: BigInt
+) {
+  uniqBuyOffers(
+    buyer: $buyer,
+    maxExpiryDate: $maxExpiryDate,
+    minExpiryDate: $minExpiryDate,
+    ofType: $ofType,
+    pagination: $pagination,
+    uniqFactoryId: $uniqFactoryId
+  ) {
+    data {
+      buyer
+      expiryDate
+      id
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      receiver
+      type
+      uniq {
+        factory {
+          accountMintingLimit
+          assetCreator
+          assetManager
+          authorizedMinters {
+            quantity
+            walletId
+          }
+          conditionlessReceivers
+          defaultUniqMetadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                descriptor {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+                key
+                value
+              }
+              description
+              dynamicAttributes {
+                contentType
+                uris
+              }
+              dynamicResources {
+                key
+                value {
+                  contentType
+                  uris
+                }
+              }
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          firsthandPurchases {
+            groupRestriction {
+              excludes
+              includes
+            }
+            id
+            option {
+              factories {
+                count
+                id
+                strategy
+              }
+              transferUniqsReceiver
+            }
+            price {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            promoterBasisPoints
+            purchaseLimit
+            purchaseWindow {
+              endDate
+              startDate
+            }
+            purchasedUniqs
+            saleShares {
+              basisPoints
+              receiver
+            }
+            uosPayment
+          }
+          id
+          metadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                key
+                value {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+              }
+              description
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            locked
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          mintableWindow {
+            endDate
+            startDate
+          }
+          resale {
+            minimumPrice {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            shares {
+              basisPoints
+              receiver
+            }
+          }
+          status
+          stock {
+            authorized
+            existing
+            maxMintable
+            mintable
+            minted
+          }
+          tradingWindow {
+            endDate
+            startDate
+          }
+          transferWindow {
+            endDate
+            startDate
+          }
+          type
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintDate
+        owner
+        resale {
+          onSaleDate
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        serialNumber
+        tradingPeriod {
+          duration
+          endDate
+          startDate
+        }
+        transferPeriod {
+          duration
+          endDate
+          startDate
+        }
+        type
+      }
+      uniqFactory {
+        accountMintingLimit
+        assetCreator
+        assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
+        conditionlessReceivers
+        defaultUniqMetadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              key
+              value {
+                description
+                dynamic
+                name
+                type
+              }
+            }
+            description
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          locked
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        status
+        stock {
+          authorized
+          existing
+          maxMintable
+          mintable
+          minted
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+      uniqFactoryId
+      uniqId
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "maxExpiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "minExpiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "ofType": UniqBuyOfferOfTypeFilterInput,
+  "pagination": PaginationInput,
+  "uniqFactoryId": 987
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqBuyOffers": {
+      "data": [UniqBuyOffer],
+      "pagination": Pagination,
+      "totalCount": 123
+    }
+  }
+}
+```
+
+
+## `uniqEffectiveBuyOffers`
+
+##### Description
+
+Enables the retrieval of effective offers. This feature provides active
+offers for a specified uniq, factory, buyer, or owner. By default, this
+query returns offers for each uniq it applies to, including those made
+on both the uniq and uniq factory sides, unless a specific filter is
+applied. Note: An active offer means the offer is not expired, and the
+associated uniq is not burned.
+
+##### Response
+
+Returns a
+[`UniqEffectiveBuyOfferList!`](types.md#uniqeffectivebuyofferlist)
+
+##### Arguments
+
+| Name                                                                           | Description                                        |
+|--------------------------------------------------------------------------------|----------------------------------------------------|
+| `buyer` - [`WalletId`](types.md#walletid)                                   | The optional filter on buyer wallet ID.            |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)                | The optional pagination input.                     |
+| `subject` - [`UniqBuyOfferSubjectInput`](types.md#uniqbuyoffersubjectinput) | The optional filter on uniq ID or owner wallet ID. |
+| `type` - [`UniqBuyOfferType`](types.md#uniqbuyoffertype)                    | The optional filter on buy offer type.             |
+| `uniqFactoryId` - [`BigInt`](types.md#bigint)                               | The optional filter on uniq factory ID.            |
+
+#### Example
+
+##### Query
+
+``` js
+query UniqEffectiveBuyOffers(
+  $buyer: WalletId,
+  $pagination: PaginationInput,
+  $subject: UniqBuyOfferSubjectInput,
+  $type: UniqBuyOfferType,
+  $uniqFactoryId: BigInt
+) {
+  uniqEffectiveBuyOffers(
+    buyer: $buyer,
+    pagination: $pagination,
+    subject: $subject,
+    type: $type,
+    uniqFactoryId: $uniqFactoryId
+  ) {
+    data {
+      buyer
+      expiryDate
+      id
+      price {
+        amount
+        currency {
+          code
+          symbol
+        }
+      }
+      receiver
+      type
+      uniq {
+        factory {
+          accountMintingLimit
+          assetCreator
+          assetManager
+          authorizedMinters {
+            quantity
+            walletId
+          }
+          conditionlessReceivers
+          defaultUniqMetadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                descriptor {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+                key
+                value
+              }
+              description
+              dynamicAttributes {
+                contentType
+                uris
+              }
+              dynamicResources {
+                key
+                value {
+                  contentType
+                  uris
+                }
+              }
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          firsthandPurchases {
+            groupRestriction {
+              excludes
+              includes
+            }
+            id
+            option {
+              factories {
+                count
+                id
+                strategy
+              }
+              transferUniqsReceiver
+            }
+            price {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            promoterBasisPoints
+            purchaseLimit
+            purchaseWindow {
+              endDate
+              startDate
+            }
+            purchasedUniqs
+            saleShares {
+              basisPoints
+              receiver
+            }
+            uosPayment
+          }
+          id
+          metadata {
+            cachedSource {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            content {
+              attributes {
+                key
+                value {
+                  description
+                  dynamic
+                  name
+                  type
+                }
+              }
+              description
+              medias {
+                gallery {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                hero {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                product {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+                square {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              name
+              properties
+              resources {
+                key
+                value {
+                  contentType
+                  integrity {
+                    hash
+                    type
+                  }
+                  uri
+                }
+              }
+              subName
+            }
+            locked
+            source {
+              contentType
+              integrity {
+                hash
+                type
+              }
+              uri
+            }
+            status
+          }
+          mintableWindow {
+            endDate
+            startDate
+          }
+          resale {
+            minimumPrice {
+              amount
+              currency {
+                code
+                symbol
+              }
+            }
+            shares {
+              basisPoints
+              receiver
+            }
+          }
+          status
+          stock {
+            authorized
+            existing
+            maxMintable
+            mintable
+            minted
+          }
+          tradingWindow {
+            endDate
+            startDate
+          }
+          transferWindow {
+            endDate
+            startDate
+          }
+          type
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintDate
+        owner
+        resale {
+          onSaleDate
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        serialNumber
+        tradingPeriod {
+          duration
+          endDate
+          startDate
+        }
+        transferPeriod {
+          duration
+          endDate
+          startDate
+        }
+        type
+      }
+      uniqFactory {
+        accountMintingLimit
+        assetCreator
+        assetManager
+        authorizedMinters {
+          quantity
+          walletId
+        }
+        conditionlessReceivers
+        defaultUniqMetadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              descriptor {
+                description
+                dynamic
+                name
+                type
+              }
+              key
+              value
+            }
+            description
+            dynamicAttributes {
+              contentType
+              uris
+            }
+            dynamicResources {
+              key
+              value {
+                contentType
+                uris
+              }
+            }
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        firsthandPurchases {
+          groupRestriction {
+            excludes
+            includes
+          }
+          id
+          option {
+            factories {
+              count
+              id
+              strategy
+            }
+            transferUniqsReceiver
+          }
+          price {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          promoterBasisPoints
+          purchaseLimit
+          purchaseWindow {
+            endDate
+            startDate
+          }
+          purchasedUniqs
+          saleShares {
+            basisPoints
+            receiver
+          }
+          uosPayment
+        }
+        id
+        metadata {
+          cachedSource {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          content {
+            attributes {
+              key
+              value {
+                description
+                dynamic
+                name
+                type
+              }
+            }
+            description
+            medias {
+              gallery {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              hero {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              product {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+              square {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            name
+            properties
+            resources {
+              key
+              value {
+                contentType
+                integrity {
+                  hash
+                  type
+                }
+                uri
+              }
+            }
+            subName
+          }
+          locked
+          source {
+            contentType
+            integrity {
+              hash
+              type
+            }
+            uri
+          }
+          status
+        }
+        mintableWindow {
+          endDate
+          startDate
+        }
+        resale {
+          minimumPrice {
+            amount
+            currency {
+              code
+              symbol
+            }
+          }
+          shares {
+            basisPoints
+            receiver
+          }
+        }
+        status
+        stock {
+          authorized
+          existing
+          maxMintable
+          mintable
+          minted
+        }
+        tradingWindow {
+          endDate
+          startDate
+        }
+        transferWindow {
+          endDate
+          startDate
+        }
+        type
+      }
+    }
+    pagination {
+      limit
+      skip
+    }
+    totalCount
+  }
+}
+```
+
+##### Variables
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "pagination": PaginationInput,
+  "subject": UniqBuyOfferSubjectInput,
+  "type": "UNIQ",
+  "uniqFactoryId": 987
+}
+```
+
+##### Response
+
+``` js
+{
+  "data": {
+    "uniqEffectiveBuyOffers": {
+      "data": [UniqEffectiveBuyOffer],
+      "pagination": Pagination,
+      "totalCount": 987
+    }
+  }
+}
+```
+
+
 ## `uniqFactories`
 
 ##### Description
 
-Retrieves a list of Uniq factories, optionally filtered by asset manager, and applies pagination for result management. Returns all factories if no specific filters are used.
+Retrieves a list of Uniq factories, optionally filtered by asset
+manager, and applies pagination for result management. Returns all
+factories if no specific filters are used.
 
 ##### Response
 
@@ -16994,17 +18490,20 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
 ```
 
+
 ## `uniqFactory`
 
 ##### Description
 
-Fetches a specific Uniq factory by its blockchain ID, providing detailed information about its configuration, operations, and associated default Uniqs metadata.
+Fetches a specific Uniq factory by its blockchain ID, providing detailed
+information about its configuration, operations, and associated default
+Uniqs metadata.
 
 ##### Response
 
@@ -17312,6 +18811,7 @@ query UniqFactory($id: BigInt!) {
 }
 ```
 
+
 ## `uniqGlobalShares`
 
 ##### Response
@@ -17347,12 +18847,13 @@ query UniqGlobalShares {
 ```
 
 
-
 ## `uniqsOfFactory`
 
 ##### Description
 
-Lists Uniqs associated with a particular factory, allowing for advanced filtering based on serial numbers, IDs, resale status, and incorporates pagination for comprehensive result exploration.
+Lists Uniqs associated with a particular factory, allowing for advanced
+filtering based on serial numbers, IDs, resale status, and incorporates
+pagination for comprehensive result exploration.
 
 ##### Response
 
@@ -17789,17 +19290,19 @@ query UniqsOfFactory(
     "uniqsOfFactory": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
 ```
 
+
 ## `uniqsOfWallet`
 
 ##### Description
 
-Enables querying user-specific Uniqs, offering personalized insight into Uniq ownership and management based on wallet ID.
+Enables querying user-specific Uniqs, offering personalized insight into
+Uniq ownership and management based on wallet ID.
 
 ##### Response
 
@@ -18223,7 +19726,7 @@ query UniqsOfWallet(
   "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": true,
+  "resale": false,
   "walletId": "aa1aa2aa3ag4"
 }
 ```
@@ -18253,13 +19756,27 @@ order: 1
 
 We're thrilled to announce the release of a new version of the Ultra API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
 
-## Key Highlights
+## Release 0.2.0
+
+### Key Highlights
+
+-   Introducing the `uniqEffectiveBuyOffers`. Please refer to the `uniqEffectiveBuyOffers` queries section for detailed information. We strongly advise utilizing this feature to retrieve all currently active offers.
+-   Presenting the `uniqBuyOffers`. For more details, see the `uniqBuyOffers` queries section. We strongly encourage using this feature to retrieve specific offers, which may include expired offers or those related to burned uniq.
+
+### Bugfixes
+
+-   Addressed issues where metadata remained stuck in processing state without any reported errors.
+-   Corrected occurrences of HTTP 500 errors instead of 400 errors for subscriptions used over HTTP protocol rather than WebSocket.
+
+## Release 0.1.0
+
+### Key Highlights
 
 -   Introducing the `uniqSnapshots` subscription! Refer to the `uniqSnapshots` subscription section for more information. We highly recommend using this new subscription. Please note that the `uniqsOfFactory` and `uniqsOfWallet` subscriptions are now deprecated.
 -   Introducing the `uniqFactorySnapshots` subscription! Refer to the `uniqFactorySnapshots` subscription section for more information. We highly recommend using this new subscription. Please note that the `uniqFactories` subscription is now deprecated.
 -   Explore the new `uniqGlobalShares` query! Find details in the `uniqGlobalShares` query section. We strongly recommend using this query to compute sale shares prices. The `uniqGlobalShares` query provides the protocol fee basis point applied to each resale. Reminder: Owner revenue = Price - (Price x 0.0001 x (Protocol fee basis point + Promoter fee basis point + Creators shares basis point)).
 
-## Breaking changes
+### Breaking changes
 
 -   **Removed** enum `BlockStep` - The Ultra API will now reflect only irreversible transactions.
 
@@ -18284,7 +19801,7 @@ We're thrilled to announce the release of a new version of the Ultra API. This u
     }
     ```
 
-## Bugfixes
+### Bugfixes
 
 -   Resolved issues related to metadata not being present for old uniqs or factory. The API now correctly includes metadata for all uniqs and factory instances.
 -   Fixed issues with trading/transfer windows. Users can now perform trading and transfers without encountering unexpected errors or disruptions.
@@ -18295,15 +19812,142 @@ deploy: ['staging', 'mainnet']
 order: 5
 ---
 
+
+# Understanding GraphQL Subscriptions
+
+GraphQL subscriptions enable a real-time connection between the client and the server, allowing the server to push updates to the client when specific events occur. Subscriptions can be used for live queries or as a stream of events. The `graphql-ws` library simplifies the process of implementing these subscriptions.
+
+## Basic Concept of Subscriptions
+
+Unlike queries and mutations, which follow a request-response pattern, subscriptions use a persistent connection (typically via WebSocket) to push updates from the server to the client.
+
+## Setting Up with `graphql-ws`
+
+To implement subscriptions with the `graphql-ws` library, follow these basic steps:
+
+1. **Install the Library**: Ensure you have the `graphql-ws` library installed.
+
+2. **Establish a WebSocket Connection**: Create a WebSocket connection using the `graphql-ws` library.
+
+3. **Authenticate the Connection**: During the connection initialization, include an authorization header to authenticate the user. This is crucial for secure communications.
+
+4. **Subscribe to Events**: Use the connection to subscribe to the desired events. When these events occur, the server will push updates to the client.
+
+## Step-by-Step Example with Code
+
+### 1. Creating the WebSocket Client
+
+```javascript
+import { createClient } from 'graphql-ws';
+
+const client = createClient({
+    url: 'wss://your-graphql-endpoint/graphql',
+    connectionParams: {
+        headers: {
+            authorization: 'Bearer your_user_token',
+        },
+    },
+});
+```
+
+### 2. Subscribing to a Subscription
+
+```javascript
+client.subscribe(
+    {
+        query: `subscription {
+          eventOccurred {
+            field1
+            field2
+          }
+        }`,
+    },
+    {
+        next: (data) => console.log(data),
+        error: (err) => console.error(err),
+        complete: () => console.log('Subscription complete'),
+    },
+);
+```
+
+## Postman: Testing an Example WebSocket Connections
+
+### 1. Creating a WebSocket Request
+
+-   Open Postman and create a new WebSocket request.
+-   Set the URL to your GraphQL subscription endpoint (e.g., `wss://your-graphql-endpoint/graphql`).
+-   Add the correct sub-protocol `Sec-WebSocket-Protocol : graphql-transport-ws` on header section.
+
+### 2. Initializing the Connection
+
+-   In the "Text" tab, enter the following JSON payload to initialize the connection with the authorization header:
+
+    ```json
+    {
+        "type": "connection_init",
+        "payload": {
+            "headers": { "authorization": "Bearer {{BEARER_TOKEN}}" }
+        }
+    }
+    ```
+
+-   Click the "Connect" button to establish the WebSocket connection.
+
+### 3. Subscribing to a GraphQL Subscription
+
+-   After the connection is successfully initialized, enter the following JSON payload to subscribe to a GraphQL subscription:
+
+    ```json
+    {
+        "id": "d77e14e3-9ef2-43a3-a15e-d81a5f346f73",
+        "type": "subscribe",
+        "payload": {
+            "variables": {
+                "positionStrategy": "EARLIEST"
+            },
+            "query": "subscription UniqFactorySnapshots( $positionStrategy: StreamPositionStrategy!) { uniqFactorySnapshots( positionStrategy: $positionStrategy ) { cursor id position state { accountMintingLimit assetCreator assetManager authorizedMinters { quantity walletId } conditionlessReceivers defaultUniqMetadata { cachedSource { contentType integrity { hash type } uri } content { attributes { descriptor { description dynamic name type } key value } description dynamicAttributes { contentType uris } dynamicResources { key value { contentType uris } } medias { gallery { contentType integrity { hash type } uri } hero { contentType integrity { hash type } uri } product { contentType integrity { hash type } uri } square { contentType integrity { hash type } uri } } name properties resources { key value { contentType integrity { hash type } uri } } subName } source { contentType integrity { hash type } uri } status } firsthandPurchases { groupRestriction { excludes includes } id option { factories { count id strategy } transferUniqsReceiver } price { amount currency { code symbol } } promoterBasisPoints purchaseLimit purchaseWindow { endDate startDate } purchasedUniqs saleShares { basisPoints receiver } uosPayment } id metadata { cachedSource { contentType integrity { hash type } uri } content { attributes { key value { description dynamic name type } } description medias { gallery { contentType integrity { hash type } uri } hero { contentType integrity { hash type } uri } product { contentType integrity { hash type } uri } square { contentType integrity { hash type } uri } } name properties resources { key value { contentType integrity { hash type } uri } } subName } locked source { contentType integrity { hash type } uri } status } mintableWindow { endDate startDate } resale { minimumPrice { amount currency { code symbol } } shares { basisPoints receiver } } status stock { authorized existing maxMintable mintable minted } tradingWindow { endDate startDate } transferWindow { endDate startDate } type } } }"
+        }
+    }
+    ```
+
+-   Click the "Send" button to start the subscription.
+
+### 4. Handling the Cursor Value
+
+For subsequent requests, include the cursor value if it is not the first subscription. Here is an example of how to modify the subscription request to include the cursor value:
+
+```json
+{
+    "id": "d77e14e3-9ef2-43a3-a15e-d81a5f346f73",
+    "type": "subscribe",
+    "payload": {
+        "variables": {
+            "cursor": "1k05ksqt9v3ew",
+            "positionStrategy": "EARLIEST"
+        },
+        "query": "subscription UniqFactorySnapshots( $cursor: StreamCursor, $positionStrategy: StreamPositionStrategy!) { uniqFactorySnapshots( cursor: $cursor, positionStrategy: $positionStrategy ) { cursor id position state { accountMintingLimit assetCreator assetManager authorizedMinters { quantity walletId } conditionlessReceivers defaultUniqMetadata { cachedSource { contentType integrity { hash type } uri } content { attributes { descriptor { description dynamic name type } key value } description dynamicAttributes { contentType uris } dynamicResources { key value { contentType uris } } medias { gallery { contentType integrity { hash type } uri } hero { contentType integrity { hash type } uri } product { contentType integrity { hash type } uri } square { contentType integrity { hash type } uri } } name properties resources { key value { contentType integrity { hash type } uri } } subName } source { contentType integrity { hash type } uri } status } firsthandPurchases { groupRestriction { excludes includes } id option { factories { count id strategy } transferUniqsReceiver } price { amount currency { code symbol } } promoterBasisPoints purchaseLimit purchaseWindow { endDate startDate } purchasedUniqs saleShares { basisPoints receiver } uosPayment } id metadata { cachedSource { contentType integrity { hash type } uri } content { attributes { key value { description dynamic name type } } description medias { gallery { contentType integrity { hash type } uri } hero { contentType integrity { hash type } uri } product { contentType integrity { hash type } uri } square { contentType integrity { hash type } uri } } name properties resources { key value { contentType integrity { hash type } uri } } subName } locked source { contentType integrity { hash type } uri } status } mintableWindow { endDate startDate } resale { minimumPrice { amount currency { code symbol } } shares { basisPoints receiver } } status stock { authorized existing maxMintable mintable minted } tradingWindow { endDate startDate } transferWindow { endDate startDate } type } } }"
+    }
+}
+```
+
+## Appendix
+
+References
+
+-   GraphQL over WebSocket Protocol: [graphql-ws](https://github.com/enisdenjo/graphql-ws/blob/master/PROTOCOL.md)
+
 # Subscriptions
 
 ## `uniqFactories`
 
-Transition to uniqFactorySnapshots for improved data management. This method will be phased out in future updates.
+Transition to uniqFactorySnapshots for improved data management. This
+method will be phased out in future updates.
 
 ##### Description
 
-Subscribes to updates on Uniq Factories, providing a mechanism for real-time monitoring and data synchronization based on specified criteria.
+Subscribes to updates on Uniq Factories, providing a mechanism for
+real-time monitoring and data synchronization based on specified
+criteria.
 
 ##### Response
 
@@ -18611,11 +20255,14 @@ subscription UniqFactories($assetManager: WalletId) {
 }
 ```
 
+
 ## `uniqFactorySnapshots`
 
 ##### Description
 
-Engages with Uniq Factory snapshots, offering an advanced model for tracking changes and state transitions within factories, powered by stream positions and optional cursors for continuity.
+Engages with Uniq Factory snapshots, offering an advanced model for
+tracking changes and state transitions within factories, powered by
+stream positions and optional cursors for continuity.
 
 ##### Response
 
@@ -18922,11 +20569,14 @@ subscription UniqFactorySnapshots(
 }
 ```
 
+
 ## `uniqSnapshots`
 
 ##### Description
 
-Initiates a subscription to Uniq snapshots, offering a modern framework for observing Uniq state changes and updates, supported by strategic stream positioning and cursor-based continuity.
+Initiates a subscription to Uniq snapshots, offering a modern framework
+for observing Uniq state changes and updates, supported by strategic
+stream positioning and cursor-based continuity.
 
 ##### Response
 
@@ -19138,13 +20788,17 @@ subscription UniqSnapshots(
 }
 ```
 
+
 ## `uniqsOfFactory`
 
-Adopt uniqSnapshots for enhanced state tracking and real-time updates. This method is slated for discontinuation.
+Adopt uniqSnapshots for enhanced state tracking and real-time updates.
+This method is slated for discontinuation.
 
 ##### Description
 
-Provides a subscription service for tracking Uniqs associated with a specific factory, leveraging serial number ranges and ID filters for targeted data retrieval.
+Provides a subscription service for tracking Uniqs associated with a
+specific factory, leveraging serial number ranges and ID filters for
+targeted data retrieval.
 
 ##### Response
 
@@ -19579,13 +21233,17 @@ subscription UniqsOfFactory(
 }
 ```
 
+
 ## `uniqsOfWallet`
 
-Shift to uniqSnapshots for a streamlined and updated approach to Uniq monitoring. This subscription will be phased out.
+Shift to uniqSnapshots for a streamlined and updated approach to Uniq
+monitoring. This subscription will be phased out.
 
 ##### Description
 
-Facilitates user-centric tracking of Uniqs, catering to individual ownership patterns and preferences with optional filters for ID and factory association.
+Facilitates user-centric tracking of Uniqs, catering to individual
+ownership patterns and preferences with optional filters for ID and
+factory association.
 
 ##### Response
 
@@ -20033,7 +21691,9 @@ order: 6
 
 ##### Description
 
-A binary integer decimal representation of a 128-bit decimal value, supporting 34 decimal digits of significand and an exponent range of -6143 to +6144.
+A binary integer decimal representation of a 128-bit decimal value,
+supporting 34 decimal digits of significand and an exponent range of
+-6143 to +6144.
 
 ##### Example
 
@@ -20041,11 +21701,13 @@ A binary integer decimal representation of a 128-bit decimal value, supporting 3
 987.65
 ```
 
+
 ## BigInt
 
 ##### Description
 
-Defines a Long class for representing a 64-bit two’s-complement integer value.
+Defines a Long class for representing a 64-bit two’s-complement integer
+value.
 
 ##### Example
 
@@ -20054,20 +21716,25 @@ Defines a Long class for representing a 64-bit two’s-complement integer value.
 ```
 
 
-
 ## Boolean
 
 ##### Description
 
 The `Boolean` scalar type represents `true` or `false`.
 
+##### Example
+
+``` js
+true
+```
 
 
 ## Currency
 
 ##### Description
 
-Defines a currency unit for displaying pricing information, adhering to ISO 4217 standards for currency representation.
+Defines a currency unit for displaying pricing information, adhering to
+ISO 4217 standards for currency representation.
 
 ##### Fields
 
@@ -20080,18 +21747,19 @@ Defines a currency unit for displaying pricing information, adhering to ISO 4217
 
 ``` js
 {
-  "code": "xyz789",
+  "code": "abc123",
   "symbol": "xyz789"
 }
 ```
-
 
 
 ## Date
 
 ##### Description
 
-ISO 8601 date format. The timezone is always zero UTC offset, as denoted by the suffix Z. Milliseconds since epoch is an alternative input format.
+ISO 8601 date format. The timezone is always zero UTC offset, as denoted
+by the suffix Z. Milliseconds since epoch is an alternative input
+format.
 
 ##### Example
 
@@ -20100,12 +21768,13 @@ ISO 8601 date format. The timezone is always zero UTC offset, as denoted by the 
 ```
 
 
-
 ## Float
 
 ##### Description
 
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+The `Float` scalar type represents signed double-precision fractional
+values as specified by [IEEE
+754](https://en.wikipedia.org/wiki/IEEE_floating_point).
 
 ##### Example
 
@@ -20114,19 +21783,18 @@ The `Float` scalar type represents signed double-precision fractional values as 
 ```
 
 
-
 ## Int
 
 ##### Description
 
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+The `Int` scalar type represents non-fractional signed whole numeric
+values. Int can represent values between -(2^31) and 2^31 - 1.
 
 ##### Example
 
 ``` js
-987
+123
 ```
-
 
 
 ## JSONObject
@@ -20142,7 +21810,6 @@ Represent a JSON object.
 ```
 
 
-
 ## JSONPrimitive
 
 ##### Description
@@ -20156,12 +21823,12 @@ Represent all supported primitive type for json object.
 ```
 
 
-
 ## MonetaryAmount
 
 ##### Description
 
-Encapsulates a monetary value in a specific currency, allowing for precise financial transactions.
+Encapsulates a monetary value in a specific currency, allowing for
+precise financial transactions.
 
 ##### Fields
 
@@ -20177,12 +21844,12 @@ Encapsulates a monetary value in a specific currency, allowing for precise finan
 ```
 
 
-
 ## Pagination
 
 ##### Description
 
-Pagination applied to the result. Maximum limit allowed result per page is 25.
+Pagination applied to the result. Maximum limit allowed result per page
+is 25.
 
 ##### Fields
 
@@ -20194,16 +21861,17 @@ Pagination applied to the result. Maximum limit allowed result per page is 25.
 ##### Example
 
 ``` js
-{"limit": 123, "skip": 123}
+{"limit": 987, "skip": 987}
 ```
-
 
 
 ## PaginationInput
 
 ##### Description
 
-Pagination filter. Used as query argument, it's optional filter. If not provided, default pagination will be applied with skip value to 0 and limit to 25 maximum results per page.
+Pagination filter. Used as query argument, it's optional filter. If not
+provided, default pagination will be applied with skip value to 0 and
+limit to 25 maximum results per page.
 
 ##### Fields
 
@@ -20215,9 +21883,8 @@ Pagination filter. Used as query argument, it's optional filter. If not provided
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 987}
+{"limit": 987, "skip": 123}
 ```
-
 
 
 ## StreamCursor
@@ -20231,7 +21898,6 @@ An opaque string used to resume a stream.
 ``` js
 "0"
 ```
-
 
 
 ## StreamPosition
@@ -20255,7 +21921,6 @@ The stream position.
 ```
 
 
-
 ## StreamPositionStrategy
 
 ##### Description
@@ -20276,26 +21941,28 @@ The stream position strategy.
 ```
 
 
-
 ## String
 
 ##### Description
 
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+The `String` scalar type represents textual data, represented as UTF-8
+character sequences. The String type is most often used by GraphQL to
+represent free-form human-readable text.
 
 ##### Example
 
 ``` js
-"abc123"
+"xyz789"
 ```
-
 
 
 ## Uniq
 
 ##### Description
 
-Encapsulates all pertinent details of a Uniq, including its blockchain ID, asset type, ownership, and associated metadata, providing a comprehensive overview of its identity and status.
+Encapsulates all pertinent details of a Uniq, including its blockchain
+ID, asset type, ownership, and associated metadata, providing a
+comprehensive overview of its identity and status.
 
 ##### Fields
 
@@ -20330,12 +21997,192 @@ Encapsulates all pertinent details of a Uniq, including its blockchain ID, asset
 ```
 
 
+## UniqBuyOffer
+
+##### Description
+
+A buy offer record on a uniq factory or a uniq.
+
+##### Fields
+
+| Field Name                                                   | Description                      |
+|--------------------------------------------------------------|----------------------------------|
+| `buyer` - [`WalletId!`](#walletid)                | The buy offer wallet ID.         |
+| `expiryDate` - [`Date!`](#date)                   | The buy offer expry date.        |
+| `id` - [`BigInt!`](#bigint)                       | The buy offer ID.                |
+| `price` - [`MonetaryAmount!`](#monetaryamount)    | The buy offer price.             |
+| `receiver` - [`WalletId`](#walletid)              | The optional buy offer receiver. |
+| `type` - [`UniqBuyOfferType!`](#uniqbuyoffertype) | The buy offer type.              |
+| `uniq` - [`Uniq`](#uniq)                          | The buy offer Uniq.              |
+| `uniqFactory` - [`UniqFactory`](#uniqfactory)     | The buy offer Uniq Factory.      |
+| `uniqFactoryId` - [`BigInt`](#bigint)             | The buy offer Uniq Factory ID.   |
+| `uniqId` - [`BigInt`](#bigint)                    | The buy offer Uniq ID.           |
+
+##### Example
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "expiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "id": 987,
+  "price": MonetaryAmount,
+  "receiver": "aa1aa2aa3ag4",
+  "type": "UNIQ",
+  "uniq": Uniq,
+  "uniqFactory": UniqFactory,
+  "uniqFactoryId": 987,
+  "uniqId": 987
+}
+```
+
+
+## UniqBuyOfferConfig
+
+##### Description
+
+UniqBuyOfferConfig type represents the configuration for a uniq buy
+offer.
+
+##### Fields
+
+| Field Name                                                   | Description                                          |
+|--------------------------------------------------------------|------------------------------------------------------|
+| `maxActiveOfferPerUser` - [`BigInt!`](#bigint)    | The maximum number of active offers a user can have. |
+| `maxDuration` - [`BigInt!`](#bigint)              | The maximum duration of the offer.                   |
+| `minDuration` - [`BigInt!`](#bigint)              | The minimum duration of the offer.                   |
+| `minPrice` - [`MonetaryAmount!`](#monetaryamount) | The minimum price of the offer.                      |
+
+##### Example
+
+``` js
+{
+  "maxActiveOfferPerUser": 987,
+  "maxDuration": 987,
+  "minDuration": 987,
+  "minPrice": MonetaryAmount
+}
+```
+
+
+## UniqBuyOfferFilterInput
+
+##### Description
+
+Enable filtering on uniq buy offers only and provide the filter on uniq
+ID and/or burned.
+
+##### Fields
+
+| Input Field                                     | Description                                                                                                                             |
+|-------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled` - [`Boolean!`](#boolean)   | Enable filtering exclusively for uniq buy offers. Set this variable to `true` to activate the filter, ensuring clarity and readability. |
+| `uniqBurned` - [`Boolean`](#boolean) | The optional uniqBurned filter retrieves offers where the associated uniq has been burned, making the offer invalid.                    |
+| `uniqId` - [`BigInt`](#bigint)       | Optional filter to retrieve only offers related to a specific uniq.                                                                     |
+
+##### Example
+
+``` js
+{"enabled": false, "uniqBurned": true, "uniqId": 987}
+```
+
+
+## UniqBuyOfferList
+
+##### Description
+
+Organizes a collection of UniqBuyOffers into a structured list,
+incorporating pagination to manage and navigate through large datasets
+effectively.
+
+##### Fields
+
+| Field Name                                              | Description                                                                                                                               |
+|---------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| `data` - [`[UniqBuyOffer!]!`](#uniqbuyoffer) | An array of UniqBuyOffers, each representing a unique asset within the platform, selected according to specified criteria.                |
+| `pagination` - [`Pagination!`](#pagination)  | Pagination details, facilitating the efficient browsing of large collections by segmenting the data into manageable portions.             |
+| `totalCount` - [`Int!`](#int)                | The total count of UniqBuyOffers matching the query parameters, essential for understanding the scope of results and planning navigation. |
+
+##### Example
+
+``` js
+{
+  "data": [UniqBuyOffer],
+  "pagination": Pagination,
+  "totalCount": 123
+}
+```
+
+
+## UniqBuyOfferOfTypeFilterInput
+
+##### Description
+
+Enable filtering on either uniq or uniq factory buy offers.
+
+##### Fields
+
+| Input Field                                                                                    | Description                     |
+|------------------------------------------------------------------------------------------------|---------------------------------|
+| `uniq` - [`UniqBuyOfferFilterInput`](#uniqbuyofferfilterinput)                      | Filter for uniq offers.         |
+| `uniqFactory` - [`UniqFactoryBuyOfferFilterInput`](#uniqfactorybuyofferfilterinput) | Filter for uniq factory offers. |
+
+##### Example
+
+``` js
+{
+  "uniq": UniqBuyOfferFilterInput,
+  "uniqFactory": UniqFactoryBuyOfferFilterInput
+}
+```
+
+
+## UniqBuyOfferSubjectInput
+
+##### Description
+
+Enable filtering of effective buy offers based on either a uniq ID or an
+owner.
+
+##### Fields
+
+| Input Field                                  | Description                    |
+|----------------------------------------------|--------------------------------|
+| `owner` - [`WalletId`](#walletid) | The filter on owner wallet ID. |
+| `uniqId` - [`BigInt`](#bigint)    | The filter on uniq ID.         |
+
+##### Example
+
+``` js
+{"owner": "aa1aa2aa3ag4", "uniqId": 987}
+```
+
+
+## UniqBuyOfferType
+
+##### Description
+
+The uniq buy offer type.
+
+##### Values
+
+| Enum Value     | Description                    |
+|----------------|--------------------------------|
+| `UNIQ`         | A buy offer on a uniq.         |
+| `UNIQ_FACTORY` | A buy offer on a uniq factory. |
+
+##### Example
+
+``` js
+"UNIQ"
+```
+
 
 ## UniqDynamicResource
 
 ##### Description
 
-Represents a dynamic Uniq resource capable of being refreshed to reflect changes, including multiple URIs for alternate versions or updates.
+Represents a dynamic Uniq resource capable of being refreshed to reflect
+changes, including multiple URIs for alternate versions or updates.
 
 ##### Fields
 
@@ -20348,18 +22195,80 @@ Represents a dynamic Uniq resource capable of being refreshed to reflect changes
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "uris": ["xyz789"]
 }
 ```
 
+
+## UniqEffectiveBuyOffer
+
+##### Description
+
+An effective buy offer on a uniq.
+
+##### Fields
+
+| Field Name                                                   | Description                      |
+|--------------------------------------------------------------|----------------------------------|
+| `buyer` - [`WalletId!`](#walletid)                | The buy offer wallet ID.         |
+| `expiryDate` - [`Date!`](#date)                   | The buy offer expry date.        |
+| `id` - [`BigInt!`](#bigint)                       | The buy offer ID.                |
+| `price` - [`MonetaryAmount!`](#monetaryamount)    | The buy offer price.             |
+| `receiver` - [`WalletId`](#walletid)              | The optional buy offer receiver. |
+| `type` - [`UniqBuyOfferType!`](#uniqbuyoffertype) | The buy offer type.              |
+| `uniq` - [`Uniq!`](#uniq)                         | The buy offer Uniq.              |
+| `uniqFactory` - [`UniqFactory!`](#uniqfactory)    | The buy offer Uniq Factory.      |
+
+##### Example
+
+``` js
+{
+  "buyer": "aa1aa2aa3ag4",
+  "expiryDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
+  "id": 987,
+  "price": MonetaryAmount,
+  "receiver": "aa1aa2aa3ag4",
+  "type": "UNIQ",
+  "uniq": Uniq,
+  "uniqFactory": UniqFactory
+}
+```
+
+
+## UniqEffectiveBuyOfferList
+
+##### Description
+
+Organizes a collection of UniqEffectiveBuyOffers into a structured list,
+incorporating pagination to manage and navigate through large datasets
+effectively.
+
+##### Fields
+
+| Field Name                                                                | Description                                                                                                                                        |
+|---------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `data` - [`[UniqEffectiveBuyOffer!]!`](#uniqeffectivebuyoffer) | An array of UniqEffectiveBuyOffers, each representing a unique asset within the platform, selected according to specified criteria.                |
+| `pagination` - [`Pagination!`](#pagination)                    | Pagination details, facilitating the efficient browsing of large collections by segmenting the data into manageable portions.                      |
+| `totalCount` - [`Int!`](#int)                                  | The total count of UniqEffectiveBuyOffers matching the query parameters, essential for understanding the scope of results and planning navigation. |
+
+##### Example
+
+``` js
+{
+  "data": [UniqEffectiveBuyOffer],
+  "pagination": Pagination,
+  "totalCount": 123
+}
+```
 
 
 ## UniqFactory
 
 ##### Description
 
-Aggregates all relevant information about a Uniq factory, encompassing types, statuses, and operational details.
+Aggregates all relevant information about a Uniq factory, encompassing
+types, statuses, and operational details.
 
 ##### Fields
 
@@ -20408,12 +22317,12 @@ Aggregates all relevant information about a Uniq factory, encompassing types, st
 ```
 
 
-
 ## UniqFactoryActionWindow
 
 ##### Description
 
-Provides a timeframe for actions related to a Uniq factory, such as minting, trading, or transferring.
+Provides a timeframe for actions related to a Uniq factory, such as
+minting, trading, or transferring.
 
 ##### Fields
 
@@ -20441,12 +22350,12 @@ Provides a timeframe for actions related to a Uniq factory, such as minting, tra
 ```
 
 
-
 ## UniqFactoryAuthorizedMinter
 
 ##### Description
 
-Information about authorized minters for a Uniq factory, including wallet IDs and minting quotas.
+Information about authorized minters for a Uniq factory, including
+wallet IDs and minting quotas.
 
 ##### Fields
 
@@ -20465,12 +22374,31 @@ Information about authorized minters for a Uniq factory, including wallet IDs an
 ```
 
 
+## UniqFactoryBuyOfferFilterInput
+
+##### Description
+
+Enable filtering on uniq factory buy offers.
+
+##### Fields
+
+| Input Field                                   | Description                                                                                                                                     |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enabled` - [`Boolean!`](#boolean) | Enable filtering exclusively for uniq factory buy offers. Set this variable to `true` to activate the filter, ensuring clarity and readability. |
+
+##### Example
+
+``` js
+{"enabled": false}
+```
+
 
 ## UniqFactoryDigest
 
 ##### Description
 
-Summarizes immutable information about a Uniq Factory, capturing its identity, operational parameters, and lifecycle management details.
+Summarizes immutable information about a Uniq Factory, capturing its
+identity, operational parameters, and lifecycle management details.
 
 ##### Fields
 
@@ -20503,12 +22431,12 @@ Summarizes immutable information about a Uniq Factory, capturing its identity, o
 ```
 
 
-
 ## UniqFactoryFirsthandPurchase
 
 ##### Description
 
-Details firsthand purchase information for a Uniq factory, including pricing, limits, and applicable restrictions.
+Details firsthand purchase information for a Uniq factory, including
+pricing, limits, and applicable restrictions.
 
 ##### Fields
 
@@ -20535,7 +22463,7 @@ Details firsthand purchase information for a Uniq factory, including pricing, li
   "id": 987,
   "option": UniqFactoryFirsthandPurchaseOption,
   "price": MonetaryAmount,
-  "promoterBasisPoints": 123,
+  "promoterBasisPoints": 987,
   "purchaseLimit": 987,
   "purchaseWindow": UniqFactoryPurchaseWindow,
   "purchasedUniqs": 987,
@@ -20545,12 +22473,12 @@ Details firsthand purchase information for a Uniq factory, including pricing, li
 ```
 
 
-
 ## UniqFactoryFirsthandPurchaseGroupRestriction
 
 ##### Description
 
-Represents group-based restrictions for firsthand purchases, allowing for inclusion and exclusion criteria based on group memberships.
+Represents group-based restrictions for firsthand purchases, allowing
+for inclusion and exclusion criteria based on group memberships.
 
 ##### Fields
 
@@ -20566,12 +22494,12 @@ Represents group-based restrictions for firsthand purchases, allowing for inclus
 ```
 
 
-
 ## UniqFactoryFirsthandPurchaseOption
 
 ##### Description
 
-Outlines firsthand purchase options, including potential restrictions and strategies for managing factory-related purchases.
+Outlines firsthand purchase options, including potential restrictions
+and strategies for managing factory-related purchases.
 
 ##### Fields
 
@@ -20592,12 +22520,12 @@ Outlines firsthand purchase options, including potential restrictions and strate
 ```
 
 
-
 ## UniqFactoryFirsthandPurchaseOptionFactory
 
 ##### Description
 
-Describes firsthand purchase options associated with a Uniq factory, including applicable strategies and quantities.
+Describes firsthand purchase options associated with a Uniq factory,
+including applicable strategies and quantities.
 
 ##### Fields
 
@@ -20612,7 +22540,6 @@ Describes firsthand purchase options associated with a Uniq factory, including a
 ``` js
 {"count": 987, "id": 987, "strategy": "BURN"}
 ```
-
 
 
 ## UniqFactoryFirsthandPurchaseOptionFactoryStrategy
@@ -20637,12 +22564,13 @@ Uniq Factory.
 ```
 
 
-
 ## UniqFactoryList
 
 ##### Description
 
-Provides a paginated list of Uniq factories, including data on individual factories and total counts for navigation and display purposes.
+Provides a paginated list of Uniq factories, including data on
+individual factories and total counts for navigation and display
+purposes.
 
 ##### Fields
 
@@ -20663,12 +22591,12 @@ Provides a paginated list of Uniq factories, including data on individual factor
 ```
 
 
-
 ## UniqFactoryMetadata
 
 ##### Description
 
-Encapsulates global metadata for a Uniq factory, including status, source, cached content, and resolved information.
+Encapsulates global metadata for a Uniq factory, including status,
+source, cached content, and resolved information.
 
 ##### Fields
 
@@ -20686,19 +22614,19 @@ Encapsulates global metadata for a Uniq factory, including status, source, cache
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": true,
+  "locked": false,
   "source": UniqResource,
   "status": "INVALID"
 }
 ```
 
 
-
 ## UniqFactoryMetadataAttribute
 
 ##### Description
 
-Stores key-value pairs describing attributes for Uniqs related to a factory, providing detailed information about each attribute.
+Stores key-value pairs describing attributes for Uniqs related to a
+factory, providing detailed information about each attribute.
 
 ##### Fields
 
@@ -20717,12 +22645,12 @@ Stores key-value pairs describing attributes for Uniqs related to a factory, pro
 ```
 
 
-
 ## UniqFactoryMetadataContent
 
 ##### Description
 
-Represents content associated with Uniq factory metadata, including names, descriptions, media, and additional properties.
+Represents content associated with Uniq factory metadata, including
+names, descriptions, media, and additional properties.
 
 ##### Fields
 
@@ -20741,9 +22669,9 @@ Represents content associated with Uniq factory metadata, including names, descr
 ``` js
 {
   "attributes": [UniqFactoryMetadataAttribute],
-  "description": "abc123",
+  "description": "xyz789",
   "medias": UniqMedias,
-  "name": "abc123",
+  "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -20751,12 +22679,13 @@ Represents content associated with Uniq factory metadata, including names, descr
 ```
 
 
-
 ## UniqFactoryMintableWindow
 
 ##### Description
 
-Specifies the time window during which Uniqs can be minted from a factory, with various combinations of start and end dates dictating minting availability.
+Specifies the time window during which Uniqs can be minted from a
+factory, with various combinations of start and end dates dictating
+minting availability.
 
 ##### Fields
 
@@ -20775,12 +22704,12 @@ Specifies the time window during which Uniqs can be minted from a factory, with 
 ```
 
 
-
 ## UniqFactoryPurchaseWindow
 
 ##### Description
 
-Defines a purchase window for Uniq factories, indicating when Uniqs can be bought directly from the factory.
+Defines a purchase window for Uniq factories, indicating when Uniqs can
+be bought directly from the factory.
 
 ##### Fields
 
@@ -20799,12 +22728,12 @@ Defines a purchase window for Uniq factories, indicating when Uniqs can be bough
 ```
 
 
-
 ## UniqFactoryResale
 
 ##### Description
 
-Details the resale information for a Uniq factory, including minimum pricing and commission shares for secondary market sales.
+Details the resale information for a Uniq factory, including minimum
+pricing and commission shares for secondary market sales.
 
 ##### Fields
 
@@ -20823,12 +22752,13 @@ Details the resale information for a Uniq factory, including minimum pricing and
 ```
 
 
-
 ## UniqFactorySnapshot
 
 ##### Description
 
-Represents a momentary snapshot of a Uniq Factory's state, including its blockchain ID and operational status, facilitating real-time data synchronization and monitoring.
+Represents a momentary snapshot of a Uniq Factory's state, including its
+blockchain ID and operational status, facilitating real-time data
+synchronization and monitoring.
 
 ##### Fields
 
@@ -20851,12 +22781,12 @@ Represents a momentary snapshot of a Uniq Factory's state, including its blockch
 ```
 
 
-
 ## UniqFactoryStatus
 
 ##### Description
 
-Represents the operational status of a Uniq factory within the blockchain environment.
+Represents the operational status of a Uniq factory within the
+blockchain environment.
 
 ##### Values
 
@@ -20873,12 +22803,12 @@ Represents the operational status of a Uniq factory within the blockchain enviro
 ```
 
 
-
 ## UniqFactoryStock
 
 ##### Description
 
-Represents the stock information of a Uniq factory, detailing mintable quantities and existing circulation.
+Represents the stock information of a Uniq factory, detailing mintable
+quantities and existing circulation.
 
 ##### Fields
 
@@ -20903,12 +22833,12 @@ Represents the stock information of a Uniq factory, detailing mintable quantitie
 ```
 
 
-
 ## UniqFactoryTradingWindow
 
 ##### Description
 
-Specifies the time window during which Uniqs can be traded. This window is checked during buy/resell actions to enforce trading periods.
+Specifies the time window during which Uniqs can be traded. This window
+is checked during buy/resell actions to enforce trading periods.
 
 ##### Fields
 
@@ -20927,12 +22857,13 @@ Specifies the time window during which Uniqs can be traded. This window is check
 ```
 
 
-
 ## UniqFactoryTransferWindow
 
 ##### Description
 
-Defines the time window during which Uniqs can be transferred. This is checked during transfer actions to ensure compliance with specified periods.
+Defines the time window during which Uniqs can be transferred. This is
+checked during transfer actions to ensure compliance with specified
+periods.
 
 ##### Fields
 
@@ -20951,12 +22882,12 @@ Defines the time window during which Uniqs can be transferred. This is checked d
 ```
 
 
-
 ## UniqList
 
 ##### Description
 
-Organizes a collection of Uniqs into a structured list, incorporating pagination to manage and navigate through large datasets effectively.
+Organizes a collection of Uniqs into a structured list, incorporating
+pagination to manage and navigate through large datasets effectively.
 
 ##### Fields
 
@@ -20977,12 +22908,12 @@ Organizes a collection of Uniqs into a structured list, incorporating pagination
 ```
 
 
-
 ## UniqMedias
 
 ##### Description
 
-Centralizes visual representation details of tokens and factories, ensuring an engaging and informative display across frontend interfaces.
+Centralizes visual representation details of tokens and factories,
+ensuring an engaging and informative display across frontend interfaces.
 
 ##### Fields
 
@@ -21005,12 +22936,15 @@ Centralizes visual representation details of tokens and factories, ensuring an e
 ```
 
 
-
 ## UniqMetadata
 
 ##### Description
 
-Represents the essence of a Uniq token, encapsulating its name, description, visual identity, and associated metadata to forge a link between on-chain presence and off-chain representation. This forms the basis for understanding and interacting with the token within digital environments.
+Represents the essence of a Uniq token, encapsulating its name,
+description, visual identity, and associated metadata to forge a link
+between on-chain presence and off-chain representation. This forms the
+basis for understanding and interacting with the token within digital
+environments.
 
 ##### Fields
 
@@ -21033,12 +22967,12 @@ Represents the essence of a Uniq token, encapsulating its name, description, vis
 ```
 
 
-
 ## UniqMetadataAttribute
 
 ##### Description
 
-Associates key-value pairs with a Uniq, describing its attributes in a structured format for easy reference and interpretation.
+Associates key-value pairs with a Uniq, describing its attributes in a
+structured format for easy reference and interpretation.
 
 ##### Fields
 
@@ -21059,12 +22993,12 @@ Associates key-value pairs with a Uniq, describing its attributes in a structure
 ```
 
 
-
 ## UniqMetadataAttributeDescriptor
 
 ##### Description
 
-Allows the specification of structured data attributes for Uniqs, including whether the attribute is dynamic and its data type.
+Allows the specification of structured data attributes for Uniqs,
+including whether the attribute is dynamic and its data type.
 
 ##### Fields
 
@@ -21080,12 +23014,11 @@ Allows the specification of structured data attributes for Uniqs, including whet
 ``` js
 {
   "description": "xyz789",
-  "dynamic": true,
-  "name": "abc123",
+  "dynamic": false,
+  "name": "xyz789",
   "type": "ISODateString"
 }
 ```
-
 
 
 ## UniqMetadataAttributeType
@@ -21110,12 +23043,13 @@ Defines the data type of attributes associated with Uniq metadata.
 ```
 
 
-
 ## UniqMetadataContent
 
 ##### Description
 
-Defines the comprehensive content structure of Uniq metadata according to the NFT standard, encompassing names, descriptions, media, and additional data attributes.
+Defines the comprehensive content structure of Uniq metadata according
+to the NFT standard, encompassing names, descriptions, media, and
+additional data attributes.
 
 ##### Fields
 
@@ -21140,7 +23074,7 @@ Defines the comprehensive content structure of Uniq metadata according to the NF
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
-  "name": "xyz789",
+  "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -21148,12 +23082,14 @@ Defines the comprehensive content structure of Uniq metadata according to the NF
 ```
 
 
-
 ## UniqMetadataDynamicResource
 
 ##### Description
 
-Facilitates the inclusion of dynamic media or reference data within Uniq metadata, allowing for content that may update or change over time. Each resource must be identified and managed as a dynamic resource to accommodate variability and updates.
+Facilitates the inclusion of dynamic media or reference data within Uniq
+metadata, allowing for content that may update or change over time. Each
+resource must be identified and managed as a dynamic resource to
+accommodate variability and updates.
 
 ##### Fields
 
@@ -21172,12 +23108,14 @@ Facilitates the inclusion of dynamic media or reference data within Uniq metadat
 ```
 
 
-
 ## UniqMetadataResource
 
 ##### Description
 
-Enables the addition of extra media or reference data to Uniq metadata, enhancing its descriptive and visual elements. Each media or reference is strictly categorized as a static resource for consistency and reliability.
+Enables the addition of extra media or reference data to Uniq metadata,
+enhancing its descriptive and visual elements. Each media or reference
+is strictly categorized as a static resource for consistency and
+reliability.
 
 ##### Fields
 
@@ -21194,7 +23132,6 @@ Enables the addition of extra media or reference data to Uniq metadata, enhancin
   "value": UniqStaticResource
 }
 ```
-
 
 
 ## UniqMetadataStatus
@@ -21219,12 +23156,12 @@ Tracks the progress and outcome of metadata processing for Uniqs.
 ```
 
 
-
 ## UniqResale
 
 ##### Description
 
-Details a specific resale transaction for a Uniq, including the date, price, shares, and promoter fees involved.
+Details a specific resale transaction for a Uniq, including the date,
+price, shares, and promoter fees involved.
 
 ##### Fields
 
@@ -21241,18 +23178,19 @@ Details a specific resale transaction for a Uniq, including the date, price, sha
 {
   "onSaleDate": "Thu Jul 13 2023 13:27:11 GMT+0200",
   "price": MonetaryAmount,
-  "promoterBasisPoints": 987,
+  "promoterBasisPoints": 123,
   "shares": [UniqSaleShare]
 }
 ```
-
 
 
 ## UniqResource
 
 ##### Description
 
-Represents a digital resource, such as an image or video, associated with a Uniq, providing a URI for access and integrity information for verification.
+Represents a digital resource, such as an image or video, associated
+with a Uniq, providing a URI for access and integrity information for
+verification.
 
 ##### Fields
 
@@ -21268,17 +23206,17 @@ Represents a digital resource, such as an image or video, associated with a Uniq
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
-
 
 
 ## UniqResourceIntegrity
 
 ##### Description
 
-Details the integrity of a Uniq resource, ensuring that the resource is authentic and unaltered through cryptographic verification.
+Details the integrity of a Uniq resource, ensuring that the resource is
+authentic and unaltered through cryptographic verification.
 
 ##### Fields
 
@@ -21294,12 +23232,12 @@ Details the integrity of a Uniq resource, ensuring that the resource is authenti
 ```
 
 
-
 ## UniqResourceIntegrityType
 
 ##### Description
 
-Specifies the cryptographic hash algorithm used for ensuring the integrity of Uniq resources.
+Specifies the cryptographic hash algorithm used for ensuring the
+integrity of Uniq resources.
 
 ##### Values
 
@@ -21314,12 +23252,12 @@ Specifies the cryptographic hash algorithm used for ensuring the integrity of Un
 ```
 
 
-
 ## UniqSaleShare
 
 ##### Description
 
-Describes the commission structure for secondary market sales, including the receiver and the commission rate.
+Describes the commission structure for secondary market sales, including
+the receiver and the commission rate.
 
 ##### Fields
 
@@ -21332,18 +23270,18 @@ Describes the commission structure for secondary market sales, including the rec
 
 ``` js
 {
-  "basisPoints": 987,
+  "basisPoints": 123,
   "receiver": "aa1aa2aa3ag4"
 }
 ```
-
 
 
 ## UniqSerialRangeInput
 
 ##### Description
 
-Defines a range of serial numbers for Uniqs, facilitating filtering based on serial number criteria.
+Defines a range of serial numbers for Uniqs, facilitating filtering
+based on serial number criteria.
 
 ##### Fields
 
@@ -21359,12 +23297,12 @@ Defines a range of serial numbers for Uniqs, facilitating filtering based on ser
 ```
 
 
-
 ## UniqSnapshot
 
 ##### Description
 
-Enables real-time tracking of Uniq states within the ecosystem, offering a snapshot-based approach to data synchronization and monitoring.
+Enables real-time tracking of Uniq states within the ecosystem, offering
+a snapshot-based approach to data synchronization and monitoring.
 
 ##### Fields
 
@@ -21387,12 +23325,12 @@ Enables real-time tracking of Uniq states within the ecosystem, offering a snaps
 ```
 
 
-
 ## UniqState
 
 ##### Description
 
-Captures the comprehensive state of a Uniq within a streaming data model, facilitating dynamic updates and real-time monitoring.
+Captures the comprehensive state of a Uniq within a streaming data
+model, facilitating dynamic updates and real-time monitoring.
 
 ##### Fields
 
@@ -21427,12 +23365,12 @@ Captures the comprehensive state of a Uniq within a streaming data model, facili
 ```
 
 
-
 ## UniqStaticResource
 
 ##### Description
 
-A static representation of a Uniq resource, including a predefined hash for integrity verification and a specific URI for retrieval.
+A static representation of a Uniq resource, including a predefined hash
+for integrity verification and a specific URI for retrieval.
 
 ##### Fields
 
@@ -21448,15 +23386,17 @@ A static representation of a Uniq resource, including a predefined hash for inte
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
+
 
 ## UniqTradingPeriod
 
 ##### Description
 
-Defines a trading period for a Uniq, specifying start and end dates, as well as the duration of the trading opportunity.
+Defines a trading period for a Uniq, specifying start and end dates, as
+well as the duration of the trading opportunity.
 
 ##### Fields
 
@@ -21476,11 +23416,13 @@ Defines a trading period for a Uniq, specifying start and end dates, as well as 
 }
 ```
 
+
 ## UniqTransferPeriod
 
 ##### Description
 
-Specifies a transfer period for a Uniq, outlining when the asset can be transferred between parties within designated timeframes.
+Specifies a transfer period for a Uniq, outlining when the asset can be
+transferred between parties within designated timeframes.
 
 ##### Fields
 
@@ -21500,6 +23442,7 @@ Specifies a transfer period for a Uniq, outlining when the asset can be transfer
 }
 ```
 
+
 ## UniqType
 
 ##### Description
@@ -21518,6 +23461,7 @@ Categorizes the nature of a Uniq asset within the ecosystem.
 ``` js
 "COLLECTIBLE"
 ```
+
 
 ## WalletId
 

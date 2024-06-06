@@ -4150,19 +4150,17 @@ Sets/Resets the minting limit per account of a token factory
 
 -   limitmint action first verifies the parameters passed to it.
 
-        * token_factory_id - the token factory ID
+    - token_factory_id - the token factory ID
 
-        * account_minting_limit - the number of minting limit per account, or 0 to invalidate the setting
+    - account_minting_limit - the number of minting limit per account, or 0 to invalidate the setting. If not 0 and token factory has a valid max_mintable_tokens (i.e., not null), account_minting_limit should be no more than max_mintable_tokens.
 
-    if not 0 and token factory has a valid max_mintable_tokens (i.e., not null), account_minting_limit should be no more than max_mintable_tokens.
+    - memo - the memo string to accompany the transaction, should be no more than 256 bytes
 
-        * memo - the memo string to accompany the transaction, should be no more than 256 bytes
+    - The action should be called with the token factory manager(asset_manager)’s permission.
 
-        * The action should be called with the token factory manager(asset_manager)’s permission.
+- The action stores account_minting_limit parameter value to the token factory’s account_minting_limit field. If account_minting_limit of 0 is specified, the action resets the token factory’s account_minting_limit field to null.
 
-        * The action stores account_minting_limit parameter value to the token factory’s account_minting_limit field. If account_minting_limit of 0 is specified, the action resets the token factory’s account_minting_limit field to null.
-
-        * Each time when issue action is called, if the token factory has a valid account_minting_limit, minted number of tokens is recorded for each of the token receiver's account in mintstat (mintstat.a) table. If the number of minted tokens has been already reached  account_minting_limit , issue action prevents the receiver from getting any more tokens.
+- Each time when issue action is called, if the token factory has a valid account_minting_limit, minted number of tokens is recorded for each of the token receiver's account in mintstat (mintstat.a) table. If the number of minted tokens has been already reached  account_minting_limit , issue action prevents the receiver from getting any more tokens.
 
 ## RAM Usage
 

@@ -28,7 +28,7 @@ Metadata tool takes CSVs and media files (Uniq images, videos and other supporte
 
 ![Metadata Tool](/images/token-factories/metadatatool.png)
 
-_It's important to highlight that the metadata tool itself does not interact with the blockchain; instead, it streamlines the creation of metadata for complex uniq factories and their associated uniqs._
+_It is important to highlight that the metadata tool itself does not interact with the blockchain; instead, it streamlines the creation of metadata for complex uniq factories and their associated uniqs._
 
 ## Obtaining Metadata Tool
 
@@ -119,7 +119,7 @@ Once you have obtained the tool and created your config file, the next step is t
 
 ## Setup Folder Structure
 
-Create a directory for your Uniq collection and it's associated metadata. For simplicity's sake, we're going to create a flat structure and use a single directory that contains all the relevant media files and the metadata.
+Create a directory for your Uniq collection and its associated metadata. For simplicity's sake, we're going to create a flat structure and use a single directory that contains all the relevant media files and the metadata.
 
 ```
 AngryBananas/ 📁 (This is your Root Folder)
@@ -373,7 +373,7 @@ AngryBananas/ 📁 (This is your Root Folder)
 -   `defaultToken.json`: The JSON metadata file for the default uniq, if a default uniq was specified in the CSV template. In this guide the `defaultToken.json` will be unused because the `default_token_uri` of the factory will later be replaced with the template URI of individual Uniqs using `{serial_number}`. The same would apply to `{hash}` template value.
 -   `1.token.json`: The JSON metadata file for uniq with serial number 1, and so on, for each uniq specified in the CSV template.
     -   If you specified `{hash}` as the `Token URI Template`, then your uniq metadata files will be named as the SHA256 hash of their file contents.
--   `generated_media`: This directory contains all the media files. Each file is renamed as the SHA256 hash of it's content.
+-   `generated_media`: This directory contains all the media files. Each file is renamed as the SHA256 hash of its content.
 -   `upload.json`: The `upload.json` file contains the details regarding the uniq collection. Such as the collection name, factory/uniq hashes & URLs, and media URLs.
 
 ### Output File Explained

@@ -29,7 +29,7 @@ Once on the toolkit home page, click on the `Schema Validator` from the sidebar 
 Schema validator allows you to validate the metadata files for both; uniq factories and uniqs.
 
 1. To use the validator, simply select the metadata file of your choice.
-2. Specify the file type; either `Factory` (for uniq factories), or `Uniq` (for default uniq and all other uniqs).
+2. Specify the schema type; either `Factory` (for uniq factories), or `Uniq` (for default uniq and all other uniqs).
 3. Click on the `Validate` button to validate the metadata file.
 
 If the selected metadata file adheres to the specified metadata schema, you will see a `Valid Schema ✔️` message.

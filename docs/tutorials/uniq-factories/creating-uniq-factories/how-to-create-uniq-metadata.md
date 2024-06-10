@@ -67,12 +67,12 @@ For example:
 
 -   Base URI: `www.my-uniq.com`
 -   Collection Name: `Angry Bananas`
--   File Name: `factory.json`, `1.token.json`, `product.png` etc
+-   File Name: `factory.json`, `1.json`, `product.png` etc
 
 Predictable URLs:
 
 -   `www.my-uniq.com/AngryBananas/factory.json`
--   `www.my-uniq.com/AngryBananas/1.token.json`
+-   `www.my-uniq.com/AngryBananas/1.json`
 -   `www.my-uniq.com/AngryBananas/product.png`
 
 #### ✔️ Example of a valid environment URL:
@@ -80,7 +80,7 @@ Predictable URLs:
 An AWS S3 bucket is a good example of a valid environment to host your metadata files since the URLs are predictable and follow this pattern:
 
 -   `https://s3.us-east-1.amazonaws.com/AngryBananas/factory.json`
--   `https://s3.us-east-1.amazonaws.com/AngryBananas/1.token.json`
+-   `https://s3.us-east-1.amazonaws.com/AngryBananas/1.json`
 
 In this case, if you know the bucket name and the file name, you can easily predict the URL. Example of a config file using an AWS S3 bucket is:
 
@@ -96,7 +96,7 @@ In this case, if you know the bucket name and the file name, you can easily pred
 On the other hand, Dropbox does not provide predictable URLs. When uploading files to the same folder in Dropbox, the URL prefixes are different and not easily predictable. For example:
 
 -   `https://dl.dropbox.com/scl/fi/o0mlbvyjroktfj6r0g3gn/factory.json?rlkey=f70l90yj01d61c0m8j43yt2pm&st=ss8gx8vj&dl=0`
--   `https://dl.dropbox.com/scl/fi/u2s3b2u5mahefssuzyut7/1.token.json?rlkey=td31270rsy6sfzwgi3sq2rqyr&st=8dqgyg1b&dl=0`
+-   `https://dl.dropbox.com/scl/fi/u2s3b2u5mahefssuzyut7/1.json?rlkey=td31270rsy6sfzwgi3sq2rqyr&st=8dqgyg1b&dl=0`
 
 In this case, even though the files are in the same folder, the URL structure is not consistent and cannot be easily inferred.
 
@@ -175,7 +175,7 @@ There are two options available: `{hash}` and `{serial_number}`.
     For example:
 
     -   Default Uniq: `https://www.my-uniq.com/AngryBananas/{serial_number}.json`
-    -   Uniqs: `https://www.my-uniq.com/AngryBananas/1.token.json`, `https://www.my-uniq.com/AngryBananas/2.token.json` etc
+    -   Uniqs: `https://www.my-uniq.com/AngryBananas/1.json`, `https://www.my-uniq.com/AngryBananas/2.json` etc
 
 ### Adding Data to the CSV Template
 
@@ -352,11 +352,11 @@ If there were no errors, the metadata tool will create the following files in th
 ```
 AngryBananas/ 📁 (This is your Root Folder)
  |-generated_media/ 📁
- | |-6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png
- | |-6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png
- | |-8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png
- | |-969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png
- |-1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd.json
+ | |-51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png
+ | |-9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png
+ | |-d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png
+ | |-ffc3121613cc7d52a3525bb68c0948edc469f6f2c16bcb7b6b7fa38f7eaed3cf.png
+ |-90e382c9212e4e44a6958ec6f9add375c93efa8c731fb495cd6f551594df7756.json
  |-{serial_number}.json
  |-1.json
  |-2.json
@@ -371,7 +371,7 @@ AngryBananas/ 📁 (This is your Root Folder)
 
 -   `factory.json`: The JSON metadata file for the uniq factory.
 -   `defaultToken.json`: The JSON metadata file for the default uniq, if a default uniq was specified in the CSV template. In this guide the `defaultToken.json` will be unused because the `default_token_uri` of the factory will later be replaced with the template URI of individual Uniqs using `{serial_number}`. The same would apply to `{hash}` template value.
--   `1.token.json`: The JSON metadata file for uniq with serial number 1, and so on, for each uniq specified in the CSV template.
+-   `1.json`: The JSON metadata file for uniq with serial number 1, and so on, for each uniq specified in the CSV template.
     -   If you specified `{hash}` as the `Token URI Template`, then your uniq metadata files will be named as the SHA256 hash of their file contents.
 -   `generated_media`: This directory contains all the media files. Each file is renamed as the SHA256 hash of its content.
 -   `upload.json`: The `upload.json` file contains the details regarding the uniq collection. Such as the collection name, factory/uniq hashes & URLs, and media URLs.
@@ -386,8 +386,8 @@ For our example collection, the `upload.json` file should look like this:
 {
     "collectionName": "Angry Bananas",
     "factory": {
-        "hash": "7af64e35ed9cceaf71e7362171784e7ba3d6d9ac8f62a154aa1d3605ab108789",
-        "url": "https://developers.ultra.io/uniq-collections/AngryBananas/7af64e35ed9cceaf71e7362171784e7ba3d6d9ac8f62a154aa1d3605ab108789.json"
+        "hash": "90e382c9212e4e44a6958ec6f9add375c93efa8c731fb495cd6f551594df7756",
+        "url": "https://developers.ultra.io/uniq-collections/AngryBananas/90e382c9212e4e44a6958ec6f9add375c93efa8c731fb495cd6f551594df7756.json"
     },
     "defaultToken": {
         "hash": "255cb93b1f53ff9ec1d4c5b5d8bff1fc2c6661c847cd2fd3b3376640483d510a",
@@ -409,7 +409,7 @@ For our example collection, the `upload.json` file should look like this:
         "generated_media/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png": "https://developers.ultra.io/uniq-collections/AngryBananas/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png",
         "generated_media/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png": "https://developers.ultra.io/uniq-collections/AngryBananas/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png",
         "generated_media/d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png": "https://developers.ultra.io/uniq-collections/AngryBananas/d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png",
-        "generated_media/f13775bd0af14d582b6eb840bea01fc0e411b9fcb5b5bdbb2c8c78e0fb24c311.png": "https://developers.ultra.io/uniq-collections/AngryBananas/f13775bd0af14d582b6eb840bea01fc0e411b9fcb5b5bdbb2c8c78e0fb24c311.png"
+        "generated_media/ffc3121613cc7d52a3525bb68c0948edc469f6f2c16bcb7b6b7fa38f7eaed3cf.png": "https://developers.ultra.io/uniq-collections/AngryBananas/ffc3121613cc7d52a3525bb68c0948edc469f6f2c16bcb7b6b7fa38f7eaed3cf.png"
     },
     "environment": {
         "env": "developerDocs",
@@ -422,7 +422,7 @@ For our example collection, the `upload.json` file should look like this:
 
 Based on above details, we have uploaded the metadata and media files to the specified URLs:
 
--   Factory metadata: https://developers.ultra.io/uniq-collections/AngryBananas/7af64e35ed9cceaf71e7362171784e7ba3d6d9ac8f62a154aa1d3605ab108789.json
+-   Factory metadata: https://developers.ultra.io/uniq-collections/AngryBananas/90e382c9212e4e44a6958ec6f9add375c93efa8c731fb495cd6f551594df7756.json
 -   Default uniq metadata: not uploaded because it will not be used. It would be required if we didn't use the `{serial_number}` template.
 -   Uniq #1 metadata: https://developers.ultra.io/uniq-collections/AngryBananas/1.json
 -   Uniq #2 metadata: https://developers.ultra.io/uniq-collections/AngryBananas/2.json
@@ -430,7 +430,7 @@ Based on above details, we have uploaded the metadata and media files to the spe
     -   https://developers.ultra.io/uniq-collections/AngryBananas/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png
     -   https://developers.ultra.io/uniq-collections/AngryBananas/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png
     -   https://developers.ultra.io/uniq-collections/AngryBananas/d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png
-    -   https://developers.ultra.io/uniq-collections/AngryBananas/f13775bd0af14d582b6eb840bea01fc0e411b9fcb5b5bdbb2c8c78e0fb24c311.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/ffc3121613cc7d52a3525bb68c0948edc469f6f2c16bcb7b6b7fa38f7eaed3cf.png
 
 You have now successfully generated the metadata for your uniq collection.
 

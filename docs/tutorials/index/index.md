@@ -173,6 +173,11 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
     </tr>
     <tr>
+        <td>How to mint a Uniq using the Ultra Toolkit</td>
+        <td>Learn how to mint your first uniq using Ultra Toolkit</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit.md">Link</a></td>
+    </tr>
+    <tr>
         <td>Uniq Avatars</td>
         <td>Learn how to manage your uniq avatar as a user</td>
         <td><a href="../uniq-factories/uniq-avatar/index">Link</a></td>

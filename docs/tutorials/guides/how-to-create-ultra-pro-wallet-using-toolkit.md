@@ -77,7 +77,7 @@ Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool
 
 4. Clicking on the `eosio::newnonebact` option will open up the transaction modal.
 
-5. Fill the required feilds for the `newnonebact` action.
+5. Fill the required felids for the `newnonebact` action.
     1. **creator**: `aa1aa2aa3ai4` (your existing Ultra Account, who will pay the account creation fee)
     2. Under `owner` section:
         1. **threshold**: Input `1` as the threshold for owner authority.

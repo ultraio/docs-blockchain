@@ -26592,7 +26592,7 @@ Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool
 
 4. Clicking on the `eosio::newnonebact` option will open up the transaction modal.
 
-5. Fill the required feilds for the `newnonebact` action.
+5. Fill the required fields for the `newnonebact` action.
     1. **creator**: `aa1aa2aa3ai4` (your existing Ultra Account, who will pay the account creation fee)
     2. Under `owner` section:
         1. **threshold**: Input `1` as the threshold for owner authority.
@@ -29568,30 +29568,30 @@ For our example collection, the `upload.json` file should look like this:
 {
     "collectionName": "Angry Bananas",
     "factory": {
-        "hash": "1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd",
-        "url": "https://developers.ultra.io/uniq-collections/AngryBananas/1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd.json"
+        "hash": "7af64e35ed9cceaf71e7362171784e7ba3d6d9ac8f62a154aa1d3605ab108789",
+        "url": "https://developers.ultra.io/uniq-collections/AngryBananas/7af64e35ed9cceaf71e7362171784e7ba3d6d9ac8f62a154aa1d3605ab108789.json"
     },
     "defaultToken": {
-        "hash": "104ee04db49432ee9373993596dac3e0d10bd775a7da93451f2d7bdea5e16f1b",
+        "hash": "255cb93b1f53ff9ec1d4c5b5d8bff1fc2c6661c847cd2fd3b3376640483d510a",
         "url": "https://developers.ultra.io/uniq-collections/AngryBananas/{serial_number}.json"
     },
     "tokens": [
         {
             "serialNumber": "1",
-            "hash": "73b97f61f68ab12929b34c893f010df91f51d8096658b10fc1deb6274b57f9cf",
+            "hash": "2da6b5b4d8ecf25ac3b472c16264b02c48d35833196a262db562ea988e34417f",
             "url": "https://developers.ultra.io/uniq-collections/AngryBananas/1.json"
         },
         {
             "serialNumber": "2",
-            "hash": "7ebbcf3462136f8b61234a39fce20343873c13ff2e67235d2277ba36eb1f3c45",
+            "hash": "bc34facf773a7162eb1aa51a38c901e9e1cd23c9a66c8f0f0e5adb6746b55e98",
             "url": "https://developers.ultra.io/uniq-collections/AngryBananas/2.json"
         }
     ],
     "media": {
-        "generated_media/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png": "https://developers.ultra.io/uniq-collections/AngryBananas/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png",
-        "generated_media/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png": "https://developers.ultra.io/uniq-collections/AngryBananas/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png",
-        "generated_media/6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png": "https://developers.ultra.io/uniq-collections/AngryBananas/6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png",
-        "generated_media/8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png": "https://developers.ultra.io/uniq-collections/AngryBananas/8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png"
+        "generated_media/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png": "https://developers.ultra.io/uniq-collections/AngryBananas/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png",
+        "generated_media/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png": "https://developers.ultra.io/uniq-collections/AngryBananas/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png",
+        "generated_media/d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png": "https://developers.ultra.io/uniq-collections/AngryBananas/d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png",
+        "generated_media/f13775bd0af14d582b6eb840bea01fc0e411b9fcb5b5bdbb2c8c78e0fb24c311.png": "https://developers.ultra.io/uniq-collections/AngryBananas/f13775bd0af14d582b6eb840bea01fc0e411b9fcb5b5bdbb2c8c78e0fb24c311.png"
     },
     "environment": {
         "env": "developerDocs",
@@ -29604,15 +29604,15 @@ For our example collection, the `upload.json` file should look like this:
 
 Based on above details, we have uploaded the metadata and media files to the specified URLs:
 
--   Factory metadata: https://developers.ultra.io/uniq-collections/AngryBananas/1d5a17f4de3940e1891a1c98e51c9bd1ea2a137a264e10d1e542aeae89e1a0fd.json
+-   Factory metadata: https://developers.ultra.io/uniq-collections/AngryBananas/7af64e35ed9cceaf71e7362171784e7ba3d6d9ac8f62a154aa1d3605ab108789.json
 -   Default uniq metadata: not uploaded because it will not be used. It would be required if we didn't use the `{serial_number}` template.
 -   Uniq #1 metadata: https://developers.ultra.io/uniq-collections/AngryBananas/1.json
 -   Uniq #2 metadata: https://developers.ultra.io/uniq-collections/AngryBananas/2.json
 -   Generated medias:
-    -   https://developers.ultra.io/uniq-collections/AngryBananas/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png
-    -   https://developers.ultra.io/uniq-collections/AngryBananas/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png
-    -   https://developers.ultra.io/uniq-collections/AngryBananas/6db53e6353bf3a99aec0c73a884e0b4fa642d50868cf29895c614800306e3205.png
-    -   https://developers.ultra.io/uniq-collections/AngryBananas/8719cb0820013ed612ac2045b360b6b1ad5ab510bf9c6ab6ca8c7e09f820ea7c.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/d602c91d1a14a8e91ac6033f56fcdcaacf99d60de8c73ebc79d5dcb6fd56d6d0.png
+    -   https://developers.ultra.io/uniq-collections/AngryBananas/f13775bd0af14d582b6eb840bea01fc0e411b9fcb5b5bdbb2c8c78e0fb24c311.png
 
 You have now successfully generated the metadata for your uniq collection.
 

@@ -10,20 +10,20 @@
       "contentType": "image/png",
       "integrity": {
         "type": "SHA256",
-        "hash": "969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2"
+        "hash": "51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9"
       },
       "uris": [
-        "https://developers.ultra.io/uniq-collections/AngryBananas/969f723aff5d40fefce3749cc3be9eb3b6932fe10af6655954f5d85e5313edd2.png"
+        "https://developers.ultra.io/uniq-collections/AngryBananas/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png"
       ]
     },
     "square": {
       "contentType": "image/png",
       "integrity": {
         "type": "SHA256",
-        "hash": "6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61"
+        "hash": "9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01"
       },
       "uris": [
-        "https://developers.ultra.io/uniq-collections/AngryBananas/6057d2edc51714503c5c45795d4db998ac740eba5fa98beee99ca4aafc3def61.png"
+        "https://developers.ultra.io/uniq-collections/AngryBananas/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png"
       ]
     },
     "gallery": []

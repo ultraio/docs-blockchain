@@ -40,4 +40,4 @@ If your metadata file does not comply with the specified schema, you will see an
 
 ## What's next?
 
-Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to How to create your first uniq factory and mint a uniq (TODO).
+Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md).

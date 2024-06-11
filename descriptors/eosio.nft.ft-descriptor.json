@@ -270,11 +270,11 @@
                         },
                         "trading_window_start": {
                             "friendlyName": "Trading window start",
-                            "description": "Optional, the starting date for minting window"
+                            "description": "Optional, the starting date for trading window"
                         },
                         "trading_window_end": {
                             "friendlyName": "Trading window end",
-                            "description": "Optional, the ending date for minting window"
+                            "description": "Optional, the ending date for trading window"
                         },
                         "recall_window_start": {
                             "friendlyName": "Recall window start",
@@ -578,11 +578,11 @@
                 },
                 "trading_window_start": {
                     "friendlyName": "Trading window start",
-                    "description": "Optional, the starting date for minting window"
+                    "description": "Optional, the starting date for trading window"
                 },
                 "trading_window_end": {
                     "friendlyName": "Trading window end",
-                    "description": "Optional, the ending date for minting window"
+                    "description": "Optional, the ending date for trading window"
                 }
             }
         },
@@ -597,11 +597,11 @@
                 },
                 "transfer_window_start": {
                     "friendlyName": "Transfer window start",
-                    "description": "Optional, the starting date for minting window"
+                    "description": "Optional, the starting date for transfer window"
                 },
                 "transfer_window_end": {
                     "friendlyName": "Transfer window end",
-                    "description": "Optional, the ending date for minting window"
+                    "description": "Optional, the ending date for transfer window"
                 }
             }
         },
@@ -1025,7 +1025,7 @@
                                     "friendlyName": "Uniqs",
                                     "fields": {
                                         "token_id": {
-                                            "friendlyName" : "Uniq ID",
+                                            "friendlyName": "Uniq ID",
                                             "description": "ID of the Uniq owned by buyer account which will be used to satisfy the purchase option requirement"
                                         },
                                         "strategy": {

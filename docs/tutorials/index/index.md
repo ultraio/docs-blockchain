@@ -173,9 +173,24 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
-        <td>Build a Uniq Factory</td>
-        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/index">Link</a></td>
+        <td>How to create a Uniq Factory using Ultra Toolkit</td>
+        <td>Learn how to create your first uniq factory using Ultra Toolkit</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to mint a Uniq using the Ultra Toolkit</td>
+        <td>Learn how to mint your first uniq using Ultra Toolkit</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to update metadata using the Ultra Toolkit</td>
+        <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to perform advanced actions with Uniqs and Factories</td>
+        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
+        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>

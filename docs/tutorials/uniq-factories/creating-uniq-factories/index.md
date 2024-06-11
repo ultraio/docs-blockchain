@@ -26,5 +26,6 @@ Here are the steps to get started, and we will guide you through each one. By th
 
 1. [How to create Uniq metadata](./how-to-create-uniq-metadata.md)
 2. [How to validate metadata using Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
-3. [Your First Token Factory](./firsttokenfactory.md)
-4. [Minting Your First Uniq](./mintingyourfirstuniq.md)
+3. [How to create token factory using Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md)
+4. [How to mint a Uniq using the Ultra Toolkit](./how-to-mint-uniq-using-toolkit.md)
+5. [How to update Uniq Factory metadata and Uniq metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)

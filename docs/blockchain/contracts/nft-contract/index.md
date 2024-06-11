@@ -145,7 +145,6 @@ The **setprchsreq.a**/**setprchsreq.b** action allows the _Asset Manager_ to set
 
 Multiple purchase requirements can be specified for a single factory. In addition to a simple fungible token price (UOS or USD) asset manager can specify the price for an individual purchase option using uniqs from other factories. Those uniqs can be either burnt or transferred to a specified account or simply verify their presence.
 
--   [setprchsreq.a - set purchase requirement](./nft-actions/setprchsreq.a.md)
 -   [setprchsreq.b - set purchase requirement](./nft-actions/setprchsreq.b.md)
 -   [delprchsreq.a - delete purchase requirement](./nft-actions/delprchsreq.a.md)
 -   [purchase.a - purchase a token](./nft-actions/purchase.a.md)

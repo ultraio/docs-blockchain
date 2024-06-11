@@ -107,6 +107,8 @@ For more details see the [action documentation](../../../blockchain/contracts/nf
 
 In the following example we will configure a purchase option to burn a single Uniq will to mint another one. This effectively swaps user's Uniq from one to another. The price will be set to 0 UOS so the only requirement is to have a Uniq from the specified factory.
 
+This effectively achieves a swap mechanism where you "swap" one Uniq which you have for another one from the same or different factory and, potentially, a different metadata.
+
 If you want to try and do the same you need to have a second factory or use the same one you already have. Note that if you reuse the same factory which does not have variants then it is effectively a useless operation as you will get a Uniq identical to the one you have burned.
 
 ![](./images/first-hand-purchase-price-in-Uniqs.png)

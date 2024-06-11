@@ -40,10 +40,12 @@ There are various use cases that are covered by the first-hand purchase feature.
 
 ### First-hand purchase directly from Uniq factory
 
-All use cases above are accessible using the `setprchsreq.a`/`setprchsreq.b` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
+All use cases above are accessible using the `setprchsreq.b` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
 
 ### Swap Uniqs
 
 In certain situations you may need a more granular condition set which is not provided by the first-hand purchase feature. Since the range of possible conditions you may desire is vast we only limited the feature to the most common ones. For any more advanced usage you should consider utilizing a smart contract instead.
 
-Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage
+The example of a swap that uses `setprchsreq.b` action is provided [here](./factory-purchase-options-examples.md#using-purchase-option-for-swapping)
+
+Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage.

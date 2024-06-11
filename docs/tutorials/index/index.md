@@ -170,7 +170,7 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>How to perform advanced actions with Uniqs and Factories</td>
         <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
+        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
         <td>Build a Uniq Factory</td>

@@ -123,7 +123,7 @@ The process of purchasing Uniq using the purchase option with Uniqs requirement 
 
 To do so, first navigate to [Factory management actions](https://toolkit.ultra.io/factoryManagement), and search again for `purchase` and select `Purchase Uniqs directly (eosio.nft.ft::purchase.a)`.
 
-If the purchase option requires Uniqs from other factories then the account must have those Uniqs in its inventory. If you need to mint this Uniq then either refer to a [How to mint a Uniq using the Ultra Toolkit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide or add add a simple first-hand purchase option with UOS price to this factory and purchase it, as was described in this guide.
+If the purchase option requires Uniqs from other factories then the account must have those Uniqs in its inventory. If you need to mint this Uniq then either refer to a [MINT UNIQS GUIDE](./how.md) or add add a simple first-hand purchase option with UOS price to this factory and purchase it, as was described in this guide.
 
 Here we minted a Uniq from factory 4030, which was specified in the previous step as a requirement for the purchase option with index 1.
 
@@ -205,7 +205,7 @@ To actually mint the Uniqs as authorized minter you need to utilize the `Authori
 
 ![](./images/authorized-minter-search-issue.png)
 
-Similar to [How to mint a Uniq using the Ultra Toolkit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide you need to fill `To`, `Token factory ID` and `Amount`. But now you also need to additionally specify the `Authorizer`. The `Authorizer` must be an authorized minter assigned using the authorized minter action.
+Similar to [MINT UNIQS GUIDE](./how.md) you need to fill `To`, `Token factory ID` and `Amount`. But now you also need to additionally specify the `Authorizer`. The `Authorizer` must be an authorized minter assigned using the authorized minter action.
 
 ![](./images/authorized-minter-issue-form.png)
 

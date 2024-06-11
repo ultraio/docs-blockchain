@@ -35,7 +35,7 @@ Login to the Ultra Toolkit using Ultra Wallet. Refer to [Tutorial - Log in to th
 
 ### 1. Accessing Factory Management Page
 
-Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the uniq factory actions page.
+Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the factory management page.
 
 ![](./images/toolkit-factory-actions-tab.png)
 

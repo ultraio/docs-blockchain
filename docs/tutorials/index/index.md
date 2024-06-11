@@ -175,7 +175,12 @@ General tutorials to help feed your curiosity.
     <tr>
         <td>How to mint a Uniq using the Ultra Toolkit</td>
         <td>Learn how to mint your first uniq using Ultra Toolkit</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit.md">Link</a></td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to update metadata using the Ultra Toolkit</td>
+        <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>

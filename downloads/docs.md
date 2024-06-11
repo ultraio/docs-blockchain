@@ -27230,9 +27230,19 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>Build a Uniq Factory</td>
-        <td>Learn how to build a uniq factory using Ultra's NFT smart contract</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/index">Link</a></td>
+        <td>How to create a Uniq Factory using Ultra Toolkit</td>
+        <td>Learn how to create your first uniq factory using Ultra Toolkit</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to mint a Uniq using the Ultra Toolkit</td>
+        <td>Learn how to mint your first uniq using Ultra Toolkit</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to update metadata using the Ultra Toolkit</td>
+        <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
+        <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>
@@ -29083,102 +29093,117 @@ Upon sending UOS token to `ultra.swap`, an inline action will be triggered to co
                 
             *   memo will be memo (ETH address) from transfer action
 ---
-title: 'Your First Uniq Factory'
-
-order: 5
+title: 'How to create a Uniq Factory using the Ultra Toolkit'
+order: 4
 outline: [0, 4]
 ---
 
-# Your First Uniq Factory
-
-## Make sure you're ready
-
-Once you have your [metadata set up](how-to-create-uniq-metadata.md), you'll be ready to create your first token factory.
-
-Just to be absolutely clear, the expected flow for building a Token Factory is:
-
-1. Upload images
-2. Generate metadata
-3. Calculate hashes
-4. Push on-chain
-
-Without the images already uploaded to the correct location, the metadata tool can not verify that they exist, nor can it create the unique hashes that identify them.
-
-::: warning
-
-**It is up to you to manage the Token Factory images and ensure that they are permanently available for the network to access.**
-
-:::
-
-If you'd prefer to focus just on this section and learn how to push the on-chain transaction that generates the Token Factory, we have prepared a simple example zip file for you that already has been generated based on files that are located in this developer guide. You're welcome to upload this to anywhere semi-permanent for your learning purposes. We suggest Github, and you can access it as a RAW file from there.
-
-[![Download](/images/token-factories/download.png)](/zip/example_token_factory.zip)
-
-To create a Token Factory on Testnet, you'll be using the Ultra Developer Tools.
-
-Once you're inside your docker image, have your wallet set up, and have your Testnet account ready, you're good to go for the next step.
-
-## Creating your first Token Factory
+# How to create a Uniq Factory using the Ultra Toolkit
 
 ![](/images/token-factories/new-token-factory.png)
 
-Once you have everything set up, you'll be ready to create this Token Factory on the Testnet.
+## Prerequisites
 
-The following is an example transaction. You will have to fill in the missing details:
+-   You must have created and uploaded the uniq metadata files. See [How to create Uniq Metadata](./how-to-create-uniq-metadata.md) for more information.
+-   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 
--   `<YOUR ACCOUNT>` - Your Testnet account
--   `<MINT WINDOW START>` - A datetime in the format `2021-05-31T00:00:00`
--   `<TRADING WINDOW START>` - A datetime in the format `2021-05-31T00:00:00`
--   `<YOUR UNIQ FACTORY URI>` - The URI of the metadata either as a zip file, or targeting the `factory.json` file with a full path, values cannot be an empty string
--   `<YOUR UNIQ FACTORY HASH>` - The hash of the filename, you can find this in `upload.json` in the `factory` block at the top
--   `<YOUR DEFAULT UNIQ URI>` - The URI pointing to the token metadata if there is no token-specific metadata. Must not be empty and can be either static or dynamic
--   `<YOUR DEFAULT UNIQ HASH>` - The Hash of static default token URI. It is optional to provide this and it should be a SHA256 of the content of default token URI. If default token URI is dynamic - specify the hash per token instead
+## Goal
 
-```sh
-cleos -u http://ultratest.api.eosnation.io push action eosio.nft.ft create.b \
-   '[
-      {
-         "memo": "CREATE UNIQ FACTORY",
-         "asset_creator": "<YOUR ACCOUNT>",
-         "asset_manager": "<YOUR ACCOUNT>",
-         "minimum_resell_price": null,
-         "resale_shares": null,
-         "mintable_window_start": "<MINT WINDOW START>",
-         "mintable_window_end": null,
-         "trading_window_start": "<TRADING WINDOW START>",
-         "trading_window_end": null,
-         "recall_window_start": null,
-         "recall_window_end": null,
-         "max_mintable_tokens": 10,
-         "lockup_time": null,
-         "conditionless_receivers": null,
-         "stat": 0,
-         "factory_uri": "<YOUR UNIQ FACTORY URI>",
-         "factory_hash": "<YOUR UNIQ FACTORY HASH>",
-         "authorized_minters": [],
-         "account_minting_limit": 1,
-         "transfer_window_start": null,
-         "transfer_window_end": null,
-         "maximum_uos_payment": null,
-         "default_token_uri": "<YOUR DEFAULT UNIQ URI>",
-         "default_token_hash": "<YOUR DEFAULT UNIQ URI>",
-         "lock_hash": null
-      }
-   ]' \
--p <YOUR ACCOUNT>
-```
+The goal of this guide is to help you create your first Uniq Factory on the Ultra Testnet network.
 
-Once you've run this command, you should get a message confirming that your transaction has been executed locally.
+## Accessing the Toolkit
 
-To see it in action on the Testnet, hop on over to the [Testnet block explorer](https://explorer.testnet.ultra.io/) and input your account name into the search box at the top.
+To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
 
-You should see a new transaction that shows that your new Token Factory has been successfully created.
+Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
 
-![](/images/token-factories/create_success.png)
+![](../../fundamentals/images/toolkit-network-selection.png)
 
-We are glossing over a lot of functionality here, in the interest of getting you up and running quickly. Later guides will cover some of the more advanced features that our NFT standard supports, including variants, authorized minters, and much more.
+Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Testnet. From the list of available networks, click on `Testnet`.
 
-In the meantime, congratulations on creating your first Token Factory. **Now, let's go mint your first Uniq!**
+![](../../fundamentals/images/toolkit-network-selection-modal.png)
+
+Login to the Ultra Toolkit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
+
+## Creating Uniq Factory
+
+### 1. Accessing Factory Management Page
+
+Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the factory management page.
+
+![](./images/toolkit-factory-actions-tab.png)
+
+On the factory page, search for `create` action in the search box, and click on the `Create token factory (eosio.nft.ft::create.b)` action to open up the transaction modal.
+
+### 2. Configure `create.b` Action
+
+We are going to use the `create.b` action to create the uniq factory. For more information on the action, refer to [create.b action documentation](../../../blockchain/contracts/nft-contract/nft-actions/create.b.md).
+
+For the sake of this guide, we will create a uniq factory with the simplest possible configuration.
+
+Once you have opened the transaction modal, fill the required fields for the `create.b` action:
+
+-   **Memo**: Required, enter a text memo for your transaction. For example, `Creating first uniq factory`.
+-   **Asset manager**: Required, the account name for uniq factory manager. We will use our account as the asset manager.
+-   **Asset creator**: Required, the account name for uniq factory creator. We will use our account as the asset creator.
+-   **Minimum resell price**: Optional, the minimum resale price for the uniqs of this factory. Leave blank to use `null`.
+-   **Mintable window start**: Optional, the starting date for minting window. Leave blank to use `null`.
+-   **Mintable window end**: Optional, the ending date for minting window. Leave blank to use `null`.
+    -   Using `null` as `Mintable window start` and `Mintable window end` means that the factory will always be mintable. If you want to restrict the minting windows, you can provide a datetime in the format of `2021-05-31T00:00:00`.
+-   **Trading window start**: Optional, the starting date for trading window. Leave blank to use `null`.
+-   **Trading window end**: Optional, the ending date for trading window. Leave blank to use `null`.
+    -   Using `null` as `Trading window start` and `Trading window end` means that the factory will always be tradable. If you want to restrict the trading windows, you can provide a datetime in the format of `2021-05-31T00:00:00`.
+-   **Recall window start**: Deprecated, leave blank to use `null`.
+-   **Recall window end**: Deprecated, leave blank to use `null`.
+-   **Max mintable tokens**: Optional, max number of uniqs in this factory. `null` means an unlimited number of uniqs. Leave blank to use `null`.
+-   **Lockup time**: Deprecated, leave blank to use `null`.
+-   **stat**: Optional, factory status. Input `0` to set factory status to `ACTIVE`.
+-   **Metadata URL**: Required, factory metadata URI.
+    -   We are using `https://developers.ultra.io/uniq-collections/AngryBananas/90e382c9212e4e44a6958ec6f9add375c93efa8c731fb495cd6f551594df7756.json`, based on the metadata that was generated in the previous guide. You should use the metadata that you generated in the previous guides. See [How to create Uniq Metadata](./how-to-create-uniq-metadata.md) for more information.
+-   **Metadata hash**: Optional, factory metadata hash.
+    -   We are using `90e382c9212e4e44a6958ec6f9add375c93efa8c731fb495cd6f551594df7756`, based on the metadata that was generated in the previous guide.
+-   **Account minting limit**: Optional, max number of tokens an account can mint. Leave blank to use `null` to allow for unlimited tokens per account.
+-   **Transfer window start**: Optional, the starting date for transfer window. Leave blank to use `null`.
+-   **Transfer window end**: Optional, the ending date for transfer window. Leave blank to use `null`.
+    -   Using `null` as `Transfer window start` and `Transfer window end` means that the factory will always be transferable. If you want to restrict the transfer windows, you can provide a datetime in the format of `2021-05-31T00:00:00`.
+-   **Maximum UOS payment**: Maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage. For simplicity's sake, we will Leave blank to use `null`.
+-   **Default token URI**: Required, URI pointing to the token metadata if there is no token-specific metadata.
+    -   We are using `https://developers.ultra.io/uniq-collections/AngryBananas/{serial_number}.json`, based on the metadata that was generated in the previous guide.
+-   **Default token hash**: Optional, hash of static default token metadata.
+    -   We will leave blank to use `null` because in the previous guide, we used the `{serial_number}` as default uniq metadata URI template. If you have used `{hash}` as the default uniq metadata URI template, then you will need to input the actual SHA256 hash of the default metadata JSON file.
+-   **Lock hash**: Optional, whether to prevent changes to the hashes provided during the factory creation. Defaults to `false`.
+
+![](./images/toolkit-create-b-tx-form.png)
+
+Once you have inputted all the values, click on the `Send 1 Action` button and it will open up the transaction confirmation modal. You can click on the `Details` button to view the transaction in JSON form. Click on the `Confirm` button to submit your transaction.
+
+![](./images/toolkit-create-b-tx-confirmation.png)
+
+Confirm and sign the transaction using the Ultra Wallet extension. This step is crucial as it authorizes the blockchain to execute the transfer under your account.
+
+![](./images/ultra-wallet-sign-create-b-tx.png)
+
+After signing the transaction, you will see a confirmation screen indicating that the transaction was successfully completed. To check the transaction on the block explorer, click on the `View in Explorer` text.
+
+![](./images/toolkit-tx-success-modal.png)
+
+You'll find an actions list on the block explorer transaction page. Look for the text that says `RAM purchase for creating token factory <FACTORY_ID>`. This text will display the ID for your newly created Uniq factory. For instance, in our example, the text showed `RAM purchase for creating token factory 4356`, meaning our Uniq factory ID was `4356`. Identify the Uniq factory ID for your factory in the same manner. **You'll need this ID for the upcoming guides.**
+
+![](./images/block-exp-create-b-tx-actions.png)
+
+### 3. Verifying Factory Creation
+
+1. To verify the successful creation of your Uniq Factory, go to the `Factory Explorer` page on the toolkit (https://toolkit.ultra.io/uniqFactory).
+2. Make sure you are using the Ultra Testnet environment.
+3. Use the factory ID you obtained in the previous step to search for your Uniq Factory. Simply enter the ID and click the search button. You should then be able to view the details of your Uniq Factory.
+
+![](./images/toolkit-factory-explorer-page.png)
+
+You have now successfully created your first uniq factory using the Ultra Toolkit.
+
+## What's next?
+
+Once you have created your first uniq factory, the next step is to mint your first uniq. Refer [How to mint a Uniq using the Ultra Toolkit](./how-to-mint-uniq-using-toolkit.md).
 
 ---
 title: 'How to create Uniq Metadata'
@@ -29621,7 +29646,275 @@ You have now successfully generated the metadata for your uniq collection.
 Once you have generated the metadata for your uniq collection, the next steps are to:
 
 -   [How to validate metadata using Ultra Toolkit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
--   How to create your first uniq factory and mint a uniq (TODO)
+-   [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md)
+
+---
+title: 'How to mint a Uniq using the Ultra Toolkit'
+order: 5
+outline: [0, 4]
+---
+
+# How to mint a Uniq using the Ultra Toolkit
+
+## Prerequisites
+
+-   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+-   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
+
+## Goal
+
+This guide will help you mint your first Uniq.
+
+## Accessing the Toolkit
+
+To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+
+Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+
+![](../../fundamentals/images/toolkit-network-selection.png)
+
+Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Testnet. From the list of available networks, click on `Testnet`.
+
+![](../../fundamentals/images/toolkit-network-selection-modal.png)
+
+Login to the Ultra Toolkit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
+
+## Minting a Uniq
+
+### 1. Accessing Factory Management Page
+
+Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the uniq factory actions page.
+
+![](./images/toolkit-factory-actions-tab-issue.png)
+
+On the factory page, search for `issue` action in the search box, and click on the `Issue tokens (eosio.nft.ft::issue.b)` action to open up the transaction modal.
+
+### 2. Configure `issue.b` Action
+
+We are going to use the `issue.b` action to mint a uniq. For more information on the action, refer to [issue.b action documentation](../../../blockchain/contracts/nft-contract/nft-actions/issue.b.md).
+
+Once you have opened the transaction modal, fill the required fields for the `issue.b` action:
+
+-   **To**: Required, the recipient of the minted token. Input your account if you want to receive the minted uniq in your wallet.
+-   **Token configs**: Click `Add` to input the `Token factory ID`, `Amount`, and `Custom data`.
+    -   **Token factory ID**: Required, the ID of the factory from which the uniqs will be minted. Use the ID of the uniq factory created in the previous guide. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+    -   **Amount**: Required, the number of uniqs to be minted. For the sake of this guide, we will mint `1` uniq.
+    -   **Custom data**: Deprecated, leave blank.
+-   **Memo**: Required, enter a text memo for your transaction. For example, `Minting my first uniq`.
+-   **Authorizer**: Optional, the authorizer of the mint. Must be one of authorized minters of the factory. Leave blank to use `null`.
+-   **Maximum UOS payment**: Maximum amount of UOS that is allowed to be used for the purposes of contract RAM usage. For simplicity's sake, we will Leave blank to use `null`.
+-   **Token metadata**: Click `Add` to input the `Metadata URI` and `Metadata hash`.
+    -   **Metadata URI**: Required, the URI of the token metadata. We are using `https://developers.ultra.io/uniq-collections/AngryBananas/1.json`, based on the metadata we created during the [How to create Uniq metadata](./how-to-create-uniq-metadata.md) guide.
+    -   **Metadata hash**: Optional, hash of the token metadata. We are using `2da6b5b4d8ecf25ac3b472c16264b02c48d35833196a262db562ea988e34417f`, based on the metadata we created during previous guides.
+
+![](./images/toolkit-issue-b-tx-form.png)
+
+Once you have inputted all the values, click on the `Send 1 Action` button and it will open up the transaction confirmation modal. You can click on the `Details` button to view the transaction in JSON form. Click on the `Confirm` button to submit your transaction.
+
+![](./images/toolkit-issue-b-tx-confirmation.png)
+
+Confirm and sign the transaction using the Ultra Wallet extension. This step is crucial as it authorizes the blockchain to execute the transfer under your account.
+
+![](./images/ultra-wallet-sign-issue-b-tx.png)
+
+After signing the transaction, you will see a confirmation screen indicating that the transaction was successfully completed. To check the transaction on the block explorer, click on the `View in Explorer` text.
+
+![](./images/toolkit-tx-success-modal.png)
+
+### 3. Verifying Minted Uniq
+
+1. To verify the successful creation of your Uniq Factory, go to the `User Uniq Explorer` page on the toolkit (https://toolkit.ultra.io/user).
+2. Make sure you are using the Ultra Testnet environment.
+3. Input your account name and click on the search button. You should be able to view the details of your newly minted uniq under the `Uniqs` section. It may take a few seconds to sync the data, so if your uniq is not shown, please wait a few seconds and reload the page.
+
+    ![](./images/toolkit-user-uniq-explorer-page.png)
+
+You have now successfully minted your first uniq using the Ultra Toolkit.
+
+## What's next?
+
+-   [How to update metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)
+
+---
+title: 'How to update metadata using the Ultra Toolkit'
+order: 6
+outline: [0, 4]
+---
+
+# How to update metadata using the Ultra Toolkit
+
+An important aspect of the Ultra NFT standard is the ability to update metadata. Game publishers may want to modify a uniq's traits based on in-game events.
+
+For this guide, we will use the uniq factory and uniq token created in the previous steps, utilizing the Ultra Testnet network.
+
+## Prerequisites
+
+-   You must have already created and uploaded the metadata files. Refer to [How to create Uniq Metadata](./how-to-create-uniq-metadata.md) for more information.
+-   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+-   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
+-   Ensure your account is the uniq factory manager for the uniq factory whose metadata you intend to update, as only the uniq factory manager is authorized to perform metadata related updates.
+
+## Goal
+
+The goal of this guide is to help you understand how you can update the metadata using Ultra Toolkit. This guide is divided into three sections:
+
+1. **Updating Uniq Factory Metadata**: Will walk you through the process of updating metadata for a uniq factory.
+2. **Updating Default Uniq Metadata**: Will walk you through the process of updating metadata for the default uniq.
+3. **Updating Uniq Metadata**: Will walk you through the process of updating metadata for a specific uniq.
+
+## Updating Uniq Factory Metadata
+
+If a content creator re-uploads a new uniq factory metadata, they can use the `setmeta.b` action to update the metadata for the uniq factory. To do so, follow these steps:
+
+1. Login to ultra toolkit using your account.
+2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
+3. On the factory page, search for `setmeta` action in the search box, and click on the `Set factory metadata (eosio.nft.ft::setmeta.b)` action to open up the transaction modal.
+
+![](./images/toolkit-factory-actions-tab-setmeta.png)
+
+### Configure `setmeta.b` Action
+
+We will use the `setmeta.b` action to update the metadata for a uniq factory. For more information on the action, refer to [setmeta.b action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setmeta.b.md).
+
+Once you have opened the transaction modal, fill the required fields for the `setmeta.b` action:
+
+1. **Token factory ID**: Required, the ID of the uniq factory for which you want to update the metadata.
+2. **Memo**: Required, enter a text memo for your transaction. For example, `updating uniq factory metadata`.
+3. **Metadata URI**: Required, URI of the new/updated factory metadata JSON file.
+4. **Metadata hash**: Required, SHA256 hash of the new/updated metadata JSON file.
+
+![](./images/toolkit-setmeta-b-tx-form.png)
+
+Once you have inputted all the values, click on the `Send 1 Action` button and it will open up the transaction confirmation modal. You can click on the `Details` button to view the transaction in JSON form. Click on the `Confirm` button to submit your transaction.
+
+![](./images/toolkit-setmeta-b-tx-confirmation.png)
+
+Confirm and sign the transaction using the Ultra Wallet extension.
+
+![](./images/ultra-wallet-sign-setmeta-b-tx.png)
+
+After signing the transaction, you will see a confirmation screen indicating that the transaction was successfully completed.
+
+![](./images/toolkit-tx-success-modal.png)
+
+You have now successfully updated the metadata for a uniq factory.
+
+## Updating Default Uniq Metadata
+
+Default uniq metadata is used as a fallback mechanism whenever there's no metadata available for a uniq. To update the default uniq metadata, follow these steps:
+
+1. Login to ultra toolkit using your account.
+2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
+3. On the factory page, search for `setdflttkn` action in the search box, and click on the `Set default token metadata (eosio.nft.ft::setdflttkn)` action to open up the transaction modal.
+
+![](./images/toolkit-factory-actions-tab-setdflttkn.png)
+
+### Configure `setdflttkn` Action
+
+We will use the `setdflttkn` action to update the metadata for a uniq factory. For more information on the action, refer to [setdflttkn action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setdflttkn.md).
+
+Once you have opened the transaction modal, fill the required fields for the `setdflttkn` action:
+
+1. **Token factory ID**: Required, the ID of the uniq factory for which you want to update the default uniq metadata.
+2. **Memo**: Required, enter a text memo for your transaction. For example, `updating default uniq metadata`.
+3. **Metadata URI**: Required, URI of the new/updated default uniq metadata JSON file.
+4. **Metadata hash**: Optional, SHA256 hash of the new/updated default uniq metadata JSON file.
+
+![](./images/toolkit-setdflttkn-tx-form.png)
+
+Once you have inputted all the values, click on the `Send 1 Action` button and it will open up the transaction confirmation modal. You can click on the `Details` button to view the transaction in JSON form. Click on the `Confirm` button to submit your transaction.
+
+![](./images/toolkit-setdflttkn-tx-confirmation.png)
+
+Confirm and sign the transaction using the Ultra Wallet extension.
+
+![](./images/ultra-wallet-sign-setdflttkn-tx.png)
+
+After signing the transaction, you will see a confirmation screen indicating that the transaction was successfully completed.
+
+![](./images/toolkit-tx-success-modal.png)
+
+You have now successfully updated the default uniq metadata.
+
+## Updating Uniq Metadata
+
+To update the uniq metadata, follow these steps:
+
+1. Login to ultra toolkit using your account.
+2. Navigate to the uniq manager page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Uniq`.
+3. On the uniq page, search for `settknmeta` action in the search box, and click on the `Set token metadata (eosio.nft.ft::settknmeta)` action to open up the transaction modal.
+
+![](./images/toolkit-uniq-actions-tab-settknmeta.png)
+
+### Configure `settknmeta` Action
+
+We will use the `settknmeta` action to update the metadata for a uniq. For more information on the action, refer to [settknmeta action documentation](../../../blockchain/contracts/nft-contract/nft-actions/settknmeta.md).
+
+Once you have opened the transaction modal, fill the required fields for the `settknmeta` action:
+
+1. **Token ID**: Required, the ID of the uniq for which you want to update the metadata.
+2. **Owner**: Required, the account that owns this uniq.
+3. **Memo**: Required, enter a text memo for your transaction. For example, `updating default uniq metadata`.
+4. **Metadata URI**: Optional, URI of the new/updated uniq metadata JSON file.
+5. **Metadata hash**: Optional, SHA256 hash of the new/updated uniq metadata JSON file.
+
+![](./images/toolkit-settknmeta-tx-form.png)
+
+Once you have inputted all the values, click on the `Send 1 Action` button and it will open up the transaction confirmation modal. You can click on the `Details` button to view the transaction in JSON form. Click on the `Confirm` button to submit your transaction.
+
+![](./images/toolkit-settknmeta-tx-confirmation.png)
+
+Confirm and sign the transaction using the Ultra Wallet extension.
+
+![](./images/ultra-wallet-sign-settknmeta-tx.png)
+
+After signing the transaction, you will see a confirmation screen indicating that the transaction was successfully completed.
+
+![](./images/toolkit-tx-success-modal.png)
+
+You have now successfully updated the metadata for a uniq.
+
+## Disabling Metadata Changes
+
+For certain use cases, it might make sense to make the uniq factory immutable. For such cases, we can use the `lckfactory` action to enable a manager to disable any metadata updates. This can be particularly useful for an NFT art gallery, as it assures users that their artwork will never change.
+
+**Before we proceed, it is important to note that this change is irreversible**.
+
+To disable metadata updates for a uniq factory, follow these steps:
+
+1. Login to ultra toolkit using your account.
+2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
+3. On the factory page, search for `lckfactory` action in the search box, and click on the `Lock factory (eosio.nft.ft::lckfactory)` action to open up the transaction modal.
+
+![](./images/toolkit-factory-actions-tab-lckfactory.png)
+
+### Configure `lckfactory` Action
+
+We will use the `lckfactory` action to update the metadata for a uniq factory. For more information on the action, refer to [lckfactory action documentation](../../../blockchain/contracts/nft-contract/nft-actions/lckfactory.md).
+
+Once you have opened the transaction modal, fill the required fields for the `lckfactory` action:
+
+1. **Token factory ID**: Required, the ID of the uniq factory for which you want to disable metadata updates.
+
+![](./images/toolkit-lckfactory-tx-form.png)
+
+Click on the `Send 1 Action` button and it will open up the transaction confirmation modal. You can click on the `Details` button to view the transaction in JSON form. Click on the `Confirm` button to submit your transaction.
+
+![](./images/toolkit-lckfactory-tx-confirmation.png)
+
+Confirm and sign the transaction using the Ultra Wallet extension.
+
+![](./images/ultra-wallet-sign-lckfactory-tx.png)
+
+After signing the transaction, you will see a confirmation screen indicating that the transaction was successfully completed.
+
+![](./images/toolkit-tx-success-modal.png)
+
+You have now successfully disabled metadata updates for a uniq factory.
+
+## What's next?
+
+TODO
 
 ---
 title: "How to validate uniq metadata using Ultra Toolkit's Schema Validator"
@@ -29665,7 +29958,7 @@ If your metadata file does not comply with the specified schema, you will see an
 
 ## What's next?
 
-Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to How to create your first uniq factory and mint a uniq (TODO).
+Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md).
 
 ---
 title: 'Introduction'
@@ -29695,79 +29988,9 @@ Here are the steps to get started, and we will guide you through each one. By th
 
 1. [How to create Uniq metadata](./how-to-create-uniq-metadata.md)
 2. [How to validate metadata using Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
-3. [Your First Token Factory](./firsttokenfactory.md)
-4. [Minting Your First Uniq](./mintingyourfirstuniq.md)
-
----
-title: 'Minting Your First Uniq'
-
-order: 6
-outline: [0, 4]
----
-
-# Minting your first Uniq
-
-## Let's Gooooo!
-
-Now that you have your Token Factory up and running, you are free to mint some Uniqs. Exciting times are ahead!
-
-### Token Factory Information
-
-As with the Token Factory, there is some specific data that you must include in the command.
-
--   `<YOUR UNIQ URL>` - The URL of the metadata either as a zip file, or targeting the `X.json` file with a full path
--   `<YOUR META HASH>` - The hash of the uniq, you can find this in `upload.json` in the `factory` block at the top
-
-You can find these in the `upload.json` file and they will look something like this:
-
-![](/images/token-factories/tokens_data.png)
-
-You will also need your `<FACTORY ID>`.
-
-The easiest way to get this information is to:
-
-1. Go to your account on the [Block Explorer](https://explorer.testnet.ultra.io)
-2. Scroll down to the transactions and open the `create` action
-3. On the left, you can see DB Operations
-
-In the DB Operations section you'll see some information. Most pertinent to you is the `UPDATE ROW` which actually holds your Token Factory id.
-
-![](/images/token-factories/db_operation.png)
-
-### Accounts
-
-You'll also, of course, need to input `<YOUR ACCOUNT>` and the `<TARGET ACCOUNT>` which will receive the new Uniq.
-
-### The Issue Action
-
-Once you have the required information, minting is a simple, straightforward transaction via cleos.
-
-```sh
-cleos --url http://ultratest.api.eosnation.io push action eosio.nft.ft issue.b '[
-  {
-    "to": "<TARGET ACCOUNT>",
-    "token_configs": [
-      {
-        "token_factory_id": <FACTORY ID>,
-        "amount": 1,
-        "custom_data": ""
-      }
-    ],
-    "memo": "Your first Uniq!",
-    "authorizer": null,
-    "maximum_uos_payment": null,
-    "token_metadata": [
-      {
-        "meta_uri": "<YOUR UNIQ URI>",
-        "meta_hash":"<YOUR META HASH>"
-      }
-    ]
-  }
-]' -p <YOUR ACCOUNT>
-
-```
-
-Congratulations! You've now minted your first Uniq on Ultra's Testnet!
+3. [How to create token factory using Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md)
+4. [How to mint a Uniq using the Ultra Toolkit](./how-to-mint-uniq-using-toolkit.md)
+5. [How to update Uniq Factory metadata and Uniq metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)
 
 ---
 title: 'Exchange a Uniq Using Smart Contract'

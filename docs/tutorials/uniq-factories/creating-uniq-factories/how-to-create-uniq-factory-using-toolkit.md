@@ -15,7 +15,7 @@ outline: [0, 4]
 
 ## Goal
 
-The goal of this guide is to help you create your first Uniq Factory on the Ultra testnet network.
+The goal of this guide is to help you create your first Uniq Factory on the Ultra Testnet network.
 
 ## Accessing the Toolkit
 
@@ -100,7 +100,7 @@ You'll find an actions list on the block explorer transaction page. Look for the
 ### 3. Verifying Factory Creation
 
 1. To verify the successful creation of your Uniq Factory, go to the `Factory Explorer` page on the toolkit (https://toolkit.ultra.io/uniqFactory).
-2. Make sure you are using the ultra testnet environment.
+2. Make sure you are using the Ultra Testnet environment.
 3. Use the factory ID you obtained in the previous step to search for your Uniq Factory. Simply enter the ID and click the search button. You should then be able to view the details of your Uniq Factory.
 
 ![](./images/toolkit-factory-explorer-page.png)

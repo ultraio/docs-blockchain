@@ -74,7 +74,7 @@ After signing the transaction, you will see a confirmation screen indicating tha
 ### 3. Verifying Minted Uniq
 
 1. To verify the successful creation of your Uniq Factory, go to the `User Uniq Explorer` page on the toolkit (https://toolkit.ultra.io/user).
-2. Make sure you are using the ultra testnet environment.
+2. Make sure you are using the Ultra Testnet environment.
 3. Input your account name and click on the search button. You should be able to view the details of your newly minted uniq under the `Uniqs` section. It may take a few seconds to sync the data, so if your uniq is not shown, please wait a few seconds and reload the page.
 
     ![](./images/toolkit-user-uniq-explorer-page.png)
@@ -83,4 +83,4 @@ You have now successfully minted your first uniq using the Ultra Toolkit.
 
 ## What's next?
 
-TODO
+-   [How to update metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)

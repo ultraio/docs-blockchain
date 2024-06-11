@@ -8,7 +8,7 @@ outline: [0, 4]
 
 An important aspect of the Ultra NFT standard is the ability to update metadata. Game publishers may want to modify a uniq's traits based on in-game events.
 
-For this guide, we will use the uniq factory and uniq token created in the previous steps, utilizing the Ultra testnet network.
+For this guide, we will use the uniq factory and uniq token created in the previous steps, utilizing the Ultra Testnet network.
 
 ## Prerequisites
 

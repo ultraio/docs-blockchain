@@ -83,4 +83,7 @@ You have now successfully minted your first uniq using the Ultra Toolkit.
 
 ## What's next?
 
+Once you have practiced minting Uniqs from your factory, the next steps are to:
+
 -   [How to update metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)
+-   [How to perform advanced actions with Uniqs and Factories](../factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories.md)

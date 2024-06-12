@@ -9,20 +9,24 @@ order: 2
 
 Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
 
--   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
 -   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
 
 ::: info
 Please keep in mind that the factory IDs, token IDs, user group IDs, and account names used throughout this page are not real and must be replaced with the actual data you are interested in.
 :::
 
+::: warning
+Since `setprchsreq.a` action is deprecated, we will use `setprchsreq.b` action in the following examples.
+:::
+
 ## Simple UOS/USD pricing
 
 This example utilizes the `price` field to set the price to 50 UOS
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 0,
@@ -62,9 +66,9 @@ cleos push action eosio.nft.ft purchase.a '[
 
 This example utilizes the `price` field to set the price to 5 USD
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 1,
@@ -108,9 +112,9 @@ Setting `purchase_limit` is optional, and it allows to restrict the total number
 
 After exceeding the `purchase_limit`, no one will be able to use this specific purchase option and you either need to create a new purchase option or update an existing one to increase the `purchase_limit` (history for the number of Uniqs purchased is preserved).
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 0,
@@ -133,9 +137,9 @@ cleos push action eosio.nft.ft setprchsreq.a '[
 
 `purchase_option_with_uniqs` is a more advanced use case where you are able to link the purchase option to other factories. The example below requires the user to own 1 Uniq from factory with ID 42. If the user owns it then he will be able to use this purchase option, the token from factory 42 will be left untouched. Note how `strategy` is set to 0 ([0 means "check"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 0,
@@ -189,11 +193,11 @@ cleos push action eosio.nft.ft purchase.a '[
 
 Alternative condition for allowing direct purchases from the factory can be the usage of user groups ([covered here](../../../blockchain/contracts/user-group-contract/index.md)). In this case user must belong to certain group(s) or not be a part of a specific group(s).
 
-Example below covers the simplest case where a user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage, reference the action documentation: [setprchsreq.a user groups support](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md#example-usage-of-the-parameter-group-restriction)
+Example below covers the simplest case where a user must belong to the user groups with IDs 11 and 12 at the same time. For more advanced usage, reference the action documentation: [setprchsreq.b user groups support](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md#example-usage-of-the-parameter-group-restriction)
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 0,
@@ -203,7 +207,7 @@ cleos push action eosio.nft.ft setprchsreq.a '[
     "purchase_option_with_uniqs": null,
     "sale_shares": [],
     "maximum_uos_payment": null,
-    "group_restriction": [11, 12],
+    "group_restriction": "11&12",
     "purchase_window_start": null,
     "purchase_window_end": null,
     "memo": ""
@@ -235,9 +239,9 @@ cleos push action eosio.nft.ft purchase.a '[
 
 "Swapping" in this case implies the process where the user loses ownership of his Uniq, the Uniq gets destroyed in the process and the user gets a new Uniq from the factory instead. The example below requires the user to give up two Uniqs: one from factory 43 and one from factory 44, no additional UOS payment needed. Note how `strategy` is set to 1 ([1 means "burn"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 0,
@@ -298,9 +302,9 @@ cleos push action eosio.nft.ft purchase.a '[
 
 Exchanging a Uniq is similar to swapping it but this time instead of a user losing access to his Uniq and burning a Uniq it will simply be transferred to a dedicated account. This may be useful in case Uniqs have valuable metadata attached to them, and you will later utilize those Uniqs in some other scenario. The example below configures the receiver of transferred Uniqs as `1aa2aa3aa4aa` account, and it also must be a Uniq from factory 45 to be able to use this purchase option. Specifying `transfer_tokens_receiver_account` is mandatory in such scenario. Note how `strategy` is set to 2 ([2 means "transfer"](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md#supplying-uniqs-for-purchases)).
 
-::: details setprchsreq.a
+::: details setprchsreq.b
 ```sh
-cleos push action eosio.nft.ft setprchsreq.a '[
+cleos push action eosio.nft.ft setprchsreq.b '[
   {
     "token_factory_id": 100,
     "index": 0,

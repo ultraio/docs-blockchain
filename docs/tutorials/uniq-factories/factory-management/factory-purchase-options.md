@@ -11,7 +11,7 @@ order: 1
 
 First-hand factory purchase options allow users to receive Uniqs from the factory directly without requiring you to manually issue Uniqs to the users. Various configuration options can be set when creating the purchase option for your factory, and in addition to that each factory can have multiple purchase options available. The usage of the actions to create and utilize purchase options is provided below.
 
--   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
+-   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
 -   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
 
 The first-hand purchase options provide following benefits to you
@@ -39,10 +39,12 @@ There are various use cases that are covered by the first-hand purchase feature.
 
 ### First-hand purchase directly from Uniq factory
 
-All use cases above are accessible using the `setprchsreq.a` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
+All use cases above are accessible using the `setprchsreq.b` action and examples are provided in the following page: [factory purchase option examples](./factory-purchase-options-examples.md)
 
 ### Swap Uniqs
 
 In certain situations you may need a more granular condition set which is not provided by the first-hand purchase feature. Since the range of possible conditions you may desire is vast we only limited the feature to the most common ones. For any more advanced usage you should consider utilizing a smart contract instead.
 
-Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage
+The example of a swap that uses `setprchsreq.b` action is provided [here](./factory-purchase-options-examples.md#using-purchase-option-for-swapping)
+
+Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage.

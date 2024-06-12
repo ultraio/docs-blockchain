@@ -162,10 +162,15 @@ General tutorials to help feed your curiosity.
         <td>Learn how to create metadata for Uniq factories and Uniqs.</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata">Link</a></td>
     </tr>
-        <tr>
+    <tr>
         <td>How to validate uniq metadata using Ultra Toolkit's Schema Validator</td>
         <td>Learn how to validate uniq metadata files using Ultra Toolkit's schema validation feature</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to perform advanced actions with Uniqs and Factories</td>
+        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
+        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
         <td>How to create a Uniq Factory using Ultra Toolkit</td>
@@ -181,6 +186,11 @@ General tutorials to help feed your curiosity.
         <td>How to update metadata using the Ultra Toolkit</td>
         <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to perform advanced actions with Uniqs and Factories</td>
+        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
+        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>

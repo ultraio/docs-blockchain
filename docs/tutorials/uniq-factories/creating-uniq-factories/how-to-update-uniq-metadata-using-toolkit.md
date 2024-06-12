@@ -175,7 +175,7 @@ After signing the transaction, you will see a confirmation screen indicating tha
 
 ![](./images/toolkit-tx-success-modal.png)
 
-You have now successfully disabled metadata updates for a uniq factory.
+You have now successfully disabled metadata updates for the uniq factory. To verify that the uniq factory is locked for metadata changes, attempt to update the factory, default uniq, or uniq metadata for this factory using the aforementioned actions, and the transaction should fail.
 
 ## What's next?
 

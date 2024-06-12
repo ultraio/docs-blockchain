@@ -9,7 +9,6 @@ order: 2
 
 Here, we provide some example `cleos` commands to set purchase options and to purchase using created options. JSON data from provided `cleos` commands can be copied and utilized as a payload for the transaction for your API library of choice.
 
--   [setprchsreq.a - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.a.md)
 -   [setprchsreq.b - set purchase requirement](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md)
 -   [purchase.a - purchase a token](../../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md)
 

@@ -81,7 +81,9 @@ Once you have opened the transaction modal, fill the required fields for the `se
 1. **Token factory ID**: Required, the ID of the uniq factory for which you want to update the default uniq metadata.
 2. **Memo**: Required, enter a text memo for your transaction. For example, `updating default uniq metadata`.
 3. **Metadata URI**: Required, URI of the new/updated default uniq metadata JSON file.
-4. **Metadata hash**: Optional, SHA256 hash of the new/updated default uniq metadata JSON file.
+4. **Metadata hash**: SHA256 hash of the new/updated default uniq metadata JSON file.
+    - If you are using a dynamic metadata URI (e.g., https://developers.ultra.io/uniq-collections/AngryBananas/{serial_number}.json), you should leave this field blank.
+    - If you are using a static metadata URI (e.g., https://developers.ultra.io/uniq-collections/AngryBananas/ffc3121613cc7d52a3525bb68c0948edc469f6f2c16bcb7b6b7fa38f7eaed3cf.json), this field is required.
 
 ![](./images/toolkit-setdflttkn-tx-form.png)
 
@@ -173,7 +175,7 @@ After signing the transaction, you will see a confirmation screen indicating tha
 
 ![](./images/toolkit-tx-success-modal.png)
 
-You have now successfully disabled metadata updates for a uniq factory.
+You have now successfully disabled metadata updates for the uniq factory. To verify that the uniq factory is locked for metadata changes, attempt to update the factory, default uniq, or uniq metadata for this factory using the aforementioned actions, and the transaction should fail.
 
 ## What's next?
 

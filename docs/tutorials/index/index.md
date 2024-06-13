@@ -199,7 +199,7 @@ General tutorials to help feed your curiosity.
     </tr>
 </table>
 
-## Other
+## Others
 
 <table>
     <tr>
@@ -227,4 +227,11 @@ General tutorials to help feed your curiosity.
         <td>Learn how to obtain test network tokens</td>
         <td><a href="../general/faucet/index">Link</a></td>
     </tr>
+    <Experimental>
+        <tr>
+            <td>Connecting to Pinax Substreams endpoints</td>
+            <td>Learn how to connect to Pinax Substreams endpoints</td>
+            <td><a href="../substreams/connecting-to-pinax-substreams-endpoints">Link</a></td>
+        f</tr>
+    </Experimental>
 </table>

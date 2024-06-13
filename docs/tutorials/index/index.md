@@ -188,9 +188,14 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to perform advanced actions with Uniqs and Factories</td>
-        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
+        <td>How to perform advanced actions with Uniqs and Factories using Ultra Toolkit</td>
+        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Toolkit</td>
         <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to add first-hand purchase options using Toolkit</td>
+        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase option from your Factory</td>
+        <td><a href="../uniq-factories/factory-management/how-to-add-first-hand-purchase-using-toolkit">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>

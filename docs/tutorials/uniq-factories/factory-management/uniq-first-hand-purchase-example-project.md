@@ -1,7 +1,7 @@
 ---
 title: 'Uniq First-Hand Purchase Example Project'
 
-order: 4
+order: 6
 ---
 
 

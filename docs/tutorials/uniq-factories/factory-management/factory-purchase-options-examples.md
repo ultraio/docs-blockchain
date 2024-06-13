@@ -1,7 +1,7 @@
 ---
 title: 'Factory Purchase Options Examples'
 
-order: 2
+order: 4
 ---
 
 

@@ -30,7 +30,7 @@ To create a simple purchase option first navigate to [Factory management actions
 
 After finding it, select `Set first-hand purchase requirement (eosio.nft.ft::setprchsreq.b)` action.
 
-There are multiple fields, here we will provide a short breakdown for each of them. For more details refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md).
+There are multiple fields, here we will provide a short breakdown for each of them. For more details, refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md).
 
 - **Token factory ID** - The ID of the token factory you manage and want to modify. You must be a manager of that factory
 - **Purchase option index** - A number that will let you identify the purchase option, in case there are multiple options per factory. It can be any positive number you want, we advise you to start from 0 and increase it by one for any new purchase option you add. Note that if you set the purchase requirement with an existing index then it will overwrite it.
@@ -49,7 +49,7 @@ There are multiple fields, here we will provide a short breakdown for each of th
 
 Click on `Send 1 Action`, review the details, and confirm your transaction.
 
-You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down you will see the newly added purchase option.
+You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down, you will see the newly added purchase option.
 
 ![](./images/first-hand-purchase-simple-UOS-price-result.png)
 
@@ -145,13 +145,13 @@ After clicking on `Send 1 Action`, reviewing the details, and confirming the tra
 
 ## How to delete a first-hand purchase option
 
-If the purchase option you created is no longer needed, you can decide to remove it and get some UOS refund for the RAM payment done during the option creation.
+If the purchase option you created is no longer needed, you can decide to remove it and get a UOS refund for the RAM payment made during the option creation.
 
 To delete a purchase option, navigate to [Factory management actions](https://toolkit.ultra.io/factoryManagement), and search again for `delprchsreq.a` and select `Delete first-hand purchase requirement (eosio.nft.ft::delprchsreq.a)`.
 
 ![](./images/first-hand-purchase-delete-search.png)
 
-There are only a couple of fields you need to fill. For more details refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/delprchsreq.a.md).
+There are only a couple of fields you need to fill. For more details, refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/delprchsreq.a.md).
 
 - **Token factory ID** - The ID of the Uniq factory where the purchase option was first added.
 - **Purchase option index** - The index of the existing purchase option.
@@ -161,7 +161,7 @@ There are only a couple of fields you need to fill. For more details refer to [a
 
 Click on `Send 1 Action`, review the details, and confirm your transaction.
 
-You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down you will see that the option was deleted. In this example we delete the purchase option with index 1.
+You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down, you will see that the option has been deleted. In this example we have deleted the purchase option with index 1.
 
 ![](./images/first-hand-purchase-delete-result.png)
 

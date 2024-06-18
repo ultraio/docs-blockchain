@@ -129,6 +129,14 @@ query Uniq($id: BigInt!) {
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       firsthandPurchases {
         groupRestriction {
@@ -244,6 +252,14 @@ query Uniq($id: BigInt!) {
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintableWindow {
         endDate
@@ -371,6 +387,14 @@ query Uniq($id: BigInt!) {
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     mintDate
     owner
@@ -644,6 +668,14 @@ query UniqBuyOffers(
               uri
             }
             status
+            validationFailures {
+              code
+              context {
+                key
+                value
+              }
+              defaultMessage
+            }
           }
           firsthandPurchases {
             groupRestriction {
@@ -759,6 +791,14 @@ query UniqBuyOffers(
               uri
             }
             status
+            validationFailures {
+              code
+              context {
+                key
+                value
+              }
+              defaultMessage
+            }
           }
           mintableWindow {
             endDate
@@ -886,6 +926,14 @@ query UniqBuyOffers(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         mintDate
         owner
@@ -1016,6 +1064,14 @@ query UniqBuyOffers(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         firsthandPurchases {
           groupRestriction {
@@ -1131,6 +1187,14 @@ query UniqBuyOffers(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         mintableWindow {
           endDate
@@ -1200,7 +1264,7 @@ query UniqBuyOffers(
     "uniqBuyOffers": {
       "data": [UniqBuyOffer],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
@@ -1225,13 +1289,13 @@ Returns a
 
 ##### Arguments
 
-| Name                                                                           | Description                                        |
-|--------------------------------------------------------------------------------|----------------------------------------------------|
-| `buyer` - [`WalletId`](types.md#walletid)                                   | The optional filter on buyer wallet ID.            |
-| `pagination` - [`PaginationInput`](types.md#paginationinput)                | The optional pagination input.                     |
-| `subject` - [`UniqBuyOfferSubjectInput`](types.md#uniqbuyoffersubjectinput) | The optional filter on uniq ID or owner wallet ID. |
-| `type` - [`UniqBuyOfferType`](types.md#uniqbuyoffertype)                    | The optional filter on buy offer type.             |
-| `uniqFactoryId` - [`BigInt`](types.md#bigint)                               | The optional filter on uniq factory ID.            |
+| Name                                                                            | Description                                     |
+|---------------------------------------------------------------------------------|-------------------------------------------------|
+| `buyer` - [`WalletId`](types.md#walletid)                                    | The optional filter on buyer wallet ID.         |
+| `pagination` - [`PaginationInput`](types.md#paginationinput)                 | The optional pagination input.                  |
+| `subject` - [`UniqBuyOfferSubjectInput!`](types.md#uniqbuyoffersubjectinput) | Mandatory filter on uniq ID or owner wallet ID. |
+| `type` - [`UniqBuyOfferType`](types.md#uniqbuyoffertype)                     | The optional filter on buy offer type.          |
+| `uniqFactoryId` - [`BigInt`](types.md#bigint)                                | The optional filter on uniq factory ID.         |
 
 #### Example
 
@@ -1241,7 +1305,7 @@ Returns a
 query UniqEffectiveBuyOffers(
   $buyer: WalletId,
   $pagination: PaginationInput,
-  $subject: UniqBuyOfferSubjectInput,
+  $subject: UniqBuyOfferSubjectInput!,
   $type: UniqBuyOfferType,
   $uniqFactoryId: BigInt
 ) {
@@ -1365,6 +1429,14 @@ query UniqEffectiveBuyOffers(
               uri
             }
             status
+            validationFailures {
+              code
+              context {
+                key
+                value
+              }
+              defaultMessage
+            }
           }
           firsthandPurchases {
             groupRestriction {
@@ -1480,6 +1552,14 @@ query UniqEffectiveBuyOffers(
               uri
             }
             status
+            validationFailures {
+              code
+              context {
+                key
+                value
+              }
+              defaultMessage
+            }
           }
           mintableWindow {
             endDate
@@ -1607,6 +1687,14 @@ query UniqEffectiveBuyOffers(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         mintDate
         owner
@@ -1737,6 +1825,14 @@ query UniqEffectiveBuyOffers(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         firsthandPurchases {
           groupRestriction {
@@ -1852,6 +1948,14 @@ query UniqEffectiveBuyOffers(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         mintableWindow {
           endDate
@@ -2056,6 +2160,14 @@ query UniqFactories(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       firsthandPurchases {
         groupRestriction {
@@ -2171,6 +2283,14 @@ query UniqFactories(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintableWindow {
         endDate
@@ -2363,6 +2483,14 @@ query UniqFactory($id: BigInt!) {
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     firsthandPurchases {
       groupRestriction {
@@ -2478,6 +2606,14 @@ query UniqFactory($id: BigInt!) {
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     mintableWindow {
       endDate
@@ -2731,6 +2867,14 @@ query UniqsOfFactory(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         firsthandPurchases {
           groupRestriction {
@@ -2846,6 +2990,14 @@ query UniqsOfFactory(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         mintableWindow {
           endDate
@@ -2973,6 +3125,14 @@ query UniqsOfFactory(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintDate
       owner
@@ -3180,6 +3340,14 @@ query UniqsOfWallet(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         firsthandPurchases {
           groupRestriction {
@@ -3295,6 +3463,14 @@ query UniqsOfWallet(
             uri
           }
           status
+          validationFailures {
+            code
+            context {
+              key
+              value
+            }
+            defaultMessage
+          }
         }
         mintableWindow {
           endDate
@@ -3422,6 +3598,14 @@ query UniqsOfWallet(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintDate
       owner
@@ -3482,7 +3666,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }

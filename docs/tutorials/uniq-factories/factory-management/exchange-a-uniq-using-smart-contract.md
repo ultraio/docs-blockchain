@@ -1,7 +1,7 @@
 ---
 title: 'Exchange a Uniq Using Smart Contract'
 
-order: 3
+order: 5
 ---
 
 # Exchange a Uniq Using Smart Contract

@@ -1,7 +1,7 @@
 ---
 title: 'Factory Purchase Options'
 
-order: 1
+order: 3
 ---
 
 

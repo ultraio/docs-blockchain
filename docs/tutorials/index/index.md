@@ -168,11 +168,6 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to perform advanced actions with Uniqs and Factories</td>
-        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
-        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
-    </tr>
-    <tr>
         <td>How to create a Uniq Factory using Ultra Toolkit</td>
         <td>Learn how to create your first uniq factory using Ultra Toolkit</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
@@ -202,6 +197,7 @@ General tutorials to help feed your curiosity.
         <td>Learn how to manage your uniq avatar as a user</td>
         <td><a href="../uniq-factories/uniq-avatar/index">Link</a></td>
     </tr>
+
 </table>
 
 ## Others

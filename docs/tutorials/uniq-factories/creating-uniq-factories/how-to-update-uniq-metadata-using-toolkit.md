@@ -179,4 +179,6 @@ You have now successfully disabled metadata updates for the uniq factory. To ver
 
 ## What's next?
 
-TODO
+After practicing the basic metadata actions, you can move on to advanced actions with Uniqs and Factories:
+
+-   [How to perform advanced actions with Uniqs and Factories](../factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories.md)

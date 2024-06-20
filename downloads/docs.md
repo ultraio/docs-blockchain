@@ -5233,7 +5233,7 @@ The factory manager can specify purchase options for users. Note that currently 
 
 `purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
 
-`promoter_basis_point` is used to specify how much % of a sale a promoter will get. Minimum value is `200` (2%), maximum value is `1000` (10%). Value range is controlled by `min_promoter_share_bp` and `max_promoter_share_bp` stored in `saleshrlimcfg` table under the scope of `1`.
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get. Minimum value is `0` (0%), maximum value is `1000` (10%). Value range is controlled by `min_promoter_share_bp` and `max_promoter_share_bp` stored in `saleshrlimcfg` table under the scope of `0`.
 
 `purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
 
@@ -5312,7 +5312,7 @@ By understanding this formalization, you can ensure a clear and standardized way
 | index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
 | price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
 | purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
-| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points. Must be in the range 200-1000                                                                                                                 |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points. Must be in the range 0-1000                                                                                                                   |
 | purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
 | sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
 | maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
@@ -5492,7 +5492,7 @@ The factory manager can specify purchase options for users. Note that currently 
 
 `purchase_limit` - how much users can buy via purchase action. It has to be less than factory limit setting and greater or equal to what was already minted via the action. If value provided is below the number of tokens already purchased from this option the `purchase_limit` will be set to be equal to the number of purchased tokens from this option
 
-`promoter_basis_point` is used to specify how much % of a sale a promoter will get. Minimum value is `200` (2%), maximum value is `1000` (10%). Value range is controlled by `min_promoter_share_bp` and `max_promoter_share_bp` stored in `saleshrlimcfg` table under the scope of `1`.
+`promoter_basis_point` is used to specify how much % of a sale a promoter will get. Minimum value is `0` (0%), maximum value is `1000` (10%). Value range is controlled by `min_promoter_share_bp` and `max_promoter_share_bp` stored in `saleshrlimcfg` table under the scope of `0`.
 
 `purchase_option_with_uniqs` - optional field used to set purchase options via uniqs. user has to have `count` tokens from listed uniq factories. They will be burned, transferred or checked as per `strategy` setting.
 
@@ -5571,7 +5571,7 @@ By understanding this formalization, you can ensure a clear and standardized way
 | index                      | uint64_t                            | number          | Index of the purchase option. Multiple purchase options can be added to a single factory                                                                                                                                                             |
 | price                      | eosio::asset                        | string          | Price of the Uniqs from this purchase option either in UOS or USD. Can also set 0 price                                                                                                                                                              |
 | purchase_limit             | optional\<uint32_t>                 | number / null   | Maximum number of Uniqs that can be purchased from this purchase option. Must not exceed factory minting limit                                                                                                                                       |
-| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points. Must be in the range 200-1000                                                                                                                 |
+| promoter_basis_point       | uint16_t                            | number          | UOS share received by the promoter with each purchase done for this option. Specified in basis points. Must be in the range 0-1000                                                                                                                   |
 | purchase_option_with_uniqs | std::optional\<provided_user_uniqs> | Object / null   | Optional feature that allows the purchase option to require user to own uniqs from specific factories or to pay with uniqs from specific factories. Refer to a link below for more details                                                           |
 | sale_shares                | std::vector\<sale_share>            | Array           | A vector of [account, share] pairs setting the share each account receives during the purchase                                                                                                                                                       |
 | maximum_uos_payment        | optional\<eosio::asset>             | asset / null    | Maximum amount of UOS manager allows to be take for the creation of the purchase option. Since the price is fixed in USD the equivalent UOS payment may fluctuate. Using this option will prevent the manager from paying more then he is willing to |
@@ -25781,11 +25781,6 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to perform advanced actions with Uniqs and Factories</td>
-        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
-        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
-    </tr>
-    <tr>
         <td>How to create a Uniq Factory using Ultra Toolkit</td>
         <td>Learn how to create your first uniq factory using Ultra Toolkit</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
@@ -25801,15 +25796,21 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to perform advanced actions with Uniqs and Factories</td>
-        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase from your Factory, transfer and burning Uniqs, add authorized minters</td>
+        <td>How to perform advanced actions with Uniqs and Factories using Ultra Toolkit</td>
+        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Toolkit</td>
         <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
+    </tr>
+    <tr>
+        <td>How to add first-hand purchase options using Toolkit</td>
+        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase option from your Factory</td>
+        <td><a href="../uniq-factories/factory-management/how-to-add-first-hand-purchase-using-toolkit">Link</a></td>
     </tr>
     <tr>
         <td>Uniq Avatars</td>
         <td>Learn how to manage your uniq avatar as a user</td>
         <td><a href="../uniq-factories/uniq-avatar/index">Link</a></td>
     </tr>
+
 </table>
 
 ## Others
@@ -28597,7 +28598,9 @@ You have now successfully disabled metadata updates for the uniq factory. To ver
 
 ## What's next?
 
-TODO
+After practicing the basic metadata actions, you can move on to advanced actions with Uniqs and Factories:
+
+-   [How to perform advanced actions with Uniqs and Factories](../factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories.md)
 
 ---
 title: "How to validate uniq metadata using Ultra Toolkit's Schema Validator"
@@ -28678,7 +28681,7 @@ Here are the steps to get started, and we will guide you through each one. By th
 ---
 title: 'Exchange a Uniq Using Smart Contract'
 
-order: 3
+order: 5
 ---
 
 # Exchange a Uniq Using Smart Contract
@@ -28866,7 +28869,7 @@ void ultra_avatar_contract::on_burn(const burn_wrap& param) {
 ---
 title: 'Factory Purchase Options Examples'
 
-order: 2
+order: 4
 ---
 
 
@@ -29222,7 +29225,7 @@ cleos push action eosio.nft.ft purchase.a '[
 ---
 title: 'Factory Purchase Options'
 
-order: 1
+order: 3
 ---
 
 
@@ -29271,16 +29274,14 @@ The example of a swap that uses `setprchsreq.b` action is provided [here](./fact
 Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage.
 
 ---
-title: 'How to perform advanced actions with Uniqs and Factories'
-order: 4
+title: 'How to add a first-hand purchase options using Ultra Toolkit'
+order: 2
 outline: [0, 4]
 ---
 
-# How to perform advanced actions with Uniqs and Factories
+# How to add a first-hand purchase options using Ultra Toolkit
 
-After you have successfully created a factory and potentially minted some tokens, you may now want to check what else can you potentially do.
-
-This guide will cover advanced actions that apply to Uniqs and Factories using the Ultra Toolkit.
+Besides directly minting Uniqs or assigning authorized minters, it may be desired to allow users to directly purchase Uniqs from your factory. This can be achieved using the first-hand purchase feature which will be covered in this guide.
 
 ## Prerequisites
 
@@ -29290,7 +29291,7 @@ This guide will cover advanced actions that apply to Uniqs and Factories using t
 
 ## Goal
 
-The goal of this guide is to demonstrate the range of actions you can perform with your Uniqs and Factories using Ultra Toolkit. This includes the process of adding or removing a direct purchase from your Factory; transferring and burning Uniqs; adding authorized minters.
+The goal of this guide is to demonstrate the the process of adding and removing direct purchase options for your Factory.
 
 ## How to add first-hand purchase to your factory
 
@@ -29304,7 +29305,7 @@ To create a simple purchase option first navigate to [Factory management actions
 
 After finding it, select `Set first-hand purchase requirement (eosio.nft.ft::setprchsreq.b)` action.
 
-There are multiple fields, here we will provide a short breakdown for each of them. For more details refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md).
+There are multiple fields, here we will provide a short breakdown for each of them. For more details, refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md).
 
 - **Token factory ID** - The ID of the token factory you manage and want to modify. You must be a manager of that factory
 - **Purchase option index** - A number that will let you identify the purchase option, in case there are multiple options per factory. It can be any positive number you want, we advise you to start from 0 and increase it by one for any new purchase option you add. Note that if you set the purchase requirement with an existing index then it will overwrite it.
@@ -29323,7 +29324,7 @@ There are multiple fields, here we will provide a short breakdown for each of th
 
 Click on `Send 1 Action`, review the details, and confirm your transaction.
 
-You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down you will see the newly added purchase option.
+You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down, you will see the newly added purchase option.
 
 ![](./images/first-hand-purchase-simple-UOS-price-result.png)
 
@@ -29352,7 +29353,7 @@ For more details see the [action documentation](../../../blockchain/contracts/nf
 
 After you have filled the form, click on `Send 1 Action`, review the details, and confirm the transaction.
 
-Now you should be able to navigate to your inventory (either click on the `Inventory` on the hope page of the Toolkit https://toolkit.ultra.io/ or go to https://toolkit.ultra.io/user and enter desired account name manually).
+Now you should be able to navigate to your inventory (either click on the `Inventory` on the home page of the Toolkit https://toolkit.ultra.io/ or go to https://toolkit.ultra.io/user and enter desired account name manually).
 
 You should be able to scroll down and see the list of Uniqs the account has. Note that it may take a minute for Ultra API to update and show your Uniq.
 
@@ -29377,7 +29378,7 @@ To specify the price in Uniqs you use the `Purchase option with Uniqs` field. Yo
 
 For more details see the [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/setprchsreq.b.md).
 
-In the following example we will configure a purchase option to burn a single Uniq will to mint another one. This effectively swaps user's Uniq from one to another. The price will be set to 0 UOS so the only requirement is to have a Uniq from the specified factory.
+In the following example we will configure a purchase option to burn a single Uniq in order to mint another one. This effectively swaps user's Uniq from one to another. The price will be set to 0 UOS so the only requirement is to have a Uniq from the specified factory.
 
 This effectively achieves a swap mechanism where you "swap" one Uniq which you have for another one from the same or different factory and, potentially, a different metadata.
 
@@ -29416,6 +29417,51 @@ In this example we only need to provide a single Uniq and specify the strategy 1
 After clicking on `Send 1 Action`, reviewing the details, and confirming the transaction, you should be able to see your new Uniq in your [inventory](https://toolkit.ultra.io/user), as expected.
 
 ![](./images/first-hand-purchase-Uniq-purchased-after-burn.png)
+
+## How to delete a first-hand purchase option
+
+If the purchase option you created is no longer needed, you can decide to remove it and get a UOS refund for the RAM payment made during the option creation.
+
+To delete a purchase option, navigate to [Factory management actions](https://toolkit.ultra.io/factoryManagement), and search again for `delprchsreq.a` and select `Delete first-hand purchase requirement (eosio.nft.ft::delprchsreq.a)`.
+
+![](./images/first-hand-purchase-delete-search.png)
+
+There are only a couple of fields you need to fill. For more details, refer to [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/delprchsreq.a.md).
+
+- **Token factory ID** - The ID of the Uniq factory where the purchase option was first added.
+- **Purchase option index** - The index of the existing purchase option.
+- **Memo** - Simple text message that can be used for various purposes. Does not affect the result of the transaction. Optional, can leave it empty.
+
+![](./images/first-hand-purchase-delete-form.png)
+
+Click on `Send 1 Action`, review the details, and confirm your transaction.
+
+You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory), enter your Factory ID. After scrolling down, you will see that the option has been deleted. In this example we have deleted the purchase option with index 1.
+
+![](./images/first-hand-purchase-delete-result.png)
+
+
+---
+title: 'How to perform advanced actions with Uniqs and Factories using Ultra Toolkit'
+order: 1
+outline: [0, 4]
+---
+
+# How to perform advanced actions with Uniqs and Factories
+
+After you have successfully created a factory and minted some Uniqs, you may now want to check what else you can do potentially.
+
+This guide will cover some advanced actions that apply to Uniqs and Factories using the Ultra Toolkit.
+
+## Prerequisites
+
+-   Created a Uniq Factory and minted some Uniqs. Follow the [Factory creation guide](../creating-uniq-factories/how-to-create-uniq-metadata.md) and the [Uniq minting guide](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) for details.
+-   Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for Testnet or [how to buy UOS](../../guides/how-to-buy-uos.md) for Mainnet.
+- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md).
+
+## Goal
+
+The goal of this guide is to demonstrate the usage of some of the actions you can perform with your Uniqs and Factories using Ultra Toolkit. This includes the transferring and burning Uniqs; adding authorized minters to a factory.
 
 ## How to transfer a Uniq to another account
 
@@ -29489,12 +29535,12 @@ After clicking on `Send 1 Action`, reviewing the details, and confirming the tra
 
 ## What's next?
 
-TBA
+-   [How to add a first-hand purchase options using Ultra Toolkit](../factory-management/how-to-add-first-hand-purchase-using-toolkit.md)
 
 ---
 title: 'Uniq First-Hand Purchase Example Project'
 
-order: 4
+order: 6
 ---
 
 

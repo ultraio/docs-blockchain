@@ -12256,11 +12256,11 @@ Pro tips:
 
 The dependencies necessary to upload files to a repository can be found below, separated by environment:
 
-- [Dev](https://download.dev.app.ultra.io/downloads-dev-ultraio/dev/solid-state-networks/direct6/5.1.0/archive.zip)
-- [QA](https://download.qa.app.ultra.io/downloads-dev-ultraio/qa/solid-state-networks/direct6/5.1.0/archive.zip)
-- [Preprod](https://download-cdn.preprod.app.ultra.io/solid-state-networks/direct6/5.1.0/archive.zip)
-- [Sandbox](https://download.staging.app.ultra.io/downloads-staging-ultraio/solid-state-networks/direct6/5.1.0/archive.zip)
-- [Production](https://download-cdn.app.ultra.io/solid-state-networks/direct6/5.1.0/archive.zip)
+- [Dev](https://download.dev.app.ultra.io/downloads-dev-ultraio/dev/solid-state-networks/direct6/6.0.0/archive.zip)
+- [QA](https://download.qa.app.ultra.io/downloads-dev-ultraio/qa/solid-state-networks/direct6/6.0.0/archive.zip)
+- [Preprod](https://download-cdn.preprod.app.ultra.io/solid-state-networks/direct6/6.0.0/archive.zip)
+- [Sandbox](https://download.staging.app.ultra.io/downloads-staging-ultraio/solid-state-networks/direct6/6.0.0/archive.zip)
+- [Production](https://download-cdn.app.ultra.io/solid-state-networks/direct6/6.0.0/archive.zip)
 
 
 ### Running filebeam

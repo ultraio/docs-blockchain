@@ -1,36 +1,46 @@
 ---
-title: 'Create a Transaction'
+title: 'Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension'
 
 outline: [0, 5]
 order: -95
 ---
 
-# Create a Transaction
+# Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension
 
-After you have deployed your smart contract you can use [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or use the [Ultra Wallet Extension](../../products/ultra-wallet/index.md) to transact.
+Once you have deployed your contract, you are ready for interacting with your contract.
 
-In this guide we'll use the toolkit to keep it brief.
+## Goal
 
-Using the Command Palette (F1), type `Ultra: Create Transaction`.
+The goal of this tutorial is to demonstrate how to interact with deployed smart contracts using the Ultra Smart Contract Toolkit Extension.
 
-Select the correct you used earlier.
+## Prerequisites
 
-![](./images/select-network.png)
+-   You must have deployed your smart contract. Refer to [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md).
+-   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 
-Type in the name of the account which the contract was deployed under.
+## Interacting with Smart Contract
 
-![](./images/type-contract-name.png)
+To interact with your deployed contract, follow these steps:
 
-You will see a list of available transactions if deployed correctly.
+1. Use the Command Palette (F1), type `Ultra: Create Transaction`.
+   ![](./images/command-palette-create-tx.png)
 
-![](./images/select-available-action.png)
+2. Select the endpoint where your smart contract is deployed.
+   ![](./images/command-palette-deploy-select-endpoint.png)
 
-The signer should be the account you have access to. You should have created an account earlier in this guide with keys in your wallet.
+3. Enter the name of the account which the contract was deployed under.
+   ![](./images/command-palette-create-tx-account-name.png)
 
-Fill out your transaction, and execute it.
+4. You will now see a list of available actions for your smart contract. Select the one that you want to interact with.
+   ![](./images/command-palette-create-tx-select-action.png)
 
-![](./images/fillout-form.png)
+5. Enter the signer account. The signer should be the account you have access to. For the sake of this tutorial, we will use the same account where we deployed the smart contract.
+   ![](./images/command-palette-create-tx-signing-acc.png)
 
-## Successful Transaction!
+6. You will now see a transaction form. Fill out your transaction, and execute it by clicking on the `Sign & Send` button.
+   ![](./images/vscode-ext-contract-action-interaction.png)
 
-![](./images/successful-transaction.png)
+7. If successful you will see the transaction has been deployed in the output window.
+   ![](./images/vscode-ext-contract-action-interaction-output.png)
+
+You can use the transaction id and search for the transaction on the [Ultra Testnet Block Explorer](https://explorer.testnet.ultra.io/).

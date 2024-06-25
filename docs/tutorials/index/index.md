@@ -147,6 +147,16 @@ General tutorials to help feed your curiosity.
         <td>Build and compile smart contracts using the Ultra Smart Contract Toolkit Extension</td>
         <td><a href="../smart-contracts/compile">Link</a></td>
     </tr>
+    <tr>
+        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Deploy smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td><a href="../smart-contracts/deploy">Link</a></td>
+    </tr>
+    <tr>
+        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Interact with smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td><a href="../smart-contracts/transact">Link</a></td>
+    </tr>
 </table>
 
 ## Uniq Factories

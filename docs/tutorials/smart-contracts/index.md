@@ -80,4 +80,4 @@ Any other prompts from VS Code can be ignored (including prompts related to Dock
 
 ## What's next?
 
-The next tutorial will cover compiling smart contracts using the VS Code extension. See [Smart Contract Compiling](./compile.md) for more information.
+The next tutorial will cover compiling smart contracts using the VS Code extension. See [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](./compile.md) for more information.

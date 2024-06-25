@@ -51,4 +51,4 @@ For more information about `.abi` and `.wasm` files see the [official EOS Networ
 
 ## What's next?
 
-The next tutorial will cover deploying smart contracts using the VS Code extension. See [Deploy Smart Contract](./deploy.md) for more information.
+The next tutorial will cover deploying smart contracts using the VS Code extension. See [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md) for more information.

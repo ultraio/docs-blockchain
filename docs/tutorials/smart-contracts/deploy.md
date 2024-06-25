@@ -17,7 +17,7 @@ The goal of this tutorial is to guide you through deploying a smart contract usi
 
 -   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](./compile.md) for more information.
 -   A public-private key pair for your developer Testnet account. If you haven't generated a key pair yet, refer to [Tutorial - Generate a key and create a developer Testnet account](../fundamentals/tutorial-generate-key-and-create-testnet-account.md)
--   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
+-   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 
 ## Add Developer Testnet Account
 
@@ -30,7 +30,7 @@ Before you can deploy a smart contract, you will need to add your developer Test
 3. Enter the private key for your developer Testnet account.
    ![](./images/command-palette-create-wallet-set-pk.png)
 4. You will see a prompt on the bottom right that says `Added Public Key`.
-   ![](./images/vscode-ext-added-public-jey.png)
+   ![](./images/vscode-ext-added-public-key.png)
 
 You have now added your developer testnet account to the Ultra Smart Contract Toolkit Extension.
 

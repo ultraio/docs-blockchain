@@ -66,7 +66,7 @@ ISO 4217 standards for currency representation.
 
 ``` js
 {
-  "code": "abc123",
+  "code": "xyz789",
   "symbol": "xyz789"
 }
 ```
@@ -112,7 +112,7 @@ values. Int can represent values between -(2^31) and 2^31 - 1.
 ##### Example
 
 ``` js
-123
+987
 ```
 
 
@@ -180,7 +180,7 @@ is 25.
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 987}
+{"limit": 123, "skip": 123}
 ```
 
 
@@ -202,7 +202,7 @@ limit to 25 maximum results per page.
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 123}
+{"limit": 987, "skip": 987}
 ```
 
 
@@ -271,7 +271,7 @@ represent free-form human-readable text.
 ##### Example
 
 ``` js
-"xyz789"
+"abc123"
 ```
 
 
@@ -401,7 +401,7 @@ ID and/or burned.
 ##### Example
 
 ``` js
-{"enabled": false, "uniqBurned": true, "uniqId": 987}
+{"enabled": false, "uniqBurned": false, "uniqId": 987}
 ```
 
 
@@ -514,7 +514,7 @@ changes, including multiple URIs for alternate versions or updates.
 
 ``` js
 {
-  "contentType": "abc123",
+  "contentType": "xyz789",
   "uris": ["xyz789"]
 }
 ```
@@ -926,6 +926,7 @@ source, cached content, and resolved information.
 | `locked` - [`Boolean!`](#boolean)                                       | Indicates whether the metadata is locked and immutable or can be altered over time.                          |
 | `source` - [`UniqResource`](#uniqresource)                              | The original source of the metadata, with details on the metadata's origin. Null if restricted.              |
 | `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)                 | The processing status of the metadata, indicating its availability and compliance.                           |
+| `validationFailures` - [`[UniqMetadataFailure!]`](#uniqmetadatafailure) | Errors encountered during metadata validation, providing insights into validation failures.                  |
 
 ##### Example
 
@@ -933,9 +934,10 @@ source, cached content, and resolved information.
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": false,
+  "locked": true,
   "source": UniqResource,
-  "status": "INVALID"
+  "status": "INVALID",
+  "validationFailures": [UniqMetadataFailure]
 }
 ```
 
@@ -958,7 +960,7 @@ factory, providing detailed information about each attribute.
 
 ``` js
 {
-  "key": "xyz789",
+  "key": "abc123",
   "value": UniqMetadataAttributeDescriptor
 }
 ```
@@ -1267,12 +1269,13 @@ environments.
 
 ##### Fields
 
-| Field Name                                                           | Description                                                                                                                                                                       |
-|----------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cachedSource` - [`UniqResource`](#uniqresource)          | A system-optimized copy of the metadata intended for efficient access, offering an alternative to the original source for enhanced performance. Absent if integration is pending. |
-| `content` - [`UniqMetadataContent`](#uniqmetadatacontent) | The fully resolved and structured metadata content, ready for presentation, outlining the Uniq's identity and characteristics. Absent if resolution is incomplete.                |
-| `source` - [`UniqResource`](#uniqresource)                | The origin of the metadata, providing context and source verification. Absent if access is restricted or the content is confidential.                                             |
-| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)   | Reflects the current processing state of the metadata within the system, indicating availability and conformity to standards for display purposes.                                |
+| Field Name                                                                         | Description                                                                                                                                                                       |
+|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `cachedSource` - [`UniqResource`](#uniqresource)                        | A system-optimized copy of the metadata intended for efficient access, offering an alternative to the original source for enhanced performance. Absent if integration is pending. |
+| `content` - [`UniqMetadataContent`](#uniqmetadatacontent)               | The fully resolved and structured metadata content, ready for presentation, outlining the Uniq's identity and characteristics. Absent if resolution is incomplete.                |
+| `source` - [`UniqResource`](#uniqresource)                              | The origin of the metadata, providing context and source verification. Absent if access is restricted or the content is confidential.                                             |
+| `status` - [`UniqMetadataStatus!`](#uniqmetadatastatus)                 | Reflects the current processing state of the metadata within the system, indicating availability and conformity to standards for display purposes.                                |
+| `validationFailures` - [`[UniqMetadataFailure!]`](#uniqmetadatafailure) | Errors encountered during metadata validation, providing insights into validation failures.                                                                                       |
 
 ##### Example
 
@@ -1281,7 +1284,8 @@ environments.
   "cachedSource": UniqResource,
   "content": UniqMetadataContent,
   "source": UniqResource,
-  "status": "INVALID"
+  "status": "INVALID",
+  "validationFailures": [UniqMetadataFailure]
 }
 ```
 
@@ -1306,7 +1310,7 @@ structured format for easy reference and interpretation.
 ``` js
 {
   "descriptor": UniqMetadataAttributeDescriptor,
-  "key": "abc123",
+  "key": "xyz789",
   "value": "true | \"myStringValue\" | 987 | 987.65"
 }
 ```
@@ -1332,9 +1336,9 @@ including whether the attribute is dynamic and its data type.
 
 ``` js
 {
-  "description": "xyz789",
+  "description": "abc123",
   "dynamic": false,
-  "name": "xyz789",
+  "name": "abc123",
   "type": "ISODateString"
 }
 ```
@@ -1389,11 +1393,11 @@ additional data attributes.
 ``` js
 {
   "attributes": [UniqMetadataAttribute],
-  "description": "xyz789",
+  "description": "abc123",
   "dynamicAttributes": UniqDynamicResource,
   "dynamicResources": [UniqMetadataDynamicResource],
   "medias": UniqMedias,
-  "name": "abc123",
+  "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -1423,6 +1427,57 @@ accommodate variability and updates.
 {
   "key": "abc123",
   "value": UniqDynamicResource
+}
+```
+
+
+## UniqMetadataFailure
+
+##### Description
+
+Represents a metadata failure, including a failure code, context
+information, and a default message.
+
+##### Fields
+
+| Field Name                                                                                       | Description                                                                     |
+|--------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+| `code` - [`String!`](#string)                                                         | The unique code identifying the type of metadata failure.                       |
+| `context` - [`[UniqMetadataFailureContextEntry!]!`](#uniqmetadatafailurecontextentry) | An array of context entries providing additional information about the failure. |
+| `defaultMessage` - [`String!`](#string)                                               | The default message describing the metadata failure.                            |
+
+##### Example
+
+``` js
+{
+  "code": "xyz789",
+  "context": [UniqMetadataFailureContextEntry],
+  "defaultMessage": "xyz789"
+}
+```
+
+
+## UniqMetadataFailureContextEntry
+
+##### Description
+
+Represents an entry in the context of a metadata failure. Each entry
+consists of a key-value pair providing additional information about the
+failure context.
+
+##### Fields
+
+| Field Name                               | Description                                      |
+|------------------------------------------|--------------------------------------------------|
+| `key` - [`String`](#string)   | The key of the context entry.                    |
+| `value` - [`String`](#string) | The value associated with the context entry key. |
+
+##### Example
+
+``` js
+{
+  "key": "abc123",
+  "value": "abc123"
 }
 ```
 
@@ -1525,7 +1580,7 @@ verification.
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "abc123"
+  "uri": "xyz789"
 }
 ```
 
@@ -1547,7 +1602,7 @@ authentic and unaltered through cryptographic verification.
 ##### Example
 
 ``` js
-{"hash": "abc123", "type": "SHA256"}
+{"hash": "xyz789", "type": "SHA256"}
 ```
 
 
@@ -1703,9 +1758,9 @@ for integrity verification and a specific URI for retrieval.
 
 ``` js
 {
-  "contentType": "abc123",
+  "contentType": "xyz789",
   "integrity": UniqResourceIntegrity,
-  "uri": "abc123"
+  "uri": "xyz789"
 }
 ```
 

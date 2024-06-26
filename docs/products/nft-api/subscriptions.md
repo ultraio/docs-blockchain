@@ -256,6 +256,14 @@ subscription UniqFactories($assetManager: WalletId) {
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     firsthandPurchases {
       groupRestriction {
@@ -371,6 +379,14 @@ subscription UniqFactories($assetManager: WalletId) {
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     mintableWindow {
       endDate
@@ -582,6 +598,14 @@ subscription UniqFactorySnapshots(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       firsthandPurchases {
         groupRestriction {
@@ -697,6 +721,14 @@ subscription UniqFactorySnapshots(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintableWindow {
         endDate
@@ -921,6 +953,14 @@ subscription UniqSnapshots(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintDate
       owner
@@ -1118,6 +1158,14 @@ subscription UniqsOfFactory(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       firsthandPurchases {
         groupRestriction {
@@ -1233,6 +1281,14 @@ subscription UniqsOfFactory(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintableWindow {
         endDate
@@ -1360,6 +1416,14 @@ subscription UniqsOfFactory(
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     mintDate
     owner
@@ -1563,6 +1627,14 @@ subscription UniqsOfWallet(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       firsthandPurchases {
         groupRestriction {
@@ -1678,6 +1750,14 @@ subscription UniqsOfWallet(
           uri
         }
         status
+        validationFailures {
+          code
+          context {
+            key
+            value
+          }
+          defaultMessage
+        }
       }
       mintableWindow {
         endDate
@@ -1805,6 +1885,14 @@ subscription UniqsOfWallet(
         uri
       }
       status
+      validationFailures {
+        code
+        context {
+          key
+          value
+        }
+        defaultMessage
+      }
     }
     mintDate
     owner

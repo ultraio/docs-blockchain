@@ -8,6 +8,17 @@ order: 1
 
 We're thrilled to announce the release of a new version of the Ultra API. This update focuses on enhancing user experience, increasing performance, and introducing new functionalities to make integration even more seamless.
 
+## Release 0.3.0
+
+### Key Highlights
+
+-   Changing `uniqEffectiveBuyOffers`, subject filter to mandatory, which enforces sub-filtering offers based on uniqId or owner.
+-   Adding the new `validationFailures` field to `UniqFactoryMetadata` and `UniqMetadata` structure.
+
+### Bugfixes
+
+-   `defaultUniqMetadata` returns the source template URL for variants factory instead of `null`.
+
 ## Release 0.2.0
 
 ### Key Highlights

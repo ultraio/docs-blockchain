@@ -23143,6 +23143,32 @@ You can download the latest version of the tool from the [GitHub Releases Page](
 -   TODO
 
 ---
+title: 'How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension'
+order: -99997
+oultine: [0, 5]
+---
+
+# How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension
+
+## Goal
+
+The goal of this tutorial is to guide you through deploying a smart contract on the Ultra Mainnet, using the Ultra Smart Contract Toolkit Extension.
+
+## Prerequisites
+
+-   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](../smart-contracts/compile.md) for more information.
+-   You must have created your Ultra Pro Wallet. If you need help creating your Ultra Pro Wallet, please refer to [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet-using-toolkit.md) guide.
+-   Your account must have sufficient UOS tokens on Ultra Mainnet for transactions and fees. Refer to [How to buy UOS tokens on Ultra Mainnet using the Ultra Wallet](../guides/how-to-buy-uos.md) guide for more information.
+
+## Deploying on Ultra Mainnet
+
+Deploying a smart contract on Ultra Mainnet is pretty much the same as deploying to Ultra Testnet. Refer to the [Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](../smart-contracts/deploy.md#deploy-contract) tutorial and follow the deployment steps.
+
+_The only thing you need to ensure is to select the `Ultra Mainnet` endpoint every time you are prompted to select an environment/endpoint._
+
+-   ![](../smart-contracts/images/command-palette-deploy-select-endpoint-mainnet.png)
+
+---
 title: 'How to log in to the Ultra Toolkit using Anchor Wallet'
 order: -99999
 oultine: [0, 5]
@@ -25725,6 +25751,11 @@ General tutorials to help feed your curiosity.
         <td>Learn how to create your account and log in to the toolkit using a Ledger device.</td>
         <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
     </tr>
+    <tr>
+        <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Learn how to deploy a smart contract on the Ultra Mainnet using the Ultra Smart Contract Visual Studio Code Extension</td>
+        <td><a href="../advanced-guides/how-to-deploy-smart-contracts-to-mainnet-using-ultra-smart-contract-vscode-extension">Link</a></td>
+    </tr>
 </table>
 
 ## Projects
@@ -25759,6 +25790,16 @@ General tutorials to help feed your curiosity.
         <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
         <td>Build and compile smart contracts using the Ultra Smart Contract Toolkit Extension</td>
         <td><a href="../smart-contracts/compile">Link</a></td>
+    </tr>
+    <tr>
+        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Deploy smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td><a href="../smart-contracts/deploy">Link</a></td>
+    </tr>
+    <tr>
+        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Interact with smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td><a href="../smart-contracts/transact">Link</a></td>
     </tr>
 </table>
 
@@ -26430,154 +26471,77 @@ For more information about `.abi` and `.wasm` files see the [official EOS Networ
 
 ## What's next?
 
-The next tutorial will cover deploying smart contracts using the VS Code extension. See [Deploy Smart Contract](./deploy.md) for more information.
+The next tutorial will cover deploying smart contracts using the VS Code extension. See [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md) for more information.
 
 ---
-title: 'Deploy Smart Contract'
+title: 'Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension'
 
 outline: [0, 5]
 order: -96
 ---
 
-# Deploy Smart Contract
+# Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension
 
-Once you have an `abi` and `wasm` file for a contract you are ready for deployment.
+Once you have an `abi` and `wasm` file for your contract, you are ready for deployment.
 
-## Create a Wallet
+## Goal
 
-You can create a wallet through [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+The goal of this tutorial is to guide you through deploying a smart contract using the Ultra Smart Contract Toolkit Extension.
 
-Using the Command Palette (F1), type `Ultra: Create Wallet`.
+## Prerequisites
 
-You can also use `Ultra: Create Wallet - Create Key` to generate a private key in console
+-   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](./compile.md) for more information.
+-   A public-private key pair for your developer Testnet account. If you haven't generated a key pair yet, refer to [Tutorial - Generate a key and create a developer Testnet account](../fundamentals/tutorial-generate-key-and-create-testnet-account.md)
+-   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 
-Take note of both your `private key` and `public key`.
+## Add Developer Testnet Account
 
-**You will need your public key after importing**.
+Before you can deploy a smart contract, you will need to add your developer Testnet account to the Ultra Smart Contract Toolkit Extension. To do so, follow these steps:
 
--   Fill out the password fields
-    -   This will be used to unlock your wallet
--   Fill out the private key field
+1. Using the Command Palette (F1), type and select `Ultra: Wallet - Create`.
+   ![](./images/command-palette-create-wallet.png)
+2. Enter a password for your wallet and re-enter the password to confirm it. Please make a note of this as it will be needed later to unlock the wallet.
+   ![](./images/command-palette-create-wallet-set-pwd.png)
+3. Enter the private key for your developer Testnet account.
+   ![](./images/command-palette-create-wallet-set-pk.png)
+4. You will see a prompt on the bottom right that says `Added Public Key`.
+   ![](./images/vscode-ext-added-public-key.png)
 
-Wallet will tell you the account creation was successful in the bottom-right upon completion.
-
-## Creating a Test Network Account
-
-You will need a test network account on a supported blockchain to deploy a contract and test it.
-
-::: details Local Environment
-
-1. Generate new key using Smart Contract Toolkit or [cleos](../../blockchain/general/tools/cleos.md)
-2. Start ultratest in detached mode using [docker image usage](../../tutorials/docker/docker-image-usage.md)
-
-```
-ultratest -Dsn
-```
-
-3. Create new account
-
-```
-cleos system newaccount ultra.eosio test YOUR_PUBLIC_KEY --transfer --gift-ram-kbytes 1024000 -p ultra.eosio
-```
-
-4. Deploy your contract using instructions below
-
-:::
-
-::: details Ultra Testnet
-
-1. Use ultra <a href="https://faucet.testnet.app.ultra.io/">faucet</a> to create an Ultra Pro Wallet and receive tokens. Use the key from the step of creating a wallet
-2. Open VSCode and Command Palette (F1) and type `Ultra: Create Transaction`
-3. Select Ultra Testnet
-4. Enter Wallet Password
-5. Lookup eosio and select action `buyrambytes`
-6. Look at your .wasm file properties to determine the RAM you need. Buy extra for storing table data. You will want to lookup the total amount of bytes your .wasm file has. For small contracts 65356 bytes should be sufficient
-7. Fill out the form, and buy some RAM. payer and receiver should be the same.
-8. Ensure that the transaction is successful
-   :::
-
-::: details Ultra Mainnet
-
-1. Download <a href="https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Ultra Wallet extension</a>
-2. Create an Ultra Pro Wallet using the Ultra Wallet extension <a href="../guides/how-to-create-ultra-pro-wallet.md">tutorial</a>
-3. Use ultra <a href="https://toolkit.ultra.io/contract?actions=buyrambytes">toolkit</a> to to buy RAM. Log in with your Ultra Pro Wallet. Transfer UOS to this account if needed
-
-:::
+You have now added your developer testnet account to the Ultra Smart Contract Toolkit Extension.
 
 ## Deploy Contract
 
-Using the Command Palette (F1), type `Ultra: Deploy Contract`.
+1. Using the Command Palette (F1), type and select `Ultra: Deploy Contract`.
+   ![](./images/command-palette-deploy.png)
 
-Select the contract you want to deploy.
+2. Select the contract you want to deploy.
+   ![](./images/command-palette-deploy-select-contract.png)
 
-![](./images/select-contract-to-deploy.png)
+3. Select the `Ultra Testnet` endpoint.
+   ![](./images/command-palette-deploy-select-endpoint.png)
 
-Select the endpoint you want to deploy to.
+4. Unlock your wallet by entering your wallet password.
+   ![](./images/command-palette-deploy-unlock-wallet.png)
 
-![](./images/select-network.png)
+5. Enter the account you want to deploy this contract to. For the sake of this contract, you should deploy to your own developer Testnet account.
+   ![](./images/command-palette-deploy-account-name.png)
 
-Enter your wallet password.
-
-Type in the `account` you have access to on the network you have picked.
-
-If successful you will see the smart contract has been deployed in the output window.
+6. If successful you will see the smart contract has been deployed in the output window.
+   ![](./images/vscode-ext-contract-deployment-output.png)
 
 ## Redeploy Smart Contract
 
-After you've done some changes to your contract you will need to build it again and redeploy
+After you've made some changes to your contract, you will need to build it again and redeploy.
 
-Redeploying the contract is identical to the first time you've deployed the contract. Just follow the above instructions and use the same account to deploy to
+Redeploying the contract is identical to the first time you've deployed the contract. Just follow the above instructions and use the same account to deploy to.
 
-VSCode extension will deploy both ABI and WASM files so there is no manual action needed to redeploy both
+## Troubleshooting Deployment Errors
 
-# Environments
+If you run into any issues during the deployment, refer to [Troubleshooting Deployment](./troubleshooting.md) for more information.
 
-Environments are specific locations where you can perform tests against your smart contracts, and applications.
+## What's next?
 
-There are three environments; local, testnet, and mainnet.
-
-[See this API section](../../products/chain-api/index.md) for information on block producer endpoints that are publicly available.
-
-## Local
-
-The local environment is where you are browsing this documentation from.
-
-You would be running code against your local machine on a blockchain that is also running on your local machine.
-
-In the case of `cleos` you would not provide any `-u` parameters to target your own local blockchain inside of a docker image.
-
-### Why use local?
-
--   Just beginning smart contract development.
--   Need to test and write tests before full deployment.
--   Easy way to start and stop a blockchain and restart from zero each time.
-
-## Test Network
-
-The test network environment is where you want to deploy your smart contract after going through general testing.
-
-This should be the first place you will want to deploy your smart contract for other users to interact with.
-
-### Why use Testnet?
-
--   Ready to deploy smart contracts to other users.
--   Begin getting feedback in a public manner.
--   Begin writing frontend for your decentralized application.
--   Need a way for others to easily interact and test your smart contract.
-
-Go to the [faucet tutorial page](../fundamentals/tutorial-generate-key-and-create-testnet-account.md) to start working with testnet.
-
-## Main Network
-
-The main network environment is when you want to partner with ultra to get your smart contract deployed to the world.
-
-This is the stage where you have a smart contract, you have had that contract audited, you have an application, and you want to get it into ultra ecosystem for everyone to interact with.
-
-### Why use Mainnet?
-
--   Ready to go live with your smart contract.
--   Smart contract has already been audited.
--   Optional frontend application is ready to be used.
+The next tutorial will cover interacting with your deployed smart contracts using the VS Code extension. See [Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension](./transact.md) for more information.
 
 ---
 title: 'Code Examples'
@@ -26763,44 +26727,53 @@ Any other prompts from VS Code can be ignored (including prompts related to Dock
 
 ## What's next?
 
-The next tutorial will cover compiling smart contracts using the VS Code extension. See [Smart Contract Compiling](./compile.md) for more information.
+The next tutorial will cover compiling smart contracts using the VS Code extension. See [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](./compile.md) for more information.
 
 ---
-title: 'Create a Transaction'
+title: 'Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension'
 
 outline: [0, 5]
 order: -95
 ---
 
-# Create a Transaction
+# Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension
 
-After you have deployed your smart contract you can use [Ultra.io Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or use the [Ultra Wallet Extension](../../products/ultra-wallet/index.md) to transact.
+Once you have deployed your contract, you are ready for interacting with your contract.
 
-In this guide we'll use the toolkit to keep it brief.
+## Goal
 
-Using the Command Palette (F1), type `Ultra: Create Transaction`.
+The goal of this tutorial is to demonstrate how to interact with deployed smart contracts using the Ultra Smart Contract Toolkit Extension.
 
-Select the correct you used earlier.
+## Prerequisites
 
-![](./images/select-network.png)
+-   You must have deployed your smart contract. Refer to [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md).
 
-Type in the name of the account which the contract was deployed under.
+## Interacting with Smart Contract
 
-![](./images/type-contract-name.png)
+To interact with your deployed smart contract, follow these steps:
 
-You will see a list of available transactions if deployed correctly.
+1. Use the Command Palette (F1), type `Ultra: Create Transaction`.
+   ![](./images/command-palette-create-tx.png)
 
-![](./images/select-available-action.png)
+2. Select the endpoint where your smart contract is deployed.
+   ![](./images/command-palette-deploy-select-endpoint.png)
 
-The signer should be the account you have access to. You should have created an account earlier in this guide with keys in your wallet.
+3. Enter the name of the account which the contract was deployed under.
+   ![](./images/command-palette-create-tx-account-name.png)
 
-Fill out your transaction, and execute it.
+4. You will now see a list of available actions for your smart contract. Select the one that you want to interact with.
+   ![](./images/command-palette-create-tx-select-action.png)
 
-![](./images/fillout-form.png)
+5. Enter the signer account. The signer should be the account you have access to. For the sake of this tutorial, we will use the same account where we deployed the smart contract.
+   ![](./images/command-palette-create-tx-signing-acc.png)
 
-## Successful Transaction!
+6. You will now see a transaction form. Fill out your transaction data, and execute it by clicking on the `Sign & Send` button.
+   ![](./images/vscode-ext-contract-action-interaction.png)
 
-![](./images/successful-transaction.png)
+7. If successful, you will see the transaction response in the output window.
+   ![](./images/vscode-ext-contract-action-interaction-output.png)
+
+You can use the transaction id and search for the transaction on the [Ultra Testnet Block Explorer](https://explorer.testnet.ultra.io/).
 
 ---
 title: 'Troubleshooting Deployment'

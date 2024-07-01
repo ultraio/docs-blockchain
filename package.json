@@ -30,7 +30,7 @@
         "vue": "^3.3.11"
     },
     "dependencies": {
-        "@wharfkit/antelope": "^1.0.2",
+        "@wharfkit/antelope": "^1.0.8",
         "fast-glob": "^3.3.2",
         "gray-matter": "^4.0.3",
         "sitemap": "^7.1.1",

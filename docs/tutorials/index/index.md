@@ -215,6 +215,21 @@ General tutorials to help feed your curiosity.
 
 </table>
 
+## Docker
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>Tutorial - Install Docker and get started with Developer Tools Docker image</td>
+        <td>Learn how to install Docker and use our Development Tools Docker image</td>
+        <td><a href="../docker/getting-started">Link</a></td>
+    </tr>
+</table>
+
 ## Others
 
 <table>
@@ -227,11 +242,6 @@ General tutorials to help feed your curiosity.
         <td>Learn the Basics</td>
         <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
         <td><a href="../general/basics/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Docker Container</td>
-        <td>Learn how to use our development docker container</td>
-        <td><a href="../docker/index">Link</a></td>
     </tr>
     <tr>
         <td>Create a Test Network Account</td>

@@ -11,7 +11,7 @@ const navbar: DefaultTheme.NavItem[] = [
                 items: [
                     { text: 'Fundamentals', link: '/tutorials/fundamentals/tutorial-generate-key-and-create-testnet-account' },
                     { text: 'Guides', link: '/tutorials/guides/how-to-create-ultra-pro-wallet.md' },
-                    { text: 'Docker', link: '/tutorials/docker/index' },
+                    { text: 'Docker', link: '/tutorials/docker/getting-started' },
                     { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
                     { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
                     { text: 'Token Swap', link: '/tutorials/token-swap/index' },

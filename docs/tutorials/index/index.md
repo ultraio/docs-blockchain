@@ -92,6 +92,11 @@ General tutorials to help feed your curiosity.
         <td>How to swap UOS from Ultra Mainnet to Ethereum by using Ultra Client</td>
         <td><a href="../guides/how-to-swap-tokens">Link</a></td>
     </tr>
+    <tr>
+        <td>How to create and compile smart contract with Docker</td>
+        <td>How to create and compile smart contract with Docker using cdt-cpp</td>
+        <td><a href="../guides/how-to-compile-smart-contract">Link</a></td>
+    </tr>
 </table>
 
 ## Advanced Guides

@@ -7,15 +7,19 @@ outline: [0,4]
 
 # Tutorial - Install Docker and get started with Developer Tools Docker image
 
-The goal of this tutorial it to help you get Docker installed on your machine
+This tutorial will cover the simplest process of installing Docker and obtaining Developer Tools Docker image.
 
 ## Prerequisites
 
 - No prerequisites
 
+## Goal
+
+The goal of this tutorial it to help you get Docker installed on your machine and getting started with the Developer Tools Docker image provided by Ultra: obtaining and starting it; checking its contents.
+
 ## Install Docker on your current operating system
 
-Please follow _one_ of the provided installation instructions below, appropriate to your operating system:
+The first step is to get Docker installed on your machine. Please follow _one_ of the provided installation instructions below, appropriate to your operating system:
 
 ::: details Windows
 
@@ -167,7 +171,7 @@ After installing and opening the docker application, you should be able to follo
 
 ## Obtaining the Docker image
 
-Pull the docker image down from quay.io:
+After you have installed Docker on your machine, you should be able to pull the Docker image down from quay.io:
 
 ```sh
 docker pull quay.io/ultra.io/3rdparty-devtools:latest
@@ -175,11 +179,11 @@ docker pull quay.io/ultra.io/3rdparty-devtools:latest
 
 You will also want to use this command to update the Docker image you have locally.
 
-The Docker image provided is located at [our official quay.io repository](https://quay.io/ultra.io/3rdparty-devtools). If you are interested, you can check there to see if there is a new version of the image available, or use an older version if needed.
+The Docker image we provide is located at [our official quay.io repository](https://quay.io/ultra.io/3rdparty-devtools). If you are interested, you can check there to see if there is a new version of the image available, or use an older version if needed.
 
 ## Running the Developer Tools Docker image
 
-To start the Docker container with the Developer Tools Docker image use _one_ of the following commands appropriate for your operating system:
+To start the Docker container with the cloned Developer Tools Docker image use _one_ of the following commands appropriate for your operating system:
 
 ::: details Windows
 ```sh
@@ -207,7 +211,7 @@ If you encounter an error: `Error response from daemon: Conflict. The container 
 The above command will utilize ports 8888 and 9876. If those ports are occupied the docker will fail to create the container. In case you encounter this issue, make sure you don't already have a container running with those ports in use. Otherwise, you can adjust the first number in port publishing (e.g. `8889:8888` instead of `8888:8888`) or remove the port publishing arguments completely (e.g. `-p 8888:8888 -p 9876:9876`).
 :::
 
-To stop the container without destroying it you can use the following command:
+To stop the container without destroying it you can use the following command. Stopping a container closes all running applications.
 
 ```sh
 docker stop ultra
@@ -264,7 +268,7 @@ The docker container has a shared directory located somewhere in your operating 
 
 -   Linux / macOS : `~/ultra_workdir`
 
--   Docker Container: `/opt/ultra_workdir`
+This directory will be linked to `/opt/ultra_workdir` inside the Docker container.
 
 You can make sure it is working correctly by running the following command in the terminal that is attached to the Docker container:
 

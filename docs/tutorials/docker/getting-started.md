@@ -195,7 +195,7 @@ You will be asked if you are okay with sharing the working directory with the Do
 ![](./images/docker-windows-allow-sharing.png)
 :::
 
-::: details Linux
+::: details Linux / macOS
 ```sh
 docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra_workdir:/opt/ultra_workdir --name ultra quay.io/ultra.io/3rdparty-devtools:latest
 ```
@@ -222,7 +222,7 @@ docker stop ultra
 After you created the container you will be able to attach to it using the following command. It will also start the container if it is currently stopped.
 
 ```sh
-docker start ultra && docker attach ultra
+docker start ultra && docker exec -it ultra /bin/bash
 ```
 
 ## What is included in the Docker image

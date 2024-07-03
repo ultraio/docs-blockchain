@@ -23,10 +23,10 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="./ultra-wallet/index">Tutorial</a></td>
     </tr>
     <tr>
-        <td>Docker Container</td>
-        <td>A docker container that contains binaries for cleos, nodeos, keosd, and ultratest. This container has everything to start a local blockchain.</td>
+        <td>Developer Tools Docker Image</td>
+        <td>A docker container that contains binaries for cleos, nodeos, keosd, and ultratest. This image has everything to start a local blockchain.</td>
         <td><a href="https://quay.io/repository/ultra.io/3rdparty-devtools?tab=tags&tag=latest">Image</a></td>
-        <td><a href="../tutorials/docker/index">Tutorial</a></td>
+        <td><a href="../tutorials/docker/getting-started">Tutorial</a></td>
     </tr>
     <tr>
         <td>Ultratest</td>

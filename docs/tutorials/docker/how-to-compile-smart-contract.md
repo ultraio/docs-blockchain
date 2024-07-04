@@ -1,14 +1,15 @@
 ---
-title: 'How to Create and Compile Smart Contracts with Docker'
-order: -99982
+title: 'Tutorial - Creating and Compiling Smart Contracts with Docker'
+order: -9998
 outline: [0, 5]
 ---
 
-# How to Create and Compile Smart Contracts with Docker
+# Creating and Compiling Smart Contracts with Docker
 This document guides you on how to create, compile, and deploy smart contracts using Ultra's 3rd party Docker image.
 
 ## Prerequisites
-Before you begin, ensure that Docker is installed on your computer.
+Before you begin, ensure that Docker is installed on your computer and you can use the Developer Tools Docker image. For guidance, refer to the [Tutorial - Install Docker and get started with Developer Tools Docker image](getting-started.md) tutorial.
+
 
 ## Step 1: Pull the Ultra Image
 Pull the Ultra 3rd party Docker image with the following command:

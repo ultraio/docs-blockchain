@@ -10,41 +10,23 @@ This document guides you on how to create, compile, and deploy smart contracts u
 ## Prerequisites
 Before you begin, ensure that Docker is installed on your computer and you can use the Developer Tools Docker image. For guidance, refer to the [Tutorial - Install Docker and get started with Developer Tools Docker image](getting-started.md) tutorial.
 
+## Goal
+The goal of this tutorial is to guide developers through the process of creating, compiling, and deploying smart contracts using Development Tools Docker image. By following this step-by-step guide, you will learn how to set up the development environment, create and compile a smart contract, deploy it to the Ultra Blockchain, and interact with it.
 
-## Step 1: Pull the Ultra Image
-Pull the Ultra 3rd party Docker image with the following command:
-
-```sh
-docker pull quay.io/ultra.io/3rdparty-devtools
-```
-
-Verify the Ultra image with the following command:
-```sh
-docker image ls quay.io/ultra.io/3rdparty-devtools
-```
-
-![](./images/compile-smart-contract-pull-image.png)
-## Step 2: Start the Docker Container
+## Step 1: Start the Docker Container and Log In
 Start the Docker container, which contains the smart contract developer tools and a local Ultra Blockchain, using the following command:
 
 ```sh
-docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra_workdir:/opt/ultra_workdir quay.io/ultra.io/3rdparty-devtools
+docker start ultra
 ```
 
-Verify that the Ultra Docker container is up and running with:
-
-```sh
-docker ps -a
-```
-![](./images/compile-smart-contract-start-docker.png)
-
-## Step 3: Start the Local Chain in the Docker Container
-Log in to the container with:
+Log in to your container with the following command:
 
 ```sh
 docker exec -it ultra /bin/bash
 ```
 
+## Step 2: Start the Local Chain in the Docker Container
 Start the local Ultra Blockchain with:
 
 ```sh
@@ -54,21 +36,17 @@ Accept the default recommendation for the temporary files location by pressing e
 
 ![](./images/compile-smart-contract-start-local-chain.png)
 
-### Step 3a: Verify the Local Chain is Running
+### Step 2a: Verify the Local Chain is Running
 Execute the following command inside the container:
 
 ```sh
 cleos get info
 ```
 
-Or from outside the container on the host machine:
-```sh
-docker exec ultra cleos get info
-```
 ![](./images/compile-smart-contract-verfy-local-chain.png)
 
-## Step 4: Create and Compile the Smart Contract
-Create a directory on your host machine in `ultra_workdir/hello` and create a file named `hello.cpp` with the following content:
+## Step 3: Create and Compile the Smart Contract
+Create a directory on your **host** machine at `ultra_workdir/hello` and create a file named `hello.cpp` with the following content:
 
 ```cpp
 #include <eosio/eosio.hpp>
@@ -84,15 +62,22 @@ void hi(eosio::name user) {
 };
 ```
 
-Save it, then compile it with the following command:
+Save it, then compile it with the following command in your Docker session:
 
 ```sh
-docker exec ultra cdt-cpp -o /opt/ultra_workdir/hello/hello.wasm /opt/ultra_workdir/hello/hello.cpp
+cdt-cpp -o /opt/ultra_workdir/hello/hello.wasm /opt/ultra_workdir/hello/hello.cpp
 ```
+![](./images/compile-smart-contract-cdt-cpp.png)
 
-Verify that two new files, `hello.abi` and `hello.wasm`, were created in the hello directory.
+Verify that two new files, hello.abi and hello.wasm, were created in the hello directory with the following command:
 
-## Step 5: Create an Account for Deployment
+```sh
+ls -lsa /opt/ultra_workdir/hello/
+```
+![](./images/compile-smart-contract-ls-lsa.png)
+
+
+## Step 4: Create an Account for Deployment
 Inside the Docker container, create a private and public key pair:
 
 ```sh
@@ -124,13 +109,13 @@ cleos get account helloacc
 
 ![](./images/compile-smart-contract-helloacc.png)
 
-## Step 6: Deploy the Smart Contract
+## Step 5: Deploy the Smart Contract
 Deploy the smart contract to helloacc:
 
 ```sh
 cleos set contract helloacc /opt/ultra_workdir/hello hello.wasm hello.abi
 ```
-
+::: warning
 If you encounter the error account helloacc does not have KYC info, execute:
 
 ```sh
@@ -138,6 +123,7 @@ cleos push action eosio.kyc togglekyc '[]' -p ultra.kyc
 ```
 
 Then retry the deployment command.
+:::
 
 Verify the deployment:
 
@@ -147,7 +133,7 @@ cleos get code helloacc
 
 If the code hash is not zero, the contract has been successfully deployed.
 
-## Step 7: Interact with Your Smart Contract
+## Step 6: Interact with Your Smart Contract
 Call the hi action of the hello smart contract:
 
 ```sh
@@ -164,26 +150,10 @@ cleos push action helloacc hi '["Alice"]' -p helloacc@active
 Always use names that conform to the EOSIO naming rules: lowercase letters, digits, and periods, with a maximum length of 12 characters.
 
 ![](./images/compile-smart-contract-invalid-name.png)
-## Step 8: Cleanup Process
-Logout from the Docker container by typing exit or pressing CTRL+D.
 
-Stop the container:
+## Step 7: Log Out from Docker Container
+To log out from the Docker container, you can type `exit` or simply press the `CTRL+D` shortcut combination.
 
-```sh
-docker stop ultra
-```
-
-Remove the container:
-
-```sh
-docker rm ultra
-```
-
-Verify the removal:
-
-```sh
-docker ps -a
-```
-
-The ultra container should not appear in the list.
+## What's next?
+TBA
 

@@ -228,6 +228,11 @@ General tutorials to help feed your curiosity.
         <td>Learn how to install Docker and use our Development Tools Docker image</td>
         <td><a href="../docker/getting-started">Link</a></td>
     </tr>
+    <tr>
+        <td>Tutorial - Creating and Compiling Smart Contracts with Docker</td>
+        <td>Learn how to create and compile smart contract with Developer Tools Docker using cdt-cpp</td>
+        <td><a href="../docker/how-to-compile-smart-contract">Link</a></td>
+    </tr>
 </table>
 
 ## Others

@@ -51,6 +51,6 @@ compiler options:
 
 ## Useful Links
 
--   [Docker Image Usage](../../../../tutorials/docker/index.md)
+-   [Docker Image Usage](../../../../tutorials/docker/getting-started.md)
 -   [Create A Contract](./create-a-contract.md)
 -   [Compile A Contract](./compile-a-contract.md)

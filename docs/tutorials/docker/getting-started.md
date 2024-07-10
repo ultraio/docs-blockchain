@@ -15,7 +15,7 @@ This tutorial will cover the simplest process of installing Docker and obtaining
 
 ## Goal
 
-The goal of this tutorial is to help you installing Docker on your machine and getting started with the Developer Tools Docker image provided by Ultra: obtaining and starting it; checking its contents.
+The goal of this tutorial is to help you install Docker on your machine and get started with the Developer Tools Docker image provided by Ultra: obtaining and starting it; checking its contents.
 
 ## Install Docker on your current operating system
 

@@ -15,7 +15,7 @@ This tutorial will cover the simplest process of installing Docker and obtaining
 
 ## Goal
 
-The goal of this tutorial it to help you get Docker installed on your machine and getting started with the Developer Tools Docker image provided by Ultra: obtaining and starting it; checking its contents.
+The goal of this tutorial is to help you install Docker on your machine and get started with the Developer Tools Docker image provided by Ultra: obtaining and starting it; checking its contents.
 
 ## Install Docker on your current operating system
 
@@ -203,7 +203,7 @@ docker run -dit --name ultra -p 8888:8888 -p 9876:9876 -v ~/ultra_workdir:/opt/u
 
 After you created the container you realistically won't need to create it again. Existing container will be accessible under the name of `ultra`.
 
-::: info
+::: info Side note
 If you encounter an error: `Error response from daemon: Conflict. The container name "/ultra" is already in use`, then it means you already have the container running and don't need to do anything.
 :::
 

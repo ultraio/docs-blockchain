@@ -13,6 +13,10 @@ Compiling smart contracts is very simple with the [Ultra Smart Contract Toolkit]
 
 -   Have installed the Ultra Smart Contract Toolkit Extension. Refer to [Install and Setup the Ultra Smart Contract Toolkit Extension Tutorial](./index.md) for more information.
 
+::: info
+The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+:::
+
 ## Goal
 
 The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract Toolkit extension.

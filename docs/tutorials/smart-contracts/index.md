@@ -13,6 +13,10 @@ order: -98
 -   [VS Code](https://code.visualstudio.com/)
     -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended)
 
+::: info
+The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+:::
+
 ## Goal
 
 The goal of this tutorial is to install the Ultra Smart Contract Toolkit extension and getting started with writing smart contracts.

@@ -1,0 +1,35 @@
+{
+  "specVersion": "1.0",
+  "name": "Angry Banana #1",
+  "subName": "Banana 1",
+  "description": "Angry banana #1!",
+  "author": "John Doe",
+  "defaultLocale": "en-US",
+  "media": {
+    "product": {
+      "contentType": "image/png",
+      "integrity": {
+        "type": "SHA256",
+        "hash": "51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9"
+      },
+      "uris": [
+        "https://developers.ultra.io/uniq-collections/AngryBananas/51aa8699ebc19560234ce8db808e13f88069784c925838157a4d33da486742d9.png"
+      ]
+    },
+    "square": {
+      "contentType": "image/png",
+      "integrity": {
+        "type": "SHA256",
+        "hash": "9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01"
+      },
+      "uris": [
+        "https://developers.ultra.io/uniq-collections/AngryBananas/9a4a2560f581f3982ce9c6daf58d0da673432868cd16b2191ce279d8a8ae4c01.png"
+      ]
+    },
+    "gallery": []
+  },
+  "attributes": {
+    "Anger Level": "45",
+    "Is super angry?": "FALSE"
+  }
+}

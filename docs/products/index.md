@@ -35,6 +35,18 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="./ultratest/index">Tutorial</a></td>
     </tr>
     <tr>
+        <td>Uniq Metadata Tool</td>
+        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
+        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
+        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Ultra Tool Kit</td>
+        <td>Browser-based utility to interact with Ultra Blockchain</td>
+        <td><a href="https://github.com/ultraio/ultra-tool-kit">Source</a></td>
+        <td><a href="./ultra-tool-kit/index">Tutorial</a></td>
+    </tr>
+    <tr>
         <td>Chain API</td>
         <td>Ultra's block producers provide infrastructure to query various chain data such as accounts, user balances, and more.</td>
         <td>N/A</td>
@@ -81,11 +93,5 @@ Check out some of the various libraries, code examples and products we have avai
         <td>A bot that links Discord Users with Ultra Accounts, and allows custom role integration based on owned uniqs.</td>
         <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
         <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
-    </tr>
-     <tr>
-        <td>Uniq Metadata Tool</td>
-        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
-        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
-        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
     </tr>
 </table>

@@ -6,9 +6,7 @@ order: -99999999
 
 # Ultra Tool Kit
 
-Build smart contracts, and get rid of those annoying squigglies while working with smart contracts on EOS based chains.
-
-This is your all in one toolkit to do everything in the blink of an eye.
+This tool allows you to interact with Ultra Blockchain through your browser and allows you to query information directly from the Blockchain or use Ultra API to get additional data.
 
 ## Where to access
 

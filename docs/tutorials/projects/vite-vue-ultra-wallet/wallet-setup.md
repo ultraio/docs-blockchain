@@ -12,7 +12,7 @@ Setting up the ultra wallet for your application is as simple as reading `window
 
 In the previous steps we created a project called `ultra-project`.
 
-We are now going to open that project in an IDE of our choice, we'll be using `VSCode` for this tutorial.
+We are now going to open that project in an IDE of our choice, we'll be using `VS Code` for this tutorial.
 
 ![](./images/vscode-init-project.png)
 
@@ -21,7 +21,7 @@ As you can see we have everything we need here.
 - Project files on the left
 - Terminal for running commands on the bottom
     - If this isn't opened just click Terminal in the menu at the top. Sometimes it's under the `...` menu.
-- Editor where the larger `VSCode` logo is.
+- Editor where the larger `VS Code` logo is.
 
 ## Basic SSL Installation
 

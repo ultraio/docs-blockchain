@@ -1,14 +1,14 @@
 ---
-title: 'How to log in to the Ultra Toolkit using Anchor Wallet'
+title: 'How to log in to the Ultra Tool Kit using Anchor Wallet'
 order: -99999
 oultine: [0, 5]
 ---
 
-# How to log in to the Ultra Toolkit using Anchor Wallet
+# How to log in to the Ultra Tool Kit using Anchor Wallet
 
-Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+Ultra Tool Kit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
-This tutorial will cover the simplest process of logging in to the Ultra Toolkit using [Anchor Wallet](https://www.greymass.com/anchor).
+This tutorial will cover the simplest process of logging in to the Ultra Tool Kit using [Anchor Wallet](https://www.greymass.com/anchor).
 Anchor is a security and privacy focused open-source digital wallet for all Antelope-based networks.
 
 ## Prerequisites
@@ -17,7 +17,7 @@ Anchor is a security and privacy focused open-source digital wallet for all Ante
 
 ## Goal
 
-The goal of this tutorial is to login into the Ultra Toolkit using Anchor Wallet.
+The goal of this tutorial is to login into the Ultra Tool Kit using Anchor Wallet.
 
 ## Setting Up Anchor Wallet
 
@@ -73,21 +73,21 @@ The goal of this tutorial is to login into the Ultra Toolkit using Anchor Wallet
 
     You have now successfully added your Ultra Pro account to Anchor wallet.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
 ## Network Selection
 
-Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+Once you're on the Tool Kit homepage, click on the network selection component on the top right of your screen.
 
 ![](../fundamentals/images/toolkit-network-selection.png)
 
-Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Mainnet. From the list of available networks, click on `Mainnet`.
+Clicking on the network selection component will open up a list of available networks that you can use the tool kit on. For the sake of this tutorial, we will be using the Ultra Mainnet. From the list of available networks, click on `Mainnet`.
 
-## Login to Toolkit
+## Login to Tool Kit
 
-Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Anchor` option.
+Click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Anchor` option.
 
 ![](../fundamentals/images/toolkit-login-button.png)
 
@@ -105,14 +105,14 @@ Enter your Anchor password and click on `Authorize` button.
 
 ![](./images/anchor-authorize-login-pwd.png)
 
-Once authorized, you will be logged in to the toolkit. You can verify this by checking for your account name in the top left corner of your screen.
+Once authorized, you will be logged in to the tool kit. You can verify this by checking for your account name in the top left corner of your screen.
 
 ![](./images/toolkit-login-account-name.png)
 
-You have now successfully logged in to the Ultra Toolkit using Anchor Wallet.
+You have now successfully logged in to the Ultra Tool Kit using Anchor Wallet.
 
 ## What's next?
 
-After logging in to the toolkit, you can utilize it to sign transactions with your Anchor Wallet. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Anchor Wallet.
+After logging in to the tool kit, you can utilize it to sign transactions with your Anchor Wallet. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Anchor Wallet.
 
 -   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)

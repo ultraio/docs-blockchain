@@ -374,7 +374,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Smart Contract Toolkit',
+            text: 'Smart Contract VS Code Extension',
             items: getMarkdownFiles('/products/smart-contract-toolkit'),
             collapsed: true,
         },

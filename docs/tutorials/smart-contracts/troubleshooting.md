@@ -30,7 +30,7 @@ Consider stoppping a process listening to that port or reassigning a mapping to 
 
 You can also change your workdir (output directory) with `-v`. Refer to docker [documentation](https://docs.docker.com/storage/volumes/#choose-the--v-or---mount-flag).
 
-## Vscode extension docker unavailable
+## VS Code Extension docker unavailable
 
 ![](/images/vscode-docker-issue.png)
 

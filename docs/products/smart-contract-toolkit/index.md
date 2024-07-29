@@ -12,9 +12,9 @@ This is your all in one toolkit to do everything in the blink of an eye.
 
 ## Install
 
-[Download from VSCode Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+[Download from VS Code Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
 
-Inside of vscode extension browser type `ultra-cpp`.
+Inside of VS Code extension browser type `ultra-cpp`.
 
 ## Features
 
@@ -28,7 +28,7 @@ Inside of vscode extension browser type `ultra-cpp`.
 
 ## Tutorials & Help
 
--   [Install and Setup the Ultra Smart Contract Toolkit Extension](../../tutorials/smart-contracts/index.md)
+-   [Install and Setup the Ultra Smart Contract VS Code Extension](../../tutorials/smart-contracts/index.md)
 
--   Vscode extension walkthrough 👇
+-   VS Code extension walkthrough 👇
     <iframe width="560" height="315" src="https://www.youtube.com/embed/XhCPDQ2ugtw?si=srK0jAAeCHdndofZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

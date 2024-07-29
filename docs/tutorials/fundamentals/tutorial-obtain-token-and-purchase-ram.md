@@ -12,7 +12,7 @@ This tutorial will guide you through the process of obtaining UOS tokens using t
 
 Before starting this tutorial, ensure you have the following:
 
-- A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md).
 
 ## Goal
 
@@ -83,7 +83,7 @@ Start by checking the initial RAM balance of your account to understand how much
 
 ### Step 2: Initiate RAM Purchase
 
-1. Open the Ultra toolkit and select `Transaction Builder` from the left-hand menu.
+1. Open the Ultra Tool Kit and select `Transaction Builder` from the left-hand menu.
 2. Choose the `buyram` action under the `eosio` contracts to start the purchase process.
 
 ![](./images/buyram-action-builder.png)
@@ -100,7 +100,7 @@ Fill in the required fields for the `buyram` action:
 
 ### Step 4: Confirm the Transaction
 
-Review the transaction details on the next screen. Ensure that all the information is correct before proceeding to confirm the transaction within the toolkit.
+Review the transaction details on the next screen. Ensure that all the information is correct before proceeding to confirm the transaction within the tool kit.
 
 ![](./images/buyram-confirm.png)
 
@@ -132,4 +132,4 @@ By following these steps, you have successfully used UOS tokens to purchase RAM 
 
 ## What's next?
 
-The next tutorial will cover the process of building a transaction using the Ultra Toolkit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)
+The next tutorial will cover the process of building a transaction using the Ultra Tool Kit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)

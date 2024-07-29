@@ -1,5 +1,5 @@
 ---
-title: 'How to perform advanced actions with Uniqs and Factories using Ultra Toolkit'
+title: 'How to perform advanced actions with Uniqs and Factories using Ultra Tool Kit'
 order: 1
 outline: [0, 4]
 ---
@@ -8,21 +8,21 @@ outline: [0, 4]
 
 After you have successfully created a factory and minted some Uniqs, you may now want to check what else you can do potentially.
 
-This guide will cover some advanced actions that apply to Uniqs and Factories using the Ultra Toolkit.
+This guide will cover some advanced actions that apply to Uniqs and Factories using the Ultra Tool Kit.
 
 ## Prerequisites
 
 -   Created a Uniq Factory and minted some Uniqs. Follow the [Factory creation guide](../creating-uniq-factories/how-to-create-uniq-metadata.md) and the [Uniq minting guide](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) for details.
 -   Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for Testnet or [how to buy UOS](../../guides/how-to-buy-uos.md) for Mainnet.
-- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md).
 
 ## Goal
 
-The goal of this guide is to demonstrate the usage of some of the actions you can perform with your Uniqs and Factories using Ultra Toolkit. This includes the transferring and burning Uniqs; adding authorized minters to a factory.
+The goal of this guide is to demonstrate the usage of some of the actions you can perform with your Uniqs and Factories using Ultra Tool Kit. This includes the transferring and burning Uniqs; adding authorized minters to a factory.
 
 ## How to transfer a Uniq to another account
 
-For testing it may be necessary to transfer Uniqs manually and in greater quantities. You can use the toolkit to quickly assemble a transfer transaction and run it. For more details see the [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/transfer.md).
+For testing it may be necessary to transfer Uniqs manually and in greater quantities. You can use the tool kit to quickly assemble a transfer transaction and run it. For more details see the [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/transfer.md).
 
 First, navigate to [Uniq management actions](https://toolkit.ultra.io/uniqManagement), search `transfer`, and select the `Transfer token (eosio.nft.ft::transfer)` action.
 
@@ -82,7 +82,7 @@ To actually mint the Uniqs as authorized minter you need to utilize the `Authori
 
 ![](./images/authorized-minter-search-issue.png)
 
-Similar to [How to mint a Uniq using the Ultra Toolkit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide you need to fill `To`, `Token factory ID` and `Amount`. But now you also need to additionally specify the `Authorizer`. The `Authorizer` must be an authorized minter assigned using the authorized minter action.
+Similar to [How to mint a Uniq using the Ultra Tool Kit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide you need to fill `To`, `Token factory ID` and `Amount`. But now you also need to additionally specify the `Authorizer`. The `Authorizer` must be an authorized minter assigned using the authorized minter action.
 
 ![](./images/authorized-minter-issue-form.png)
 
@@ -92,4 +92,4 @@ After clicking on `Send 1 Action`, reviewing the details, and confirming the tra
 
 ## What's next?
 
--   [How to add a first-hand purchase options using Ultra Toolkit](../factory-management/how-to-add-first-hand-purchase-using-toolkit.md)
+-   [How to add a first-hand purchase options using Ultra Tool Kit](../factory-management/how-to-add-first-hand-purchase-using-toolkit.md)

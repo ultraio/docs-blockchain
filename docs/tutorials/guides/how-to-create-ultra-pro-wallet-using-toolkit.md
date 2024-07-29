@@ -1,12 +1,12 @@
 ---
-title: 'How to create an Ultra Pro Wallet using Ultra Toolkit'
+title: 'How to create an Ultra Pro Wallet using Ultra Tool Kit'
 order: -99988
 oultine: [0, 5]
 ---
 
-# How to create an Ultra Pro Wallet using Ultra Toolkit
+# How to create an Ultra Pro Wallet using Ultra Tool Kit
 
-This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Toolkit.
+This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Tool Kit.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ This tutorial will cover the simplest process of creating a developer account on
 
 ## Goal
 
-The goal of this tutorial is to create a new developer Ultra Pro Wallet on Mainnet, using the Ultra Toolkit. You can use your Ultra Pro Wallet to directly interact with the blockchain. It is desireable for developers as it provides a more granular control over your account and allows it to be easily used for other tools and libraries like `cleos` or `Wharfkit`.
+The goal of this tutorial is to create a new developer Ultra Pro Wallet on Mainnet, using the Ultra Tool Kit. You can use your Ultra Pro Wallet to directly interact with the blockchain. It is desireable for developers as it provides a more granular control over your account and allows it to be easily used for other tools and libraries like `cleos` or `Wharfkit`.
 
 ## Open and log in to the Ultra Wallet
 
@@ -53,17 +53,17 @@ It is up to you to properly secure your private key and not to lose it. If you l
 \
 Once you have your key pair, you can proceed with the creation of the Ultra Pro Wallet.
 
-## Log in to the Ultra Toolkit
+## Log in to the Ultra Tool Kit
 
-Log in to the Ultra Toolkit (https://toolkit.ultra.io) using your Ultra Wallet extension. Refer to [Log in to the Ultra Toolkit Tutorial](../fundamentals/tutorial-login-to-toolkit.md) if you need help logging into the Ultra Toolkit.
+Log in to the Ultra Tool Kit (https://toolkit.ultra.io) using your Ultra Wallet extension. Refer to [Log in to the Ultra Tool Kit Tutorial](../fundamentals/tutorial-login-to-toolkit.md) if you need help logging into the Ultra Tool Kit.
 
-Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Toolkit.
+Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool Kit.
 
 ![](./images/select-network-mainnet-toolkit.png)
 
 ## Create an Ultra Pro Wallet
 
-1. Once logged in to the toolkit, click on `Transaction Builder` from the Ultra Toolkit sidebar menu to open the transaction builder page.
+1. Once logged in to the tool kit, click on `Transaction Builder` from the Ultra Tool Kit sidebar menu to open the transaction builder page.
 
 ![](./images/toolkit-tx-builder.png)
 

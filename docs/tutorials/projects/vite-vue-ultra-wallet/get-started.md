@@ -11,7 +11,7 @@ Install the programs below, most if not all of them are required.
 - Google Chrome, or Chromium Equivalent
 - [Ultra Wallet Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
 - [NodeJS](https://nodejs.org/en/download)
-- [VSCode Editor, IDE](https://code.visualstudio.com/)
+- [VS Code Editor, IDE](https://code.visualstudio.com/)
 
 ## Setup
 

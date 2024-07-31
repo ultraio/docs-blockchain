@@ -1,15 +1,15 @@
 ---
-title: 'How to log in to the Ultra Toolkit using Ledger'
+title: 'How to log in to the Ultra Tool Kit using Ledger'
 order: -99998
 oultine: [0, 5]
 
 ---
 
-# How to log in to the Ultra Toolkit using Ledger
+# How to log in to the Ultra Tool Kit using Ledger
 
-Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+Ultra Tool Kit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
-This tutorial will cover the simplest process of logging in into the Ultra Toolkit using a [Ledger Device](https://www.ledger.com).
+This tutorial will cover the simplest process of logging in into the Ultra Tool Kit using a [Ledger Device](https://www.ledger.com).
 Ledger devices are hardware crypto wallets that store your private keys offline.
 
 ## Prerequisites
@@ -20,7 +20,7 @@ Ledger devices are hardware crypto wallets that store your private keys offline.
 
 ## Goal
 
-The goal of this tutorial is to login into the Ultra Toolkit using Ledger.
+The goal of this tutorial is to login into the Ultra Tool Kit using Ledger.
 
 ## Setting Up Ledger for EOS
 
@@ -37,8 +37,8 @@ The goal of this tutorial is to login into the Ultra Toolkit using Ledger.
 
 Your ledger device comes with multiple public keys. Each public key is assigned an index value starting from `0`. For the sake of this tutorial, we will use the first public key (i.e; the public key at index `0`).
 
-To obtain the public key of your Ledger, go to Ultra Toolkit (https://toolkit.ultra.io), and
-click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ledger` option.
+To obtain the public key of your Ledger, go to Ultra Tool Kit (https://toolkit.ultra.io), and
+click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Ledger` option.
 
 ![](../fundamentals/images/toolkit-login-button.png)
 
@@ -54,15 +54,15 @@ The new prompt will ask you to input your Ledger index. Enter `0` (or whatever i
 
 Once you have copied the public key associated with your Ledger device, it is now time to create an Ultra Pro Wallet for that public key. To do so, follow the [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet.md#create-an-ultra-pro-wallet) guide, and instead of generating a new key pair, use the public key that you have obtained in the previous steps.
 
-## Login to Toolkit
+## Login to Tool Kit
 
-Once you have created an Ultra Pro Wallet for your Ledger, return to Ultra Toolkit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
+Once you have created an Ultra Pro Wallet for your Ledger, return to Ultra Tool Kit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
 
 ![](../fundamentals/images/toolkit-network-selection.png)
 
 Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. From the list of available networks, click on `Mainnet`.
 
-Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ledger` option.
+Click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Ledger` option.
 
 ![](../fundamentals/images/toolkit-login-button.png)
 
@@ -78,7 +78,7 @@ From the list of accounts, select the one that you want to use. This is usually 
 
 ![](./images/toolkit-login-account-name.png)
 
-You have now successfully logged in to the Ultra Toolkit using Ledger.
+You have now successfully logged in to the Ultra Tool Kit using Ledger.
 
 ## What's next?
 

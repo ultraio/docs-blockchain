@@ -47,7 +47,7 @@ There are 3 options to build a contract at the moment:
 
 -   Via [cdt-cpp](../../../tutorials/docker/getting-started.md) with docker
 -   Via [contract-builder](../../../products/contract-builder/index.md) tool
--   Via [vscode extension](../../../tutorials/smart-contracts/compile.md)
+-   Via [VS Code extension](../../../tutorials/smart-contracts/compile.md)
 
-Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
+VS Code extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
 it's better to use the docker option.

@@ -438,5 +438,5 @@ You have now successfully generated the metadata for your uniq collection.
 
 Once you have generated the metadata for your uniq collection, the next steps are to:
 
--   [How to validate metadata using Ultra Toolkit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
--   [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md)
+-   [How to validate metadata using Ultra Tool Kit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
+-   [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md)

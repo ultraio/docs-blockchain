@@ -1,12 +1,12 @@
 ---
-title: "How to validate uniq metadata using Ultra Toolkit's Schema Validator"
+title: "How to validate uniq metadata using Ultra Tool Kit's Schema Validator"
 order: 3
 outline: [0, 4]
 ---
 
-# How to validate uniq metadata using Ultra Toolkit's Schema Validator
+# How to validate uniq metadata using Ultra Tool Kit's Schema Validator
 
-Schema validator is a feature of the Ultra Toolkit that helps you to validate your uniq metadata files.
+Schema validator is a feature of the Ultra Tool Kit that helps you to validate your uniq metadata files.
 
 ## Prerequisites
 
@@ -14,15 +14,15 @@ Schema validator is a feature of the Ultra Toolkit that helps you to validate yo
 
 ## Goal
 
-The goal of this tutorial is to help validate your metadata files using Ultra Toolkit's schema validator.
+The goal of this tutorial is to help validate your metadata files using Ultra Tool Kit's schema validator.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
 ## Schema Validator
 
-Once on the toolkit home page, click on the `Schema Validator` from the sidebar to open the schema validator page.
+Once on the tool kit home page, click on the `Schema Validator` from the sidebar to open the schema validator page.
 
 ![](./images/schema-validator-default.png)
 
@@ -40,4 +40,4 @@ If your metadata file does not comply with the specified schema, you will see an
 
 ## What's next?
 
-Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md).
+Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md).

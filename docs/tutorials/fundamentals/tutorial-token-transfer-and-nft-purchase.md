@@ -6,13 +6,13 @@ outline: [0, 5]
 
 # Tutorial - Token transfer and Uniq purchase transactions
 
-This tutorial will demonstrate how to use the Ultra toolkit for sending asset (transfer) and purchasing Uniq interact with Ultra the blockchain.
+This tutorial will demonstrate how to use the Ultra tool kit for sending asset (transfer) and purchasing Uniq interact with Ultra the blockchain.
 
 ## Prerequisites
 
 Before starting this tutorial, you will need:
 
-- A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md).
 - Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](./tutorial-obtain-token-and-purchase-ram.md).
 
 ## Goal
@@ -24,11 +24,11 @@ The goal of this tutorial is to show you how to:
 
 ## Transferring Tokens
 
-To transfer tokens using the Ultra toolkit, follow these steps closely:
+To transfer tokens using the Ultra tool kit, follow these steps closely:
 
 ### Step 1: Access the Transaction Builder
 
-Open the Ultra toolkit and log in with your developer account. Click on the 'Transaction Builder' tab to begin creating a new transaction.
+Open the Ultra tool kit and log in with your developer account. Click on the 'Transaction Builder' tab to begin creating a new transaction.
 
 ![](./images/token-transfer-action-builder.png)
 
@@ -78,7 +78,7 @@ To ensure the transaction was successfully processed, visit the Ultra Testnet Ex
 
 ## Purchasing Digital Assets (Uniqs)
 
-To purchase a Uniq from the Uniq Factory using the Ultra toolkit, follow these steps carefully:
+To purchase a Uniq from the Uniq Factory using the Ultra tool kit, follow these steps carefully:
 
 ### Step 1: Verify Factory Details
 
@@ -88,7 +88,7 @@ Begin by checking the Factory Explorer in the Uniq Explorer. Confirm the on-chai
 
 ### Step 2: Initiate Purchase Action
 
-Navigate to the `Factory` page under the `Uniq Actions` section of the toolkit and then start typing `purchase` into the search bar. Then select the `Purchase Uniqs directly` action.
+Navigate to the `Factory` page under the `Uniq Actions` section of the tool kit and then start typing `purchase` into the search bar. Then select the `Purchase Uniqs directly` action.
 
 ![](./images/purchase-action-builder.png)
 
@@ -130,7 +130,7 @@ Once the transaction is signed, a confirmation screen will display indicating th
 
 #### Step 7a: Access Your User Inventory Page
 
-To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
+To confirm the purchase of your new Uniq, navigate to the Ultra tool kit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
 
 ![](./images/purchase-user-uniq-explorer.png)
 

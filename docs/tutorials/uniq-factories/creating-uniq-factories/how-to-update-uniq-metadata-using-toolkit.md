@@ -1,10 +1,10 @@
 ---
-title: 'How to update metadata using the Ultra Toolkit'
+title: 'How to update metadata using the Ultra Tool Kit'
 order: 6
 outline: [0, 4]
 ---
 
-# How to update metadata using the Ultra Toolkit
+# How to update metadata using the Ultra Tool Kit
 
 An important aspect of the Ultra NFT standard is the ability to update metadata. Game publishers may want to modify a uniq's traits based on in-game events.
 
@@ -13,13 +13,13 @@ For this guide, we will use the uniq factory and uniq token created in the previ
 ## Prerequisites
 
 -   You must have already created and uploaded the metadata files. Refer to [How to create Uniq Metadata](./how-to-create-uniq-metadata.md) for more information.
--   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+-   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
 -   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 -   Ensure your account is the uniq factory manager for the uniq factory whose metadata you intend to update, as only the uniq factory manager is authorized to perform metadata related updates.
 
 ## Goal
 
-The goal of this guide is to help you understand how you can update the metadata using Ultra Toolkit. This guide is divided into three sections:
+The goal of this guide is to help you understand how you can update the metadata using Ultra Tool Kit. This guide is divided into three sections:
 
 1. **Updating Uniq Factory Metadata**: Will walk you through the process of updating metadata for a uniq factory.
 2. **Updating Default Uniq Metadata**: Will walk you through the process of updating metadata for the default uniq.
@@ -29,7 +29,7 @@ The goal of this guide is to help you understand how you can update the metadata
 
 If a content creator re-uploads a new uniq factory metadata, they can use the `setmeta.b` action to update the metadata for the uniq factory. To do so, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
 3. On the factory page, search for `setmeta` action in the search box, and click on the `Set factory metadata (eosio.nft.ft::setmeta.b)` action to open up the transaction modal.
 
@@ -66,7 +66,7 @@ You have now successfully updated the metadata for a uniq factory.
 
 Default uniq metadata is used as a fallback mechanism whenever there's no metadata available for a uniq. To update the default uniq metadata, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
 3. On the factory page, search for `setdflttkn` action in the search box, and click on the `Set default token metadata (eosio.nft.ft::setdflttkn)` action to open up the transaction modal.
 
@@ -105,7 +105,7 @@ You have now successfully updated the default uniq metadata.
 
 To update the uniq metadata, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the uniq manager page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Uniq`.
 3. On the uniq page, search for `settknmeta` action in the search box, and click on the `Set token metadata (eosio.nft.ft::settknmeta)` action to open up the transaction modal.
 
@@ -147,7 +147,7 @@ For certain use cases, it might make sense to make the uniq factory immutable. F
 
 To disable metadata updates for a uniq factory, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
 3. On the factory page, search for `lckfactory` action in the search box, and click on the `Lock factory (eosio.nft.ft::lckfactory)` action to open up the transaction modal.
 

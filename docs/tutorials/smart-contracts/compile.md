@@ -1,31 +1,31 @@
 ---
-title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension'
+title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension'
 
 outline: [0, 5]
 order: -97
 ---
 
-# Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension
+# Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension
 
-Compiling smart contracts is very simple with the [Ultra Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+Compiling smart contracts is very simple with the [Ultra Smart Contract VS Code Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
 
 ## Prerequisites
 
--   Have installed the Ultra Smart Contract Toolkit Extension. Refer to [Install and Setup the Ultra Smart Contract Toolkit Extension Tutorial](./index.md) for more information.
+-   Have installed the Ultra Smart Contract VS Code Extension. Refer to [Install and Setup the Ultra Smart Contract VS Code Extension Tutorial](./index.md) for more information.
 
 ::: info
-The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+The tutorial is up-to-date with version 1.4.2 of the VS Code extension
 :::
 
 ## Goal
 
-The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract Toolkit extension.
+The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract VS Code Extension.
 
 ## How to Compile
 
 There are **two ways** to compile your smart contract.
 
-First way is to compile using the VS Code Status Bar. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VSCode.
+First way is to compile using the VS Code Status Bar. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VS Code.
 
 ![](./images/compile-button.png)
 
@@ -55,4 +55,4 @@ For more information about `.abi` and `.wasm` files see the [official EOS Networ
 
 ## What's next?
 
-The next tutorial will cover deploying smart contracts using the VS Code extension. See [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md) for more information.
+The next tutorial will cover deploying smart contracts using the VS Code extension. See [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension](./deploy.md) for more information.

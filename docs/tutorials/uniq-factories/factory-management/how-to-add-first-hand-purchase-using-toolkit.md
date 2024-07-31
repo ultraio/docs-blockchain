@@ -1,10 +1,10 @@
 ---
-title: 'How to add a first-hand purchase options using Ultra Toolkit'
+title: 'How to add a first-hand purchase options using Ultra Tool Kit'
 order: 2
 outline: [0, 4]
 ---
 
-# How to add a first-hand purchase options using Ultra Toolkit
+# How to add a first-hand purchase options using Ultra Tool Kit
 
 Besides directly minting Uniqs or assigning authorized minters, it may be desired to allow users to directly purchase Uniqs from your factory. This can be achieved using the first-hand purchase feature which will be covered in this guide.
 
@@ -12,7 +12,7 @@ Besides directly minting Uniqs or assigning authorized minters, it may be desire
 
 -   Created a Uniq Factory. Follow the [Factory creation guide](../creating-uniq-factories/how-to-create-uniq-metadata.md) for details.
 -   Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for Testnet or [how to buy UOS](../../guides/how-to-buy-uos.md) for Mainnet.
-- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md).
 
 ## Goal
 
@@ -78,7 +78,7 @@ For more details see the [action documentation](../../../blockchain/contracts/nf
 
 After you have filled the form, click on `Send 1 Action`, review the details, and confirm the transaction.
 
-Now you should be able to navigate to your inventory (either click on the `Inventory` on the home page of the Toolkit https://toolkit.ultra.io/ or go to https://toolkit.ultra.io/user and enter desired account name manually).
+Now you should be able to navigate to your inventory (either click on the `Inventory` on the home page of the Tool Kit https://toolkit.ultra.io/ or go to https://toolkit.ultra.io/user and enter desired account name manually).
 
 You should be able to scroll down and see the list of Uniqs the account has. Note that it may take a minute for Ultra API to update and show your Uniq.
 
@@ -123,7 +123,7 @@ The process of purchasing Uniq using the purchase option with Uniqs requirement 
 
 To do so, first navigate to [Factory management actions](https://toolkit.ultra.io/factoryManagement), and search again for `purchase` and select `Purchase Uniqs directly (eosio.nft.ft::purchase.a)`.
 
-If the purchase option requires Uniqs from other factories then the account must have those Uniqs in its inventory. If you need to mint this Uniq then either refer to a [How to mint a Uniq using the Ultra Toolkit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide or add add a simple first-hand purchase option with UOS price to this factory and purchase it, as was described in this guide.
+If the purchase option requires Uniqs from other factories then the account must have those Uniqs in its inventory. If you need to mint this Uniq then either refer to a [How to mint a Uniq using the Ultra Tool Kit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide or add add a simple first-hand purchase option with UOS price to this factory and purchase it, as was described in this guide.
 
 Here we minted a Uniq from factory 4030, which was specified in the previous step as a requirement for the purchase option with index 1.
 

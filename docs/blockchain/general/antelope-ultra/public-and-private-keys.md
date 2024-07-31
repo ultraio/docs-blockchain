@@ -33,7 +33,7 @@ In most cases we don't recommend generating private keys online. However, if you
 
 ### Alternative Ways to Generate Keypairs
 
--   [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+-   [Ultra.io VS Code Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
 -   [EOS Authority](https://eosauthority.com/generate_eos_private_key)
 -   [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
 -   [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)

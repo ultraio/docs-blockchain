@@ -14,7 +14,7 @@ Developers must have some knowledge in C++ to write smart contracts for the Ultr
 
 ## Hello World Smart Contract
 
-Recommended to setup a [VSCode Environment](./development-environment.md) before moving forward.
+Recommended to setup a [VS Code Environment](./development-environment.md) before moving forward.
 
 ### Setup
 

@@ -23,7 +23,7 @@ These include anything from best security practices, tools, and even other commu
 
 ### IDEs
 
-* [VSCode](https://code.visualstudio.com/download)
+* [VS Code](https://code.visualstudio.com/download)
 * [CLion](https://www.jetbrains.com/clion/)
 
 ### Examples
@@ -53,6 +53,6 @@ These include anything from best security practices, tools, and even other commu
 * [Blockchain Basics](https://docs.eosnetwork.com/docs/latest/blockchain-basics/)
 * [EOSIO Developer Portal](https://developers.eos.io/)
 
-### VSCode Extensions
+### VS Code Extensions
 
 * [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)

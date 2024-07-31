@@ -1,24 +1,24 @@
 ---
-title: 'Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension'
+title: 'Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension'
 
 outline: [0, 5]
 order: -95
 ---
 
-# Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension
+# Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension
 
 Once you have deployed your contract, you are ready for interacting with your contract.
 
 ## Goal
 
-The goal of this tutorial is to demonstrate how to interact with deployed smart contracts using the Ultra Smart Contract Toolkit Extension.
+The goal of this tutorial is to demonstrate how to interact with deployed smart contracts using the Ultra Smart Contract VS Code Extension.
 
 ## Prerequisites
 
--   You must have deployed your smart contract. Refer to [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md).
+-   You must have deployed your smart contract. Refer to [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension](./deploy.md).
 
 ::: info
-The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+The tutorial is up-to-date with version 1.4.2 of the VS Code extension
 :::
 
 ## Interacting with Smart Contract

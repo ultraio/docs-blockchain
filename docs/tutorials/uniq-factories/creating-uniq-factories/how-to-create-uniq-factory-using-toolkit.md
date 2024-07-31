@@ -1,10 +1,10 @@
 ---
-title: 'How to create a Uniq Factory using the Ultra Toolkit'
+title: 'How to create a Uniq Factory using the Ultra Tool Kit'
 order: 4
 outline: [0, 4]
 ---
 
-# How to create a Uniq Factory using the Ultra Toolkit
+# How to create a Uniq Factory using the Ultra Tool Kit
 
 ![](/images/token-factories/new-token-factory.png)
 
@@ -17,11 +17,11 @@ outline: [0, 4]
 
 The goal of this guide is to help you create your first Uniq Factory on the Ultra Testnet network.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
-Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+Once you're on the Tool Kit homepage, click on the network selection component on the top right of your screen.
 
 ![](../../fundamentals/images/toolkit-network-selection.png)
 
@@ -29,13 +29,13 @@ Clicking on the network selection component will open up a list of available net
 
 ![](../../fundamentals/images/toolkit-network-selection-modal.png)
 
-Login to the Ultra Toolkit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
+Login to the Ultra Tool Kit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
 
 ## Creating Uniq Factory
 
 ### 1. Accessing Factory Management Page
 
-Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the factory management page.
+Once you've logged in to the tool kit, from the tool kit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the factory management page.
 
 ![](./images/toolkit-factory-actions-tab.png)
 
@@ -99,14 +99,14 @@ You'll find an actions list on the block explorer transaction page. Look for the
 
 ### 3. Verifying Factory Creation
 
-1. To verify the successful creation of your Uniq Factory, go to the `Factory Explorer` page on the toolkit (https://toolkit.ultra.io/uniqFactory).
+1. To verify the successful creation of your Uniq Factory, go to the `Factory Explorer` page on the tool kit (https://toolkit.ultra.io/uniqFactory).
 2. Make sure you are using the Ultra Testnet environment.
 3. Use the factory ID you obtained in the previous step to search for your Uniq Factory. Simply enter the ID and click the search button. You should then be able to view the details of your Uniq Factory.
 
 ![](./images/toolkit-factory-explorer-page.png)
 
-You have now successfully created your first uniq factory using the Ultra Toolkit.
+You have now successfully created your first uniq factory using the Ultra Tool Kit.
 
 ## What's next?
 
-Once you have created your first uniq factory, the next step is to mint your first uniq. Refer [How to mint a Uniq using the Ultra Toolkit](./how-to-mint-uniq-using-toolkit.md).
+Once you have created your first uniq factory, the next step is to mint your first uniq. Refer [How to mint a Uniq using the Ultra Tool Kit](./how-to-mint-uniq-using-toolkit.md).

@@ -28,8 +28,8 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Log in to the Ultra Toolkit</td>
-        <td>A brief introduction to the toolkit along with learning how log in to the toolkit using Ultra Wallet</td>
+        <td>Tutorial - Log in to the Ultra Tool Kit</td>
+        <td>A brief introduction to the tool kit along with learning how log in to the tool kit using Ultra Wallet</td>
         <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
     </tr>
     <tr>
@@ -58,8 +58,8 @@ General tutorials to help feed your curiosity.
         <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
     </tr>
     <tr>
-        <td>How to create Ultra Pro Wallet using Ultra Toolkit</td>
-        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Toolkit</td>
+        <td>How to create Ultra Pro Wallet using Ultra Tool Kit</td>
+        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Tool Kit</td>
         <td><a href="../guides/how-to-create-ultra-pro-wallet-using-toolkit">Link</a></td>
     </tr>
     <tr>
@@ -103,17 +103,17 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>How to log in to the Ultra Toolkit using Anchor Wallet</td>
-        <td>Learn how to setup your keys with Anchor wallet and log in to the toolkit using Anchor wallet.</td>
+        <td>How to log in to the Ultra Tool Kit using Anchor Wallet</td>
+        <td>Learn how to setup your keys with Anchor wallet and log in to the tool kit using Anchor wallet.</td>
         <td><a href="../advanced-guides/how-to-login-to-toolkit-using-anchor-wallet">Link</a></td>
     </tr>
     <tr>
-        <td>How to log in to the Ultra Toolkit using Ledger</td>
-        <td>Learn how to create your account and log in to the toolkit using a Ledger device.</td>
+        <td>How to log in to the Ultra Tool Kit using Ledger</td>
+        <td>Learn how to create your account and log in to the tool kit using a Ledger device.</td>
         <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
     </tr>
     <tr>
-        <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension</td>
+        <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension</td>
         <td>Learn how to deploy a smart contract on the Ultra Mainnet using the Ultra Smart Contract Visual Studio Code Extension</td>
         <td><a href="../advanced-guides/how-to-deploy-smart-contracts-to-mainnet-using-ultra-smart-contract-vscode-extension">Link</a></td>
     </tr>
@@ -143,23 +143,23 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension</td>
-        <td>Learn how to install and use the Ultra Smart Contract Toolkit Extension.</td>
+        <td>Tutorial - Install and Setup the Ultra Smart Contract VS Code Extension</td>
+        <td>Learn how to install and use the Ultra Smart Contract VS Code Extension.</td>
         <td><a href="../smart-contracts/index">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
-        <td>Build and compile smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+        <td>Build and compile smart contracts using the Ultra Smart Contract VS Code Extension</td>
         <td><a href="../smart-contracts/compile">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
-        <td>Deploy smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+        <td>Deploy smart contracts using the Ultra Smart Contract VS Code Extension</td>
         <td><a href="../smart-contracts/deploy">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
-        <td>Interact with smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+        <td>Interact with smart contracts using the Ultra Smart Contract VS Code Extension</td>
         <td><a href="../smart-contracts/transact">Link</a></td>
     </tr>
 </table>
@@ -178,33 +178,33 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata">Link</a></td>
     </tr>
     <tr>
-        <td>How to validate uniq metadata using Ultra Toolkit's Schema Validator</td>
-        <td>Learn how to validate uniq metadata files using Ultra Toolkit's schema validation feature</td>
+        <td>How to validate uniq metadata using Ultra Tool Kit's Schema Validator</td>
+        <td>Learn how to validate uniq metadata files using Ultra Tool Kit's schema validation feature</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to create a Uniq Factory using Ultra Toolkit</td>
-        <td>Learn how to create your first uniq factory using Ultra Toolkit</td>
+        <td>How to create a Uniq Factory using Ultra Tool Kit</td>
+        <td>Learn how to create your first uniq factory using Ultra Tool Kit</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to mint a Uniq using the Ultra Toolkit</td>
-        <td>Learn how to mint your first uniq using Ultra Toolkit</td>
+        <td>How to mint a Uniq using the Ultra Tool Kit</td>
+        <td>Learn how to mint your first uniq using Ultra Tool Kit</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to update metadata using the Ultra Toolkit</td>
+        <td>How to update metadata using the Ultra Tool Kit</td>
         <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to perform advanced actions with Uniqs and Factories using Ultra Toolkit</td>
-        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Toolkit</td>
+        <td>How to perform advanced actions with Uniqs and Factories using Ultra Tool Kit</td>
+        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Tool Kit</td>
         <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
-        <td>How to add first-hand purchase options using Toolkit</td>
-        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase option from your Factory</td>
+        <td>How to add first-hand purchase options using Tool Kit</td>
+        <td>Learn how to use Ultra Tool Kit to add or remove a direct purchase option from your Factory</td>
         <td><a href="../uniq-factories/factory-management/how-to-add-first-hand-purchase-using-toolkit">Link</a></td>
     </tr>
     <tr>

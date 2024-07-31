@@ -10223,7 +10223,7 @@ In most cases we don't recommend generating private keys online. However, if you
 
 ### Alternative Ways to Generate Keypairs
 
--   [Ultra.io VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+-   [Ultra.io VS Code Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
 -   [EOS Authority](https://eosauthority.com/generate_eos_private_key)
 -   [EOSCafe Offline Generator](https://github.com/eoscafe/eos-key)
 -   [NadeJDE Key Generator](https://nadejde.github.io/eos-token-sale/)
@@ -10378,9 +10378,9 @@ There are 3 options to build a contract at the moment:
 
 -   Via [cdt-cpp](../../../tutorials/docker/getting-started.md) with docker
 -   Via [contract-builder](../../../products/contract-builder/index.md) tool
--   Via [vscode extension](../../../tutorials/smart-contracts/compile.md)
+-   Via [VS Code extension](../../../tutorials/smart-contracts/compile.md)
 
-Vscode extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
+VS Code extension is the easiest one to start with. However, if your project has non-trivial build steps (i.e uses scripts for code generation)
 it's better to use the docker option.
 
 ---
@@ -10565,7 +10565,7 @@ These include anything from best security practices, tools, and even other commu
 
 ### IDEs
 
-* [VSCode](https://code.visualstudio.com/download)
+* [VS Code](https://code.visualstudio.com/download)
 * [CLion](https://www.jetbrains.com/clion/)
 
 ### Examples
@@ -10595,7 +10595,7 @@ These include anything from best security practices, tools, and even other commu
 * [Blockchain Basics](https://docs.eosnetwork.com/docs/latest/blockchain-basics/)
 * [EOSIO Developer Portal](https://developers.eos.io/)
 
-### VSCode Extensions
+### VS Code Extensions
 
 * [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
 ---
@@ -11039,7 +11039,7 @@ If you find a need for a wallet that almost never locks itself then seek the fol
 
 Accounts can be created in a variety of ways but it is important to understand that on the Ultra Blockchain a Ultra Pro Wallet is necessary to deploy smart contracts. 
 
-Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md) or [Ultra Toolkit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
+Meaning, developers who wish **to deploy a smart contract** on the production network should use the [Wallet Extension](../../../tutorials/guides/how-to-create-ultra-pro-wallet.md) or [Ultra Tool Kit](../../../blockchain/contracts/system-contract/system-actions/newnonebact.md) to create an Ultra Pro Wallet.
 
 ### Account Rules
 
@@ -14045,6 +14045,18 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="./ultratest/index">Tutorial</a></td>
     </tr>
     <tr>
+        <td>Uniq Metadata Tool</td>
+        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
+        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
+        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
+    </tr>
+    <tr>
+        <td>Ultra Tool Kit</td>
+        <td>Browser-based utility to interact with Ultra Blockchain</td>
+        <td><a href="https://github.com/ultraio/ultra-tool-kit">Source</a></td>
+        <td><a href="./ultra-tool-kit/index">Tutorial</a></td>
+    </tr>
+    <tr>
         <td>Chain API</td>
         <td>Ultra's block producers provide infrastructure to query various chain data such as accounts, user balances, and more.</td>
         <td>N/A</td>
@@ -14081,7 +14093,7 @@ Check out some of the various libraries, code examples and products we have avai
         <td>N/A</td>
     </tr>
     <tr>
-        <td>Smart Contract Toolkit for VSCode</td>
+        <td>Smart Contract VS Code Extension</td>
         <td>An all-inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to Ultra/EOS blockchain.</td>
         <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
         <td><a href="../tutorials/smart-contracts/compile.md">Tutorial</a></td>
@@ -14091,12 +14103,6 @@ Check out some of the various libraries, code examples and products we have avai
         <td>A bot that links Discord Users with Ultra Accounts, and allows custom role integration based on owned uniqs.</td>
         <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
         <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
-    </tr>
-     <tr>
-        <td>Uniq Metadata Tool</td>
-        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
-        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
-        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
     </tr>
 </table>
 
@@ -21894,9 +21900,9 @@ This is your all in one toolkit to do everything in the blink of an eye.
 
 ## Install
 
-[Download from VSCode Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
+[Download from VS Code Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp)
 
-Inside of vscode extension browser type `ultra-cpp`.
+Inside of VS Code extension browser type `ultra-cpp`.
 
 ## Features
 
@@ -21910,10 +21916,44 @@ Inside of vscode extension browser type `ultra-cpp`.
 
 ## Tutorials & Help
 
--   [Install and Setup the Ultra Smart Contract Toolkit Extension](../../tutorials/smart-contracts/index.md)
+-   [Install and Setup the Ultra Smart Contract VS Code Extension](../../tutorials/smart-contracts/index.md)
 
--   Vscode extension walkthrough 👇
+-   VS Code extension walkthrough 👇
     <iframe width="560" height="315" src="https://www.youtube.com/embed/XhCPDQ2ugtw?si=srK0jAAeCHdndofZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+---
+title: 'Introduction'
+
+order: -99999999
+---
+
+# Ultra Tool Kit
+
+This tool allows you to interact with Ultra Blockchain through your browser and allows you to query information directly from the Blockchain or use Ultra API to get additional data.
+
+## Where to access
+
+Ultra Tool Kit is available for anyone by visiting this web page: https://toolkit.ultra.io/.
+
+Some of the functionality will require you to be logged in. For additional help, please see the list of suggested tutorials.
+
+## How to contribute
+
+If you have desire to add some functionality on your own or suggest some of the potential modifications, please feel free to visit the main repository of the Ultra Tool Kit and check the README there for additional information: https://github.com/ultraio/ultra-tool-kit.
+
+## Features
+
+-   Connect to Testnet and Mainnet or a custom network
+    - Supports [Ultra Wallet](../ultra-wallet/index.md), Ledger and Anchor Wallet
+-   Build and execute transactions with any smart contract
+-   Create, approve and execute proposals
+-   Query [Ultra API](../nft-api/introduction.md)
+-   Validate Uniq and Factory Metadata JSONs
+
+## Tutorials & Help
+
+-   [Tutorial - Log in to the Ultra Tool Kit](../../tutorials/fundamentals/tutorial-login-to-toolkit.md)
+-   [Tutorial - Token transfer and Uniq purchase transactions](../../tutorials/fundamentals/tutorial-token-transfer-and-nft-purchase.md)
 
 ---
 title: 'How to add custom networks'
@@ -23481,42 +23521,42 @@ You can download the latest version of the tool from the [GitHub Releases Page](
 -   TODO
 
 ---
-title: 'How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension'
+title: 'How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension'
 order: -99997
 oultine: [0, 5]
 ---
 
-# How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension
+# How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension
 
 ## Goal
 
-The goal of this tutorial is to guide you through deploying a smart contract on the Ultra Mainnet, using the Ultra Smart Contract Toolkit Extension.
+The goal of this tutorial is to guide you through deploying a smart contract on the Ultra Mainnet, using the Ultra Smart Contract VS Code Extension.
 
 ## Prerequisites
 
--   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](../smart-contracts/compile.md) for more information.
+-   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension](../smart-contracts/compile.md) for more information.
 -   You must have created your Ultra Pro Wallet. If you need help creating your Ultra Pro Wallet, please refer to [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet-using-toolkit.md) guide.
 -   Your account must have sufficient UOS tokens on Ultra Mainnet for transactions and fees. Refer to [How to buy UOS tokens on Ultra Mainnet using the Ultra Wallet](../guides/how-to-buy-uos.md) guide for more information.
 
 ## Deploying on Ultra Mainnet
 
-Deploying a smart contract on Ultra Mainnet is pretty much the same as deploying to Ultra Testnet. Refer to the [Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](../smart-contracts/deploy.md#deploy-contract) tutorial and follow the deployment steps.
+Deploying a smart contract on Ultra Mainnet is pretty much the same as deploying to Ultra Testnet. Refer to the [Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension](../smart-contracts/deploy.md#deploy-contract) tutorial and follow the deployment steps.
 
 _The only thing you need to ensure is to select the `Ultra Mainnet` endpoint every time you are prompted to select an environment/endpoint._
 
 -   ![](../smart-contracts/images/command-palette-deploy-select-endpoint-mainnet.png)
 
 ---
-title: 'How to log in to the Ultra Toolkit using Anchor Wallet'
+title: 'How to log in to the Ultra Tool Kit using Anchor Wallet'
 order: -99999
 oultine: [0, 5]
 ---
 
-# How to log in to the Ultra Toolkit using Anchor Wallet
+# How to log in to the Ultra Tool Kit using Anchor Wallet
 
-Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+Ultra Tool Kit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
-This tutorial will cover the simplest process of logging in to the Ultra Toolkit using [Anchor Wallet](https://www.greymass.com/anchor).
+This tutorial will cover the simplest process of logging in to the Ultra Tool Kit using [Anchor Wallet](https://www.greymass.com/anchor).
 Anchor is a security and privacy focused open-source digital wallet for all Antelope-based networks.
 
 ## Prerequisites
@@ -23525,7 +23565,7 @@ Anchor is a security and privacy focused open-source digital wallet for all Ante
 
 ## Goal
 
-The goal of this tutorial is to login into the Ultra Toolkit using Anchor Wallet.
+The goal of this tutorial is to login into the Ultra Tool Kit using Anchor Wallet.
 
 ## Setting Up Anchor Wallet
 
@@ -23581,21 +23621,21 @@ The goal of this tutorial is to login into the Ultra Toolkit using Anchor Wallet
 
     You have now successfully added your Ultra Pro account to Anchor wallet.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
 ## Network Selection
 
-Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+Once you're on the Tool Kit homepage, click on the network selection component on the top right of your screen.
 
 ![](../fundamentals/images/toolkit-network-selection.png)
 
-Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Mainnet. From the list of available networks, click on `Mainnet`.
+Clicking on the network selection component will open up a list of available networks that you can use the tool kit on. For the sake of this tutorial, we will be using the Ultra Mainnet. From the list of available networks, click on `Mainnet`.
 
-## Login to Toolkit
+## Login to Tool Kit
 
-Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Anchor` option.
+Click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Anchor` option.
 
 ![](../fundamentals/images/toolkit-login-button.png)
 
@@ -23613,30 +23653,30 @@ Enter your Anchor password and click on `Authorize` button.
 
 ![](./images/anchor-authorize-login-pwd.png)
 
-Once authorized, you will be logged in to the toolkit. You can verify this by checking for your account name in the top left corner of your screen.
+Once authorized, you will be logged in to the tool kit. You can verify this by checking for your account name in the top left corner of your screen.
 
 ![](./images/toolkit-login-account-name.png)
 
-You have now successfully logged in to the Ultra Toolkit using Anchor Wallet.
+You have now successfully logged in to the Ultra Tool Kit using Anchor Wallet.
 
 ## What's next?
 
-After logging in to the toolkit, you can utilize it to sign transactions with your Anchor Wallet. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Anchor Wallet.
+After logging in to the tool kit, you can utilize it to sign transactions with your Anchor Wallet. Explore the following tutorials which demonstrate the process with Ultra Wallet. However, you can seamlessly adapt these instructions to sign transactions with your Anchor Wallet.
 
 -   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)
 
 ---
-title: 'How to log in to the Ultra Toolkit using Ledger'
+title: 'How to log in to the Ultra Tool Kit using Ledger'
 order: -99998
 oultine: [0, 5]
 
 ---
 
-# How to log in to the Ultra Toolkit using Ledger
+# How to log in to the Ultra Tool Kit using Ledger
 
-Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+Ultra Tool Kit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
-This tutorial will cover the simplest process of logging in into the Ultra Toolkit using a [Ledger Device](https://www.ledger.com).
+This tutorial will cover the simplest process of logging in into the Ultra Tool Kit using a [Ledger Device](https://www.ledger.com).
 Ledger devices are hardware crypto wallets that store your private keys offline.
 
 ## Prerequisites
@@ -23647,7 +23687,7 @@ Ledger devices are hardware crypto wallets that store your private keys offline.
 
 ## Goal
 
-The goal of this tutorial is to login into the Ultra Toolkit using Ledger.
+The goal of this tutorial is to login into the Ultra Tool Kit using Ledger.
 
 ## Setting Up Ledger for EOS
 
@@ -23664,8 +23704,8 @@ The goal of this tutorial is to login into the Ultra Toolkit using Ledger.
 
 Your ledger device comes with multiple public keys. Each public key is assigned an index value starting from `0`. For the sake of this tutorial, we will use the first public key (i.e; the public key at index `0`).
 
-To obtain the public key of your Ledger, go to Ultra Toolkit (https://toolkit.ultra.io), and
-click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ledger` option.
+To obtain the public key of your Ledger, go to Ultra Tool Kit (https://toolkit.ultra.io), and
+click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Ledger` option.
 
 ![](../fundamentals/images/toolkit-login-button.png)
 
@@ -23681,15 +23721,15 @@ The new prompt will ask you to input your Ledger index. Enter `0` (or whatever i
 
 Once you have copied the public key associated with your Ledger device, it is now time to create an Ultra Pro Wallet for that public key. To do so, follow the [How to create an Ultra Pro Wallet using Ultra Wallet Extension](../guides/how-to-create-ultra-pro-wallet.md#create-an-ultra-pro-wallet) guide, and instead of generating a new key pair, use the public key that you have obtained in the previous steps.
 
-## Login to Toolkit
+## Login to Tool Kit
 
-Once you have created an Ultra Pro Wallet for your Ledger, return to Ultra Toolkit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
+Once you have created an Ultra Pro Wallet for your Ledger, return to Ultra Tool Kit homepage (https://toolkit.ultra.io), and click on the network selection component on the top right of your screen.
 
 ![](../fundamentals/images/toolkit-network-selection.png)
 
 Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. From the list of available networks, click on `Mainnet`.
 
-Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ledger` option.
+Click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Ledger` option.
 
 ![](../fundamentals/images/toolkit-login-button.png)
 
@@ -23705,7 +23745,7 @@ From the list of accounts, select the one that you want to use. This is usually 
 
 ![](./images/toolkit-login-account-name.png)
 
-You have now successfully logged in to the Ultra Toolkit using Ledger.
+You have now successfully logged in to the Ultra Tool Kit using Ledger.
 
 ## What's next?
 
@@ -23722,18 +23762,18 @@ outline: [0,4]
 
 # Development Environment Setup
 
-Most convinent way to interact with a docker container and manage the files inside it is by using VSCode
+Most convinent way to interact with a docker container and manage the files inside it is by using VS Code
 
 ## Local
 
-For the local environment you just open `~/ultra_workdir` if you're on Linux or `C:\Users\Username\ultra_workdir` on Windows using VSCode. You can write all the tests and smart contract code locally. Then if you want to build and test use one of the following pathways:
-- [VSCode extension](../../products/smart-contract-toolkit/index.md)
+For the local environment you just open `~/ultra_workdir` if you're on Linux or `C:\Users\Username\ultra_workdir` on Windows using VS Code. You can write all the tests and smart contract code locally. Then if you want to build and test use one of the following pathways:
+- [VS Code extension](../../products/smart-contract-toolkit/index.md)
 - [Run build commands in docker](./docker-contract-development-flow.md)
 
 ## Docker
 
 Start a docker container using this [command](./docker-image-usage.md#running-the-image).
-It'll start a container called `ultra` which you can connect to using VSCode.
+It'll start a container called `ultra` which you can connect to using VS Code.
 By default your `ultra-workdir` is mounted to the `/opt/ultra_workdir` directory inside
 the container so any changes in that directory will persist on your filesystem.
 Go to the `Remote-Explorer` and attach to the `ultra` container.
@@ -23770,7 +23810,7 @@ Developers must have some knowledge in C++ to write smart contracts for the Ultr
 
 ## Hello World Smart Contract
 
-Recommended to setup a [VSCode Environment](./development-environment.md) before moving forward.
+Recommended to setup a [VS Code Environment](./development-environment.md) before moving forward.
 
 ### Setup
 
@@ -24737,16 +24777,16 @@ Verify that the public key listed under `Permissions` and the `Creation Date` ar
 The next tutorial will cover adding your account to the Ultra Wallet - [Tutorial - Setup Ultra Wallet](./tutorial-setup-the-wallet.md)
 
 ---
-title: 'Tutorial - Log in to the Ultra Toolkit'
+title: 'Tutorial - Log in to the Ultra Tool Kit'
 order: -99997
 oultine: [0, 5]
 ---
 
-# Tutorial - Log in to the Ultra Toolkit
+# Tutorial - Log in to the Ultra Tool Kit
 
-Ultra Toolkit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
+Ultra Tool Kit is a decentralized application facilitating seamless interaction with the Ultra blockchain and its smart contracts. Designed for developers, it provides essential functionalities such as interacting with Ultra smart contracts, searching for Uniqs, Uniq Factories and Users.
 
-This tutorial will cover the simplest process of logging in into the Ultra Toolkit using the Ultra Wallet.
+This tutorial will cover the simplest process of logging in into the Ultra Tool Kit using the Ultra Wallet.
 
 ## Prerequisites
 
@@ -24754,19 +24794,19 @@ This tutorial will cover the simplest process of logging in into the Ultra Toolk
 
 ## Goal
 
-The goal of this tutorial is to login into the Ultra Toolkit using the Ultra Wallet.
+The goal of this tutorial is to login into the Ultra Tool Kit using the Ultra Wallet.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
 ## Network Selection
 
-Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+Once you're on the Tool Kit homepage, click on the network selection component on the top right of your screen.
 
 ![](./images/toolkit-network-selection.png)
 
-Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Testnet. From the list of available networks, click on `Testnet`.
+Clicking on the network selection component will open up a list of available networks that you can use the tool kit on. For the sake of this tutorial, we will be using the Ultra Testnet. From the list of available networks, click on `Testnet`.
 
 ![](./images/toolkit-network-selection-modal.png)
 
@@ -24777,27 +24817,27 @@ Ensure you have selected the `Testnet` environment in your Ultra Wallet.
 
 ![](./images/wallet-set-network-testnet.png)
 
-## Login to Toolkit
+## Login to Tool Kit
 
-Click on the `Login To Toolkit` button to open a list of all supported login methods, and then select the `Ultra Wallet` option
+Click on the `Login To Tool Kit` button to open a list of all supported login methods, and then select the `Ultra Wallet` option
 
 ![](./images/toolkit-login-button.png)
 
 ![](./images/toolkit-login-wallet-selection.png)
 
-Once you click on `Ultra Wallet` option, your Ultra Wallet will open and ask for authorization to connect to the Toolkit. Click on `Connect` button to proceed.
+Once you click on `Ultra Wallet` option, your Ultra Wallet will open and ask for authorization to connect to the Tool Kit. Click on `Connect` button to proceed.
 
 ![](./images/toolkit-ultra-wallet-login-connect.png)
 
-Once connected, you will be logged in to the toolkit. You can verify this by checking for your account name in the top left corner of your screen.
+Once connected, you will be logged in to the tool kit. You can verify this by checking for your account name in the top left corner of your screen.
 
 ![](./images/toolkit-wallet-logged-in.png)
 
-You have now successfully logged in to the Ultra Toolkit using Ultra Wallet.
+You have now successfully logged in to the Ultra Tool Kit using Ultra Wallet.
 
 ## What's next?
 
-The next tutorial will cover obtaining some UOS from the Ultra Faucet and buying RAM using the toolkit which will be needed for future tutorials - [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](./tutorial-obtain-token-and-purchase-ram.md)
+The next tutorial will cover obtaining some UOS from the Ultra Faucet and buying RAM using the tool kit which will be needed for future tutorials - [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](./tutorial-obtain-token-and-purchase-ram.md)
 
 ---
 title: 'Tutorial - Using the Faucet and Buying RAM on Ultra Testnet'
@@ -24813,7 +24853,7 @@ This tutorial will guide you through the process of obtaining UOS tokens using t
 
 Before starting this tutorial, ensure you have the following:
 
-- A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md).
 
 ## Goal
 
@@ -24884,7 +24924,7 @@ Start by checking the initial RAM balance of your account to understand how much
 
 ### Step 2: Initiate RAM Purchase
 
-1. Open the Ultra toolkit and select `Transaction Builder` from the left-hand menu.
+1. Open the Ultra Tool Kit and select `Transaction Builder` from the left-hand menu.
 2. Choose the `buyram` action under the `eosio` contracts to start the purchase process.
 
 ![](./images/buyram-action-builder.png)
@@ -24901,7 +24941,7 @@ Fill in the required fields for the `buyram` action:
 
 ### Step 4: Confirm the Transaction
 
-Review the transaction details on the next screen. Ensure that all the information is correct before proceeding to confirm the transaction within the toolkit.
+Review the transaction details on the next screen. Ensure that all the information is correct before proceeding to confirm the transaction within the tool kit.
 
 ![](./images/buyram-confirm.png)
 
@@ -24933,7 +24973,7 @@ By following these steps, you have successfully used UOS tokens to purchase RAM 
 
 ## What's next?
 
-The next tutorial will cover the process of building a transaction using the Ultra Toolkit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)
+The next tutorial will cover the process of building a transaction using the Ultra Tool Kit to send some UOS and to do a Uniq purchase - [Tutorial - Token transfer and Uniq purchase transactions](./tutorial-token-transfer-and-nft-purchase.md)
 
 ---
 title: 'Tutorial - Setup the Ultra Wallet'
@@ -25009,7 +25049,7 @@ Set your network to `Testnet` since we created our account on testnet in the pre
 
 ## What's next?
 
-The next tutorial will cover using the Ultra Wallet to login into Ultra Toolkit - [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md)
+The next tutorial will cover using the Ultra Wallet to login into Ultra Tool Kit - [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md)
 
 ---
 title: 'Tutorial - Token transfer and Uniq purchase transactions'
@@ -25019,13 +25059,13 @@ outline: [0, 5]
 
 # Tutorial - Token transfer and Uniq purchase transactions
 
-This tutorial will demonstrate how to use the Ultra toolkit for sending asset (transfer) and purchasing Uniq interact with Ultra the blockchain.
+This tutorial will demonstrate how to use the Ultra tool kit for sending asset (transfer) and purchasing Uniq interact with Ultra the blockchain.
 
 ## Prerequisites
 
 Before starting this tutorial, you will need:
 
-- A developer account on the Ultra Testnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](./tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md).
 - Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](./tutorial-obtain-token-and-purchase-ram.md).
 
 ## Goal
@@ -25037,11 +25077,11 @@ The goal of this tutorial is to show you how to:
 
 ## Transferring Tokens
 
-To transfer tokens using the Ultra toolkit, follow these steps closely:
+To transfer tokens using the Ultra tool kit, follow these steps closely:
 
 ### Step 1: Access the Transaction Builder
 
-Open the Ultra toolkit and log in with your developer account. Click on the 'Transaction Builder' tab to begin creating a new transaction.
+Open the Ultra tool kit and log in with your developer account. Click on the 'Transaction Builder' tab to begin creating a new transaction.
 
 ![](./images/token-transfer-action-builder.png)
 
@@ -25091,7 +25131,7 @@ To ensure the transaction was successfully processed, visit the Ultra Testnet Ex
 
 ## Purchasing Digital Assets (Uniqs)
 
-To purchase a Uniq from the Uniq Factory using the Ultra toolkit, follow these steps carefully:
+To purchase a Uniq from the Uniq Factory using the Ultra tool kit, follow these steps carefully:
 
 ### Step 1: Verify Factory Details
 
@@ -25101,7 +25141,7 @@ Begin by checking the Factory Explorer in the Uniq Explorer. Confirm the on-chai
 
 ### Step 2: Initiate Purchase Action
 
-Navigate to the `Factory` page under the `Uniq Actions` section of the toolkit and then start typing `purchase` into the search bar. Then select the `Purchase Uniqs directly` action.
+Navigate to the `Factory` page under the `Uniq Actions` section of the tool kit and then start typing `purchase` into the search bar. Then select the `Purchase Uniqs directly` action.
 
 ![](./images/purchase-action-builder.png)
 
@@ -25143,7 +25183,7 @@ Once the transaction is signed, a confirmation screen will display indicating th
 
 #### Step 7a: Access Your User Inventory Page
 
-To confirm the purchase of your new Uniq, navigate to the Ultra toolkit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
+To confirm the purchase of your new Uniq, navigate to the Ultra tool kit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
 
 ![](./images/purchase-user-uniq-explorer.png)
 
@@ -25672,14 +25712,14 @@ Once you have completed these steps, your transaction will be processed, and the
 
 
 ---
-title: 'How to create an Ultra Pro Wallet using Ultra Toolkit'
+title: 'How to create an Ultra Pro Wallet using Ultra Tool Kit'
 order: -99988
 oultine: [0, 5]
 ---
 
-# How to create an Ultra Pro Wallet using Ultra Toolkit
+# How to create an Ultra Pro Wallet using Ultra Tool Kit
 
-This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Toolkit.
+This tutorial will cover the simplest process of creating a developer account on Mainnet to be used to interact with the blockchain using the Ultra Tool Kit.
 
 ## Prerequisites
 
@@ -25689,7 +25729,7 @@ This tutorial will cover the simplest process of creating a developer account on
 
 ## Goal
 
-The goal of this tutorial is to create a new developer Ultra Pro Wallet on Mainnet, using the Ultra Toolkit. You can use your Ultra Pro Wallet to directly interact with the blockchain. It is desireable for developers as it provides a more granular control over your account and allows it to be easily used for other tools and libraries like `cleos` or `Wharfkit`.
+The goal of this tutorial is to create a new developer Ultra Pro Wallet on Mainnet, using the Ultra Tool Kit. You can use your Ultra Pro Wallet to directly interact with the blockchain. It is desireable for developers as it provides a more granular control over your account and allows it to be easily used for other tools and libraries like `cleos` or `Wharfkit`.
 
 ## Open and log in to the Ultra Wallet
 
@@ -25726,17 +25766,17 @@ It is up to you to properly secure your private key and not to lose it. If you l
 \
 Once you have your key pair, you can proceed with the creation of the Ultra Pro Wallet.
 
-## Log in to the Ultra Toolkit
+## Log in to the Ultra Tool Kit
 
-Log in to the Ultra Toolkit (https://toolkit.ultra.io) using your Ultra Wallet extension. Refer to [Log in to the Ultra Toolkit Tutorial](../fundamentals/tutorial-login-to-toolkit.md) if you need help logging into the Ultra Toolkit.
+Log in to the Ultra Tool Kit (https://toolkit.ultra.io) using your Ultra Wallet extension. Refer to [Log in to the Ultra Tool Kit Tutorial](../fundamentals/tutorial-login-to-toolkit.md) if you need help logging into the Ultra Tool Kit.
 
-Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Toolkit.
+Once logged in, make sure you have selected `Mainnet` endpoint in the Ultra Tool Kit.
 
 ![](./images/select-network-mainnet-toolkit.png)
 
 ## Create an Ultra Pro Wallet
 
-1. Once logged in to the toolkit, click on `Transaction Builder` from the Ultra Toolkit sidebar menu to open the transaction builder page.
+1. Once logged in to the tool kit, click on `Transaction Builder` from the Ultra Tool Kit sidebar menu to open the transaction builder page.
 
 ![](./images/toolkit-tx-builder.png)
 
@@ -26248,8 +26288,8 @@ General tutorials to help feed your curiosity.
         <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Log in to the Ultra Toolkit</td>
-        <td>A brief introduction to the toolkit along with learning how log in to the toolkit using Ultra Wallet</td>
+        <td>Tutorial - Log in to the Ultra Tool Kit</td>
+        <td>A brief introduction to the tool kit along with learning how log in to the tool kit using Ultra Wallet</td>
         <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
     </tr>
     <tr>
@@ -26278,8 +26318,8 @@ General tutorials to help feed your curiosity.
         <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
     </tr>
     <tr>
-        <td>How to create Ultra Pro Wallet using Ultra Toolkit</td>
-        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Toolkit</td>
+        <td>How to create Ultra Pro Wallet using Ultra Tool Kit</td>
+        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Tool Kit</td>
         <td><a href="../guides/how-to-create-ultra-pro-wallet-using-toolkit">Link</a></td>
     </tr>
     <tr>
@@ -26323,17 +26363,17 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>How to log in to the Ultra Toolkit using Anchor Wallet</td>
-        <td>Learn how to setup your keys with Anchor wallet and log in to the toolkit using Anchor wallet.</td>
+        <td>How to log in to the Ultra Tool Kit using Anchor Wallet</td>
+        <td>Learn how to setup your keys with Anchor wallet and log in to the tool kit using Anchor wallet.</td>
         <td><a href="../advanced-guides/how-to-login-to-toolkit-using-anchor-wallet">Link</a></td>
     </tr>
     <tr>
-        <td>How to log in to the Ultra Toolkit using Ledger</td>
-        <td>Learn how to create your account and log in to the toolkit using a Ledger device.</td>
+        <td>How to log in to the Ultra Tool Kit using Ledger</td>
+        <td>Learn how to create your account and log in to the tool kit using a Ledger device.</td>
         <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
     </tr>
     <tr>
-        <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract Toolkit Extension</td>
+        <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension</td>
         <td>Learn how to deploy a smart contract on the Ultra Mainnet using the Ultra Smart Contract Visual Studio Code Extension</td>
         <td><a href="../advanced-guides/how-to-deploy-smart-contracts-to-mainnet-using-ultra-smart-contract-vscode-extension">Link</a></td>
     </tr>
@@ -26363,23 +26403,23 @@ General tutorials to help feed your curiosity.
         <td>Link</td>
     </tr>
     <tr>
-        <td>Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension</td>
-        <td>Learn how to install and use the Ultra Smart Contract Toolkit Extension.</td>
+        <td>Tutorial - Install and Setup the Ultra Smart Contract VS Code Extension</td>
+        <td>Learn how to install and use the Ultra Smart Contract VS Code Extension.</td>
         <td><a href="../smart-contracts/index">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
-        <td>Build and compile smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+        <td>Build and compile smart contracts using the Ultra Smart Contract VS Code Extension</td>
         <td><a href="../smart-contracts/compile">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
-        <td>Deploy smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+        <td>Deploy smart contracts using the Ultra Smart Contract VS Code Extension</td>
         <td><a href="../smart-contracts/deploy">Link</a></td>
     </tr>
     <tr>
-        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension</td>
-        <td>Interact with smart contracts using the Ultra Smart Contract Toolkit Extension</td>
+        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+        <td>Interact with smart contracts using the Ultra Smart Contract VS Code Extension</td>
         <td><a href="../smart-contracts/transact">Link</a></td>
     </tr>
 </table>
@@ -26398,33 +26438,33 @@ General tutorials to help feed your curiosity.
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata">Link</a></td>
     </tr>
     <tr>
-        <td>How to validate uniq metadata using Ultra Toolkit's Schema Validator</td>
-        <td>Learn how to validate uniq metadata files using Ultra Toolkit's schema validation feature</td>
+        <td>How to validate uniq metadata using Ultra Tool Kit's Schema Validator</td>
+        <td>Learn how to validate uniq metadata files using Ultra Tool Kit's schema validation feature</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to create a Uniq Factory using Ultra Toolkit</td>
-        <td>Learn how to create your first uniq factory using Ultra Toolkit</td>
+        <td>How to create a Uniq Factory using Ultra Tool Kit</td>
+        <td>Learn how to create your first uniq factory using Ultra Tool Kit</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to mint a Uniq using the Ultra Toolkit</td>
-        <td>Learn how to mint your first uniq using Ultra Toolkit</td>
+        <td>How to mint a Uniq using the Ultra Tool Kit</td>
+        <td>Learn how to mint your first uniq using Ultra Tool Kit</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to update metadata using the Ultra Toolkit</td>
+        <td>How to update metadata using the Ultra Tool Kit</td>
         <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
         <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
     </tr>
     <tr>
-        <td>How to perform advanced actions with Uniqs and Factories using Ultra Toolkit</td>
-        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Toolkit</td>
+        <td>How to perform advanced actions with Uniqs and Factories using Ultra Tool Kit</td>
+        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Tool Kit</td>
         <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
     </tr>
     <tr>
-        <td>How to add first-hand purchase options using Toolkit</td>
-        <td>Learn how to use Ultra Toolkit to add or remove a direct purchase option from your Factory</td>
+        <td>How to add first-hand purchase options using Tool Kit</td>
+        <td>Learn how to use Ultra Tool Kit to add or remove a direct purchase option from your Factory</td>
         <td><a href="../uniq-factories/factory-management/how-to-add-first-hand-purchase-using-toolkit">Link</a></td>
     </tr>
     <tr>
@@ -26829,7 +26869,7 @@ Install the programs below, most if not all of them are required.
 - Google Chrome, or Chromium Equivalent
 - [Ultra Wallet Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
 - [NodeJS](https://nodejs.org/en/download)
-- [VSCode Editor, IDE](https://code.visualstudio.com/)
+- [VS Code Editor, IDE](https://code.visualstudio.com/)
 
 ## Setup
 
@@ -26913,7 +26953,7 @@ Setting up the ultra wallet for your application is as simple as reading `window
 
 In the previous steps we created a project called `ultra-project`.
 
-We are now going to open that project in an IDE of our choice, we'll be using `VSCode` for this tutorial.
+We are now going to open that project in an IDE of our choice, we'll be using `VS Code` for this tutorial.
 
 ![](./images/vscode-init-project.png)
 
@@ -26922,7 +26962,7 @@ As you can see we have everything we need here.
 - Project files on the left
 - Terminal for running commands on the bottom
     - If this isn't opened just click Terminal in the menu at the top. Sometimes it's under the `...` menu.
-- Editor where the larger `VSCode` logo is.
+- Editor where the larger `VS Code` logo is.
 
 ## Basic SSL Installation
 
@@ -27015,33 +27055,33 @@ Check your browser's console (F12) and see if an `object` prints out.
 
 Looks good, let's move on to the next section.
 ---
-title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension'
+title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension'
 
 outline: [0, 5]
 order: -97
 ---
 
-# Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension
+# Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension
 
-Compiling smart contracts is very simple with the [Ultra Smart Contract Toolkit](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
+Compiling smart contracts is very simple with the [Ultra Smart Contract VS Code Extension](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp).
 
 ## Prerequisites
 
--   Have installed the Ultra Smart Contract Toolkit Extension. Refer to [Install and Setup the Ultra Smart Contract Toolkit Extension Tutorial](./index.md) for more information.
+-   Have installed the Ultra Smart Contract VS Code Extension. Refer to [Install and Setup the Ultra Smart Contract VS Code Extension Tutorial](./index.md) for more information.
 
 ::: info
-The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+The tutorial is up-to-date with version 1.4.2 of the VS Code extension
 :::
 
 ## Goal
 
-The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract Toolkit extension.
+The goal of this tutorial is to compile smart contracts using the Ultra Smart Contract VS Code Extension.
 
 ## How to Compile
 
 There are **two ways** to compile your smart contract.
 
-First way is to compile using the VS Code Status Bar. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VSCode.
+First way is to compile using the VS Code Status Bar. Make sure you have the `.cpp` file open and selected and click `Compile` at the bottom of VS Code.
 
 ![](./images/compile-button.png)
 
@@ -27071,36 +27111,36 @@ For more information about `.abi` and `.wasm` files see the [official EOS Networ
 
 ## What's next?
 
-The next tutorial will cover deploying smart contracts using the VS Code extension. See [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md) for more information.
+The next tutorial will cover deploying smart contracts using the VS Code extension. See [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension](./deploy.md) for more information.
 
 ---
-title: 'Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension'
+title: 'Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension'
 
 outline: [0, 5]
 order: -96
 ---
 
-# Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension
+# Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension
 
 Once you have an `abi` and `wasm` file for your contract, you are ready for deployment.
 
 ## Goal
 
-The goal of this tutorial is to guide you through deploying a smart contract using the Ultra Smart Contract Toolkit Extension.
+The goal of this tutorial is to guide you through deploying a smart contract using the Ultra Smart Contract VS Code Extension.
 
 ## Prerequisites
 
--   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](./compile.md) for more information.
+-   A compiled smart contract (`.wasm` and `.abi` files). Refer to the [Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension](./compile.md) for more information.
 -   A public-private key pair for your developer Testnet account. If you haven't generated a key pair yet, refer to [Tutorial - Generate a key and create a developer Testnet account](../fundamentals/tutorial-generate-key-and-create-testnet-account.md)
 -   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 
 ::: info
-The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+The tutorial is up-to-date with version 1.4.2 of the VS Code extension
 :::
 
 ## Add Developer Testnet Account
 
-Before you can deploy a smart contract, you will need to add your developer Testnet account to the Ultra Smart Contract Toolkit Extension. To do so, follow these steps:
+Before you can deploy a smart contract, you will need to add your developer Testnet account to the Ultra Smart Contract VS Code Extension. To do so, follow these steps:
 
 1. Using the Command Palette (F1), type and select `Ultra: Wallet - Create`.
    ![](./images/command-palette-create-wallet.png)
@@ -27111,7 +27151,7 @@ Before you can deploy a smart contract, you will need to add your developer Test
 4. You will see a prompt on the bottom right that says `Added Public Key`.
    ![](./images/vscode-ext-added-public-key.png)
 
-You have now added your developer testnet account to the Ultra Smart Contract Toolkit Extension.
+You have now added your developer testnet account to the Ultra Smart Contract VS Code Extension.
 
 ## Deploy Contract
 
@@ -27145,7 +27185,7 @@ If you run into any issues during the deployment, refer to [Troubleshooting Depl
 
 ## What's next?
 
-The next tutorial will cover interacting with your deployed smart contracts using the VS Code extension. See [Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension](./transact.md) for more information.
+The next tutorial will cover interacting with your deployed smart contracts using the VS Code extension. See [Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension](./transact.md) for more information.
 
 ---
 title: 'Code Examples'
@@ -27250,13 +27290,13 @@ _You must add the `eosio.code` permission to your account to use this._
 If you want to listen for transfers from `eosio.nft.ft` see [onIssue Example](../../tutorials/uniq-factories/uniq-variants/Examples/on-issue.md).
 
 ---
-title: 'Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension'
+title: 'Tutorial - Install and Setup the Ultra Smart Contract VS Code Extension'
 
 outline: [0, 5]
 order: -98
 ---
 
-# Tutorial - Install and Setup the Ultra Smart Contract Toolkit Extension
+# Tutorial - Install and Setup the Ultra Smart Contract VS Code Extension
 
 ## Prerequisites
 
@@ -27265,18 +27305,18 @@ order: -98
     -   [Microsoft C++ Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) (optional, but recommended)
 
 ::: info
-The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+The tutorial is up-to-date with version 1.4.2 of the VS Code Extension
 :::
 
 ## Goal
 
-The goal of this tutorial is to install the Ultra Smart Contract Toolkit extension and getting started with writing smart contracts.
+The goal of this tutorial is to install the Ultra Smart Contract VS Code Extension and getting started with writing smart contracts.
 
 ## Installation
 
 You can download the extension from [VS Code Market Place](https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp), or you can manually install it via VS Code.
 
-To install the extension via VSCode, follow these steps:
+To install the extension via VS Code, follow these steps:
 
 1. Open up your VS Code and click on the `Extensions` tab, or press `Ctrl + Shift + X`
 2. Under the `Extensions` tab, search for `ultra-cpp`
@@ -27284,17 +27324,17 @@ To install the extension via VSCode, follow these steps:
 
 ![](./images/install-vscode-ext.png)
 
-You have now successfully installed the Ultra Smart Contract Toolkit Extension. To verify the installation, make sure you have `ᕫ API` item in the VS Code status bar.
+You have now successfully installed the Ultra Smart Contract VS Code Extension. To verify the installation, make sure you have `ᕫ API` item in the VS Code status bar.
 
 ![](./images/vscode-ext-installed.png)
 
 ## Scaffolding
 
-Depending on where you want to start your project. Always start with a workspace folder and open it in VSCode.
+Depending on where you want to start your project. Always start with a workspace folder and open it in VS Code.
 
 ![](./images/select-project-folder.png)
 
-Once you have the Ultra Smart Contract Toolkit extension installed, you can easily create a starting template.
+Once you have the Ultra Smart Contract VS Code Extension installed, you can easily create a starting template.
 
 Access the `Command Palette` in VS Code with `F1` on the keyboard.
 
@@ -27310,7 +27350,7 @@ It will prompt you for a folder to put the source code under. It is recommended 
 
 ## Header Setup
 
-After creating the contract, you will need to **install headers** to remove some of the errors you will get from VSCode about the code.
+After creating the contract, you will need to **install headers** to remove some of the errors you will get from VS Code about the code.
 
 There are currently **two ways** to install headers.
 
@@ -27335,29 +27375,29 @@ Any other prompts from VS Code can be ignored (including prompts related to Dock
 
 ## What's next?
 
-The next tutorial will cover compiling smart contracts using the VS Code extension. See [Tutorial - Compile Smart Contracts using the Ultra Smart Contract Toolkit Extension](./compile.md) for more information.
+The next tutorial will cover compiling smart contracts using the VS Code extension. See [Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension](./compile.md) for more information.
 
 ---
-title: 'Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension'
+title: 'Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension'
 
 outline: [0, 5]
 order: -95
 ---
 
-# Tutorial - Interact with Smart Contracts using the Ultra Smart Contract Toolkit Extension
+# Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension
 
 Once you have deployed your contract, you are ready for interacting with your contract.
 
 ## Goal
 
-The goal of this tutorial is to demonstrate how to interact with deployed smart contracts using the Ultra Smart Contract Toolkit Extension.
+The goal of this tutorial is to demonstrate how to interact with deployed smart contracts using the Ultra Smart Contract VS Code Extension.
 
 ## Prerequisites
 
--   You must have deployed your smart contract. Refer to [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract Toolkit Extension](./deploy.md).
+-   You must have deployed your smart contract. Refer to [Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension](./deploy.md).
 
 ::: info
-The tutorial is up-to-date with version 1.4.2 of the VSCode extension
+The tutorial is up-to-date with version 1.4.2 of the VS Code extension
 :::
 
 ## Interacting with Smart Contract
@@ -27422,7 +27462,7 @@ Consider stoppping a process listening to that port or reassigning a mapping to 
 
 You can also change your workdir (output directory) with `-v`. Refer to docker [documentation](https://docs.docker.com/storage/volumes/#choose-the--v-or---mount-flag).
 
-## Vscode extension docker unavailable
+## VS Code Extension docker unavailable
 
 ![](/images/vscode-docker-issue.png)
 
@@ -28361,12 +28401,12 @@ Upon sending UOS token to `ultra.swap`, an inline action will be triggered to co
                 
             *   memo will be memo (ETH address) from transfer action
 ---
-title: 'How to create a Uniq Factory using the Ultra Toolkit'
+title: 'How to create a Uniq Factory using the Ultra Tool Kit'
 order: 4
 outline: [0, 4]
 ---
 
-# How to create a Uniq Factory using the Ultra Toolkit
+# How to create a Uniq Factory using the Ultra Tool Kit
 
 ![](/images/token-factories/new-token-factory.png)
 
@@ -28379,11 +28419,11 @@ outline: [0, 4]
 
 The goal of this guide is to help you create your first Uniq Factory on the Ultra Testnet network.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
-Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+Once you're on the Tool Kit homepage, click on the network selection component on the top right of your screen.
 
 ![](../../fundamentals/images/toolkit-network-selection.png)
 
@@ -28391,13 +28431,13 @@ Clicking on the network selection component will open up a list of available net
 
 ![](../../fundamentals/images/toolkit-network-selection-modal.png)
 
-Login to the Ultra Toolkit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
+Login to the Ultra Tool Kit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
 
 ## Creating Uniq Factory
 
 ### 1. Accessing Factory Management Page
 
-Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the factory management page.
+Once you've logged in to the tool kit, from the tool kit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the factory management page.
 
 ![](./images/toolkit-factory-actions-tab.png)
 
@@ -28461,17 +28501,17 @@ You'll find an actions list on the block explorer transaction page. Look for the
 
 ### 3. Verifying Factory Creation
 
-1. To verify the successful creation of your Uniq Factory, go to the `Factory Explorer` page on the toolkit (https://toolkit.ultra.io/uniqFactory).
+1. To verify the successful creation of your Uniq Factory, go to the `Factory Explorer` page on the tool kit (https://toolkit.ultra.io/uniqFactory).
 2. Make sure you are using the Ultra Testnet environment.
 3. Use the factory ID you obtained in the previous step to search for your Uniq Factory. Simply enter the ID and click the search button. You should then be able to view the details of your Uniq Factory.
 
 ![](./images/toolkit-factory-explorer-page.png)
 
-You have now successfully created your first uniq factory using the Ultra Toolkit.
+You have now successfully created your first uniq factory using the Ultra Tool Kit.
 
 ## What's next?
 
-Once you have created your first uniq factory, the next step is to mint your first uniq. Refer [How to mint a Uniq using the Ultra Toolkit](./how-to-mint-uniq-using-toolkit.md).
+Once you have created your first uniq factory, the next step is to mint your first uniq. Refer [How to mint a Uniq using the Ultra Tool Kit](./how-to-mint-uniq-using-toolkit.md).
 
 ---
 title: 'How to create Uniq Metadata'
@@ -28913,45 +28953,45 @@ You have now successfully generated the metadata for your uniq collection.
 
 Once you have generated the metadata for your uniq collection, the next steps are to:
 
--   [How to validate metadata using Ultra Toolkit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
--   [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md)
+-   [How to validate metadata using Ultra Tool Kit's Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
+-   [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md)
 
 ---
-title: 'How to mint a Uniq using the Ultra Toolkit'
+title: 'How to mint a Uniq using the Ultra Tool Kit'
 order: 5
 outline: [0, 4]
 ---
 
-# How to mint a Uniq using the Ultra Toolkit
+# How to mint a Uniq using the Ultra Tool Kit
 
 ## Prerequisites
 
--   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+-   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
 -   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 
 ## Goal
 
 This guide will help you mint your first Uniq.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
-Once you're on the Toolkit homepage, click on the network selection component on the top right of your screen.
+Once you're on the Tool Kit homepage, click on the network selection component on the top right of your screen.
 
 ![](../../fundamentals/images/toolkit-network-selection.png)
 
-Clicking on the network selection component will open up a list of available networks that you can use the toolkit on. For the sake of this tutorial, we will be using the Ultra Testnet. From the list of available networks, click on `Testnet`.
+Clicking on the network selection component will open up a list of available networks that you can use the tool kit on. For the sake of this tutorial, we will be using the Ultra Testnet. From the list of available networks, click on `Testnet`.
 
 ![](../../fundamentals/images/toolkit-network-selection-modal.png)
 
-Login to the Ultra Toolkit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
+Login to the Ultra Tool Kit using Ultra Wallet. Refer to [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md) for more information.
 
 ## Minting a Uniq
 
 ### 1. Accessing Factory Management Page
 
-Once you've logged in to the toolkit, from the toolkit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the uniq factory actions page.
+Once you've logged in to the tool kit, from the tool kit home page, click on the `Uniq Actions` from the sidebar, and then click on `Factory` to open the uniq factory actions page.
 
 ![](./images/toolkit-factory-actions-tab-issue.png)
 
@@ -28965,7 +29005,7 @@ Once you have opened the transaction modal, fill the required fields for the `is
 
 -   **To**: Required, the recipient of the minted token. Input your account if you want to receive the minted uniq in your wallet.
 -   **Token configs**: Click `Add` to input the `Token factory ID`, `Amount`, and `Custom data`.
-    -   **Token factory ID**: Required, the ID of the factory from which the uniqs will be minted. Use the ID of the uniq factory created in the previous guide. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+    -   **Token factory ID**: Required, the ID of the factory from which the uniqs will be minted. Use the ID of the uniq factory created in the previous guide. Refer to [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
     -   **Amount**: Required, the number of uniqs to be minted. For the sake of this guide, we will mint `1` uniq.
     -   **Custom data**: Deprecated, leave blank.
 -   **Memo**: Required, enter a text memo for your transaction. For example, `Minting my first uniq`.
@@ -28991,27 +29031,27 @@ After signing the transaction, you will see a confirmation screen indicating tha
 
 ### 3. Verifying Minted Uniq
 
-1. To verify the successful creation of your Uniq Factory, go to the `User Uniq Explorer` page on the toolkit (https://toolkit.ultra.io/user).
+1. To verify the successful creation of your Uniq Factory, go to the `User Uniq Explorer` page on the tool kit (https://toolkit.ultra.io/user).
 2. Make sure you are using the Ultra Testnet environment.
 3. Input your account name and click on the search button. You should be able to view the details of your newly minted uniq under the `Uniqs` section. It may take a few seconds to sync the data, so if your uniq is not shown, please wait a few seconds and reload the page.
 
     ![](./images/toolkit-user-uniq-explorer-page.png)
 
-You have now successfully minted your first uniq using the Ultra Toolkit.
+You have now successfully minted your first uniq using the Ultra Tool Kit.
 
 ## What's next?
 
 Once you have practiced minting Uniqs from your factory, the next steps are to:
 
--   [How to update metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)
+-   [How to update metadata using the Ultra Tool Kit](./how-to-update-uniq-metadata-using-toolkit.md)
 -   [How to perform advanced actions with Uniqs and Factories](../factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories.md)
 ---
-title: 'How to update metadata using the Ultra Toolkit'
+title: 'How to update metadata using the Ultra Tool Kit'
 order: 6
 outline: [0, 4]
 ---
 
-# How to update metadata using the Ultra Toolkit
+# How to update metadata using the Ultra Tool Kit
 
 An important aspect of the Ultra NFT standard is the ability to update metadata. Game publishers may want to modify a uniq's traits based on in-game events.
 
@@ -29020,13 +29060,13 @@ For this guide, we will use the uniq factory and uniq token created in the previ
 ## Prerequisites
 
 -   You must have already created and uploaded the metadata files. Refer to [How to create Uniq Metadata](./how-to-create-uniq-metadata.md) for more information.
--   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
+-   You must have already created a uniq factory. Refer to [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md) for more information.
 -   Your account must have sufficient UOS tokens for transactions and fees. Refer to [Tutorial - Using the Faucet and Buying RAM on Ultra Testnet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md#obtaining-uos-tokens-using-the-faucet) for more information.
 -   Ensure your account is the uniq factory manager for the uniq factory whose metadata you intend to update, as only the uniq factory manager is authorized to perform metadata related updates.
 
 ## Goal
 
-The goal of this guide is to help you understand how you can update the metadata using Ultra Toolkit. This guide is divided into three sections:
+The goal of this guide is to help you understand how you can update the metadata using Ultra Tool Kit. This guide is divided into three sections:
 
 1. **Updating Uniq Factory Metadata**: Will walk you through the process of updating metadata for a uniq factory.
 2. **Updating Default Uniq Metadata**: Will walk you through the process of updating metadata for the default uniq.
@@ -29036,7 +29076,7 @@ The goal of this guide is to help you understand how you can update the metadata
 
 If a content creator re-uploads a new uniq factory metadata, they can use the `setmeta.b` action to update the metadata for the uniq factory. To do so, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
 3. On the factory page, search for `setmeta` action in the search box, and click on the `Set factory metadata (eosio.nft.ft::setmeta.b)` action to open up the transaction modal.
 
@@ -29073,7 +29113,7 @@ You have now successfully updated the metadata for a uniq factory.
 
 Default uniq metadata is used as a fallback mechanism whenever there's no metadata available for a uniq. To update the default uniq metadata, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
 3. On the factory page, search for `setdflttkn` action in the search box, and click on the `Set default token metadata (eosio.nft.ft::setdflttkn)` action to open up the transaction modal.
 
@@ -29112,7 +29152,7 @@ You have now successfully updated the default uniq metadata.
 
 To update the uniq metadata, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the uniq manager page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Uniq`.
 3. On the uniq page, search for `settknmeta` action in the search box, and click on the `Set token metadata (eosio.nft.ft::settknmeta)` action to open up the transaction modal.
 
@@ -29154,7 +29194,7 @@ For certain use cases, it might make sense to make the uniq factory immutable. F
 
 To disable metadata updates for a uniq factory, follow these steps:
 
-1. Login to ultra toolkit using your account.
+1. Login to Ultra Tool Kit using your account.
 2. Navigate to the factory management page by clicking on the `Uniq Actions` from the sidebar, and then clicking on `Factory`.
 3. On the factory page, search for `lckfactory` action in the search box, and click on the `Lock factory (eosio.nft.ft::lckfactory)` action to open up the transaction modal.
 
@@ -29191,14 +29231,14 @@ After practicing the basic metadata actions, you can move on to advanced actions
 -   [How to perform advanced actions with Uniqs and Factories](../factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories.md)
 
 ---
-title: "How to validate uniq metadata using Ultra Toolkit's Schema Validator"
+title: "How to validate uniq metadata using Ultra Tool Kit's Schema Validator"
 order: 3
 outline: [0, 4]
 ---
 
-# How to validate uniq metadata using Ultra Toolkit's Schema Validator
+# How to validate uniq metadata using Ultra Tool Kit's Schema Validator
 
-Schema validator is a feature of the Ultra Toolkit that helps you to validate your uniq metadata files.
+Schema validator is a feature of the Ultra Tool Kit that helps you to validate your uniq metadata files.
 
 ## Prerequisites
 
@@ -29206,15 +29246,15 @@ Schema validator is a feature of the Ultra Toolkit that helps you to validate yo
 
 ## Goal
 
-The goal of this tutorial is to help validate your metadata files using Ultra Toolkit's schema validator.
+The goal of this tutorial is to help validate your metadata files using Ultra Tool Kit's schema validator.
 
-## Accessing the Toolkit
+## Accessing the Tool Kit
 
-To access the Ultra Toolkit, please visit: https://toolkit.ultra.io
+To access the Ultra Tool Kit, please visit: https://toolkit.ultra.io
 
 ## Schema Validator
 
-Once on the toolkit home page, click on the `Schema Validator` from the sidebar to open the schema validator page.
+Once on the tool kit home page, click on the `Schema Validator` from the sidebar to open the schema validator page.
 
 ![](./images/schema-validator-default.png)
 
@@ -29232,7 +29272,7 @@ If your metadata file does not comply with the specified schema, you will see an
 
 ## What's next?
 
-Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to [How to create a Uniq Factory using the Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md).
+Once you have validated the metadata files for your collection, you can now proceed to create your first uniq factory. Refer to [How to create a Uniq Factory using the Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md).
 
 ---
 title: 'Introduction'
@@ -29262,9 +29302,9 @@ Here are the steps to get started, and we will guide you through each one. By th
 
 1. [How to create Uniq metadata](./how-to-create-uniq-metadata.md)
 2. [How to validate metadata using Schema Validator](./how-to-validate-uniq-metadata-using-schema-validator-toolkit.md)
-3. [How to create token factory using Ultra Toolkit](./how-to-create-uniq-factory-using-toolkit.md)
-4. [How to mint a Uniq using the Ultra Toolkit](./how-to-mint-uniq-using-toolkit.md)
-5. [How to update Uniq Factory metadata and Uniq metadata using the Ultra Toolkit](./how-to-update-uniq-metadata-using-toolkit.md)
+3. [How to create token factory using Ultra Tool Kit](./how-to-create-uniq-factory-using-toolkit.md)
+4. [How to mint a Uniq using the Ultra Tool Kit](./how-to-mint-uniq-using-toolkit.md)
+5. [How to update Uniq Factory metadata and Uniq metadata using the Ultra Tool Kit](./how-to-update-uniq-metadata-using-toolkit.md)
 
 ---
 title: 'Exchange a Uniq Using Smart Contract'
@@ -29862,12 +29902,12 @@ The example of a swap that uses `setprchsreq.b` action is provided [here](./fact
 Refer to [this page](./exchange-a-uniq-using-smart-contract.md) for more in-depth explanation of the smart contract usage.
 
 ---
-title: 'How to add a first-hand purchase options using Ultra Toolkit'
+title: 'How to add a first-hand purchase options using Ultra Tool Kit'
 order: 2
 outline: [0, 4]
 ---
 
-# How to add a first-hand purchase options using Ultra Toolkit
+# How to add a first-hand purchase options using Ultra Tool Kit
 
 Besides directly minting Uniqs or assigning authorized minters, it may be desired to allow users to directly purchase Uniqs from your factory. This can be achieved using the first-hand purchase feature which will be covered in this guide.
 
@@ -29875,7 +29915,7 @@ Besides directly minting Uniqs or assigning authorized minters, it may be desire
 
 -   Created a Uniq Factory. Follow the [Factory creation guide](../creating-uniq-factories/how-to-create-uniq-metadata.md) for details.
 -   Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for Testnet or [how to buy UOS](../../guides/how-to-buy-uos.md) for Mainnet.
-- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md).
 
 ## Goal
 
@@ -29941,7 +29981,7 @@ For more details see the [action documentation](../../../blockchain/contracts/nf
 
 After you have filled the form, click on `Send 1 Action`, review the details, and confirm the transaction.
 
-Now you should be able to navigate to your inventory (either click on the `Inventory` on the home page of the Toolkit https://toolkit.ultra.io/ or go to https://toolkit.ultra.io/user and enter desired account name manually).
+Now you should be able to navigate to your inventory (either click on the `Inventory` on the home page of the Tool Kit https://toolkit.ultra.io/ or go to https://toolkit.ultra.io/user and enter desired account name manually).
 
 You should be able to scroll down and see the list of Uniqs the account has. Note that it may take a minute for Ultra API to update and show your Uniq.
 
@@ -29986,7 +30026,7 @@ The process of purchasing Uniq using the purchase option with Uniqs requirement 
 
 To do so, first navigate to [Factory management actions](https://toolkit.ultra.io/factoryManagement), and search again for `purchase` and select `Purchase Uniqs directly (eosio.nft.ft::purchase.a)`.
 
-If the purchase option requires Uniqs from other factories then the account must have those Uniqs in its inventory. If you need to mint this Uniq then either refer to a [How to mint a Uniq using the Ultra Toolkit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide or add add a simple first-hand purchase option with UOS price to this factory and purchase it, as was described in this guide.
+If the purchase option requires Uniqs from other factories then the account must have those Uniqs in its inventory. If you need to mint this Uniq then either refer to a [How to mint a Uniq using the Ultra Tool Kit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide or add add a simple first-hand purchase option with UOS price to this factory and purchase it, as was described in this guide.
 
 Here we minted a Uniq from factory 4030, which was specified in the previous step as a requirement for the purchase option with index 1.
 
@@ -30030,7 +30070,7 @@ You can now navigate to [Factory explorer](https://toolkit.ultra.io/uniqFactory)
 
 
 ---
-title: 'How to perform advanced actions with Uniqs and Factories using Ultra Toolkit'
+title: 'How to perform advanced actions with Uniqs and Factories using Ultra Tool Kit'
 order: 1
 outline: [0, 4]
 ---
@@ -30039,21 +30079,21 @@ outline: [0, 4]
 
 After you have successfully created a factory and minted some Uniqs, you may now want to check what else you can do potentially.
 
-This guide will cover some advanced actions that apply to Uniqs and Factories using the Ultra Toolkit.
+This guide will cover some advanced actions that apply to Uniqs and Factories using the Ultra Tool Kit.
 
 ## Prerequisites
 
 -   Created a Uniq Factory and minted some Uniqs. Follow the [Factory creation guide](../creating-uniq-factories/how-to-create-uniq-metadata.md) and the [Uniq minting guide](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) for details.
 -   Your account must have sufficient UOS tokens for transactions and fees. If you don't have tokens, see [how to use Faucet](../../fundamentals/tutorial-obtain-token-and-purchase-ram.md) for Testnet or [how to buy UOS](../../guides/how-to-buy-uos.md) for Mainnet.
-- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Toolkit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Toolkit](../../fundamentals/tutorial-login-to-toolkit.md).
+- A developer account on the Ultra Testnet or Mainnet and to be logged into the Ultra Tool Kit. If you don't have it, please follow our previous tutorial: [Tutorial - Log in to the Ultra Tool Kit](../../fundamentals/tutorial-login-to-toolkit.md).
 
 ## Goal
 
-The goal of this guide is to demonstrate the usage of some of the actions you can perform with your Uniqs and Factories using Ultra Toolkit. This includes the transferring and burning Uniqs; adding authorized minters to a factory.
+The goal of this guide is to demonstrate the usage of some of the actions you can perform with your Uniqs and Factories using Ultra Tool Kit. This includes the transferring and burning Uniqs; adding authorized minters to a factory.
 
 ## How to transfer a Uniq to another account
 
-For testing it may be necessary to transfer Uniqs manually and in greater quantities. You can use the toolkit to quickly assemble a transfer transaction and run it. For more details see the [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/transfer.md).
+For testing it may be necessary to transfer Uniqs manually and in greater quantities. You can use the tool kit to quickly assemble a transfer transaction and run it. For more details see the [action documentation](../../../blockchain/contracts/nft-contract/nft-actions/transfer.md).
 
 First, navigate to [Uniq management actions](https://toolkit.ultra.io/uniqManagement), search `transfer`, and select the `Transfer token (eosio.nft.ft::transfer)` action.
 
@@ -30113,7 +30153,7 @@ To actually mint the Uniqs as authorized minter you need to utilize the `Authori
 
 ![](./images/authorized-minter-search-issue.png)
 
-Similar to [How to mint a Uniq using the Ultra Toolkit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide you need to fill `To`, `Token factory ID` and `Amount`. But now you also need to additionally specify the `Authorizer`. The `Authorizer` must be an authorized minter assigned using the authorized minter action.
+Similar to [How to mint a Uniq using the Ultra Tool Kit](../creating-uniq-factories/how-to-mint-uniq-using-toolkit.md) guide you need to fill `To`, `Token factory ID` and `Amount`. But now you also need to additionally specify the `Authorizer`. The `Authorizer` must be an authorized minter assigned using the authorized minter action.
 
 ![](./images/authorized-minter-issue-form.png)
 
@@ -30123,7 +30163,7 @@ After clicking on `Send 1 Action`, reviewing the details, and confirming the tra
 
 ## What's next?
 
--   [How to add a first-hand purchase options using Ultra Toolkit](../factory-management/how-to-add-first-hand-purchase-using-toolkit.md)
+-   [How to add a first-hand purchase options using Ultra Tool Kit](../factory-management/how-to-add-first-hand-purchase-using-toolkit.md)
 
 ---
 title: 'Uniq First-Hand Purchase Example Project'

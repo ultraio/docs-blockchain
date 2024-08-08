@@ -26,7 +26,7 @@ It will also ensure that the token has exceeded the lockup time specified by the
 
 Once this has been completed it will ensure that the **sale_shares** does not exceed the maximum **sales_share** percentage which is 10000 basis points (100%) and normally this should always be the case.
 
-The resale and auction tables will try to find the token and ensure it doesn’t already exist in the token resale or auction tables.
+The action will try to find the token and ensure it doesn’t already exist in the token resale or auction tables.
 
 If it doesn’t exist it gets placed on resell and the transaction is completed.
 

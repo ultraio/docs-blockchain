@@ -26,7 +26,7 @@ In the following descriptions, token factory and token are either v0 or v1 data 
 
 **Main operations**
 
-The token from the token table includes a token factory id and this is used to fetch the token factory data. The token factory must exist for a token to be burned. The token will not be able to be burned if the owner does not own this token. If the token is up for resale then the token is removed from the resale table.
+The token from the token table includes a token factory id and this is used to fetch the token factory data. The token factory must exist for a token to be burned. The token will not be able to be burned if the owner does not own this token. If the token is up for resale then the token is removed from the resale table. If the token is placed on an auction, the action will fail.
 
 After this data is verified the token quantity in the token factory is subtracted and checked for underflow. The token is then erased from the owner. The owner ensures that the fractional parts are truncated and they go to `eosio.pool`.
 `eosio.nftram` refunds the fee to each account.

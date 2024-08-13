@@ -14,7 +14,7 @@ The action checks that the auction exists in `auction.a` table with the specifie
 
 `bidder` is not allowed to bid on the auctions where he is the `owner`.
 
-`bid` must be at least `min_bid_increment_uos` UOS or `min_bid_increment_basis_point` basis points (units of 0.01%) higher than the previous bid. The values are defined in [`auctioncfg.a` table](../nft-tables.md#auctioncfga). This does not apply if the auction does not have any `bidder` which is true for new auction without any bids.
+`bid` must be at least `min_bid_increment_uos` UOS or `min_bid_increment_basis_point` basis points (units of 0.01%) higher than the previous bid. The values are defined in [`auctioncfg.a` table](../nft-tables.md#auctioncfg-a). This does not apply if the auction does not have any `bidder` which is true for new auction without any bids.
 
 `bidder` can bid on the auction where he is already the highest bidder.
 

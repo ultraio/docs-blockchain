@@ -887,12 +887,12 @@ The table stores the current active auctions along with the information about th
 | bid                  | asset                          | Current highest bid placed on the auction. If there is no `bidder`, then the `bid` is equal to the starting price` |
 | bidder               | std::optional\<name>           | Name of the account of the last bidder                                                                             |
 | receiver             | std::optional\<name>           | Name of the account that will recieve the Uniq after the auction ends                                              |
-| promoter             | std::optional\<name>           | Promoter of this auction                                                                                           |
+| promoter_id          | std::optional\<name>           | Promoter of this auction                                                                                           |
 | promoter_basis_point | uint16_t                       | Share of UOS that the promoter account will recieve when the auction ends                                          |
 | start_date           | std::optional\<time_point_sec> | Optional date when the bids will be allowed for this auction                                                       |
 | expiry_date          | time_point_sec                 | End date of the auction                                                                                            |
 
-Most relevant actions: `createauct.a`
+Most relevant actions: `createauct.a`, `bidauction.a`
 
 -   `cleos` Query Example
 

@@ -819,15 +819,15 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 
 The table stores information about global Uniq auction configuration
 
-| Fields                        | Type     | Description                                                                                                                                                                     |
-| ----------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| min_starting_price            | asset    | Minimum starting auction price in UOS (Default: 1 UOS)                                                                                                                          |
-| min_duration                  | uint32_t | Minimum duration for an auction in seconds (Default: 3600 sec or 1 hour)                                                                                                        |
-| max_duration                  | uint32_t | Maximum initial duration for an auction in seconds (Default: 2592000 sec or 30 days)                                                                                            |
-| min_bid_increment_basis_point | uint32_t | Minimum increment between the auction bids in basis points (Default: 500 or 5%)                                                                                                 |
-| min_bid_increment_uos         | asset    | Minimum increment between the auction bids in UOS. The maximum between `min_bid_increment_basis_point` and `min_bid_increment_uos` is chosen. (Default 1 UOS)                   |
-| auction_extension_threshold   | uint32_t | If a bid happens within `auction_extension_threshold` before the end of an auction, then the auction duration will be extended by `auction_extension_step` (Default: 600 seconds) |
-| auction_extension_step        | uint32_t | See `auction_extension_threshold` (Default: 600 seconds)                                                                                                                        |
+| Fields                        | Type     | Description                                                                                                                                                                                                    |
+| ----------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| min_starting_price            | asset    | Minimum starting auction price in UOS (Default: 1 UOS)                                                                                                                                                         |
+| min_duration                  | uint32_t | Minimum duration for an auction in seconds (Default: 3600 sec or 1 hour)                                                                                                                                       |
+| max_duration                  | uint32_t | Maximum initial duration for an auction in seconds (Default: 2592000 sec or 30 days)                                                                                                                           |
+| min_bid_increment_basis_point | uint32_t | Minimum increment between the auction bids in basis points (Default: 500 or 5%)                                                                                                                                |
+| min_bid_increment_uos         | asset    | Minimum increment between the auction bids in UOS. The maximum between `min_bid_increment_basis_point` and `min_bid_increment_uos` is chosen. (Default 1 UOS)                                                  |
+| auction_extension_threshold   | uint32_t | If a bid happens within `auction_extension_threshold` before the end of an auction, then the auction duration will be extended by `auction_extension_step` from the time the bid occurs (Default: 600 seconds) |
+| auction_extension_step        | uint32_t | See `auction_extension_threshold` (Default: 600 seconds)                                                                                                                                                       |
 
 Most relevant actions: `stauctcfg.a`
 

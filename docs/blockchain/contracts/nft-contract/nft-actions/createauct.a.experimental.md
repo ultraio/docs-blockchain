@@ -30,8 +30,8 @@ Action accepts a single argument `create` of type `create_auction_wrap_v0`. The 
 
 | Property Name        | C++ Type                       | JavaScript Type | Description                                             |
 | -------------------- | ------------------------------ | --------------- | ------------------------------------------------------- |
-| token_id             | uint64_t                       | Number          | ID of Uniq which the owner wants to place on an auction |
 | owner                | name                           | String          | Current owner of the Uniq                               |
+| token_id             | uint64_t                       | Number          | ID of Uniq which the owner wants to place on an auction |
 | starting_price       | asset                          | String          | Starting auction price in UOS                           |
 | promoter_basis_point | uint16_t                       | Number          | Promoter share in units of 0.01 %                       |
 | start_date           | std::optional\<time_point_sec> | String          | Optional start date of the auction                      |
@@ -41,7 +41,7 @@ Action accepts a single argument `create` of type `create_auction_wrap_v0`. The 
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft createauct.a '[{"token_id": 1, "owner": "alice", "starting_price": "2.00000000 UOS", "promoter_basis_point": 250, "start_date": null, "expiry_date": "2024-09-31T00:00:00", "memo": "new auction"}]' -p alice@active
+cleos push action eosio.nft.ft createauct.a '[{"owner": "alice", "token_id": 1, "starting_price": "2.00000000 UOS", "promoter_basis_point": 250, "start_date": null, "expiry_date": "2024-09-31T00:00:00", "memo": "new auction"}]' -p alice@active
 ```
 
 ## JavaScript - eosjs
@@ -55,8 +55,8 @@ await transact(
             authorization: [{ actor: 'alice', permission: 'active' }],
             data: {
                 create: {
-                    token_id: 1
                     owner: "alice",
+                    token_id: 1,
                     starting_price: "2.00000000 UOS",
                     promoter_basis_point: 250,
                     start_date: null,

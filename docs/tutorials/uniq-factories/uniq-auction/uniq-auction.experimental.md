@@ -24,6 +24,8 @@ Usage of the actions for creating, cancelling, bidding and settling an auction i
 
 -   [bidauction.a - Bid on an Uniq auction](../../../blockchain/contracts/nft-contract/nft-actions/bidauction.a.md)
 
+-   [settleauct.a - Settle an expired Uniq auction](../../../blockchain/contracts/nft-contract/nft-actions/settleauct.a.md)
+
 And the below action sets the global configurations for Uniq auctions.
 
 -   [stauctcfg.a - Set global Uniq auction configuration](../../../blockchain/contracts/nft-contract/nft-actions/stauctcfg.a.md)

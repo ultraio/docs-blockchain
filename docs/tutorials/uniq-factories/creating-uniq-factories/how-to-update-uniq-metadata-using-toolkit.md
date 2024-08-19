@@ -1,6 +1,6 @@
 ---
 title: 'How to update metadata using the Ultra Tool Kit'
-order: 6
+order: 7
 outline: [0, 4]
 ---
 

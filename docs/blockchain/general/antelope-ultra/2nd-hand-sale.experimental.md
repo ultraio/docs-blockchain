@@ -90,4 +90,4 @@ When a user buys token A specify the promoter opensea.
 
 -   [resale.a](../../contracts/nft-contract/nft-tables.html#resale-a): stores promoter share.
 
--   [resale.a](../../contracts/nft-contract/nft-tables.html#resale-a): stores promoter share.
+-   [auction.a](../../contracts/nft-contract/nft-tables.html#auction-a): stores promoter share.

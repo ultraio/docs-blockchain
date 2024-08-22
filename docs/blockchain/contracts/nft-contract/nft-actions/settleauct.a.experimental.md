@@ -14,7 +14,7 @@ The action checks that the auction exists in `auction.a` table with the specifie
 
 `executer` can be any account including the auction creator and the bidder. No additional payment is taken from the `exectuer` account.
 
-If the auction does not contain any bidder, then the auction will be simply erased from the `auction.a` table.
+If the auction does not contain any bidder the action will fail. To remove an expired auction without any bids the `cancelauct.a` action should be used instead.
 
 If `promoter_id` was set by the highest bidder, the account will be added to resale shares list and will have the payment distributed accordingly. If not promoter is specified then default promoter will be used specified by Ultra in `saleshrlmcfg` table under a scope of `1` in `default_promoter`.
 
@@ -24,7 +24,7 @@ Shares will be calculated and distributed based on the [2nd Hand Sale Policy](..
 
 After the shares are distributed and no additional transfers need to occur the token will be emplaced into the receiver’s account configured during the bid and the original token owner will have the token erased from their account.
 
-The `auction.a` table will have the token erased as well.
+The `auction.a` table will have the auction entry erased as well.
 
 ## Action Parameters
 

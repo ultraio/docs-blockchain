@@ -892,7 +892,7 @@ The table stores the current active auctions along with the information about th
 | start_date           | std::optional\<time_point_sec> | Optional date when the bids will be allowed for this auction                                                       |
 | expiry_date          | time_point_sec                 | End date of the auction                                                                                            |
 
-Most relevant actions: `createauct.a`, `bidauction.a`, `settleauct.a`
+Most relevant actions: `createauct.a`, `bidauction.a`, `settleauct.a`, `cancelauct.a`
 
 -   `cleos` Query Example
 

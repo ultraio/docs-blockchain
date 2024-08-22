@@ -1,6 +1,6 @@
 ---
 title: 'How to mint a Uniq using the Ultra Tool Kit'
-order: 5
+order: 6
 outline: [0, 4]
 ---
 

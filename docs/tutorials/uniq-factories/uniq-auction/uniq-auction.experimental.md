@@ -8,9 +8,9 @@ order: 1
 
 ## Overview of Uniq Auction feature
 
-Uniq Auction allows a Uniq owner to sell his Uniq to another user, similar to `resell`. Potential buyers place progressively increasing bids until the expiry date of the auction. The highest bidder will receive the Uniq after the auction concludes and his bid will be split between the seller, factory royalties and the promoter.
+Uniq Auction allows a Uniq owner to sell his Uniq to another user, similar to `resell`. Potential buyers place progressively increasing bids until the expiry date of the auction. The highest bidder will receive the Uniq after the auction concludes, and his bid will be split between the seller, factory royalties, and the promoter.
 
-Auction creator controls the starting price, start date of an auction and promoter share.
+The auction creator controls the starting price, start date of an auction and promoter share.
 
 Only UOS pricing is supported for an auction. The starting price must respect the minimum resell price of the factory. The start and initial expiry date of an auction must respect the trading window of the factory.
 
@@ -34,9 +34,9 @@ And the below action sets the global configurations for Uniq auctions.
 
 ## Benefits of Uniq Auction
 
-- Simpler price decision process - you specify the starting price and at the end of the auction you will receive the highest amount of UOS somebody was willing to pay for your Uniq.
+- Simpler price decision process: you specify the starting price, and at the end of the auction, you will receive the highest amount of UOS somebody was willing to pay for your Uniq.
 
-- Auctions have trackable start and end time - you can control when the auction for your Uniq will start and can check the expiry time when desired. Note that the expiry time is extended if there are active bids going on.
+- Auctions have a trackable start and end time: you can control when the auction for your Uniq will start and check the expiry time when desired. Note that the expiry time is extended if there are active bids going on.
 
 - By locking the funds, we will protect Uniq owners from fake bidding and encourage buyers to use their funds smartly.
 

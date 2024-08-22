@@ -10,13 +10,13 @@ Cancel an an Uniq auction without any bids
 
 ## Technical Behavior
 
-The action checks that the auction exists in `auction.a` table with the specified Uniq with ID `token_id`.
+The action checks that the auction exists in the `auction.a` table with the specified Uniq with ID `token_id`.
 
-If the auction has reached its expiration date, the `canceler` can be any account including the auction creator. Otherwise, only the auction creator can cancel an auction.
+If the auction has reached its expiration date, the `canceler` can be any account, including the auction creator. Otherwise, only the auction creator can cancel an auction.
 
-If the auction contains a bidder the action will fail.
+If the auction contains a bidder, the action will fail.
 
-If all checks pass successfully, the auction will be erased from `auction.a` table.
+If all checks pass successfully, the auction will be erased from the `auction.a` table.
 
 ## Action Parameters
 

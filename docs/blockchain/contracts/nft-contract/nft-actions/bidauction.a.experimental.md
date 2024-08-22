@@ -10,19 +10,19 @@ Bid on an Uniq auction
 
 ## Technical Behavior
 
-The action checks that the auction exists in `auction.a` table with the specified Uniq and verifies that the bid is placed between `start_date` and `expiry_date`.
+The action checks that the auction exists in the `auction.a` table with the specified Uniq and verifies that the bid is placed between `start_date` and `expiry_date`.
 
 `bidder` is not allowed to bid on the auctions where he is the `owner`.
 
-`bid` must be at least `min_bid_increment_uos` UOS or `min_bid_increment_basis_point` basis points (units of 0.01%) higher than the previous bid. The values are defined in [`auctioncfg.a` table](../nft-tables.md#auctioncfg-a). This does not apply if the auction does not have any `bidder` which is true for new auction without any bids.
+`bid` must be at least `min_bid_increment_uos` UOS or `min_bid_increment_basis_point` basis points (units of 0.01%) higher than the previous bid. The values are defined in [`auctioncfg.a` table](../nft-tables.md#auctioncfg-a). This does not apply if the auction does not have any `bidder` which is true for a new auction without any bids.
 
 `bidder` can bid on the auction where he is already the highest bidder.
 
-UOS for the bid is transferred from the `bidder` account to `eosio.nftauc` account and is released back to the original bidder if the new bid arrives.
+UOS for the bid is transferred from the `bidder` account to the `eosio.nftauc` account and is released back to the original bidder if the new bid arrives.
 
 `eosio.nftram` pays RAM usage.
 
-Successful bid stores the information about the `bidder`, `bid`, `receiver` and `promoter_id` and may increase the `expiry_date` of the auction by `auction_extension_step` if it happens within `auction_extension_threshold`. The values are defined in `auctioncfg.a` table.
+A successful bid stores information about the `bidder`, `bid`, `receiver` and `promoter_id` and may increase the `expiry_date` of the auction by `auction_extension_step` if it happens within `auction_extension_threshold`. The values are defined in the `auctioncfg.a` table.
 
 ## Action Parameters
 

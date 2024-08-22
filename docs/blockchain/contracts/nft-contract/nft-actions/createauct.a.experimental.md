@@ -10,11 +10,11 @@ Create an Uniq auction
 
 ## Technical Behavior
 
-The action stores the auction to `auction.a` table with the specified arguments. The new auction ID is read from `next.nftauc` table whose `value` field is then incremented.
+The action stores the auction to the `auction.a` table with the specified arguments. The new auction ID is read from the `next.nftauc` table, whose `value` field is then incremented.
 
 `eosio.nftram` pays RAM usage.
 
-Only one auction may exist per Uniq. The Uniq which is placed on an auction must not be on resell.
+Only one auction may exist per Uniq. The Uniq, which is placed on auction, must not be on a resell.
 
 `starting_price` should be no less than `min_starting_price` of `auctioncfg.a` and also should be no less than `minimum_resell_price` of the factory.
 

@@ -28416,6 +28416,7 @@ outline: [ 0, 4 ]
   of [Factory Metadata](../uniq-variants/factory-metadata.md), [Default Uniq Metadata](../uniq-variants/uniq-default-metadata.md)
   and [Uniq Metadata](../uniq-variants/uniq-metadata.md).
 - Ultra Tool Kit Account: Ensure you are logged in and have access to the Ultra Toolkit.
+- You will need a Google account to make a copy of the [Bulk Factory Creation - Template](https://docs.google.com/spreadsheets/d/17xvyrAUYB-3Hugu0UY2A4SnA2RbXLVuNv3K_gyca6xY/edit?usp=sharing).
 - CSV File: Prepare a CSV file containing all the necessary data for creating Uniq Factories. Each row in the file will
   represent a single Uniq Factory.
 

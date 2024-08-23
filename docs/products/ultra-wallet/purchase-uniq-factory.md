@@ -5,7 +5,7 @@ order: 9
 outline: [0, 4]
 ---
 
-# Purchase an Uniq Factory using FIAT or UOS
+# Uniq Factory purchase using FIAT or UOS
 
 To facilitate the purchase of an Uniq Factory with FIAT or Blockchain tokens, the Ultra platform provides the `ultra.purchaseItem(itemType, itemId)` API method. This method is designed to initiate the purchase process for a specific item, identified by its type and unique ID on the blockchain.
 

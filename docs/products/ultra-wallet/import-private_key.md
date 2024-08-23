@@ -1,7 +1,7 @@
 ---
 title: 'Import your account’s private key'
 
-order: 11
+order: 13
 outline: [0, 4]
 ---
 

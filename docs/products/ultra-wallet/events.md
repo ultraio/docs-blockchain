@@ -1,7 +1,7 @@
 ---
 title: 'Events'
 
-order: 9
+order: 10
 outline: [0, 4]
 ---
 

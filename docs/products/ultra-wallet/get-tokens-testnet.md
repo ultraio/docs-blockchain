@@ -1,7 +1,7 @@
 ---
 title: 'How to get tokens on Testnet'
 
-order: 13
+order: 14
 outline: [0, 4]
 ---
 

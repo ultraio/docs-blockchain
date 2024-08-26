@@ -21987,7 +21987,7 @@ This is the correct procedure:
 ---
 title: 'Demo application'
 
-order: 14
+order: 15
 outline: [0,4]
 ---
 
@@ -22060,7 +22060,7 @@ function afterWindowLoaded(){
 ---
 title: 'Developer resources'
 
-order: 15
+order: 16
 outline: [0, 4]
 ---
 
@@ -22147,7 +22147,7 @@ interface ITransaction<T = any> {
 ---
 title: 'Errors'
 
-order: 10
+order: 11
 outline: [0, 4]
 ---
 
@@ -22156,7 +22156,7 @@ outline: [0, 4]
 When making requests to the Ultra Wallet, it may respond with one of the following errors.
 
 | Code   | Title                 | Description                                                              |
-| ------ | --------------------- | ------------------------------------------------------------------------ |
+|--------| --------------------- | ------------------------------------------------------------------------ |
 | 4001   | User Rejected Request | The user rejected the request.                                           |
 | 4100   | Unauthorized          | The requested method and/or account has not been authorized by the user. |
 | 4900   | Disconnected          | Could not connect to the network.                                        |
@@ -22164,6 +22164,7 @@ When making requests to the Ultra Wallet, it may respond with one of the followi
 | -32002 | Resource unavailable  | Requested resource not available.                                        |
 | -32003 | Transaction Rejected  | An error occurred while processing the transaction.                      |
 | -32005 | Limit Exceeded        | Request exceeds defined limit.                                           |
+| -32600 | Invalid request       | It is not a valid request object.                                        |
 | -32601 | Method Not Found      | The method does not exist.                                               |
 | -32603 | Internal Error        | Something went wrong within the wallet extension.                        |
 
@@ -22250,7 +22251,7 @@ ultra.on('disconnect', () => {
 ---
 title: 'Events'
 
-order: 9
+order: 10
 outline: [0, 4]
 ---
 
@@ -22275,7 +22276,7 @@ To subscribe/unsubscribe from these events, the following methods are available:
 ---
 title: 'How to get tokens on Testnet'
 
-order: 13
+order: 14
 outline: [0, 4]
 ---
 
@@ -22292,7 +22293,7 @@ When you open the Faucet, you have to copy/paste your blockchain account, pass t
 ---
 title: 'Import your account’s private key'
 
-order: 11
+order: 13
 outline: [0, 4]
 ---
 
@@ -22390,6 +22391,50 @@ The Ultra Wallet is a non-custodial crypto wallet that allows you to access your
 Visit the Chrome Web Store and install the Ultra Wallet extension:
 
 https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln
+
+---
+title: 'Uniq Factory purchase using FIAT or UOS'
+
+order: 9
+outline: [0, 4]
+---
+
+# Uniq Factory purchase using FIAT or UOS
+
+To facilitate the purchase of an Uniq Factory with FIAT or Blockchain tokens, the Ultra platform provides the `ultra.purchaseItem(itemType, itemId)` API method. This method is designed to initiate the purchase process for a specific item, identified by its type and unique ID on the blockchain.
+
+API Method: `ultra.purchaseItem(itemType, itemId)`
+- `itemType`: For Uniq Factory purchases, this value should be "UniqFactory".
+- `itemId`: The identifier of the Uniq Factory on the blockchain.
+
+When this API method is called, it triggers a popup window displaying the Ultra purchase flow. This flow allows users to complete their purchase using Credit or Debit cards, as well as UOS tokens. Upon successful payment, Ultra mints the Uniq to the user and returns the following information as the result of the API call:
+- `orderHash`: An ID used for support requests if required.
+- `items`: An array of purchased elements
+  - `productId`: The item ID that was sent in the API call.
+  - `artifactId`: The minted Uniq ID on the blockchain.
+  - `blockchainTransactionId`: The transaction ID on the blockchain, useful for tracking the status and details.
+
+If the user cancels the purchase flow by either closing the window or explicitly canceling the purchase in the user UI, or if an error related to the payment occurs, the API will throw an error. The error message will provide details about the cancellation.
+
+```JavaScript
+try {
+  const response = await ultra.purchaseItem("UniqFactory", "599");
+  response
+  // {
+  //   status: "success",
+  //   data: {
+  //     orderHash: "XXX",
+  //     items: [{
+  //       productId: 599,
+  //       artifactId: 7777,
+  //       blockchainTransactionId: "XXX",
+  //     }],
+  //   },
+  // }
+} catch (err) {
+  // { status: "error", message: "Purchase canceled" }
+}
+```
 
 ---
 title: 'Response interface'

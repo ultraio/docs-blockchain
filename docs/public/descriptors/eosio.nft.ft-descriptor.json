@@ -1043,6 +1043,120 @@
                     }
                 }
             }
+        },
+        "createauct.a": {
+            "friendlyName": "Create an Uniq auction",
+            "description": "Create an Uniq auction with a specified expiry date for the Uniq you own",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/createauct.a.html",
+            "fields": {
+                "create": {
+                    "friendlyName": "create wrap",
+                    "fields": {
+                        "owner": {
+                            "friendlyName": "Owner",
+                            "description": "Current owner of the Uniq"
+                        },
+                        "token_id": {
+                            "friendlyName": "Token ID",
+                            "description": "ID of the Uniq that will be placed on an auction"
+                        },
+                        "starting_price": {
+                            "friendlyName": "Starting price",
+                            "description": "Initial auction price in UOS"
+                        },
+                        "promoter_basis_point": {
+                            "friendlyName": "Promoter basis point",
+                            "description": "Auction promoter commission"
+                        },
+                        "start_date": {
+                            "friendlyName": "Start date",
+                            "description": "Optional date of the start of an auction"
+                        },
+                        "expiry_date": {
+                            "friendlyName": "Expiry date",
+                            "description": "Initial end date of an auction"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
+        },
+        "bidauction.a": {
+            "friendlyName": "Bid on an Uniq auction",
+            "description": "Bid a specified amount of UOS on a non-expired Uniq auction",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/bidauction.a.html",
+            "fields": {
+                "bid": {
+                    "friendlyName": "bid wrap",
+                    "fields": {
+                        "token_id": {
+                            "friendlyName": "Token ID",
+                            "description": "Uniq ID to palce a bid on"
+                        },
+                        "bidder": {
+                            "friendlyName": "Bidder",
+                            "description": "Account that places a bid on the auction"
+                        },
+                        "receiver": {
+                            "friendlyName": "Receiver",
+                            "description": "Optional Uniq receiver account if the bidder wins the auction"
+                        },
+                        "bid": {
+                            "friendlyName": "Bid",
+                            "description": "Proposed auction bid"
+                        },
+                        "promoter_id": {
+                            "friendlyName": "Promoter ID",
+                            "description": "Optional promoter of this action"
+                        },
+                        "memo": {
+                            "friendlyName": "Memo",
+                            "description": "Memo for the action"
+                        }
+                    }
+                }
+            }
+        },
+        "settleauct.a": {
+            "friendlyName": "Settle an expired auction",
+            "description": "Settle an auction that has reached its expiry date transferring the Uniq to the highest bidder and splitting the bid between beneficiaries",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/settleauct.a.html",
+            "fields": {
+                "token_id": {
+                    "friendlyName": "Token ID",
+                    "description": "Uniq ID for which the auction has expired"
+                },
+                "executer": {
+                    "friendlyName": "Executer",
+                    "description": "Account that authorizes the transaction"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
+        },
+        "cancelauct.a": {
+            "friendlyName": "Cancel an auction without any bids",
+            "description": "Cancel an auction that has no active bids. Only the auction creator can cancel the auction, unless it has expired",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/cancelauct.a.html",
+            "fields": {
+                "token_id": {
+                    "friendlyName": "Token ID",
+                    "description": "Uniq ID for which the auction needs to be canceled"
+                },
+                "canceler": {
+                    "friendlyName": "Canceler",
+                    "description": "Account that authorizes the transaction"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ Once a version is determined and the **token id** has determined its route for t
 
 -   The token will not be able to be transferred if the trading window has not begun, or has ended.
 
--   The token will not be able to be transferred while it is put up for resale.
+-   The token will not be able to be transferred while it is put up for resale or auction.
 
 After this data is verified the token is erased from the **from** user and is given to the **to** user.
 

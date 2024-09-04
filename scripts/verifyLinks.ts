@@ -221,26 +221,38 @@ function verifyMultiEnvDocument(
         }
     };
 
-    if (fs.existsSync(link)) filesToCheck.push(link);
-    if (source.includes('.experimental')) {
-        envCheck('experimental', false);
-    } else if (source.includes('.staging')) {
-        envCheck('staging', false);
-    } else if (source.includes('.mainnet')) {
-        envCheck('mainnet', false);
-    } else if (!fs.existsSync(link)) {
-        // if the document is not environment specific and there is no document that exists directly
-        // then need to check that the document exists on 3 separate environments instead
-        let docExists = envCheck('experimental', true) || envCheck('staging', true) || envCheck('mainnet', true);
+    let docEnv: string = null;
 
-        // no document exists, instead of printing 3 errors print only one
-        if (docExists) {
-            envCheck('experimental', false);
-            envCheck('staging', false);
-            envCheck('mainnet', false);
-        }
-        if (!docExists) {
-            badLinks.push(`Line ${line + 1} | File: ${source} | Link: ${originalLink} | FILE MISSING`);
+    if (source.includes('.experimental')) {
+        docEnv = 'experimental';
+    } else if (source.includes('.staging')) {
+        docEnv = 'staging';
+    } else if (source.includes('.mainnet')) {
+        docEnv = 'mainnet';
+    }
+
+    if (docEnv) {
+        envCheck(docEnv, false);
+    }
+    else {
+        if (fs.existsSync(link)) {
+            // If the document is not environment specific, but there is a linked document that exists directly, then need to check it
+            // If the document is environment specific, the envCheck will add the correct document to the list on its own
+            filesToCheck.push(link);
+        } else {
+            // if the document is not environment specific and there is no linked document that exists directly
+            // then need to check that the document exists on 3 separate environments instead
+            let docExists = envCheck('experimental', true) || envCheck('staging', true) || envCheck('mainnet', true);
+
+            // no document exists, instead of printing 3 errors print only one
+            if (docExists) {
+                envCheck('experimental', false);
+                envCheck('staging', false);
+                envCheck('mainnet', false);
+            }
+            if (!docExists) {
+                badLinks.push(`Line ${line + 1} | File: ${source} | Link: ${originalLink} | FILE MISSING`);
+            }
         }
     }
 
@@ -358,7 +370,7 @@ async function verify() {
 
                             if (!foundMatch) {
                                 badLinks.push(
-                                    `Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | BAD HEADER | Attempted: ${listOfAttemptedMatches}`
+                                    `Line ${i + 1} | File: ${filePath} | Link: ${linkInfo.link} | BAD HEADER | In: ${path} Attempted: ${listOfAttemptedMatches}`
                                 );
                             }
                         }

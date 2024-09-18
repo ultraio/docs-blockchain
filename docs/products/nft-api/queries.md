@@ -2717,7 +2717,7 @@ query UniqGlobalShares {
   "data": {
     "uniqGlobalShares": [
       {
-        "basisPoints": 987,
+        "basisPoints": 123,
         "receiver": "aa1aa2aa3ag4"
       }
     ]
@@ -3180,7 +3180,7 @@ query UniqsOfFactory(
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": true,
+  "resale": false,
   "serialRange": UniqSerialRangeInput
 }
 ```
@@ -3653,7 +3653,7 @@ query UniqsOfWallet(
   "factoryIds": [987],
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": false,
+  "resale": true,
   "walletId": "aa1aa2aa3ag4"
 }
 ```
@@ -3666,7 +3666,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }

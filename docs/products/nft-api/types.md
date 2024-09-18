@@ -66,8 +66,8 @@ ISO 4217 standards for currency representation.
 
 ``` js
 {
-  "code": "xyz789",
-  "symbol": "xyz789"
+  "code": "abc123",
+  "symbol": "abc123"
 }
 ```
 
@@ -98,7 +98,7 @@ values as specified by [IEEE
 ##### Example
 
 ``` js
-123.45
+987.65
 ```
 
 
@@ -202,7 +202,7 @@ limit to 25 maximum results per page.
 ##### Example
 
 ``` js
-{"limit": 987, "skip": 987}
+{"limit": 987, "skip": 123}
 ```
 
 
@@ -427,7 +427,7 @@ effectively.
 {
   "data": [UniqBuyOffer],
   "pagination": Pagination,
-  "totalCount": 123
+  "totalCount": 987
 }
 ```
 
@@ -514,8 +514,8 @@ changes, including multiple URIs for alternate versions or updates.
 
 ``` js
 {
-  "contentType": "xyz789",
-  "uris": ["xyz789"]
+  "contentType": "abc123",
+  "uris": ["abc123"]
 }
 ```
 
@@ -708,7 +708,7 @@ Enable filtering on uniq factory buy offers.
 ##### Example
 
 ``` js
-{"enabled": false}
+{"enabled": true}
 ```
 
 
@@ -960,7 +960,7 @@ factory, providing detailed information about each attribute.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqMetadataAttributeDescriptor
 }
 ```
@@ -992,10 +992,10 @@ names, descriptions, media, and additional properties.
   "attributes": [UniqFactoryMetadataAttribute],
   "description": "xyz789",
   "medias": UniqMedias,
-  "name": "xyz789",
+  "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "abc123"
+  "subName": "xyz789"
 }
 ```
 
@@ -1310,7 +1310,7 @@ structured format for easy reference and interpretation.
 ``` js
 {
   "descriptor": UniqMetadataAttributeDescriptor,
-  "key": "xyz789",
+  "key": "abc123",
   "value": "true | \"myStringValue\" | 987 | 987.65"
 }
 ```
@@ -1425,7 +1425,7 @@ accommodate variability and updates.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqDynamicResource
 }
 ```
@@ -1452,7 +1452,7 @@ information, and a default message.
 {
   "code": "xyz789",
   "context": [UniqMetadataFailureContextEntry],
-  "defaultMessage": "xyz789"
+  "defaultMessage": "abc123"
 }
 ```
 
@@ -1467,16 +1467,16 @@ failure context.
 
 ##### Fields
 
-| Field Name                               | Description                                      |
-|------------------------------------------|--------------------------------------------------|
-| `key` - [`String`](#string)   | The key of the context entry.                    |
-| `value` - [`String`](#string) | The value associated with the context entry key. |
+| Field Name                               | Description                                     |
+|------------------------------------------|-------------------------------------------------|
+| `key` - [`String`](#string)   | The key of the context entry.                   |
+| `value` - [`String`](#string) | The value associated with the context entry key |
 
 ##### Example
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": "abc123"
 }
 ```
@@ -1502,7 +1502,7 @@ reliability.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqStaticResource
 }
 ```
@@ -1580,7 +1580,7 @@ verification.
 {
   "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
 
@@ -1758,9 +1758,9 @@ for integrity verification and a specific URI for retrieval.
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
 

@@ -1157,6 +1157,52 @@
                     "description": "Memo for the action"
                 }
             }
+        },
+        "addkeys.a": {
+            "friendlyName": "Add key pairs for Uniq factory",
+            "description": "Add new key pairs for Uniq factory, which will be used to store on chain data for Uniq",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/addkeys.a.html",
+            "fields": {
+                "factory_id": {
+                    "friendlyName": "Uniq factory ID",
+                    "description": "ID of an Uniq factory for adding key pairs"
+                },
+                "key_defs": {
+                    "friendlyName": "Key Definition",
+                    "description": "Definition of the key that will be added to factory, which will include name, type, edit rights, editors and default value"
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
+        },
+        "setvals.a": {
+            "friendlyName": "Set key values for Uniq",
+            "description": "Update key values or on chain data for Uniq",
+            "documentation": "https://developers.ultra.io/blockchain/contracts/nft-contract/nft-actions/setvals.a.html",
+            "fields": {
+                "owner": {
+                    "friendlyName": "Uniq Owner",
+                    "description": "Onwer of the Uniq which values will be updated"
+                },
+                "editor": {
+                    "friendlyName": "Key Editor",
+                    "description": "The editor who is authorized to edit the key's value."
+                },
+                "token_id": {
+                    "friendlyName": "Token ID",
+                    "description": "ID of the Uniq which values will be updated"
+                },
+                "key_values": {
+                    "friendlyName": "Key's Values",
+                    "description": "The values of the keys that will be updated."
+                },
+                "memo": {
+                    "friendlyName": "Memo",
+                    "description": "Memo for the action"
+                }
+            }
         }
     }
 }

@@ -905,3 +905,28 @@ cleos get table eosio.nft.ft eosio.nft.ft auction.a
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"auction.a", "json": true}'
 ```
+
+## keytypes
+
+-   Table: `keytypes`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `N/A`
+
+The table store the supported key type for on-chain data and the maximum element that type can support when adding value.
+
+| Field     | Type                        | Description                        |
+| --------- | --------------------------- | ---------------------------------- |
+| key_types | std::vector\<key_type_info> | The key types that will be updated |
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft keytypes
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"keytypes", "json": true}'
+```

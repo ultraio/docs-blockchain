@@ -38,10 +38,10 @@ The properties of this type are provided below:
 
 ### `key_values_action` interface
 
-| Property Name | C++ Type                  | JavaScript Type | Description                                                                                     |
-| ------------- | ------------------------- | --------------- | ----------------------------------------------------------------------------------------------- |
-| key_name      | string                    | String          | The name of the key that defined in factory keys.                                               |
-| key_value     | key_value_store           | Object[]        | The value will be set for the key. Value need to match the type defined in factory key.         |
+| Property Name | C++ Type        | JavaScript Type | Description                                                                                    |
+| ------------- | --------------- | --------------- | ---------------------------------------------------------------------------------------------- |
+| key_name      | string          | String          | The name of the key defined in factory keys.                                                   |
+| key_value     | key_value_store | Object[]        | The value that will be set for the key. Value needs to match the type defined in factory keys. |
 
 `key_value_store` will be an array with first element is type of the value and second is the value. Here is the support list and example:
 

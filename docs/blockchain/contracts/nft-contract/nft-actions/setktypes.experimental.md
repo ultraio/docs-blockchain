@@ -53,10 +53,10 @@ The properties of this type are provided below:
 
 ### `key_type_info` interface
 
-| Property Name        | C++ Type | JavaScript Type | Description                                           |
-| -------------------- | -------- | --------------- | ----------------------------------------------------- |
-| key_type             | string   | String          | The name of the key, need to be unique.               |
-| element_number_limit | uint16_t | Number          | The type of the value store in the key. Default to 1. |
+| Property Name        | C++ Type | JavaScript Type | Description                                                                             |
+| -------------------- | -------- | --------------- | --------------------------------------------------------------------------------------- |
+| key_type             | string   | String          | The name of the key, needs to be unique.                                                |
+| element_number_limit | uint16_t | Number          | The maximum number of entries allowed in dynamic types. For static types defaults to 1. |
 
 ## CLI - cleos
 

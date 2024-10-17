@@ -1169,7 +1169,29 @@
                 },
                 "key_defs": {
                     "friendlyName": "Key Definition",
-                    "description": "Definition of the key that will be added to factory, which will include name, type, edit rights, editors and default value"
+                    "description": "Definition of the key that will be added to factory, which will include name, type, edit rights, editors and default value",
+                    "fields": {
+                        "name": {
+                            "friendlyName": "Name",
+                            "description": "The name of the key, needs to be unique."
+                        },
+                        "type": {
+                            "friendlyName": "Type",
+                            "description": "The type of the value stored in the key."
+                        },
+                        "edit_rights": {
+                            "friendlyName": "Edit Rights",
+                            "description": "Bitmask, determines who can edit the key including asset manager, owner, authorized editor or user group."
+                        },
+                        "editors": {
+                            "friendlyName": "Editors",
+                            "description": "The editor if authorized editor is set."
+                        },
+                        "default_value": {
+                            "friendlyName": "Default Value",
+                            "description": "The default value of the key which needs to match with type."
+                        }
+                    }
                 },
                 "memo": {
                     "friendlyName": "Memo",
@@ -1187,7 +1209,7 @@
                     "description": "Onwer of the Uniq which values will be updated"
                 },
                 "editor": {
-                    "friendlyName": "Key Editor",
+                    "friendlyName": "Key Editor (optional)",
                     "description": "The editor who is authorized to edit the key's value."
                 },
                 "token_id": {
@@ -1196,7 +1218,17 @@
                 },
                 "key_values": {
                     "friendlyName": "Key's Values",
-                    "description": "The values of the keys that will be updated."
+                    "description": "The values of the keys that will be updated.",
+                    "fields": {
+                        "key_name": {
+                            "friendlyName": "Key Name",
+                            "description": "The name of the key defined in factory keys."
+                        },
+                        "key_value": {
+                            "friendlyName": "Key Value",
+                            "description": "The value that will be set for the key. Value needs to match the type defined in factory keys."
+                        }
+                    }
                 },
                 "memo": {
                     "friendlyName": "Memo",

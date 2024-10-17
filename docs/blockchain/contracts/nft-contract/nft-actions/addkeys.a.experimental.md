@@ -38,13 +38,13 @@ The properties of this type are provided below:
 
 ### `key_def_action` interface
 
-| Property Name | C++ Type                        | JavaScript Type | Description                                                                                     |
-| ------------- | ------------------------------- | --------------- | ----------------------------------------------------------------------------------------------- |
-| name          | string                          | String          | The name of the key, need to be unique.                                                         |
-| type          | string                          | String          | The type of the value store in the key.                                                         |
-| edit_rights   | uint8_t                         | Number          | Determine who can edit the key including asset manager, owner, authorized editor or user group. |
-| editors       | std::vector\<name>              | String[]        | The editor if authorized editor is set.                                                         |                 
-| default_value | std::optional\<key_value_store> | Object          | The default value of the key and this need to match with type.                                  |                 
+| Property Name | C++ Type                        | JavaScript Type | Description                                                                                               |
+| ------------- | ------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------- |
+| name          | string                          | String          | The name of the key, needs to be unique.                                                                  |
+| type          | string                          | String          | The type of the value stored in the key.                                                                  |
+| edit_rights   | uint8_t                         | Number          | Bitmask, determines who can edit the key including asset manager, owner, authorized editor or user group. |
+| editors       | std::vector\<name>              | String[]        | The editor if authorized editor is set.                                                                   |
+| default_value | std::optional\<key_value_store> | Object          | The default value of the key which needs to match with type.                                              |
 
 `key_value_store` will be an array with first element is type of the value and second is the value. Here is the support list and example:
 
@@ -72,6 +72,15 @@ The properties of this type are provided below:
 | FLOAT_VEC  | float[]             | ["FLOAT_VEC", [0.1,1.2]]   |
 | DOUBLE_VEC | double[]            | ["DOUBLE_VEC", [0.1,1.2]]  |
 | STRING_VEC | string[]            | ["STRING_VEC", ["a", "b"]] |
+
+### `edit_rights` bitmask breakdown
+
+| Value  | Description                                   |
+| ------ | --------------------------------------------- |
+| `0x01` | Manager can edit                              |
+| `0x02` | Owner can edit                                |
+| `0x04` | Authorized editor can edit (used with `0x08`) |
+| `0x08` | Editor is a user group                        |
 
 ## CLI - cleos
 

@@ -91,6 +91,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Uniq On-chain Data',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-on-chain-data'),
+            collapsed: true,
+        },
+        {
             text: 'Token Swap',
             items: getMarkdownFiles('/tutorials/token-swap'),
             collapsed: true,
@@ -268,6 +273,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Uniq Auction',
             items: getMarkdownFiles('/tutorials/uniq-factories/uniq-auction'),
+            collapsed: true,
+        },
+        {
+            text: 'Uniq On-chain Data',
+            items: getMarkdownFiles('/tutorials/uniq-factories/uniq-on-chain-data'),
             collapsed: true,
         },
     ],

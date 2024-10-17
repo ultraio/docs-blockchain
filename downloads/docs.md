@@ -2347,6 +2347,129 @@ await transact(
 ```
 
 ---
+title: 'addkeys.a'
+order: 49
+
+---
+
+# addkeys.a
+
+Add key pairs for Uniq factory
+
+## Technical Behavior
+
+The manager of an Uniq factory should be able to add one or more key pairs at the factory level at any time, which means key pairs at the factory level can change over time. When that happens, all Uniqs minted from that factory should be able to use all key pairs no matter when minted.
+
+Key `name` has to be unique.
+
+Key `type` is the data type of the value, and it has to be in the supported list from `keytypes` table.
+
+`edit_rights` define which permission can edit the value including manager | owner | authorized editor | user group.
+
+`editor` this is authorized editor mentioned above, and it required to have at least one account here.
+
+`default_value` has to match the key `type`, like integer if it's `uint` or `int`. Also, if the type is an array, total element cannot exceed the limit from [`keytypes` action](./setktypes.md). In case of the `string` or `string[]`, total character cannot exceed the limit.
+
+Factory RAM payment will be calculated based on the usage of `key_defs` which include some fixed RAM usage and usage which will determined by the key `type`. And the payment is non-refundable.
+
+Uniq RAM payment for the new key will be calculated based on how many Uniq are already minted from factory. And this payment will be put into factory on-chain RAM vault, which will be refunded when Uniq is burn.
+
+## Action Parameters
+
+The properties of this type are provided below:
+
+| Property Name | C++ Type                     | JavaScript Type | Description                                                                             |
+| ------------- | ---------------------------- | --------------- | --------------------------------------------------------------------------------------- |
+| factory_id    | uint64_t                     | Number          | ID of the Uniq factory for which key pairs will be added.                               |
+| key_defs      | std::vector\<key_def_action> | Object[]        | The definition of the key including name, type, edit right, editors and default values. |
+| memo          | string                       | String          | Memo                                                                                    |
+
+### `key_def_action` interface
+
+| Property Name | C++ Type                        | JavaScript Type | Description                                                                                               |
+| ------------- | ------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------- |
+| name          | string                          | String          | The name of the key, needs to be unique.                                                                  |
+| type          | string                          | String          | The type of the value stored in the key.                                                                  |
+| edit_rights   | uint8_t                         | Number          | Bitmask, determines who can edit the key including asset manager, owner, authorized editor or user group. |
+| editors       | std::vector\<name>              | String[]        | The editor if authorized editor is set.                                                                   |
+| default_value | std::optional\<key_value_store> | Object          | The default value of the key which needs to match with type.                                              |
+
+`key_value_store` will be an array with first element is type of the value and second is the value. Here is the support list and example:
+
+| Value Type | Key Def Type string | Example                    |
+| ---------- | ------------------- | -------------------------- |
+| int8       | int8                | ["int8", 0]                |
+| int16      | int16               | ["int16", 0]               |
+| int32      | int32               | ["int32", 0]               |
+| int64      | int64               | ["int64", 0]               |
+| uint8      | uint8               | ["uint8", 0]               |
+| uint16     | uint16              | ["uint16", 0]              |
+| uint32     | uint32              | ["uint32", 0]              |
+| uint64     | uint64              | ["uint64", 0]              |
+| float      | float               | ["float", 0.1]             |
+| double     | double              | ["double", 0.1]            |
+| string     | string              | ["string", "a"]            |
+| INT8_VEC   | int8[]              | ["INT8_VEC", [0,1,2]]      |
+| INT16_VEC  | int16[]             | ["INT16_VEC", [0,1,2]]     |
+| INT32_VEC  | int32[]             | ["INT32_VEC", [0,1,2]]     |
+| INT64_VEC  | int64[]             | ["INT64_VEC", [0,1,2]]     |
+| UINT8_VEC  | uint8[]             | ["UINT8_VEC", [0,1,2]]     |
+| UINT16_VEC | uint16[]            | ["UINT16_VEC", [0,1,2]]    |
+| UINT32_VEC | uint32[]            | ["UINT32_VEC", [0,1,2]]    |
+| UINT64_VEC | uint64[]            | ["UINT64_VEC", [0,1,2]]    |
+| FLOAT_VEC  | float[]             | ["FLOAT_VEC", [0.1,1.2]]   |
+| DOUBLE_VEC | double[]            | ["DOUBLE_VEC", [0.1,1.2]]  |
+| STRING_VEC | string[]            | ["STRING_VEC", ["a", "b"]] |
+
+### `edit_rights` bitmask breakdown
+
+| Value  | Description                                   |
+| ------ | --------------------------------------------- |
+| `0x01` | Manager can edit                              |
+| `0x02` | Owner can edit                                |
+| `0x04` | Authorized editor can edit (used with `0x08`) |
+| `0x08` | Editor is a user group                        |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft addkeys.a '{ "factory_id": "10", "key_defs": [ { "name": "id", "type": "uint8[]", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "UINT8_VEC", [0, 1] ] } ], "memo": "new key pairs" }' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'addkeys.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data: {
+                factory_id: 10,
+                key_defs: [{
+                    name: "id",
+                    type: "uint8[]",
+                    edit_rights: 8,
+                    editors: [
+                        "bob"
+                    ],
+                    default_value: [
+                        "UINT8_VEC",
+                        [0, 1]
+                    ]
+                }],
+                "memo": "add new key pairs"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+---
 title: 'authmint.b'
 order: 4
 
@@ -5208,6 +5331,115 @@ await api.transact(
 ```
 
 ---
+title: 'setktypes'
+order: 48
+
+---
+
+# setktypes.a
+
+Update supported value type for on chain data
+
+## Technical Behavior
+
+Here is the default table of supported value type and its limit.
+
+| C++ Type   | Type string | Limit by element |
+| ---------- | ----------- | ---------------- |
+| int8       | int8        | 1                |
+| int16      | int16       | 1                |
+| int32      | int32       | 1                |
+| int64      | int64       | 1                |
+| uint8      | uint8       | 1                |
+| uint16     | uint16      | 1                |
+| uint32     | uint32      | 1                |
+| uint64     | uint64      | 1                |
+| float      | float       | 1                |
+| double     | double      | 1                |
+| string     | string      | 128              |
+| INT8_VEC   | int8[]      | 128              |
+| INT16_VEC  | int16[]     | 64               |
+| INT32_VEC  | int32[]     | 32               |
+| INT64_VEC  | int64[]     | 16               |
+| UINT8_VEC  | uint8[]     | 128              |
+| UINT16_VEC | uint16[]    | 64               |
+| UINT32_VEC | uint32[]    | 32               |
+| UINT64_VEC | uint64[]    | 16               |
+| FLOAT_VEC  | float[]     | 32               |
+| DOUBLE_VEC | double[]    | 16               |
+| STRING_VEC | string[]    | 256              |
+
+**Note**: In case of `string` and `string[]`, it will count the total characters instead.
+
+Only Ultra will have authority to update this list.
+
+`key_types` can only extend the default list, cannot change the type name and its order, since we use this order to store type index in factory's keys.
+
+## Action Parameters
+
+The properties of this type are provided below:
+
+| Property Name | C++ Type                    | JavaScript Type | Description                        |
+| ------------- | --------------------------- | --------------- | ---------------------------------- |
+| key_types     | std::vector\<key_type_info> | Object[]        | The key types that will be updated |
+
+### `key_type_info` interface
+
+| Property Name        | C++ Type | JavaScript Type | Description                                                                             |
+| -------------------- | -------- | --------------- | --------------------------------------------------------------------------------------- |
+| key_type             | string   | String          | The name of the key, needs to be unique.                                                |
+| element_number_limit | uint16_t | Number          | The maximum number of entries allowed in dynamic types. For static types defaults to 1. |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setktypes '{ "key_types": [ {"key_type": "int8", "element_number_limit": 1}, {"key_type": "int16", "element_number_limit": 1}, {"key_type": "int32", "element_number_limit": 1}, {"key_type": "int64", "element_number_limit": 1}, {"key_type": "uint8", "element_number_limit": 1}, {"key_type": "uint16", "element_number_limit": 1}, {"key_type": "uint32", "element_number_limit": 1}, {"key_type": "uint64", "element_number_limit": 1}, {"key_type": "float", "element_number_limit": 1}, {"key_type": "double", "element_number_limit": 1}, {"key_type": "string", "element_number_limit": 128}, {"key_type": "int8[]", "element_number_limit": 128}, {"key_type": "int16[]", "element_number_limit": 64}, {"key_type": "int32[]", "element_number_limit": 32}, {"key_type": "int64[]", "element_number_limit": 16}, {"key_type": "uint8[]", "element_number_limit": 128}, {"key_type": "uint16[]", "element_number_limit": 64}, {"key_type": "uint32[]", "element_number_limit": 32}, {"key_type": "uint64[]", "element_number_limit": 16}, {"key_type": "float[]", "element_number_limit": 32}, {"key_type": "double[]", "element_number_limit": 16}, {"key_type": "string[]", "element_number_limit": 256} ] }' -p ultra.nft.ft@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'addkeys.a',
+            authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
+            data: {
+                key_types: [
+                    {key_type: "int8", element_number_limit: 1},
+                    {key_type: "int16", element_number_limit: 1},
+                    {key_type: "int32", element_number_limit: 1},
+                    {key_type: "int64", element_number_limit: 1},
+                    {key_type: "uint8", element_number_limit: 1},
+                    {key_type: "uint16", element_number_limit: 1},
+                    {key_type: "uint32", element_number_limit: 1},
+                    {key_type: "uint64", element_number_limit: 1},
+                    {key_type: "float", element_number_limit: 1},
+                    {key_type: "double", element_number_limit: 1},
+                    {key_type: "string", element_number_limit: 128},
+                    {key_type: "int8[]", element_number_limit: 128},
+                    {key_type: "int16[]", element_number_limit: 64},
+                    {key_type: "int32[]", element_number_limit: 32},
+                    {key_type: "int64[]", element_number_limit: 16},
+                    {key_type: "uint8[]", element_number_limit: 128},
+                    {key_type: "uint16[]", element_number_limit: 64},
+                    {key_type: "uint32[]", element_number_limit: 32},
+                    {key_type: "uint64[]", element_number_limit: 16},
+                    {key_type: "float[]", element_number_limit: 32},
+                    {key_type: "double[]", element_number_limit: 16},
+                    {key_type: "string[]", element_number_limit: 256}
+                ]
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+---
 title: 'setmeta.b'
 order: 23
 
@@ -6379,6 +6611,111 @@ await api.transact({
 });
 ```
 ---
+title: 'setvals.a'
+order: 50
+
+---
+
+# setvals.a
+
+Set key values of an Uniq
+
+## Technical Behavior
+
+Before setting values, the key have to be defined in factory with [`addkeys.a` action](./addkeys.a.md)
+
+Only editor including owner | manager | authorized editor can update Uniq's values if the edit right is configured for them.
+
+The key value will only store in Uniq, and will be stored as key index and key value. Key index will be referred to factory key definition list.
+
+In `key_values`, `key_name` must be unique and existed in factory keys. `key_value` must match the type defined in factory keys.
+
+If no `editor` is included, owner will be the editor and the editor also need to sign the contract.
+
+No RAM payment requires for this action since it's already paid in factory level.
+
+## Action Parameters
+
+The properties of this type are provided below:
+
+| Property Name | C++ Type              | JavaScript Type | Description                                   |
+| ------------- | --------------------- | --------------- | --------------------------------------------- |
+| owner         | name                  | String          | Onwer of the Uniq                             |
+| editor        | optional\<name>       | String          | The authorized editor of the key              |
+| token_id      | uint64_t              | Number          | The ID of the Uniq that value will be updated |
+| key_values    | key_values_action_vec | Object[]        | The list of key name and value for updating   |
+| memo          | string                | String          | Memo                                          |
+
+`key_values_action_vec` is the vector of `key_values_action`
+
+### `key_values_action` interface
+
+| Property Name | C++ Type        | JavaScript Type | Description                                                                                    |
+| ------------- | --------------- | --------------- | ---------------------------------------------------------------------------------------------- |
+| key_name      | string          | String          | The name of the key defined in factory keys.                                                   |
+| key_value     | key_value_store | Object[]        | The value that will be set for the key. Value needs to match the type defined in factory keys. |
+
+`key_value_store` will be an array with first element is type of the value and second is the value. Here is the support list and example:
+
+| Value Type | Key Def Type string | Example                    |
+| ---------- | ------------------- | -------------------------- |
+| int8       | int8                | ["int8", 0]                |
+| int16      | int16               | ["int16", 0]               |
+| int32      | int32               | ["int32", 0]               |
+| int64      | int64               | ["int64", 0]               |
+| uint8      | uint8               | ["uint8", 0]               |
+| uint16     | uint16              | ["uint16", 0]              |
+| uint32     | uint32              | ["uint32", 0]              |
+| uint64     | uint64              | ["uint64", 0]              |
+| float      | float               | ["float", 0.1]             |
+| double     | double              | ["double", 0.1]            |
+| string     | string              | ["string", "a"]            |
+| INT8_VEC   | int8[]              | ["INT8_VEC", [0,1,2]]      |
+| INT16_VEC  | int16[]             | ["INT16_VEC", [0,1,2]]     |
+| INT32_VEC  | int32[]             | ["INT32_VEC", [0,1,2]]     |
+| INT64_VEC  | int64[]             | ["INT64_VEC", [0,1,2]]     |
+| UINT8_VEC  | uint8[]             | ["UINT8_VEC", [0,1,2]]     |
+| UINT16_VEC | uint16[]            | ["UINT16_VEC", [0,1,2]]    |
+| UINT32_VEC | uint32[]            | ["UINT32_VEC", [0,1,2]]    |
+| UINT64_VEC | uint64[]            | ["UINT64_VEC", [0,1,2]]    |
+| FLOAT_VEC  | float[]             | ["FLOAT_VEC", [0.1,1.2]]   |
+| DOUBLE_VEC | double[]            | ["DOUBLE_VEC", [0.1,1.2]]  |
+| STRING_VEC | string[]            | ["STRING_VEC", ["a", "b"]] |
+
+## CLI - cleos
+
+```bash
+cleos push action eosio.nft.ft setvals.a '{ "owner": "alice", "editor": null, "token_id": 8, "keys_values": [ "key_name": "keyname", "key_value": [ "uint8", 3 ] ], "memo": "set key value" }' -p alice@active
+```
+
+## JavaScript - eosjs
+
+```js
+await transact(
+    [
+        {
+            account: 'eosio.nft.ft',
+            name: 'addkeys.a',
+            authorization: [{ actor: 'alice', permission: 'active' }],
+            data:  {
+                owner: "alice",
+                editor: null,
+                token_id: 8,
+                keys_values: [
+                    key_name: "keyname",
+                    key_value: [ "uint8", 3 ]
+                ],
+                "memo": "set key value"
+            },
+        },
+    ],
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+);
+```
+---
 title: 'stauctcfg.a'
 order: 43
 
@@ -6723,36 +7060,55 @@ order: 1
 
 The table contains Uniq factories' settings and the operational info.
 
-| Fields                  | Type                              | Description                                                                                                                            |
-| ----------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| id                      | uint64_t                          | (primary key) The Uniq factory ID                                                                                                      |
-| asset_manager           | eosio::name                       | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
-| asset_creator           | eosio::name                       | Account that ceates the Uniq factory.                                                                                                  |
-| minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                           |
-| resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
-| mintable_window_start   | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be minted.                                                                             |
-| mintable_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be minted.                                                                                   |
-| trading_window_start    | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be traded.                                                                             |
-| trading_window_end      | std::optional\<uint32_t>          | The end of the time window when Uniqs can be traded.                                                                                   |
-| recall_window_start     | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
-| recall_window_end       | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
-| lockup_time             | std::optional\<uint32_t>          | *Disabled*. The time window since Uniq minting in which the Uniq cannot be transferred                                                 |
-| conditionless_receivers | std::vector\<eosio::name>         | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
-| stat                    | uint8_t                           | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
-| factory_uri             | std::string                       | The Uniq factory metadata URI vector.                                                                                                  |
-| factory_hash            | eosio::checksum256                | The Uniq factory metadata hash.                                                                                                        |
-| max_mintable_tokens     | std::optional\<uint32_t>          | The maximal number of Uniqs that can be minted with the factory.                                                                       |
-| minted_tokens_no        | uint32_t                          | The number of minted Uniqs.                                                                                                            |
-| existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt Uniqs.                                                                                      |
-| authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of Uniqs that authorized minters can issue                                                                        |
-| account_minting_limit   | std::optional\<uint32_t>          | The limit of Uniqs that can be minted to each individual account                                                                       |
-| transfer_window_start   | std::optional\<uint32_t>          | The beginning fo the time window when Uniqs can be transferred                                                                         |
-| transfer_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be transferred                                                                               |
-| default_token_uri       | std::string                       | The default Uniq metadata URI for Uniqs without dedicated URI                                                                          |
-| default_token_hash      | std::optional\<checksum256>       | The default Uniq metadata hash                                                                                                         |
-| lock_hash               | bool                              | Controls whether metadata of the factory, Uniqs or default Uniqs could be changed                                                      |
+| Fields                  | Type                                       | Description                                                                                                                            |
+| ----------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| id                      | uint64_t                                   | (primary key) The Uniq factory ID                                                                                                      |
+| asset_manager           | eosio::name                                | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
+| asset_creator           | eosio::name                                | Account that ceates the Uniq factory.                                                                                                  |
+| minimum_resell_price    | eosio::asset                               | A minimum price when resell on marketplaces.                                                                                           |
+| resale_shares           | std::vector\<eosio::resale_share>          | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
+| mintable_window_start   | std::optional\<uint32_t>                   | The beginning of the time window when Uniqs can be minted.                                                                             |
+| mintable_window_end     | std::optional\<uint32_t>                   | The end of the time window when Uniqs can be minted.                                                                                   |
+| trading_window_start    | std::optional\<uint32_t>                   | The beginning of the time window when Uniqs can be traded.                                                                             |
+| trading_window_end      | std::optional\<uint32_t>                   | The end of the time window when Uniqs can be traded.                                                                                   |
+| recall_window_start     | std::optional\<uint32_t>                   | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| recall_window_end       | std::optional\<uint32_t>                   | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| lockup_time             | std::optional\<uint32_t>                   | *Disabled*. The time window since Uniq minting in which the Uniq cannot be transferred                                                 |
+| conditionless_receivers | std::vector\<eosio::name>                  | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                    | uint8_t                                    | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
+| factory_uri             | std::string                                | The Uniq factory metadata URI vector.                                                                                                  |
+| factory_hash            | eosio::checksum256                         | The Uniq factory metadata hash.                                                                                                        |
+| max_mintable_tokens     | std::optional\<uint32_t>                   | The maximal number of Uniqs that can be minted with the factory.                                                                       |
+| minted_tokens_no        | uint32_t                                   | The number of minted Uniqs.                                                                                                            |
+| existing_tokens_no      | uint32_t                                   | The number of minted minus number of burnt Uniqs.                                                                                      |
+| authorized_tokens_no    | std::optional\<uint32_t>                   | The current quantity of Uniqs that authorized minters can issue                                                                        |
+| account_minting_limit   | std::optional\<uint32_t>                   | The limit of Uniqs that can be minted to each individual account                                                                       |
+| transfer_window_start   | std::optional\<uint32_t>                   | The beginning fo the time window when Uniqs can be transferred                                                                         |
+| transfer_window_end     | std::optional\<uint32_t>                   | The end of the time window when Uniqs can be transferred                                                                               |
+| default_token_uri       | std::string                                | The default Uniq metadata URI for Uniqs without dedicated URI                                                                          |
+| default_token_hash      | std::optional\<checksum256>                | The default Uniq metadata hash                                                                                                         |
+| lock_hash               | bool                                       | Controls whether metadata of the factory, Uniqs or default Uniqs could be changed                                                      |
+| keys                    | binary_extension\<optional\<factory_keys>> | Factory key definition, including name, type, edit details, default values                                                             |
 
-Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus**
+### `factory_keys` type breakdown
+
+| Name                             | Type                   | Description                                                                            |
+| -------------------------------- | ---------------------- | -------------------------------------------------------------------------------------- |
+| key_defs                         | vector\<key_def_table> | Defines key name and types; key value must conform with the name and type defined here |
+| total_key_def_ram_payment_size   | int64_t                | Amount of RAM used to store key definitions                                            |
+| total_key_value_ram_payment_size | int64_t                | Amount of RAM used to store key values                                                 |
+
+### `key_def_table` type breakdown
+
+| Name          | Type                       | Description                                                                                               |
+| ------------- | -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| name          | string                     | Key name                                                                                                  |
+| type_index    | uint8_t                    | Index of the variant type                                                                                 |
+| edit_rights   | uint8_t                    | Bitmask, determines who can edit the key including asset manager, owner, authorized editor or user group. |
+| editors       | vector\<eosio::name>       | The editor if authorized editor is set.                                                                   |
+| default_value | optional\<key_value_store> | Optional default key values                                                                               |
+
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus, addkeys.a**
 
 ## factory.a
 
@@ -6816,16 +7172,26 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 
 The table stores the Uniqs owned by a user.
 
-| Fields           | Type                               | Description                                             |
-| ---------------- | ---------------------------------- | ------------------------------------------------------- |
-| id               | uint64_t                           | (primary key) Global Uniq ID                            |
-| token_factory_id | uint64_t                           | The Uniq factory ID the Uniq was issued with.           |
-| mint_date        | eosio::time_point_sec              | The Uniq mint date.                                     |
-| serial_number    | uint32_t                           | The ordinal number of the Uniq assigned during issuance |
-| uri              | std::optional\<string>             | URI pointing to the metadata of this Uniq               |
-| hash             | std::optional\<eosio::checksum256> | hash of the metadata for this Uniq                      |
+| Fields           | Type                                        | Description                                                                                  |
+| ---------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| id               | uint64_t                                    | (primary key) Global Uniq ID                                                                 |
+| token_factory_id | uint64_t                                    | The Uniq factory ID the Uniq was issued with.                                                |
+| mint_date        | eosio::time_point_sec                       | The Uniq mint date.                                                                          |
+| serial_number    | uint32_t                                    | The ordinal number of the Uniq assigned during issuance                                      |
+| uri              | std::optional\<string>                      | URI pointing to the metadata of this Uniq                                                    |
+| hash             | std::optional\<eosio::checksum256>          | Hash of the metadata for this Uniq                                                           |
+| key_values       | binary_extension\<optional\<key_value_vec>> | Uniq key values, key name and type must conform with factory key definition; can be a subset |
 
-Most relevant actions: **buy**, **burn**, **issue.b**, **resell**.
+### `key_value_vec` type breakdown
+
+`key_value_vec` is a vector of key value pairs:
+
+| Fields    | Type            | Description    |
+| --------- | --------------- | -------------- |
+| key_index | uint8_t         | Index of a key |
+| key_value | key_value_store | Key value      |
+
+Most relevant actions: **buy**, **burn**, **issue.b**, **resell**, **setvals.a**.
 
 -   `cleos` Query Example
 
@@ -7612,6 +7978,31 @@ cleos get table eosio.nft.ft eosio.nft.ft auction.a
 
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"auction.a", "json": true}'
+```
+
+## keytypes
+
+-   Table: `keytypes`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `N/A`
+
+The table store the supported key type for on-chain data and the maximum element that type can support when adding value.
+
+| Field     | Type                        | Description                        |
+| --------- | --------------------------- | ---------------------------------- |
+| key_types | std::vector\<key_type_info> | The key types that will be updated |
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft keytypes
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"keytypes", "json": true}'
 ```
 ---
 title: 'NFT Tables'
@@ -32001,6 +32392,40 @@ And the below action sets the global configurations for Uniq offer.
 - By locking the funds, we will protect Uniq owners from fake bidding and encourage buyers to use their funds smartly.
 
 - An offer will always be valid until it's expired or cancelled. In this way, the new owner can always resell right away if they don't like or there's a better offer missed by the last owner.
+---
+title: 'Uniq On-chain Data'
+
+order: 1
+---
+
+# Uniq On-chain Data
+
+## Overview of Uniq On-chain Data feature
+
+Uniq On-chain Data allows the factory manager to add key pair values in their settings to allow any Uniq minted from that factory to modify their data. When defined in factory keys settings, an authorized user can alter any key values, and values will be stored only on Uniq.
+
+The factory manager has to pay a non-refundable RAM fee when adding the new key pair.
+
+Whenever a Uniq is minted from that factory, a RAM fee will be transferred from the manager to his key RAM vault and will be refunded to the manager when Uniq is burnt.
+
+Usage of the actions for adding new key pair for factory and updating value in Uniq are provided below.
+
+-   [addkeys.a - Add new key pair for factory](../../../blockchain/contracts/nft-contract/nft-actions/addkeys.a.md)
+
+-   [setvals.a - Set key value for Uniq](../../../blockchain/contracts/nft-contract/nft-actions/setvals.a.md)
+
+And the below action sets the global supported key type for Uniq on-chain data.
+
+-   [setktypes - Set supported key types for key pair](../../../blockchain/contracts/nft-contract/nft-actions/stauctcfg.a.md)
+
+## Benefits of Uniq On-chain data
+
+- Allow Uniq's metadata to be updated on chain.
+
+- Changing off-Chain metadata constantly with the backend is tedious and inefficient in many scenarios.
+
+- Having on-chain Uniq data would also allow Uniq marketplaces to provide filters for Uniqs whose data are changing regularly.
+
 ---
 title: 'Example Metadata Project'
 

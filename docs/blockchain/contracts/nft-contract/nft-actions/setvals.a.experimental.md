@@ -45,30 +45,20 @@ The properties of this type are provided below:
 
 `key_value_store` will be an array with first element is type of the value and second is the value. Here is the support list and example:
 
-| Value Type | Key Def Type string | Example                    |
-| ---------- | ------------------- | -------------------------- |
-| int8       | int8                | ["int8", 0]                |
-| int16      | int16               | ["int16", 0]               |
-| int32      | int32               | ["int32", 0]               |
-| int64      | int64               | ["int64", 0]               |
-| uint8      | uint8               | ["uint8", 0]               |
-| uint16     | uint16              | ["uint16", 0]              |
-| uint32     | uint32              | ["uint32", 0]              |
-| uint64     | uint64              | ["uint64", 0]              |
-| float      | float               | ["float", 0.1]             |
-| double     | double              | ["double", 0.1]            |
-| string     | string              | ["string", "a"]            |
-| INT8_VEC   | int8[]              | ["INT8_VEC", [0,1,2]]      |
-| INT16_VEC  | int16[]             | ["INT16_VEC", [0,1,2]]     |
-| INT32_VEC  | int32[]             | ["INT32_VEC", [0,1,2]]     |
-| INT64_VEC  | int64[]             | ["INT64_VEC", [0,1,2]]     |
-| UINT8_VEC  | uint8[]             | ["UINT8_VEC", [0,1,2]]     |
-| UINT16_VEC | uint16[]            | ["UINT16_VEC", [0,1,2]]    |
-| UINT32_VEC | uint32[]            | ["UINT32_VEC", [0,1,2]]    |
-| UINT64_VEC | uint64[]            | ["UINT64_VEC", [0,1,2]]    |
-| FLOAT_VEC  | float[]             | ["FLOAT_VEC", [0.1,1.2]]   |
-| DOUBLE_VEC | double[]            | ["DOUBLE_VEC", [0.1,1.2]]  |
-| STRING_VEC | string[]            | ["STRING_VEC", ["a", "b"]] |
+| Value Type | Key Def Type string | Example          |
+| ---------- | ------------------- | ---------------- |
+| int8       | int8                | ["int8", 0]      |
+| int16      | int16               | ["int16", 0]     |
+| int32      | int32               | ["int32", 0]     |
+| int64      | int64               | ["int64", 0]     |
+| uint8      | uint8               | ["uint8", 0]     |
+| uint16     | uint16              | ["uint16", 0]    |
+| uint32     | uint32              | ["uint32", 0]    |
+| uint64     | uint64              | ["uint64", 0]    |
+| float      | float32             | ["float32", 0.1] |
+| double     | float64             | ["float64", 0.1] |
+| string     | string              | ["string", "a"]  |
+| bool       | bool                | ["bool", 1]      |
 
 ## CLI - cleos
 

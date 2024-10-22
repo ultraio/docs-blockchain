@@ -12,30 +12,20 @@ Update supported value type for on chain data
 
 Here is the default table of supported value type and its limit.
 
-| C++ Type   | Type string | Limit by element |
-| ---------- | ----------- | ---------------- |
-| int8       | int8        | 1                |
-| int16      | int16       | 1                |
-| int32      | int32       | 1                |
-| int64      | int64       | 1                |
-| uint8      | uint8       | 1                |
-| uint16     | uint16      | 1                |
-| uint32     | uint32      | 1                |
-| uint64     | uint64      | 1                |
-| float      | float       | 1                |
-| double     | double      | 1                |
-| string     | string      | 128              |
-| INT8_VEC   | int8[]      | 128              |
-| INT16_VEC  | int16[]     | 64               |
-| INT32_VEC  | int32[]     | 32               |
-| INT64_VEC  | int64[]     | 16               |
-| UINT8_VEC  | uint8[]     | 128              |
-| UINT16_VEC | uint16[]    | 64               |
-| UINT32_VEC | uint32[]    | 32               |
-| UINT64_VEC | uint64[]    | 16               |
-| FLOAT_VEC  | float[]     | 32               |
-| DOUBLE_VEC | double[]    | 16               |
-| STRING_VEC | string[]    | 256              |
+| C++ Type | Type string | Limit by element |
+| -------- | ----------- | ---------------- |
+| int8     | int8        | 1                |
+| int16    | int16       | 1                |
+| int32    | int32       | 1                |
+| int64    | int64       | 1                |
+| uint8    | uint8       | 1                |
+| uint16   | uint16      | 1                |
+| uint32   | uint32      | 1                |
+| uint64   | uint64      | 1                |
+| float    | float32     | 1                |
+| double   | float64     | 1                |
+| string   | string      | 128              |
+| bool     | bool        | 1                |
 
 **Note**: In case of `string` and `string[]`, it will count the total characters instead.
 
@@ -61,7 +51,7 @@ The properties of this type are provided below:
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft setktypes '{ "key_types": [ {"key_type": "int8", "element_number_limit": 1}, {"key_type": "int16", "element_number_limit": 1}, {"key_type": "int32", "element_number_limit": 1}, {"key_type": "int64", "element_number_limit": 1}, {"key_type": "uint8", "element_number_limit": 1}, {"key_type": "uint16", "element_number_limit": 1}, {"key_type": "uint32", "element_number_limit": 1}, {"key_type": "uint64", "element_number_limit": 1}, {"key_type": "float", "element_number_limit": 1}, {"key_type": "double", "element_number_limit": 1}, {"key_type": "string", "element_number_limit": 128}, {"key_type": "int8[]", "element_number_limit": 128}, {"key_type": "int16[]", "element_number_limit": 64}, {"key_type": "int32[]", "element_number_limit": 32}, {"key_type": "int64[]", "element_number_limit": 16}, {"key_type": "uint8[]", "element_number_limit": 128}, {"key_type": "uint16[]", "element_number_limit": 64}, {"key_type": "uint32[]", "element_number_limit": 32}, {"key_type": "uint64[]", "element_number_limit": 16}, {"key_type": "float[]", "element_number_limit": 32}, {"key_type": "double[]", "element_number_limit": 16}, {"key_type": "string[]", "element_number_limit": 256} ] }' -p ultra.nft.ft@active
+cleos push action eosio.nft.ft setktypes '{ "key_types": [ {"key_type": "int8", "element_number_limit": 1}, {"key_type": "int16", "element_number_limit": 1}, {"key_type": "int32", "element_number_limit": 1}, {"key_type": "int64", "element_number_limit": 1}, {"key_type": "uint8", "element_number_limit": 1}, {"key_type": "uint16", "element_number_limit": 1}, {"key_type": "uint32", "element_number_limit": 1}, {"key_type": "uint64", "element_number_limit": 1}, {"key_type": "float32", "element_number_limit": 1}, {"key_type": "float64", "element_number_limit": 1}, {"key_type": "string", "element_number_limit": 128}, {"key_type": "bool", "element_number_limit": 1} ] }' -p ultra.nft.ft@active
 ```
 
 ## JavaScript - eosjs
@@ -83,20 +73,10 @@ await transact(
                     {key_type: "uint16", element_number_limit: 1},
                     {key_type: "uint32", element_number_limit: 1},
                     {key_type: "uint64", element_number_limit: 1},
-                    {key_type: "float", element_number_limit: 1},
-                    {key_type: "double", element_number_limit: 1},
+                    {key_type: "float32", element_number_limit: 1},
+                    {key_type: "float64", element_number_limit: 1},
                     {key_type: "string", element_number_limit: 128},
-                    {key_type: "int8[]", element_number_limit: 128},
-                    {key_type: "int16[]", element_number_limit: 64},
-                    {key_type: "int32[]", element_number_limit: 32},
-                    {key_type: "int64[]", element_number_limit: 16},
-                    {key_type: "uint8[]", element_number_limit: 128},
-                    {key_type: "uint16[]", element_number_limit: 64},
-                    {key_type: "uint32[]", element_number_limit: 32},
-                    {key_type: "uint64[]", element_number_limit: 16},
-                    {key_type: "float[]", element_number_limit: 32},
-                    {key_type: "double[]", element_number_limit: 16},
-                    {key_type: "string[]", element_number_limit: 256}
+                    {key_type: "bool", element_number_limit: 1},
                 ]
             },
         },

@@ -25,7 +25,6 @@ Here is the default table of supported value type and its limit.
 | float    | float32     | 1                |
 | double   | float64     | 1                |
 | string   | string      | 128              |
-| bool     | bool        | 1                |
 
 **Note**: In case of `string` and `string[]`, it will count the total characters instead.
 
@@ -51,7 +50,7 @@ The properties of this type are provided below:
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft setktypes '{ "key_types": [ {"key_type": "int8", "element_number_limit": 1}, {"key_type": "int16", "element_number_limit": 1}, {"key_type": "int32", "element_number_limit": 1}, {"key_type": "int64", "element_number_limit": 1}, {"key_type": "uint8", "element_number_limit": 1}, {"key_type": "uint16", "element_number_limit": 1}, {"key_type": "uint32", "element_number_limit": 1}, {"key_type": "uint64", "element_number_limit": 1}, {"key_type": "float32", "element_number_limit": 1}, {"key_type": "float64", "element_number_limit": 1}, {"key_type": "string", "element_number_limit": 128}, {"key_type": "bool", "element_number_limit": 1} ] }' -p ultra.nft.ft@active
+cleos push action eosio.nft.ft setktypes '{ "key_types": [ {"key_type": "int8", "element_number_limit": 1}, {"key_type": "int16", "element_number_limit": 1}, {"key_type": "int32", "element_number_limit": 1}, {"key_type": "int64", "element_number_limit": 1}, {"key_type": "uint8", "element_number_limit": 1}, {"key_type": "uint16", "element_number_limit": 1}, {"key_type": "uint32", "element_number_limit": 1}, {"key_type": "uint64", "element_number_limit": 1}, {"key_type": "float32", "element_number_limit": 1}, {"key_type": "float64", "element_number_limit": 1}, {"key_type": "string", "element_number_limit": 128} ] }' -p ultra.nft.ft@active
 ```
 
 ## JavaScript - eosjs
@@ -75,8 +74,7 @@ await transact(
                     {key_type: "uint64", element_number_limit: 1},
                     {key_type: "float32", element_number_limit: 1},
                     {key_type: "float64", element_number_limit: 1},
-                    {key_type: "string", element_number_limit: 128},
-                    {key_type: "bool", element_number_limit: 1},
+                    {key_type: "string", element_number_limit: 128}
                 ]
             },
         },

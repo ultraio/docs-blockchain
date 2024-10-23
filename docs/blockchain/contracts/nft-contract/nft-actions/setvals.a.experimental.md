@@ -58,7 +58,7 @@ The properties of this type are provided below:
 | float      | float32             | ["float32", 0.1] |
 | double     | float64             | ["float64", 0.1] |
 | string     | string              | ["string", "a"]  |
-| bool       | bool                | ["bool", 1]      |
+| bool       | bool                | ["bool", true]   |
 
 ## CLI - cleos
 

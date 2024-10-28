@@ -48,30 +48,19 @@ The properties of this type are provided below:
 
 `key_value_store` will be an array with first element is type of the value and second is the value. Here is the support list and example:
 
-| Value Type | Key Def Type string | Example                    |
-| ---------- | ------------------- | -------------------------- |
-| int8       | int8                | ["int8", 0]                |
-| int16      | int16               | ["int16", 0]               |
-| int32      | int32               | ["int32", 0]               |
-| int64      | int64               | ["int64", 0]               |
-| uint8      | uint8               | ["uint8", 0]               |
-| uint16     | uint16              | ["uint16", 0]              |
-| uint32     | uint32              | ["uint32", 0]              |
-| uint64     | uint64              | ["uint64", 0]              |
-| float      | float               | ["float", 0.1]             |
-| double     | double              | ["double", 0.1]            |
-| string     | string              | ["string", "a"]            |
-| INT8_VEC   | int8[]              | ["INT8_VEC", [0,1,2]]      |
-| INT16_VEC  | int16[]             | ["INT16_VEC", [0,1,2]]     |
-| INT32_VEC  | int32[]             | ["INT32_VEC", [0,1,2]]     |
-| INT64_VEC  | int64[]             | ["INT64_VEC", [0,1,2]]     |
-| UINT8_VEC  | uint8[]             | ["UINT8_VEC", [0,1,2]]     |
-| UINT16_VEC | uint16[]            | ["UINT16_VEC", [0,1,2]]    |
-| UINT32_VEC | uint32[]            | ["UINT32_VEC", [0,1,2]]    |
-| UINT64_VEC | uint64[]            | ["UINT64_VEC", [0,1,2]]    |
-| FLOAT_VEC  | float[]             | ["FLOAT_VEC", [0.1,1.2]]   |
-| DOUBLE_VEC | double[]            | ["DOUBLE_VEC", [0.1,1.2]]  |
-| STRING_VEC | string[]            | ["STRING_VEC", ["a", "b"]] |
+| Value Type | Key Def Type string | Example          |
+| ---------- | ------------------- | ---------------- |
+| int8       | int8                | ["int8", 0]      |
+| int16      | int16               | ["int16", 0]     |
+| int32      | int32               | ["int32", 0]     |
+| int64      | int64               | ["int64", 0]     |
+| uint8      | uint8               | ["uint8", 0]     |
+| uint16     | uint16              | ["uint16", 0]    |
+| uint32     | uint32              | ["uint32", 0]    |
+| uint64     | uint64              | ["uint64", 0]    |
+| float      | float32             | ["float32", 0.1] |
+| double     | float64             | ["float64", 0.1] |
+| string     | string              | ["string", "a"]  |
 
 ### `edit_rights` bitmask breakdown
 
@@ -85,7 +74,7 @@ The properties of this type are provided below:
 ## CLI - cleos
 
 ```bash
-cleos push action eosio.nft.ft addkeys.a '{ "factory_id": "10", "key_defs": [ { "name": "id", "type": "uint8[]", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "UINT8_VEC", [0, 1] ] } ], "memo": "new key pairs" }' -p alice@active
+cleos push action eosio.nft.ft addkeys.a '{ "factory_id": 10, "key_defs": [ { "name": "id1", "type": "int8", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "int8", -8 ] }, { "name": "id2", "type": "int16", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "int16", 16 ] }, { "name": "id3", "type": "int32", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "int32", -32 ] }, { "name": "id4", "type": "int64", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "int64", 64 ] }, { "name": "id5", "type": "uint8", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "uint8", 8 ] }, { "name": "id6", "type": "uint16", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "uint16", 16 ] }, { "name": "id7", "type": "uint32", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "uint32", 32 ] }, { "name": "id8", "type": "uint64", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "uint64", 64 ] }, { "name": "id9", "type": "float32", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "float32", -1.32 ] }, { "name": "id10", "type": "float64", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "float64", 1.64 ] }, { "name": "id11", "type": "string", "edit_rights": 8, "editors": [ "bob" ], "default_value": [ "string", "abc" ] } ], "memo": "add new key pairs" }' -p alice@active
 ```
 
 ## JavaScript - eosjs
@@ -99,18 +88,85 @@ await transact(
             authorization: [{ actor: 'alice', permission: 'active' }],
             data: {
                 factory_id: 10,
-                key_defs: [{
-                    name: "id",
-                    type: "uint8[]",
-                    edit_rights: 8,
-                    editors: [
-                        "bob"
-                    ],
-                    default_value: [
-                        "UINT8_VEC",
-                        [0, 1]
-                    ]
-                }],
+                key_defs: [
+                    {
+                        name: "id1",
+                        type: "int8",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "int8", -8 ]
+                    },
+                    {
+                        name: "id2",
+                        type: "int16",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "int16", 16 ]
+                    },
+                    {
+                        name: "id3",
+                        type: "int32",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "int32", -32 ]
+                    },
+                    {
+                        name: "id4",
+                        type: "int64",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "int64", 64 ]
+                    },
+                    {
+                        name: "id5",
+                        type: "uint8",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "uint8", 8 ]
+                    },
+                    {
+                        name: "id6",
+                        type: "uint16",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "uint16", 16 ]
+                    },
+                    {
+                        name: "id7",
+                        type: "uint32",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "uint32", 32 ]
+                    },
+                    {
+                        name: "id8",
+                        type: "uint64",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "uint64", 64 ]
+                    },
+                    {
+                        name: "id9",
+                        type: "float32",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "float32", -1.32 ]
+                    },
+                    {
+                        name: "id10",
+                        type: "float64",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "float64", 1.64 ]
+                    },
+                    {
+                        name: "id11",
+                        type: "string",
+                        edit_rights: 8,
+                        editors: [ "bob" ],
+                        default_value: [ "string", "abc" ]
+                    }
+                ],
                 "memo": "add new key pairs"
             },
         },

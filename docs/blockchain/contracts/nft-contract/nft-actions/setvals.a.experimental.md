@@ -72,7 +72,7 @@ await transact(
     [
         {
             account: 'eosio.nft.ft',
-            name: 'addkeys.a',
+            name: 'setvals.a',
             authorization: [{ actor: 'alice', permission: 'active' }],
             data:  {
                 owner: "alice",

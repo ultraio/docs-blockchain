@@ -5448,7 +5448,7 @@ await transact(
     [
         {
             account: 'eosio.nft.ft',
-            name: 'addkeys.a',
+            name: 'setktypes',
             authorization: [{ actor: 'ultra.nft.ft', permission: 'active' }],
             data: {
                 key_types: [
@@ -6718,7 +6718,7 @@ await transact(
     [
         {
             account: 'eosio.nft.ft',
-            name: 'addkeys.a',
+            name: 'setvals.a',
             authorization: [{ actor: 'alice', permission: 'active' }],
             data:  {
                 owner: "alice",

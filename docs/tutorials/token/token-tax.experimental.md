@@ -1,15 +1,15 @@
 ---
-title: 'Token Metadata'
+title: 'Token Tax'
 
 outline: [0,4]
 order: 3
 ---
 
-# Token Metadata Overview
+# Token Tax Overview
 
 ## Overview
 
-Token metadata will allow the token creator to include meta data
+Token tax will allow the token creator to apply tax policy on any transfer made with specific token.
 
 When token supply reach certain level, any transfer will be taxed with specific percentage, which is set by token creator.
 

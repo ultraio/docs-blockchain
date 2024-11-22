@@ -101,6 +101,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Fungitable Token',
+            items: getMarkdownFiles('/tutorials/token'),
+            collapsed: true,
+        },
+        {
             text: 'Oracle',
             items: getMarkdownFiles('/tutorials/oracle'),
             collapsed: true,
@@ -294,6 +299,22 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Token Swap',
             items: getMarkdownFiles('/tutorials/token-swap'),
+        },
+    ],
+    '/tutorials/token': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Fungitable Token',
+            items: getMarkdownFiles('/tutorials/token'),
+            collapsed: false,
         },
     ],
     '/tutorials/oracle': [

@@ -15,6 +15,7 @@ const navbar: DefaultTheme.NavItem[] = [
                     { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
                     { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
                     { text: 'Token Swap', link: '/tutorials/token-swap/index' },
+                    { text: 'Fungitable Token', link: '/tutorials/token/index' },
                 ],
             },
         ],

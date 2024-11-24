@@ -53,7 +53,7 @@ await transact(
             name: 'bidauction.a',
             authorization: [{ actor: 'bob', permission: 'active' }],
             data: {
-                create: {
+                bid: {
                     token_id: 1,
                     bidder: "bob",
                     receiver: null,

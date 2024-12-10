@@ -15,36 +15,55 @@ order: 1
 
 The table contains Uniq factories' settings and the operational info.
 
-| Fields                  | Type                              | Description                                                                                                                            |
-| ----------------------- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| id                      | uint64_t                          | (primary key) The Uniq factory ID                                                                                                      |
-| asset_manager           | eosio::name                       | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
-| asset_creator           | eosio::name                       | Account that ceates the Uniq factory.                                                                                                  |
-| minimum_resell_price    | eosio::asset                      | A minimum price when resell on marketplaces.                                                                                           |
-| resale_shares           | std::vector\<eosio::resale_share> | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
-| mintable_window_start   | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be minted.                                                                             |
-| mintable_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be minted.                                                                                   |
-| trading_window_start    | std::optional\<uint32_t>          | The beginning of the time window when Uniqs can be traded.                                                                             |
-| trading_window_end      | std::optional\<uint32_t>          | The end of the time window when Uniqs can be traded.                                                                                   |
-| recall_window_start     | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
-| recall_window_end       | std::optional\<uint32_t>          | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
-| lockup_time             | std::optional\<uint32_t>          | *Disabled*. The time window since Uniq minting in which the Uniq cannot be transferred                                                 |
-| conditionless_receivers | std::vector\<eosio::name>         | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
-| stat                    | uint8_t                           | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
-| factory_uri             | std::string                       | The Uniq factory metadata URI vector.                                                                                                  |
-| factory_hash            | eosio::checksum256                | The Uniq factory metadata hash.                                                                                                        |
-| max_mintable_tokens     | std::optional\<uint32_t>          | The maximal number of Uniqs that can be minted with the factory.                                                                       |
-| minted_tokens_no        | uint32_t                          | The number of minted Uniqs.                                                                                                            |
-| existing_tokens_no      | uint32_t                          | The number of minted minus number of burnt Uniqs.                                                                                      |
-| authorized_tokens_no    | std::optional\<uint32_t>          | The current quantity of Uniqs that authorized minters can issue                                                                        |
-| account_minting_limit   | std::optional\<uint32_t>          | The limit of Uniqs that can be minted to each individual account                                                                       |
-| transfer_window_start   | std::optional\<uint32_t>          | The beginning fo the time window when Uniqs can be transferred                                                                         |
-| transfer_window_end     | std::optional\<uint32_t>          | The end of the time window when Uniqs can be transferred                                                                               |
-| default_token_uri       | std::string                       | The default Uniq metadata URI for Uniqs without dedicated URI                                                                          |
-| default_token_hash      | std::optional\<checksum256>       | The default Uniq metadata hash                                                                                                         |
-| lock_hash               | bool                              | Controls whether metadata of the factory, Uniqs or default Uniqs could be changed                                                      |
+| Fields                  | Type                                       | Description                                                                                                                            |
+| ----------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| id                      | uint64_t                                   | (primary key) The Uniq factory ID                                                                                                      |
+| asset_manager           | eosio::name                                | Account that manages the Uniq lifecycle - issuing, burning, reselling etc.                                                             |
+| asset_creator           | eosio::name                                | Account that ceates the Uniq factory.                                                                                                  |
+| minimum_resell_price    | eosio::asset                               | A minimum price when resell on marketplaces.                                                                                           |
+| resale_shares           | std::vector\<eosio::resale_share>          | A vector of [account, share] pairs setting the share each account receives during the Uniq resale.                                     |
+| mintable_window_start   | std::optional\<uint32_t>                   | The beginning of the time window when Uniqs can be minted.                                                                             |
+| mintable_window_end     | std::optional\<uint32_t>                   | The end of the time window when Uniqs can be minted.                                                                                   |
+| trading_window_start    | std::optional\<uint32_t>                   | The beginning of the time window when Uniqs can be traded.                                                                             |
+| trading_window_end      | std::optional\<uint32_t>                   | The end of the time window when Uniqs can be traded.                                                                                   |
+| recall_window_start     | std::optional\<uint32_t>                   | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| recall_window_end       | std::optional\<uint32_t>                   | *Disabled*. The beginning of the time window when Uniqs can be recalled.                                                               |
+| lockup_time             | std::optional\<uint32_t>                   | *Disabled*. The time window since Uniq minting in which the Uniq cannot be transferred                                                 |
+| conditionless_receivers | std::vector\<eosio::name>                  | A set of Uniq receiver account Uniqs can be transferred to without any restrictions - like trading windows, minimum resell price, etc. |
+| stat                    | uint8_t                                    | The Uniq factory status:0 = active - fully functional1 = inactive - cannot mint2 = shutdown - cannot mint or set active                |
+| factory_uri             | std::string                                | The Uniq factory metadata URI vector.                                                                                                  |
+| factory_hash            | eosio::checksum256                         | The Uniq factory metadata hash.                                                                                                        |
+| max_mintable_tokens     | std::optional\<uint32_t>                   | The maximal number of Uniqs that can be minted with the factory.                                                                       |
+| minted_tokens_no        | uint32_t                                   | The number of minted Uniqs.                                                                                                            |
+| existing_tokens_no      | uint32_t                                   | The number of minted minus number of burnt Uniqs.                                                                                      |
+| authorized_tokens_no    | std::optional\<uint32_t>                   | The current quantity of Uniqs that authorized minters can issue                                                                        |
+| account_minting_limit   | std::optional\<uint32_t>                   | The limit of Uniqs that can be minted to each individual account                                                                       |
+| transfer_window_start   | std::optional\<uint32_t>                   | The beginning fo the time window when Uniqs can be transferred                                                                         |
+| transfer_window_end     | std::optional\<uint32_t>                   | The end of the time window when Uniqs can be transferred                                                                               |
+| default_token_uri       | std::string                                | The default Uniq metadata URI for Uniqs without dedicated URI                                                                          |
+| default_token_hash      | std::optional\<checksum256>                | The default Uniq metadata hash                                                                                                         |
+| lock_hash               | bool                                       | Controls whether metadata of the factory, Uniqs or default Uniqs could be changed                                                      |
+| keys                    | binary_extension\<optional\<factory_keys>> | Factory key definition, including name, type, edit details, default values                                                             |
 
-Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus**
+### `factory_keys` type breakdown
+
+| Name                             | Type                   | Description                                                                            |
+| -------------------------------- | ---------------------- | -------------------------------------------------------------------------------------- |
+| key_defs                         | vector\<key_def_table> | Defines key name and types; key value must conform with the name and type defined here |
+| total_key_def_ram_payment_size   | int64_t                | Amount of RAM used to store key definitions                                            |
+| total_key_value_ram_payment_size | int64_t                | Amount of RAM used to store key values                                                 |
+
+### `key_def_table` type breakdown
+
+| Name          | Type                       | Description                                                                                               |
+| ------------- | -------------------------- | --------------------------------------------------------------------------------------------------------- |
+| name          | string                     | Key name                                                                                                  |
+| type_index    | uint8_t                    | Index of the variant type                                                                                 |
+| edit_rights   | uint8_t                    | Bitmask, determines who can edit the key including asset manager, owner, authorized editor or user group. |
+| editors       | vector\<eosio::name>       | The editor if authorized editor is set.                                                                   |
+| default_value | optional\<key_value_store> | Optional default key values                                                                               |
+
+Most relevant actions: **create.b, issue.b, settknmeta, setdflttkn, setcondrecv, setmeta.b, setstatus, addkeys.a**
 
 ## factory.a
 
@@ -108,16 +127,26 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft"
 
 The table stores the Uniqs owned by a user.
 
-| Fields           | Type                               | Description                                             |
-| ---------------- | ---------------------------------- | ------------------------------------------------------- |
-| id               | uint64_t                           | (primary key) Global Uniq ID                            |
-| token_factory_id | uint64_t                           | The Uniq factory ID the Uniq was issued with.           |
-| mint_date        | eosio::time_point_sec              | The Uniq mint date.                                     |
-| serial_number    | uint32_t                           | The ordinal number of the Uniq assigned during issuance |
-| uri              | std::optional\<string>             | URI pointing to the metadata of this Uniq               |
-| hash             | std::optional\<eosio::checksum256> | hash of the metadata for this Uniq                      |
+| Fields           | Type                                        | Description                                                                                  |
+| ---------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| id               | uint64_t                                    | (primary key) Global Uniq ID                                                                 |
+| token_factory_id | uint64_t                                    | The Uniq factory ID the Uniq was issued with.                                                |
+| mint_date        | eosio::time_point_sec                       | The Uniq mint date.                                                                          |
+| serial_number    | uint32_t                                    | The ordinal number of the Uniq assigned during issuance                                      |
+| uri              | std::optional\<string>                      | URI pointing to the metadata of this Uniq                                                    |
+| hash             | std::optional\<eosio::checksum256>          | Hash of the metadata for this Uniq                                                           |
+| key_values       | binary_extension\<optional\<key_value_vec>> | Uniq key values, key name and type must conform with factory key definition; can be a subset |
 
-Most relevant actions: **buy**, **burn**, **issue.b**, **resell**.
+### `key_value_vec` type breakdown
+
+`key_value_vec` is a vector of key value pairs:
+
+| Fields    | Type            | Description    |
+| --------- | --------------- | -------------- |
+| key_index | uint8_t         | Index of a key |
+| key_value | key_value_store | Key value      |
+
+Most relevant actions: **buy**, **burn**, **issue.b**, **resell**, **setvals.a**.
 
 -   `cleos` Query Example
 
@@ -809,4 +838,124 @@ cleos get table eosio.nft.ft eosio.nft.ft buyoffer.a
 
 ```sh
 curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"buyoffer.a", "json": true}'
+```
+
+## auctioncfg.a
+
+-   Table: `auctioncfg.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+
+The table stores information about global Uniq auction configuration
+
+| Fields                        | Type     | Description                                                                                                                                                                                                    |
+| ----------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| min_starting_price            | asset    | Minimum starting auction price in UOS (Default: 1 UOS)                                                                                                                                                         |
+| min_duration                  | uint32_t | Minimum duration for an auction in seconds (Default: 3600 sec or 1 hour)                                                                                                                                       |
+| max_duration                  | uint32_t | Maximum initial duration for an auction in seconds (Default: 2592000 sec or 30 days)                                                                                                                           |
+| min_bid_increment_basis_point | uint32_t | Minimum increment between the auction bids in basis points (Default: 500 or 5%)                                                                                                                                |
+| min_bid_increment_uos         | asset    | Minimum increment between the auction bids in UOS. The maximum between `min_bid_increment_basis_point` and `min_bid_increment_uos` is chosen. (Default 1 UOS)                                                  |
+| auction_extension_threshold   | uint32_t | If a bid happens within `auction_extension_threshold` before the end of an auction, then the auction duration will be extended by `auction_extension_step` from the time the bid occurs (Default: 600 seconds) |
+| auction_extension_step        | uint32_t | See `auction_extension_threshold` (Default: 600 seconds)                                                                                                                                                       |
+
+Most relevant actions: `stauctcfg.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft auctioncfg.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"auctioncfg.a", "json": true}'
+```
+
+## next.nftauc
+
+-   Table: `next.nftauc`
+-   Code: `eosio.nft.ft`
+-   Scope: `0`
+-   Key: `N/A`
+
+The table stores information about the ID of the next created Uniq auction
+
+| Fields | Type     | Description                                        |
+| ------ | -------- | -------------------------------------------------- |
+| value  | uint64_t | ID that the next created Uniq auction will receive |
+
+Most relevant actions: `createauct.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft 0 next.nftauc
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"0", "code":"eosio.nft.ft", "table":"next.nftauc", "json": true}'
+```
+
+## auction.a
+
+-   Table: `auction.a`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `token_id`
+
+The table stores the current active auctions along with the information about the Uniq, seller and bidder
+
+| Fields               | Type                           | Description                                                                                                        |
+| -------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| token_id             | uint64_t                       | ID of the Uniq placed on the auction                                                                               |
+| auction_id           | uint64_t                       | ID of the auction                                                                                                  |
+| owner                | name                           | Current owner of the Uniq and creator of the auction                                                               |
+| bid                  | asset                          | Current highest bid placed on the auction. If there is no `bidder`, then the `bid` is equal to the starting price` |
+| bidder               | std::optional\<name>           | Name of the account of the last bidder                                                                             |
+| receiver             | std::optional\<name>           | Name of the account that will recieve the Uniq after the auction ends                                              |
+| promoter_id          | std::optional\<name>           | Promoter of this auction                                                                                           |
+| promoter_basis_point | uint16_t                       | Share of UOS that the promoter account will recieve when the auction ends                                          |
+| start_date           | std::optional\<time_point_sec> | Optional date when the bids will be allowed for this auction                                                       |
+| expiry_date          | time_point_sec                 | End date of the auction                                                                                            |
+
+Most relevant actions: `createauct.a`, `bidauction.a`, `settleauct.a`, `cancelauct.a`
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft auction.a
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"auction.a", "json": true}'
+```
+
+## keytypes
+
+-   Table: `keytypes`
+-   Code: `eosio.nft.ft`
+-   Scope: `eosio.nft.ft`
+-   Key: `N/A`
+
+The table store the supported key type for on-chain data and the maximum element that type can support when adding value.
+
+| Field     | Type                        | Description                        |
+| --------- | --------------------------- | ---------------------------------- |
+| key_types | std::vector\<key_type_info> | The key types that will be updated |
+
+-   `cleos` Query Example
+
+```sh
+cleos get table eosio.nft.ft eosio.nft.ft keytypes
+```
+
+-   `curl` query example
+
+```sh
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"eosio.nft.ft", "code":"eosio.nft.ft", "table":"keytypes", "json": true}'
 ```

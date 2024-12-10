@@ -80,10 +80,14 @@ When a user buys token A specify the promoter opensea.
 
 -   [create](../../contracts/nft-contract/nft-actions/create.html): A token factory manager can configure the trading window when creating a token factory
 
--   [resell](../../contracts/nft-contract/nft-actions/resell.html): An owner of the NFT can use this action to resell an NFT when allowed by the trading window
+-   [resell](../../contracts/nft-contract/nft-actions/resell.html): An owner of the Uniq can use this action to resell the Uniq when allowed by the trading window
+
+-   [createauct.a](../../contracts/nft-contract/nft-actions/createauct.a.html): An owner of the Uniq can use this action to create an auction for this Uniq when allowed by the trading window
 
 ## Relevant tables
 
 -   [factory.a](../../contracts/nft-contract/nft-tables.html#factory-a): stores factory resale shares.
 
 -   [resale.a](../../contracts/nft-contract/nft-tables.html#resale-a): stores promoter share.
+
+-   [auction.a](../../contracts/nft-contract/nft-tables.html#auction-a): stores promoter share.

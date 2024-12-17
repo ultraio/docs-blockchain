@@ -6,9 +6,11 @@ order: 2
 
 # claimrewards
 
+## Summary
+
 This action will allow user to claim reward from `campaign` using their whitelisted wallets.
 
--   Parameters
+## Action Parameters
 
 | Property Name | C++ Type              | JavaScript Type | Description                                                                  |
 | ------------- | --------------------- | --------------- | ---------------------------------------------------------------------------- |
@@ -17,13 +19,13 @@ This action will allow user to claim reward from `campaign` using their whitelis
 
 Required Permissions: `user`
 
--   `cleos` Example
+## CLI - cleos
 
 ```shell script
 cleos push action ultra.rgrab claimrewards '["testcampaign", "448e3de41c8b52750c664f57fe023a730bcc0047"]' -p user
 ```
 
--   `eos-js` Example
+## Javascript - eosjs
 
 ```typescript
 (async () => {

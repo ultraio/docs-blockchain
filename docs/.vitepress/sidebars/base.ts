@@ -601,6 +601,18 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'Avatar Contract',
+            items: [
+                ...getMarkdownFiles('/blockchain/contracts/avatar-contract'),
+                {
+                    text: 'Actions',
+                    items: getMarkdownFiles('/blockchain/contracts/avatar-contract/avatar-actions'),
+                    collapsed: true,
+                },
+            ],
+            collapsed: true,
+        },
+        {
             text: 'Airgrab Contract',
             items: [
                 ...getMarkdownFiles('/blockchain/contracts/airgrab-contract'),

@@ -6,9 +6,11 @@ order: 1
 
 # whitelistusr
 
+## Summary
+
 This action will allow `manager` to whitelist user wallet and updating their points to be used for claiming rewards.
 
--   Parameters
+## Action Parameters
 
 | Property Name | C++ Type                | JavaScript Type | Description                                                                        |
 | ------------- | ----------------------- | --------------- | ---------------------------------------------------------------------------------- |
@@ -17,13 +19,13 @@ This action will allow `manager` to whitelist user wallet and updating their poi
 
 Required Permissions: `manager`
 
--   `cleos` Example
+## CLI - cleos
 
 ```shell script
 cleos push action ultra.rgrab whitelistusr '["testcampaign", [{"90a7a60819855c34", 1}, {"448e3de41c8b52750c664f57fe023a730bcc0047", 2}]]' -p manager
 ```
 
--   `eos-js` Example
+## Javascript - eosjs
 
 ```typescript
 (async () => {

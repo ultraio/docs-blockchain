@@ -6,9 +6,11 @@ order: 0
 
 # createcampgn
 
+## Summary
+
 This action will allow `manager` to create a new `campaign`
 
--   Parameters
+## Action Parameters
 
 | Property Name | C++ Type    | JavaScript Type | Description                                          |
 | ------------- | ----------- | --------------- | ---------------------------------------------------- |
@@ -17,13 +19,13 @@ This action will allow `manager` to create a new `campaign`
 
 Required Permissions: `manager`
 
--   `cleos` Example
+## CLI - cleos
 
 ```shell script
 cleos push action ultra.rgrab createcampgn '["testcampaign", "manager"]' -p manager
 ```
 
--   `eos-js` Example
+## Javascript - eosjs
 
 ```typescript
 (async () => {

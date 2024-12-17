@@ -6,19 +6,21 @@ order: 4
 
 # on_transfer
 
+## Summary
+
 This is a notify action which will trigger when `manager` do a token transfer to `ultra.rgrab` with memo that follow the format of `<CampaignName>,<TotalCampaignPoints>,<Deadline>` with `Deadline` in block number. For example: `'testcampaign,10,10003123'`
 
--   Parameters
+## Action Parameters
 
 Please refer to [token transfer action](../../token-contract/token-actions/transfer.md).
 
--   `cleos` Example
+## CLI - cleos
 
 ```shell script
 cleos push action eosio.token transfer '["manager", "ultra.rgrab", "1000.00000000 UOS", "testcampaign,10,10003123"]' -p manager
 ```
 
--   `eos-js` Example
+## Javascript - eosjs
 
 ```typescript
 (async () => {

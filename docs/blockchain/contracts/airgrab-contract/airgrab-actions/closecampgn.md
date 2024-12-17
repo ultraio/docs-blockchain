@@ -6,10 +6,12 @@ order: 3
 
 # closecampgn
 
+## Summary
+
 This action will allow `manager` to remove all whitelist users from `campaign`, and once whitelist is empty, `campaign` will be deleted.
 If campaign have a large whitelist, this action might fail when trying to remove users.
 
--   Parameters
+## Action Parameters
 
 | Property Name | C++ Type    | JavaScript Type | Description                                                                                               |
 | ------------- | ----------- | --------------- | --------------------------------------------------------------------------------------------------------- |
@@ -19,13 +21,13 @@ If campaign have a large whitelist, this action might fail when trying to remove
 
 Required Permissions: `manager`
 
--   `cleos` Example
+## CLI - cleos
 
 ```shell script
 cleos push action ultra.rgrab closecampgn '["testcampaign", "manager", 0]' -p manager
 ```
 
--   `eos-js` Example
+## Javascript - eosjs
 
 ```typescript
 (async () => {

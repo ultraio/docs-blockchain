@@ -1,11 +1,11 @@
 ---
-title: 'The `clearavatar` action'
+title: 'clearavatar'
 
 outline: [0, 4]
-order: 3
+order: 2
 ---
 
-# The clearavatar action
+# clearavatar
 
 ## Summary
 
@@ -17,9 +17,9 @@ The action requires authorization of the user who created a link. In case the us
 
 ## Action Parameters
 
-| Property Name | C++ Type | JS Type |
-| ------------- | -------- | ------- |
-| user          | name     | string  |
+| Property Name | C++ Type    | JavaScript Type | Description                                |
+| ------------- | ----------- | --------------- | ------------------------------------------ |
+| `user`        | eosio::name | String          | The name of user that need to clear avatar |
 
 # CLI - cleos
 
@@ -39,5 +39,9 @@ await transact([
             user: 'alice',
         },
     },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
 ]);
 ```

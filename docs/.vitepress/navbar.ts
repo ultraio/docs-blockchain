@@ -16,6 +16,7 @@ const navbar: DefaultTheme.NavItem[] = [
                     { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
                     { text: 'Token Swap', link: '/tutorials/token-swap/index' },
                     { text: 'Fungitable Token', link: '/tutorials/token/index' },
+                    { text: 'Airgrab', link: '/tutorials/airgrab/index' },
                 ],
             },
         ],

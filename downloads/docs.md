@@ -1608,6 +1608,709 @@ It's important to remember that before deploying these upgrades to the official 
 
 For more information about it, click [here](https://developers.eos.io/eosio-nodeos/docs/consensus-protocol-upgrade-process).
 ---
+title: 'claimrewards'
+order: 2
+
+---
+
+# claimrewards
+
+## Summary
+
+This action will allow user to claim reward from `campaign` using their whitelisted wallets.
+
+## Action Parameters
+
+| Property Name | C++ Type              | JavaScript Type | Description                                                                  |
+| ------------- | --------------------- | --------------- | ---------------------------------------------------------------------------- |
+| `campaign`    | eosio::name           | String          | The name of the campaign                                                     |
+| `wallet_id`   | std::vector\<uint8_t> | String          | The wallet owned by the user which is registered in the campaign's whitelist |
+
+Required Permissions: `user`
+
+## CLI - cleos
+
+```shell script
+cleos push action ultra.rgrab claimrewards '["testcampaign", "448e3de41c8b52750c664f57fe023a730bcc0047"]' -p user
+```
+
+## Javascript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rgrab',
+                    name: 'claimrewards',
+                    authorization: [
+                        {
+                            actor: 'user',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        campaign: 'testcampaign',
+                        wallet_id: '448e3de41c8b52750c664f57fe023a730bcc0047'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'closecampgn'
+order: 3
+
+---
+
+# closecampgn
+
+## Summary
+
+This action will allow `manager` to remove all whitelist users from `campaign`, and once whitelist is empty, `campaign` will be deleted.
+If campaign have a large whitelist, this action might fail when trying to remove users.
+
+## Action Parameters
+
+| Property Name | C++ Type    | JavaScript Type | Description                                                                                               |
+| ------------- | ----------- | --------------- | --------------------------------------------------------------------------------------------------------- |
+| `campaign`    | eosio::name | String          | The name of the campaign                                                                                  |
+| `manager`     | eosio::name | String          | The account that will act as manager of the campaign                                                      |
+| `limit`       | uint32_t    | Number          | How many whitelist users to remove from the campaign. If 0, try to remove all entries and delete campaign |
+
+Required Permissions: `manager`
+
+## CLI - cleos
+
+```shell script
+cleos push action ultra.rgrab closecampgn '["testcampaign", "manager", 0]' -p manager
+```
+
+## Javascript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rgrab',
+                    name: 'closecampgn',
+                    authorization: [
+                        {
+                            actor: 'manager',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        campaign: 'testcampaign',
+                        manager: 'manager',
+                        limit: 0
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'createcampgn'
+order: 0
+
+---
+
+# createcampgn
+
+## Summary
+
+This action will allow `manager` to create a new `campaign`
+
+## Action Parameters
+
+| Property Name | C++ Type    | JavaScript Type | Description                                          |
+| ------------- | ----------- | --------------- | ---------------------------------------------------- |
+| `campaign`    | eosio::name | String          | The name of the campaign                             |
+| `manager`     | eosio::name | String          | The account that will act as manager of the campaign |
+
+Required Permissions: `manager`
+
+## CLI - cleos
+
+```shell script
+cleos push action ultra.rgrab createcampgn '["testcampaign", "manager"]' -p manager
+```
+
+## Javascript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rgrab',
+                    name: 'createcampgn',
+                    authorization: [
+                        {
+                            actor: 'manager',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        campaign: 'testcampaign',
+                        manager: 'manager'
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'on_transfer'
+order: 4
+
+---
+
+# on_transfer
+
+## Summary
+
+This is a notify action which will trigger when `manager` do a token transfer to `ultra.rgrab` with memo that follow the format of `<CampaignName>,<TotalCampaignPoints>,<Deadline>` with `Deadline` in block number. For example: `'testcampaign,10,10003123'`
+
+## Action Parameters
+
+Please refer to [token transfer action](../../token-contract/token-actions/transfer.md).
+
+## CLI - cleos
+
+```shell script
+cleos push action eosio.token transfer '["manager", "ultra.rgrab", "1000.00000000 UOS", "testcampaign,10,10003123"]' -p manager
+```
+
+## Javascript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'eosio.token',
+                    name: 'transfer',
+                    authorization: [
+                        {
+                            actor: 'manager',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        from: 'manager',
+                        to: 'ultra.rgrab',
+                        quantity: '1000.00000000 UOS',
+                        memo: 'testcampaign,10,10003123',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'whitelistusr'
+order: 1
+
+---
+
+# whitelistusr
+
+## Summary
+
+This action will allow `manager` to whitelist user wallet and updating their points to be used for claiming rewards.
+
+## Action Parameters
+
+| Property Name | C++ Type                | JavaScript Type | Description                                                                        |
+| ------------- | ----------------------- | --------------- | ---------------------------------------------------------------------------------- |
+| `campaign`    | eosio::name             | String          | The name of the campaign                                                           |
+| `wallets`     | std::vector\<whitelist> | Object          | The whitelist user wallets, can be ultra wallet (8 bytes) or eth wallet (20 bytes) |
+
+Required Permissions: `manager`
+
+## CLI - cleos
+
+```shell script
+cleos push action ultra.rgrab whitelistusr '["testcampaign", [{"90a7a60819855c34", 1}, {"448e3de41c8b52750c664f57fe023a730bcc0047", 2}]]' -p manager
+```
+
+## Javascript - eosjs
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rgrab',
+                    name: 'whitelistusr',
+                    authorization: [
+                        {
+                            actor: 'manager',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        campaign: 'testcampaign',
+                        wallets: [
+                            {
+                                wallet_id: '90a7a60819855c34',
+                                points: 1
+                            },
+                            {
+                                wallet_id: '448e3de41c8b52750c664f57fe023a730bcc0047',
+                                points: 2
+                            }
+                        ]
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+---
+title: 'Airgrab Tables'
+order: 1
+
+---
+
+# Airgrab Tables
+
+## global.share
+
+Store all campaign data
+
+-   Code: `ultra.rgrab`
+-   Table: `global.share`
+-   Scope: `ultra.rgrab`
+-   Key: `name`
+-   Data
+
+| Fields     | Type        | Description                              |
+| ---------- | ----------- | ---------------------------------------- |
+| `name`     | eosio::name | Campaign Name                            |
+| `quantity` | eosio:asset | Reward quantity                          |
+| `points`   | uint64_t    | Total point of the campaign              |
+| `manager`  | eosio::name | Manager of the campaign                  |
+| `deadline` | uint32_t    | Deadline of the campaign in block number |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.rgrab ultra.rgrab global.share
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.rgrab", "code":"ultra.rgrab", "table":"global.share", "json": true}'
+```
+
+## whitelist
+
+Store whitelisted accounts for a campaign
+
+-   Code: `ultra.rgrab`
+-   Table: `whitelist`
+-   Scope: `name`
+-   Key: `wallet_id`
+-   Data
+
+| Fields      | Type                  | Description            |
+| ----------- | --------------------- | ---------------------- |
+| `wallet_it` | std::vector\<uint8_t> | Available token supply |
+| `points`    | uint64_t              | User's campaign points |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.rgrab <CAMPAIGN> whitelist
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<CAMPAIGN>", "code":"ultra.rgrab", "table":"whitelist", "json": true}'
+```
+
+---
+title: 'addethaddr'
+
+outline: [0, 4]
+order: 4
+---
+
+# addethaddr
+
+## Summary
+
+This action is used to link user account with ETH signature and address.
+
+## Technical Behavior
+
+The action requires that there is an authorization of the user, a valid ETH signature and address.
+
+## Action Parameters
+
+| Property Name   | C++ Type              | JavaScript Type | Description               |
+| --------------- | --------------------- | --------------- | ------------------------- |
+| `account`       | eosio::name           | String          | The account of user       |
+| `eth_signature` | std::vector\<uint8_t> | String          | The ETH signature of user |
+| `eth_address`   | std::vector\<uint8_t> | String          | The ETH address of user   |
+
+## CLI - cleos
+
+```bash
+cleos push action ultra.avatar addethaddr '["alice", "0x34d95ba2cdfdc4abbcc9b2627a8956c16753023903e14a4a8f0d2cef42a614fe", "0x774246187e1e2205c5920898eede0945016080df"]' -p alice
+```
+
+## Javascript - eosjs
+
+```js
+await api.transact([
+    {
+        account: 'ultra.avatar',
+        name: 'addethaddr',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            account: 'alice',
+            eth_signature: '0x34d95ba2cdfdc4abbcc9b2627a8956c16753023903e14a4a8f0d2cef42a614fe',
+            eth_address: '0x774246187e1e2205c5920898eede0945016080df'
+        },
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+]);
+```
+
+---
+title: 'clearavatar'
+
+outline: [0, 4]
+order: 2
+---
+
+# clearavatar
+
+## Summary
+
+This action is used to unlink user’s Uniq as the avatar of their account.
+
+## Technical Behavior
+
+The action requires authorization of the user who created a link. In case the user hasn’t linked anything an error message will be emitted that the user doesn't have an avatar is returned.
+
+## Action Parameters
+
+| Property Name | C++ Type    | JavaScript Type | Description                                |
+| ------------- | ----------- | --------------- | ------------------------------------------ |
+| `user`        | eosio::name | String          | The name of user that need to clear avatar |
+
+# CLI - cleos
+
+```bash
+cleos push action ultra.avatar clearavatar '["alice"]' -p alice
+```
+
+# Javascript - eosjs
+
+```js
+await transact([
+    {
+        account: 'ultra.avatar',
+        name: 'clearavatar',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            user: 'alice',
+        },
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+]);
+```
+
+---
+title: 'rmethaddr'
+
+outline: [0, 4]
+order: 5
+---
+
+# rmethaddr
+
+## Summary
+
+This action is used to unlink user ETH address.
+
+## Technical Behavior
+
+The action requires that there is an authorization of the user and valid ETH address.
+
+## Action Parameters
+
+| Property Name   | C++ Type              | JavaScript Type | Description               |
+| --------------- | --------------------- | --------------- | ------------------------- |
+| `account`       | eosio::name           | String          | The account of user       |
+| `eth_address`   | std::vector\<uint8_t> | String          | The ETH address of user   |
+
+## CLI - cleos
+
+```bash
+cleos push action ultra.avatar rmethaddr '["alice", "0x774246187e1e2205c5920898eede0945016080df"]' -p alice
+```
+
+## Javascript - eosjs
+
+```js
+await api.transact([
+    {
+        account: 'ultra.avatar',
+        name: 'rmethaddr',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            account: 'alice',
+            eth_address: '0x774246187e1e2205c5920898eede0945016080df'
+        },
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+]);
+```
+
+---
+title: 'setavatar'
+
+outline: [0, 4]
+order: 1
+---
+
+# setavatar
+
+## Summary
+
+This action is used to set a user’s Uniq as the avatar for their account.
+
+## Technical Behavior
+
+The action requires that there is an authorization of the user who is creating a link, and that the `nft_id` of the Uniq belongs to the user. If a link already exists, it will be updated with a new `nft_id`.
+
+## Action Parameters
+
+| Property Name | C++ Type    | JavaScript Type | Description                        |
+| ------------- | ----------- | --------------- | ---------------------------------- |
+| `user`        | eosio::name | String          | The name of user that own the Uniq |
+| `nft_id`      | uint64      | Number          | The ID of user's nft               |
+
+## CLI - cleos
+
+```bash
+cleos push action ultra.avatar setavatar '["alice", 42]' -p alice
+```
+
+## Javascript - eosjs
+
+```js
+await api.transact([
+    {
+        account: 'ultra.avatar',
+        name: 'setavatar',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            user: 'alice',
+            nft_id: 42,
+        },
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+]);
+```
+
+---
+title: 'updatename'
+
+outline: [0, 4]
+order: 3
+---
+
+# updatename
+
+## Summary
+
+This action is used to set a user’s display username.
+
+## Technical Behavior
+
+The action requires that there is an authorization of the user, and the name need to contains only valid character which are alphabet numerical with `.` and `_`.
+
+## Action Parameters
+
+| Property Name | C++ Type    | JavaScript Type | Description          |
+| ------------- | ----------- | --------------- | -------------------- |
+| `account`     | eosio::name | String          | The account of user  |
+| `username`    | string      | String          | The username of user |
+
+## CLI - cleos
+
+```bash
+cleos push action ultra.avatar updatename '["alice", "alice123"]' -p alice
+```
+
+## Javascript - eosjs
+
+```js
+await api.transact([
+    {
+        account: 'ultra.avatar',
+        name: 'updatename',
+        authorization: [{ actor: 'alice', permission: 'active' }],
+        data: {
+            account: 'alice',
+            username: 'alice123',
+        },
+    },
+    {
+        blocksBehind: 3,
+        expireSeconds: 30,
+    }
+]);
+```
+
+---
+title: 'Avatar Tables'
+order: 1
+
+---
+
+# Avatar Tables
+
+## accavatar
+
+Store all account avatar
+
+-   Code: `ultra.avatar`
+-   Table: `accavatar`
+-   Scope: `ultra.avatar`
+-   Key: `account`
+-   Data
+
+| Fields    | Type        | Description           |
+| --------- | ----------- | --------------------- |
+| `account` | eosio::name | User Account          |
+| `nft_id`  | uint64_t    | The ID of user's Uniq |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.avatar ultra.avatar accavatar
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.avatar", "code":"ultra.avatar", "table":"accavatar", "json": true}'
+```
+
+## accusername
+
+Store all account username
+
+-   Code: `ultra.avatar`
+-   Table: `accusername`
+-   Scope: `ultra.avatar`
+-   Key: `account`
+-   Data
+
+| Fields     | Type        | Description  |
+| ---------- | ----------- | ------------ |
+| `account`  | eosio::name | User Account |
+| `username` | string      | Name of user |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.avatar ultra.avatar accusername
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.avatar", "code":"ultra.avatar", "table":"accusername", "json": true}'
+```
+
+## accethaddr
+
+Store all account ETH address
+
+-   Code: `ultra.avatar`
+-   Table: `accethaddr`
+-   Scope: `ultra.avatar`
+-   Key: `account`
+-   Data
+
+| Fields        | Type                  | Description         |
+| ------------- | --------------------- | ------------------- |
+| `account`     | eosio::name           | User Account        |
+| `eth_address` | std::vector\<uint8_t> | ETH address of user |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.avatar ultra.avatar accethaddr
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.avatar", "code":"ultra.avatar", "table":"accethaddr", "json": true}'
+```
+
+---
 title: 'Smart Contracts'
 
 ---
@@ -10333,7 +11036,7 @@ cleos get table eosio.token <SYMBOL_RAW_VALUE> stat
 -   `curl` query example
 
 ```shell script
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"stat", "json": true}'s
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"stat", "json": true}'
 ```
 
 ## metadata
@@ -10363,7 +11066,7 @@ cleos get table eosio.token <SYMBOL_RAW_VALUE> metadata
 -   `curl` query example
 
 ```shell script
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"metadata", "json": true}'s
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"metadata", "json": true}'
 ```
 
 ## tokenconfig
@@ -10393,7 +11096,7 @@ cleos get table eosio.token <SYMBOL_RAW_VALUE> tokenconfig
 -   `curl` query example
 
 ```shell script
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"tokenconfig", "json": true}'s
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"tokenconfig", "json": true}'
 ```
 
 ---
@@ -24901,6 +25604,50 @@ After logging in to the toolkit, you can utilize it to sign transactions with yo
 -   [Tutorial - Token transfer and Uniq purchase transactions](../fundamentals/tutorial-token-transfer-and-nft-purchase.md)
 
 ---
+title: 'Airgrab Overview'
+
+outline: [0,4]
+order: -99
+---
+
+# Airgrab Overview
+
+## What we want
+
+We want to use 3rd party quest systems to ask community to perform all kinds of actions such as: Follow user x, retweet tweet y, etc. Unfortunately, these quest systems such as Galxe, only support Ethereum accounts.
+
+To solve this problem, we will collect the user's "Ethereum Wallet IDs" and the "points" they earned doing these quests and then publish them on Ultra.
+
+Users can then link their Ethereum account using Ultra's Avatar system and claim their reward on the whitelisted air grab smart contract.
+
+We want this smart contract to be usable by any third project on Ultra, making it a new infrastructure service.
+
+## How a campaign works
+
+- A manager will create a campaign with a unique name, a quantity of tokens as rewards, and the total number of campaign points. These campaign points will be used to calculate the rewards the user will get.
+
+- The manager can whitelist users along with their points and add them to the existing campaign. The manager can only add a whitelisted user after the campaign is created and before the campaign is credited.
+
+- The manager can credit the campaign by transferring the quantity of tokens to `ultra.rgrab` with the specific format memo which includes the campaign name, points, and deadline. For actual format and example, please refer to [on_transfer - To credit the campaign](../../blockchain/contracts/airgrab-contract/airgrab-actions/on_transfer.md)
+
+- A user can claim the rewards after being added to the whitelist and the campaign is credited. When a user claims rewards, he can use his ultra wallet or any associated ether wallet, but the user needs to sign the transaction with his ultra wallet. No matter which wallet is used, the claim action will find all rewards belonging to the ultra wallet and its ETH wallets and send the rewards one by one.
+
+- A manager can close a campaign after it expires and take back any rewards left.
+
+## Usage of actions
+
+-   [createcampgn - Create a new Airgrab Campaign](../../blockchain/contracts/airgrab-contract/airgrab-actions/createcampgn.md)
+-   [whitelistusr - Whitelist users with specified points](../../blockchain/contracts/airgrab-contract/airgrab-actions/whitelistusr.md)
+-   [claimrewards - Claim rewards from campaign](../../blockchain/contracts/airgrab-contract/airgrab-actions/claimrewards.md)
+-   [closecampgn - Close and existing campaign](../../blockchain/contracts/airgrab-contract/airgrab-actions/closecampgn.md)
+
+On notify action, which will be called after `eosio.token::transfer`
+-   [on_transfer - To credit the campaign](../../blockchain/contracts/airgrab-contract/airgrab-actions/on_transfer.md)
+
+## Benefits
+
+- Allow token creator have more flexible policy with their token
+---
 title: 'Development Environment Setup'
 
 order: -9997
@@ -31702,50 +32449,6 @@ And the below action sets the global configurations for Uniq auctions.
 
 
 ---
-title: 'The `clearavatar` action'
-
-outline: [0, 4]
-order: 3
----
-
-# The clearavatar action
-
-## Summary
-
-This action is used to unlink user’s Uniq as the avatar of their account.
-
-## Technical Behavior
-
-The action requires authorization of the user who created a link. In case the user hasn’t linked anything an error message will be emitted that the user doesn't have an avatar is returned.
-
-## Action Parameters
-
-| Property Name | C++ Type | JS Type |
-| ------------- | -------- | ------- |
-| user          | name     | string  |
-
-# CLI - cleos
-
-```bash
-cleos push action ultra.avatar clearavatar '["alice"]' -p alice
-```
-
-# Javascript - eosjs
-
-```js
-await transact([
-    {
-        account: 'ultra.avatar',
-        name: 'clearavatar',
-        authorization: [{ actor: 'alice', permission: 'active' }],
-        data: {
-            user: 'alice',
-        },
-    },
-]);
-```
-
----
 title: 'Introducing Uniq Avatars'
 
 outline: [0, 4]
@@ -31762,6 +32465,10 @@ Users can change their avatar with the same action or remove avatar completely w
 
 If a user loses possession of the Uniq through transfer or burn actions, it can no longer be used as an avatar and an active avatar with such a Uniq will be cleared.
 
+Users can set username with `updatename` action, user can only use alphabet, numerical with `.`, `_` and with at least 3 characters and can nor have more than 24 characters.
+
+Also, user can link their ETH address to Ultra account with `addethaddr` action, the ETH address provide must be valid. When not in use, user can unlink it with `rmethaddr`.
+
 ## What are Uniq Avatars for?
 
 We intend for Uniq Avatars to be used within Ultra as cross-ecosystem visual identifiers of users and their identity. This means that if you see someone with a Uniq as their avatar in a game or an application, you can rest assured that **it is verifiable**.
@@ -31770,54 +32477,12 @@ We intend for Uniq Avatars to be used within Ultra as cross-ecosystem visual ide
 
 For developers we provide details about the two actions available via the on-chain ABI.
 
--   [setavatar](./setavatar.md)
--   [clearavatar](./clearavatar.md)
+-   [setavatar - Set user avatar](../../../blockchain/contracts/avatar-contract/avatar-actions/setavatar.md)
+-   [clearavatar - Clear User avatar](../../../blockchain/contracts/avatar-contract/avatar-actions/clearavatar.md)
+-   [updatename - Update username](../../../blockchain/contracts/avatar-contract/avatar-actions/updatename.md)
+-   [addethaddr - Link ETH address to user](../../../blockchain/contracts/avatar-contract/avatar-actions/addethaddr.md)
+-   [rmethaddr - Unlink ETH address from user](../../../blockchain/contracts/avatar-contract/avatar-actions/rmethaddr.md)
 
----
-title: 'The `setavatar` action'
-
-outline: [0, 4]
-order: 2
----
-
-# The setavatar action
-
-## Summary
-
-This action is used to set a user’s Uniq as the avatar for their account.
-
-## Technical Behavior
-
-The action requires that there is an authorization of the user who is creating a link, and that the nft_id of the Uniq belongs to the user. If a link already exists, it will be updated with a new nft_id.
-
-## Action Parameters
-
-| Property Name | C++ Type | JS Type |
-| ------------- | -------- | ------- |
-| user          | name     | string  |
-| nft_id        | uint64   | number  |
-
-## CLI - cleos
-
-```bash
-cleos push action ultra.avatar setavatar '["alice", 42]' -p alice
-```
-
-## Javascript - eosjs
-
-```js
-await transact([
-    {
-        account: 'ultra.avatar',
-        name: 'setavatar',
-        authorization: [{ actor: 'alice', permission: 'active' }],
-        data: {
-            user: 'alice',
-            nft_id: 42,
-        },
-    },
-]);
-```
 
 ---
 title: 'Uniq Offer'

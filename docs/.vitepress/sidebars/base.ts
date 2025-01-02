@@ -115,6 +115,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/substreams'),
             collapsed: true,
         },
+        {
+            text: 'Airgrab',
+            items: getMarkdownFiles('/tutorials/airgrab'),
+            collapsed: true,
+        },
     ],
     '/tutorials/general': [
         {
@@ -347,6 +352,21 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/substreams'),
         },
     ],
+    '/tutorials/airgrab': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Aigrab',
+            items: getMarkdownFiles('/tutorials/airgrab'),
+        },
+    ],
     // ################
     // Game Developers
     // ################
@@ -575,6 +595,30 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
                 {
                     text: 'Actions',
                     items: getMarkdownFiles('/blockchain/contracts/oracle-contract/oracle-actions'),
+                    collapsed: true,
+                },
+            ],
+            collapsed: true,
+        },
+        {
+            text: 'Avatar Contract',
+            items: [
+                ...getMarkdownFiles('/blockchain/contracts/avatar-contract'),
+                {
+                    text: 'Actions',
+                    items: getMarkdownFiles('/blockchain/contracts/avatar-contract/avatar-actions'),
+                    collapsed: true,
+                },
+            ],
+            collapsed: true,
+        },
+        {
+            text: 'Airgrab Contract',
+            items: [
+                ...getMarkdownFiles('/blockchain/contracts/airgrab-contract'),
+                {
+                    text: 'Actions',
+                    items: getMarkdownFiles('/blockchain/contracts/airgrab-contract/airgrab-actions'),
                     collapsed: true,
                 },
             ],

@@ -57,7 +57,7 @@ cleos get table eosio.token <SYMBOL_RAW_VALUE> stat
 -   `curl` query example
 
 ```shell script
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"stat", "json": true}'s
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"stat", "json": true}'
 ```
 
 ## metadata
@@ -87,7 +87,7 @@ cleos get table eosio.token <SYMBOL_RAW_VALUE> metadata
 -   `curl` query example
 
 ```shell script
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"metadata", "json": true}'s
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"metadata", "json": true}'
 ```
 
 ## tokenconfig
@@ -117,5 +117,5 @@ cleos get table eosio.token <SYMBOL_RAW_VALUE> tokenconfig
 -   `curl` query example
 
 ```shell script
-curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"tokenconfig", "json": true}'s
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<SYMBOL_RAW_VALUE>", "code":"eosio.token", "table":"tokenconfig", "json": true}'
 ```

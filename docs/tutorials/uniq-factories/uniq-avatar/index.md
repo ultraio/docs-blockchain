@@ -15,6 +15,10 @@ Users can change their avatar with the same action or remove avatar completely w
 
 If a user loses possession of the Uniq through transfer or burn actions, it can no longer be used as an avatar and an active avatar with such a Uniq will be cleared.
 
+Users can set username with `updatename` action, user can only use alphabet, numerical with `.`, `_` and with at least 3 characters and can nor have more than 24 characters.
+
+Also, user can link their ETH address to Ultra account with `addethaddr` action, the ETH address provide must be valid. When not in use, user can unlink it with `rmethaddr`.
+
 ## What are Uniq Avatars for?
 
 We intend for Uniq Avatars to be used within Ultra as cross-ecosystem visual identifiers of users and their identity. This means that if you see someone with a Uniq as their avatar in a game or an application, you can rest assured that **it is verifiable**.
@@ -23,5 +27,9 @@ We intend for Uniq Avatars to be used within Ultra as cross-ecosystem visual ide
 
 For developers we provide details about the two actions available via the on-chain ABI.
 
--   [setavatar](./setavatar.md)
--   [clearavatar](./clearavatar.md)
+-   [setavatar - Set user avatar](../../../blockchain/contracts/avatar-contract/avatar-actions/setavatar.md)
+-   [clearavatar - Clear User avatar](../../../blockchain/contracts/avatar-contract/avatar-actions/clearavatar.md)
+-   [updatename - Update username](../../../blockchain/contracts/avatar-contract/avatar-actions/updatename.md)
+-   [addethaddr - Link ETH address to user](../../../blockchain/contracts/avatar-contract/avatar-actions/addethaddr.md)
+-   [rmethaddr - Unlink ETH address from user](../../../blockchain/contracts/avatar-contract/avatar-actions/rmethaddr.md)
+

@@ -87,11 +87,6 @@ General tutorials to help feed your curiosity.
         <td>How to purchase native UOS token on Ultra Mainnet using Ultra Wallet Extension</td>
         <td><a href="../guides/how-to-buy-uos">Link</a></td>
     </tr>
-    <tr>
-        <td>How to swap UOS from Ultra Mainnet to Ethereum</td>
-        <td>How to swap UOS from Ultra Mainnet to Ethereum by using Ultra Client</td>
-        <td><a href="../guides/how-to-swap-tokens">Link</a></td>
-    </tr>
 </table>
 
 ## Advanced Guides

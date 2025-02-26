@@ -7,9 +7,9 @@ order: 1
 
 # Ultra EVM Quick Start
 This quick start tutorial consists of three key parts:
-1. **[Bridge UOS into Ultra EVM](#part-1-how-to-get-uos-in-ultra-evm)**
-2. **[Send Transactions within Ultra EVM](#part-2-how-to-send-evm-transactions-in-ultra-evm)**
-3. **[Bridge UOS out of Ultra EVM](#part-3-how-to-bridge-uos-out-of-ultra-evm)**
+1. **[Part 1: How to Get UOS in Ultra EVM](#part-1-how-to-get-uos-in-ultra-evm)**
+2. **[Part 2: How to Send EVM Transactions in Ultra EVM](#part-2-how-to-send-evm-transactions-in-ultra-evm)**
+3. **[Part 3: How to Bridge UOS Out of Ultra EVM](#part-3-how-to-bridge-uos-out-of-ultra-evm)**
 
 ## Part 1: How to Get UOS in Ultra EVM
 

@@ -5,9 +5,9 @@ outline: [0,4]
 order: -99
 ---
 
-# 🚨 **Deprecation Notice: Ultra Token Swap Bridge (Pentwork V2)** 🚨
+# 🚨 **Deprecation Notice: Ultra Token Swap Bridge (Pnetwork V2)** 🚨
 
-**Effective immediately**, the **Ultra Token Swap Bridge (Pentwork v2)** has been deprecated and is no longer supported. We are currently transitioning to a **new, upgraded bridge** to enhance security, efficiency, and user experience.
+**Effective immediately**, the **Ultra Token Swap Bridge (Pnetwork v2)** has been deprecated and is no longer supported. We are currently transitioning to a **new, upgraded bridge** to enhance security, efficiency, and user experience.
 
 ---
 

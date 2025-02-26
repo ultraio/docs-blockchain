@@ -25371,6 +25371,290 @@ You can download the latest version of the tool from the [GitHub Releases Page](
 -   TODO
 
 ---
+title: 'Quick Start'
+
+outline: [0,4]
+order: 1
+---
+
+# Ultra EVM Quick Start
+This quick start tutorial consists of three key parts:
+1. **[Part 1: How to Get UOS in Ultra EVM](#part-1-how-to-get-uos-in-ultra-evm)**
+2. **[Part 2: How to Send EVM Transactions in Ultra EVM](#part-2-how-to-send-evm-transactions-in-ultra-evm)**
+3. **[Part 3: How to Bridge UOS Out of Ultra EVM](#part-3-how-to-bridge-uos-out-of-ultra-evm)**
+
+## Part 1: How to Get UOS in Ultra EVM
+
+UOS is the native currency on Ultra EVM. To execute any EVM transaction, you need UOS in your EVM address to cover gas fees. This tutorial guides you through bridging UOS from an Ultra account to an EVM address.
+
+### Prerequisites
+
+1.  **Ultra Account**
+
+    -   If you already have an Ultra blockchain account with some UOS in it, you can easily bridge UOS to your EVM address.
+    -   If you do not have an Ultra account, you can:
+        -   Create one on the Ultra testnet and get some test UOS via the [account and token faucet](https://faucet.testnet.app.ultra.io/) (for testnet).
+        -   Or install and register on the [Ultra platform](https://ultra.io/) and buy some UOS with the Ultra Wallet (on mainnet).
+2.  **Ultra Wallet Extension**
+
+    -   Install the [Ultra Wallet extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln).
+    -   This wallet extension can manage your UOS tokens and facilitate bridging to EVM addresses, more info can be seen in the [wallet extension doc](https://developers.ultra.io/products/ultra-wallet/).
+
+### Method 1: Bridging UOS via cleos Command
+
+Use the `cleos` command to transfer UOS to the `eosio.evmin` account, specifying the EVM address in the memo.
+
+```bash
+cleos -u https://test.ultra.eosusa.io push action eosio.token transfer '["1aa2aa3aa4lh", "eosio.evmin", "1.00000000 UOS", "0x53b4dfAC2114B47C27e3303d221Ede257cb8b495"]' -p 1aa2aa3aa4lh
+
+```
+Here:
+
+-   **`1aa2aa3aa4lh`** is your Ultra account.
+-   **`eosio.evmin`** is the contract account to which you send your UOS.
+-   **`1.00000000 UOS`** is the amount of UOS to transfer.
+-   **`0x53b4dfAC2114B47C27e3303d221Ede257cb8b495`** is the EVM address that will receive the bridged UOS.
+
+### Method 2: Bridging UOS via Ultra Wallet Extension
+
+#### Step 1: Log In to Ultra Wallet
+
+Open the Ultra Wallet Extension. Log in using your Ultra account or private key pro account. Here I've used private key of the pro account `1aa2aa3aa4lh` for login.
+
+![Wallet Login](./images/ultra-wallet-extension.png)
+
+#### Step 2: Transfer UOS
+
+After logging in, click the **Transfer** button. Fill Transfer Details
+-  **Recipient**: `eosio.evmin`
+-  **Amount**: Enter the UOS amount (e.g., `1.00000000 UOS`).
+-  **Memo**: Specify the EVM address (e.g., `0x53b4dfAC2114B47C27e3303d221Ede257cb8b495`).
+
+![Transfer Details](./images/transfer-2.png)
+
+#### Step 3: Confirm Transfer
+
+Review the details and confirm the transaction.
+
+![Confirm Transfer](./images/transfer-3.png)
+
+#### Step 4: Transaction Success
+
+After the transaction completes, a success message will appear. That's it, you've bridged UOS into your evm address.
+
+![Transfer Success](./images/transfer-4.png)
+
+### Verifying the Bridge Transaction
+
+#### Step 1: Check Ultra Blockchain Explorer
+
+View the Ultra blockchain transaction on the Ultra Testnet Explorer: [https://explorer.testnet.ultra.io/tx/41ff40aa05ca8e6cb8837c374ebcfd29084df6eaa1fc9bebd5cee9d37ab8e31d](https://explorer.testnet.ultra.io/tx/41ff40aa05ca8e6cb8837c374ebcfd29084df6eaa1fc9bebd5cee9d37ab8e31d)
+
+#### Step 2: Check EVM Transaction on Ultra EVM Explorer
+
+View the EVM transaction on the Ultra EVM Testnet Explorer: [https://evmexplorer.testnet.ultra.io/tx/0xce3028b5cb846e85896233448eddd9ab6079039bd75afe2c63580e668011b031](https://evmexplorer.testnet.ultra.io/tx/0xce3028b5cb846e85896233448eddd9ab6079039bd75afe2c63580e668011b031)
+
+### Checking EVM Balance
+
+Use the `eth_getBalance` method via curl to check the UOS balance in your EVM address:
+
+```bash
+curl https://evm.test.ultra.eosusa.io \
+-X POST \
+-H "Content-Type: application/json" \
+-d '{"jsonrpc": "2.0", "method": "eth_getBalance", "params": ["0x53b4dfAC2114B47C27e3303d221Ede257cb8b495", "latest"], "id": 1}' | jq .
+```
+
+**Example Response:**
+
+```json
+{
+"id": 1,
+"jsonrpc": "2.0",
+"result": "0xa491c58c3fd14800"
+}
+
+```
+
+### Checking Transaction Receipt
+
+To verify the transaction receipt, use `eth_getTransactionReceipt`:
+
+```bash
+curl https://evm.test.ultra.eosusa.io \
+-X POST \
+-H "Content-Type: application/json" \
+-d '[{"jsonrpc": "2.0", "method": "eth_getTransactionReceipt", "params": ["0x1f206e9205361706dacc1351b30570a01a5dac0776a16b101fce7fe4ed4be43e"], "id": 1}]' | jq .
+```
+
+---
+
+## Part 2: How to Send EVM Transactions in Ultra EVM
+
+### Prerequisites
+- MetaMask installed and configured
+- Bridged UOS in your picked EVM address from your Metamask wallet (see [previous tutorial](#part-1-how-to-get-uos-in-ultra-evm))
+
+---
+
+### Step 1: Connect MetaMask to Ultra Testnet
+
+#### 1.1 Login to MetaMask
+- Open your MetaMask extension
+- Enter your password to unlock your wallet, pick a 
+
+#### 1.2 Add Ultra Testnet via ChainList
+1. Visit [ChainList](https://chainlist.org)
+2. Search for "Ultra EVM" and toggle "include Testnets"  
+   ![ChainList Search](./images/chainlist-1.png)  
+3. Find **Ultra EVM Testnet**, click "Connect Wallet", and approve in Metamask  
+   ![Connect to Ultra](./images/chainlist-2.png)  
+4. Confirm network addition in MetaMask  
+   ![MetaMask Confirmation](./images/metamask-1.png)  
+
+---
+
+### Step 2: Verify Network Connection
+Your MetaMask should now show Ultra EVM Network Testnet and confirm you see your UOS balance in the wallet.
+  ![Ultra Testnet Connected](./images/metamask-2.png)  
+
+---
+
+### Step 3: Transfer UOS to Another Address
+
+#### 3.1 Initiate Transfer
+1. Click "Send" in MetaMask  
+2. Fill in recipient address and amount  
+   ![Transfer Details](./images/metamask-3.png)  
+
+#### 3.2 Confirm Transaction
+1. Review gas fees and details  
+2. Click "Confirm" to execute transfer
+   ![Confirmation Screen](./images/metamask-4.png)  
+
+---
+
+### Step 4: Verify Transaction
+1. Check transaction status in MetaMask activity tab
+2. View details in [Ultra EVM Explorer](https://evmexplorer.testnet.ultra.io/tx/0xaa3188922503afb0e535ee07820202d39cfd580080ffaa17dd340f486452cd21)
+3. You should also see the balance change of the receiving address
+
+---
+
+### Pro Tips
+- Always double-check the network is **Ultra EVM Testnet** before transacting
+- Save the Ultra EVM Explorer link for quick transaction checks
+- Use small amounts for test transactions first
+
+**Next Steps:** Explore dApps on Ultra EVM using your funded address!
+
+---
+
+## Part 3: How to Bridge UOS Out of Ultra EVM
+
+### Prerequisites
+- UOS in your EVM address
+- MetaMask connected to Ultra EVM Testnet
+- Ultra account (to receive bridged UOS)
+
+---
+
+### Step 1: Access the EVM Bridge DApp
+1. Open the EVM Bridge interface:  
+   [https://bridge.evm.test.ultra.eosusa.io/](https://bridge.evm.test.ultra.eosusa.io/)
+2. Click 'Connect' in bridge dapp to connect your MetaMask wallet  
+   ![Connect Wallet](./images/bridge-dapp-1.png)
+3. Click 'Connect' to confirm in your MetaMask wallet  
+   ![Connect Wallet Confirm](./images/bridge-dapp-2.png)
+4. Now you should see your metamask connected with your chosen evm address, you can see your UOS balance too.  
+   ![Connect Wallet](./images/bridge-dapp-3.png)
+
+---
+
+### Step 2: Initiate Withdrawal
+1. Navigate to **"Withdraw from UOS EVM"** tab
+2. Enter details:
+   - **Amount**: UOS to bridge out
+   - **Receiver**: Your Ultra account name (e.g., `1aa2aa3aa4lh`)  
+   ![Withdrawal Form](./images/bridge-dapp-4.png)
+
+---
+
+### Step 3: Confirm Transaction
+1. Click **"Transfer"** to start the process
+2. Review details in MetaMask popup
+3. Confirm the transaction  
+   ![Transaction Confirmation](./images/bridge-dapp-5.png)
+
+---
+
+### Step 4: Verify Completion
+1. Wait for transaction confirmation (typically about 5s), then block explorer links will appear below
+   ![Transaction Confirmation](./images/bridge-dapp-5.png)
+2. Check transaction status in the [Ultra EVM Explorer](https://evmexplorer.testnet.ultra.io/tx/0x1bdc9a4d9c832baac64595b0482f1525f955449b8bf8affdfd783c6d187b35bd) using your transaction hash
+3. Verify UOS balance in your Ultra account in ultra wallet or in [Ultra Blockchain Testnet Explorer](https://explorer.testnet.ultra.io/account/1aa2aa3aa4lh)
+
+---
+
+> **Tip**: Always test with small amounts first when bridging assets on mainnet!
+---
+title: 'Resources'
+
+outline: [0,4]
+order: 2
+---
+
+# Ultra EVM Resources
+
+Below are the primary resources for interacting with Ultra's EVM environments—organized by **Endpoints**, **Explorer**, and **Bridge**.
+
+---
+
+## Endpoints
+
+| Network  | RPC URL                           | Chain ID |
+|----------|-----------------------------------|----------|
+| Mainnet  | [https://evm.ultra.eosusa.io](https://evm.ultra.eosusa.io)   | 19991    |
+| Testnet  | [https://evm.test.ultra.eosusa.io](https://evm.test.ultra.eosusa.io) | 18881    |
+
+---
+
+## Explorer
+
+| Network  | Explorer URL                                |
+|----------|---------------------------------------------|
+| Mainnet  | [https://evmexplorer.ultra.io](https://evmexplorer.ultra.io/)           |
+| Testnet  | [https://evmexplorer.testnet.ultra.io](https://evmexplorer.testnet.ultra.io/) |
+
+---
+
+## Bridge
+
+| Network  | Bridge URL                                  |
+|----------|---------------------------------------------|
+| Mainnet  | [https://bridge.evm.ultra.eosusa.io](https://bridge.evm.ultra.eosusa.io/)       |
+| Testnet  | [https://bridge.evm.test.ultra.eosusa.io](https://bridge.evm.test.ultra.eosusa.io/) |
+
+---
+
+_Use these resources to configure your wallet, deploy contracts, or explore transactions on Ultra's EVM._  
+
+---
+title: 'Overview '
+
+outline: [0, 4]
+order: -99
+---
+
+# Ultra EVM Overview
+
+The Ultra EVM is a high-fidelity emulation of the Ethereum Virtual Machine (EVM), engineered as a cutting-edge smart contract within the Ultra blockchain. Delivering full feature parity with Ethereum and other EVM-compatible chains, it redefines scalability with blazing-fast transaction speeds, near-instant finality, and seamless interoperability. Ultra EVM bridges the gap between Ultra and Ethereum ecosystems, empowering developers to harness the power of Ethereum’s expansive Solidity tooling, decentralized applications, and multi-chain assets while leveraging Ultra blockchain’s unparalleled throughput and efficiency. This fusion unlocks limitless possibilities for cross-chain innovation, positioning Ultra EVM as the ultimate gateway for Ethereum-native projects to thrive in a high-performance environment.
+
+-   [Quick Start - A quick hands-on tutorial to get started with Ultra EVM](./Quick-start.md)
+-   [EVM Resources - A summary of EVM chain info, RPC endpoints, Explorers, etc](./Resources.md)
+
+
+---
 title: 'How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension'
 order: -99997
 oultine: [0, 5]
@@ -28095,64 +28379,6 @@ It's highly recommended to use `curl` requests against [REST API Endpoints](./ho
 ![](./images/block-explorer/explorer-tables.png)
 
 ---
-title: 'How to swap UOS from Ultra to Ethereum'
-order: -99982
-outline: [0, 5]
----
-
-# How to swap UOS from Ultra Mainnet to Ethereum
-
-This document guides you through the process of swapping UOS tokens from the Ultra Mainnet to UOS ERC-20 tokens on the Ethereum network using the Ultra Client. This process is designed for users who already have an Ethereum account and are familiar with cryptocurrency transactions.
-
-## Prerequisites
-
-Before you begin the swapping process, ensure that you meet the following requirements:
-- **Ultra Account**: You must have an active account on the Ultra Mainnet with UOS tokens available for swapping.
-- **Ethereum Account**: You should already have an Ethereum account set up to receive the UOS ERC-20 tokens. This account should be able to interact with ERC-20 tokens and possibly have some ETH for transaction fees on the Ethereum network.
-
-Make sure both accounts are secure and that you have access to all necessary credentials.
-
-## Step 1: Prepare the Swap in the Ultra Client
-
-Start the swap process by opening the Ultra Client. Navigate to the Token Swap section.
-
-1. Enter the amount of UOS you want to swap. In this example, we will swap 3000 UOS.
-2. Enter your Ethereum address where you want to receive the UOS ERC-20 tokens. Make sure this is an address you control.
-
-![](./images/ultra-swap-ultra-client.png)
-
-Once you have entered the UOS amount and your Ethereum address, confirm the details and initiate the swap. This process will interact with the blockchain to transfer your UOS tokens and issue the equivalent amount in UOS ERC-20 on the Ethereum network.
-
-## Step 2: Verify the Transaction on the Ultra Network
-
-To ensure that everything went smoothly on the Ultra side:
-1. Visit the Ultra blockchain explorer at [https://explorer.mainnet.ultra.io/](https://explorer.mainnet.ultra.io/).
-2. Search for the transaction using the transaction ID provided by the Ultra Client.
-
-This step will help you confirm that the tokens were correctly deducted from your Ultra account.
-
-![](./images/ultra-swap-ultra-explorer.png)
-
-## Step 3: Verify the Swap on Ethereum
-
-After executing the swap transaction, you can verify your ERC-20 UOS tokens on the Ethereum network using Etherscan.
-
-1. Go to [https://etherscan.io](https://etherscan.io).
-2. Search for your Ethereum address to view the updated balance and incoming transactions under `Token Transfer (ERC-20)` tab.
-
-![](./images/ultra-swap-ether-scan.png)
-
-### Check Transaction Details
-
-To see the details of the transaction, including the amount of UOS ERC-20 received and the transaction hash, click on the specific transaction listed in your transaction history.
-
-![](./images/ultra-swap-ether-scan-txn-details.png)
-
-## Conclusion
-
-Following these steps ensures that you successfully swap your UOS tokens from the Ultra network to ERC-20 tokens on the Ethereum network. Remember to double-check all addresses and transaction details during the process to avoid any errors.
-
----
 title: 'Tutorials'
 
 order: -99994
@@ -28240,11 +28466,6 @@ General tutorials to help feed your curiosity.
         <td>How to purchase UOS tokens on Ultra Mainnet</td>
         <td>How to purchase native UOS token on Ultra Mainnet using Ultra Wallet Extension</td>
         <td><a href="../guides/how-to-buy-uos">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to swap UOS from Ultra Mainnet to Ethereum</td>
-        <td>How to swap UOS from Ultra Mainnet to Ethereum by using Ultra Client</td>
-        <td><a href="../guides/how-to-swap-tokens">Link</a></td>
     </tr>
 </table>
 
@@ -30128,172 +30349,36 @@ With the default configurations, you should see this result in your console.
 }
 ```
 ---
-title: 'Token Swap Overview'
+title: 'Token Swap'
 
 outline: [0,4]
 order: -99
 ---
 
-# Token Swap Overview
+# 🚨 **Deprecation Notice: Ultra Token Swap Bridge (Pnetwork V2)** 🚨
 
-The new native Ultra Mainnet is an EOSIO-based so any exchanges that are currently familiar with the EOS Mainnet should not have any issues deploying infrastructure.
+**Effective immediately**, the **Ultra Token Swap Bridge (Pnetwork v2)** has been deprecated and is no longer supported. We are currently transitioning to a **new, upgraded bridge** to enhance security, efficiency, and user experience.
 
-The only major differences that exchanges will need to worry about versus a standard EOSIO deployment are:
+---
 
-*   Accounts now require KYC to deploy a smart contract to our network
-    
-*   Depending on how the exchange sets up their infrastructure they may need a smart contract
-    
-In the case that an exchange needs to deploy a smart contract, please speak with our representative and we will enable the KYC flag for your account.
+### **Action Required**
+- **Do not use the deprecated bridge** for any new transactions.
 
-::: tip Info
+---
 
-If you are simply looking for a way to swap from ERC-20 to native UOS use the following service [https://dapp.p.network/](https://dapp.p.network/) which is provided by our partner at pNetwork.
+### **Next Steps**
+We are working on the new bridge and will share detailed instructions when it's ready. 
 
-:::
+---
 
-## API Nodes
+### **Support**
+For urgent inquiries, contact our team:
+- **Email**: contact@ultra.io
+- **Discord**: [Join our server](https://discord.com/invite/WfJCN6YbGk)
 
-See the [API Section](../../products/chain-api/index.md) for a list of available nodes to transact with.
+---
 
-## Block Explorers
-
-You can use these explorers to check transactions on our networks.
-
-### Testnet
-
-*   [https://explorer.testnet.ultra.io/](https://explorer.testnet.ultra.io/)
-    
-### Mainnet
-
-*   [https://explorer.mainnet.ultra.io/](https://explorer.mainnet.ultra.io/)
-    
-
-## Creating Account(s)
-
-The exchanges will provide us with public keys for each permission (OWNER, ACTIVE) and a single, 12 character account name. Ultra will create this Ultra Premium Wallet or Ultra Corporate Wallet (for the differences see [here](../../blockchain/general/antelope-ultra/account-types.md)). Exchanges will be able to access the network and accounts through an API node.
-
-*   **Requirement checklist**
-    *   **Accountname** (12 characters, a-z, 1-5)
-    *   **Public Keys** for each permission
-        
-## Pre-Swap
-
-Ultra will be leveraging the p.network token swap solution. This means that partner exchanges will log in to [https://dapp.p.network/](https://dapp.p.network/) and must have their metamask (or ledger, etc.) ready to perform the swap.
-
-During the swap process you will be making Ethereum transactions. Depending on the time of day, activity, etc. of the chain gas prices may be extremely high. Please keep an eye on gas prices before performing a swap.
-
-## Performing the Swap
-
-Since the original UOS token is ERC-20 based that means they will need to use the Ultra Vault Smart Contract that will automatically swap ERC-20 UOS for native chain UOS. See below for the general usage.
-
-### General flow of the swap
-
-![](/images/token-swap-pnetwork.png)
-
-During the swap you will be putting in an Ultra accountname. This is the target account, controlled by the exchange. **This account must exist before you swap tokens.**
-
-### Fees and Costs
-
-The fee for ERC-20 swap to the native chain will have a 0% fee on the amount transferred. However, transferring from native UOS to ERC-20 UOS (or any other token) will have a 0.25% fee (min 10 USD). Which means that you will only have a fee if you are moving into the ERC-20 platform. This fee will go to the validators of pNetwork and their infrastructure. Keep in mind that the amounts mentioned do not include ETH Gas Fee which must be paid in either case.
-
-#### Actions and fees
-
-| Action                                                   | Fee Covered By                                                                                                                                                                                                    |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sending ERC20 UOS tokens to the p.network Vault Contract | Covered by the user, paid in ETH (Gas Fee)                                                                                                                                                                        |
-| Peg In                                                   | Covered by p.network                                                                                                                                                                                              |
-| Peg Out                                                  | The user (0.25% of transaction, min 10 USD) + ETH Gas fee. For a more precise estimate see the [swap page](https://dapp.p.network/#/swap?asset=uos&from=ultra&to=eth) |
-
-## EOSIO Examples
-
-Below you can see examples of the cleos commands necessary to perform the Ultra → Ethereum swap.
-
-```ts
-// using cleos
-cleos transfer <YOUR_ACCOUNT> ultra.swap "1.00000000 UOS" "<ETHEREUM_ADDRESS>"
-
-// using eosjs
-const result = await api.transact({
-  actions: [{
-    account: 'eosio.token',
-    name: 'transfer',
-    authorization: [{
-      actor: YOUR_ACCOUNT,
-      permission: 'active',
-    }],
-    data: {
-      from: YOUR_ACCOUNT,
-      to: 'ultra.swap',
-      quantity: '1.00000000 UOS',
-      memo: ETHEREUM_ADDRESS,
-    },
-  }]
-}, {
-  blocksBehind: 3,
-  expireSeconds: 30,
-});
-```
-
-## Token Transfer to Ultra
-
-Upon sending UOS token to `ultra.swap`, an inline action will be triggered to convert UOS to PUOS then redeem this PUOS to ERC20 UOS to targeted ETH address.
-
-### Action Flow
-
-*   User transfer UOS to **ultra.swap** with memo as ETH address
-    
-    ```typescript
-    cleos transfer user.acc ultra.swap “1.00001000 UOS” “0xB57edF3fF3e1ba7854Ec083438D53AD6032518Ac“
-    ```
-    
-*   `swap` contract will be notified and execute `on_transfer` to verify and process to redeem if all value is valid.
-    
-*   `on_transfer` order of execution and check
-    
-    *   Skip redeem if `from` is **ultra.eosio**
-        
-    *   Skip redeem if `to` is not **ultra.swap**
-        
-    *   Skip redeem if `quantity` is not **UOS**
-        
-    *   Reject transaction if `memo` is empty
-        
-    *   Reject transaction if `memo` is not a valid ETH address format
-        
-        *   Start with `0x`
-            
-        *   End with 40 hexadecimal characters
-            
-        *   Example: `0xB57edF3fF3e1ba7854Ec083438D53AD6032518Ac`
-            
-    *   Convert UOS to PUOS
-        
-        *   amount less than “0.00010000 UOS” will be return to `to` account
-            
-        *   the rest will convert to PUOS for redeem
-            
-        *   Example
-            
-            *   quantity = “1.00001000 UOS”
-                
-            *   return = “0.00001000 UOS”
-                
-            *   redeem = “1.00000000 PUOS”
-                
-    *   Reject transaction if redeem amount = 0
-        
-    *   If return amount > 0, **ultra.swap** will transfer these fund back to user
-        
-    *   Lastly, **ultra.swap** will call `redeem` action from pnetwork contract to handle the actual convert from PUOS to ERC20 UOS\\
-        
-        *   redeem(sender, quantity, memo)
-            
-            *   sender will be **ultra.swap**
-                
-            *   quantity will be PUOS from conversion
-                
-            *   memo will be memo (ETH address) from transfer action
+**Thank you for your patience as we work to deliver a better bridging experience!**  
 ---
 title: 'Token Overview'
 

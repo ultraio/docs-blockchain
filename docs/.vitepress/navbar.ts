@@ -14,6 +14,7 @@ const navbar: DefaultTheme.NavItem[] = [
                     { text: 'Docker', link: '/tutorials/docker/getting-started' },
                     { text: 'Smart Contracts', link: '/tutorials/smart-contracts/index' },
                     { text: 'Uniq Factories', link: '/tutorials/uniq-factories/index' },
+                    { text: 'Ultra EVM', link: '/tutorials/Ultra-EVM/index' },
                     { text: 'Token Swap', link: '/tutorials/token-swap/index' },
                     { text: 'Fungitable Token', link: '/tutorials/token/index' },
                     { text: 'Airgrab', link: '/tutorials/airgrab/index' },

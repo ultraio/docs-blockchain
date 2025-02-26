@@ -120,7 +120,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/airgrab'),
             collapsed: true,
         },
-    ],
+        {
+            text: 'Ultra EVM',
+            items: getMarkdownFiles('/tutorials/Ultra-EVM'),
+            collapsed: true,
+        },    ],
     '/tutorials/general': [
         {
             text: 'Tutorials',
@@ -289,6 +293,22 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             text: 'Uniq On-chain Data',
             items: getMarkdownFiles('/tutorials/uniq-factories/uniq-on-chain-data'),
             collapsed: true,
+        },
+    ],
+    '/tutorials/Ultra-EVM': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'Ultra EVM',
+            items: getMarkdownFiles('/tutorials/Ultra-EVM'),
+            collapsed: false,
         },
     ],
     '/tutorials/token-swap': [

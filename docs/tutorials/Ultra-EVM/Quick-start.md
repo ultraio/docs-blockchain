@@ -6,12 +6,12 @@ order: 1
 ---
 
 # Ultra EVM Quick Start
-This quick start tutorial includes 3 parts
-- Bridge UOS in Ultra EVM
-- Send Transaction to Ultra EVM
-- Bridge UOS out Ultra EVM
+This quick start tutorial consists of three key parts:
+1. **[Bridge UOS into Ultra EVM](#part-1-how-to-get-uos-in-ultra-evm)**
+2. **[Send Transactions within Ultra EVM](#part-2-how-to-send-evm-transactions-in-ultra-evm)**
+3. **[Bridge UOS out of Ultra EVM](#part-3-how-to-bridge-uos-out-of-ultra-evm)**
 
-## How to Get UOS in Ultra EVM
+## Part 1: How to Get UOS in Ultra EVM
 
 UOS is the native currency on Ultra EVM. To execute any EVM transaction, you need UOS in your EVM address to cover gas fees. This tutorial guides you through bridging UOS from an Ultra account to an EVM address.
 
@@ -117,11 +117,11 @@ curl https://evm.test.ultra.eosusa.io \
 
 ---
 
-## How to Send EVM Transactions in Ultra EVM: A Step-by-Step Guide
+## Part 2: How to Send EVM Transactions in Ultra EVM
 
 ### Prerequisites
 - MetaMask installed and configured
-- Bridged UOS in your picked EVM address from your Metamask wallet (see [previous tutorial](#))
+- Bridged UOS in your picked EVM address from your Metamask wallet (see [previous tutorial](#part-1-how-to-get-uos-in-ultra-evm))
 
 ---
 
@@ -178,7 +178,7 @@ Your MetaMask should now show Ultra EVM Network Testnet and confirm you see your
 
 ---
 
-## How to Bridge UOS Out of Ultra EVM: Step-by-Step Guide
+## Part 3: How to Bridge UOS Out of Ultra EVM
 
 ### Prerequisites
 - UOS in your EVM address
@@ -224,9 +224,4 @@ Your MetaMask should now show Ultra EVM Network Testnet and confirm you see your
 
 ---
 
-### Important Notes
-- Bridging requires paying EVM gas fees in UOS
-- Transactions are final - double-check recipient address
-- Allow up to 5 minutes for cross-chain settlement
-
-> **Tip**: Always test with small amounts first when bridging assets!
+> **Tip**: Always test with small amounts first when bridging assets on mainnet!

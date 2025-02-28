@@ -85,3 +85,53 @@ try {
     // { status: "error", message: "Transaction declined" }
 }
 ```
+
+## Sign a transaction without broadcasting to the blockchain
+
+If you want to sign a transaction (or an array of transactions) using the current active account in your wallet without immediately sending it to the blockchain, you can pass an options object with the `signOnly` flag set to `true`.
+
+Using the `signOnly: true` option tells the Ultra Wallet to sign the transaction(s) and return the complete signed data, rather than broadcasting it to the blockchain network. This is particularly useful when you need to:
+
+-   Validate or inspect the signed transaction details before sending them
+-   Manage transactions in multiple steps, such as signing first and sending later
+-   Sign with multiple accounts
+
+Here is an example of how to use the `signOnly` option:
+
+```JavaScript
+try {
+  const response = await ultra.signTransaction(txObject, { signOnly: true });
+  response.data;
+  /**
+   {
+      "expiration": "2025-02-13T19:33:10",
+      "ref_block_num": 43975,
+      "ref_block_prefix": 268532809,
+      "max_net_usage_words": 0,
+      "max_cpu_usage_ms": 0,
+      "delay_sec": 0,
+      "context_free_actions": [],
+      "actions": [
+          {
+              "account": "eosio.token",
+              "name": "transfer",
+              "authorization": [
+                  {
+                      "actor": "zp1ix2rg3iw4",
+                      "permission": "active"
+                  }
+              ],
+              "data": "40b81bec8aee42fd00000000007373d400e1f5050000000008554f5300000000215468697320697320616e20756c747261207472616e73616374696f6e2074657374"
+          }
+      ],
+      "transaction_extensions": [],
+      "signatures": [
+          "SIG_K1_K5UwukCbpLkWHktrFmd39XFhvVDG4eJ1EGF9x742zthNdNSuP1vMCGDf2Z2gkA6oCthHrHnkcVPBBaKpCf3hdX5e7rMGB8"
+      ],
+      "context_free_data": []
+    }
+  */
+} catch (err) {
+  // { status: "error", message: "Transaction declined" }
+}
+```

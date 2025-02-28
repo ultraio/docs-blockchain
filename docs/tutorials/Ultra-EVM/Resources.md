@@ -2,7 +2,7 @@
 title: 'Resources'
 
 outline: [0,4]
-order: 2
+order: 3
 ---
 
 # Ultra EVM Resources

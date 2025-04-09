@@ -522,13 +522,13 @@ onMounted(() => {});
     display: flex;
     flex-direction: row;
     font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-    background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+    background: linear-gradient(-135deg, var(--vp-c-bg) -40%, rgba(0, 0, 0, 0) 25%),
         var(--vp-bg-background) right -240px top -200px no-repeat;
     background-repeat: no-repeat;
 }
 
 .VPContent.has-sidebar {
-    background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+    background: linear-gradient(-135deg, var(--vp-c-bg) -40%);
 }
 
 .main-content {
@@ -820,23 +820,23 @@ onMounted(() => {});
 
 @media (max-width: 1600px) {
     .VPContent {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%, rgba(0, 0, 0, 0) 25%),
             var(--vp-bg-background) right -500px top -300px no-repeat;
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%);
     }
 }
 
 @media (max-width: 1400px) {
     .VPContent {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%, rgba(0, 0, 0, 0) 25%),
             var(--vp-bg-background) right -540px top -300px no-repeat;
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%);
     }
 
     .main-container #getting-started {
@@ -846,12 +846,12 @@ onMounted(() => {});
 
 @media (max-width: 1000px) {
     .VPContent {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%, rgba(0, 0, 0, 0) 25%),
             var(--vp-bg-background) right -640px top -200px no-repeat;
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%);
     }
 
     .main-container .sections {
@@ -886,12 +886,12 @@ onMounted(() => {});
 
 @media (max-width: 800px) {
     .VPContent {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%, rgba(0, 0, 0, 0) 25%),
             none right -800px top -200px no-repeat;
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-bg) -40%);
     }
 
     .main-container .main-content {

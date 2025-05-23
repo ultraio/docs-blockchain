@@ -1264,7 +1264,7 @@ query UniqBuyOffers(
     "uniqBuyOffers": {
       "data": [UniqBuyOffer],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -2353,7 +2353,7 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -3180,7 +3180,7 @@ query UniqsOfFactory(
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": true,
+  "resale": false,
   "serialRange": UniqSerialRangeInput
 }
 ```
@@ -3666,7 +3666,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }

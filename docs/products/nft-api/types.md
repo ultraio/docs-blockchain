@@ -67,7 +67,7 @@ ISO 4217 standards for currency representation.
 ``` js
 {
   "code": "xyz789",
-  "symbol": "xyz789"
+  "symbol": "abc123"
 }
 ```
 
@@ -98,7 +98,7 @@ values as specified by [IEEE
 ##### Example
 
 ``` js
-123.45
+987.65
 ```
 
 
@@ -180,7 +180,7 @@ is 25.
 ##### Example
 
 ``` js
-{"limit": 123, "skip": 123}
+{"limit": 987, "skip": 987}
 ```
 
 
@@ -271,7 +271,7 @@ represent free-form human-readable text.
 ##### Example
 
 ``` js
-"abc123"
+"xyz789"
 ```
 
 
@@ -401,7 +401,7 @@ ID and/or burned.
 ##### Example
 
 ``` js
-{"enabled": false, "uniqBurned": false, "uniqId": 987}
+{"enabled": true, "uniqBurned": true, "uniqId": 987}
 ```
 
 
@@ -514,8 +514,8 @@ changes, including multiple URIs for alternate versions or updates.
 
 ``` js
 {
-  "contentType": "xyz789",
-  "uris": ["xyz789"]
+  "contentType": "abc123",
+  "uris": ["abc123"]
 }
 ```
 
@@ -577,7 +577,7 @@ effectively.
 {
   "data": [UniqEffectiveBuyOffer],
   "pagination": Pagination,
-  "totalCount": 123
+  "totalCount": 987
 }
 ```
 
@@ -708,7 +708,7 @@ Enable filtering on uniq factory buy offers.
 ##### Example
 
 ``` js
-{"enabled": false}
+{"enabled": true}
 ```
 
 
@@ -905,7 +905,7 @@ purposes.
 {
   "data": [UniqFactory],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -934,7 +934,7 @@ source, cached content, and resolved information.
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": true,
+  "locked": false,
   "source": UniqResource,
   "status": "INVALID",
   "validationFailures": [UniqMetadataFailure]
@@ -960,7 +960,7 @@ factory, providing detailed information about each attribute.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqMetadataAttributeDescriptor
 }
 ```
@@ -992,7 +992,7 @@ names, descriptions, media, and additional properties.
   "attributes": [UniqFactoryMetadataAttribute],
   "description": "xyz789",
   "medias": UniqMedias,
-  "name": "xyz789",
+  "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -1224,7 +1224,7 @@ pagination to manage and navigate through large datasets effectively.
 {
   "data": [Uniq],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -1310,7 +1310,7 @@ structured format for easy reference and interpretation.
 ``` js
 {
   "descriptor": UniqMetadataAttributeDescriptor,
-  "key": "xyz789",
+  "key": "abc123",
   "value": "true | \"myStringValue\" | 987 | 987.65"
 }
 ```
@@ -1336,9 +1336,9 @@ including whether the attribute is dynamic and its data type.
 
 ``` js
 {
-  "description": "abc123",
-  "dynamic": false,
-  "name": "abc123",
+  "description": "xyz789",
+  "dynamic": true,
+  "name": "xyz789",
   "type": "ISODateString"
 }
 ```
@@ -1400,7 +1400,7 @@ additional data attributes.
   "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "abc123"
+  "subName": "xyz789"
 }
 ```
 
@@ -1452,7 +1452,7 @@ information, and a default message.
 {
   "code": "xyz789",
   "context": [UniqMetadataFailureContextEntry],
-  "defaultMessage": "xyz789"
+  "defaultMessage": "abc123"
 }
 ```
 
@@ -1476,8 +1476,8 @@ failure context.
 
 ``` js
 {
-  "key": "abc123",
-  "value": "abc123"
+  "key": "xyz789",
+  "value": "xyz789"
 }
 ```
 
@@ -1578,9 +1578,9 @@ verification.
 
 ``` js
 {
-  "contentType": "abc123",
+  "contentType": "xyz789",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
 
@@ -1602,7 +1602,7 @@ authentic and unaltered through cryptographic verification.
 ##### Example
 
 ``` js
-{"hash": "xyz789", "type": "SHA256"}
+{"hash": "abc123", "type": "SHA256"}
 ```
 
 
@@ -1758,9 +1758,9 @@ for integrity verification and a specific URI for retrieval.
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
 

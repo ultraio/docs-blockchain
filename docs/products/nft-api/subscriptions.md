@@ -23,7 +23,9 @@ To implement subscriptions with the `graphql-ws` library, follow these basic ste
 
 3. **Authenticate the Connection**: During the connection initialization, include an authorization header to authenticate the user. This is crucial for secure communications.
 
-4. **Subscribe to Events**: Use the connection to subscribe to the desired events. When these events occur, the server will push updates to the client.
+4. **Schedule a refresh of the token**: After the authentication phase your access token will have an expiration time. So you must schedule a ping message with a refreshed access token before your current access token expire. This operation must be recursivelly repeated.
+
+5. **Subscribe to Events**: Use the connection to subscribe to the desired events. When these events occur, the server will push updates to the client.
 
 ## Step-by-Step Example with Code
 
@@ -42,7 +44,26 @@ const client = createClient({
 });
 ```
 
-### 2. Subscribing to a Subscription
+
+### 2. Schedule token refresh
+
+```javascript
+function scheduleTokenRefresh(currentToken) {
+    setTimeout(
+    async () => {
+            // implement the refreshToken with your favorite libraries...
+            const newToken = refreshToken(currentToken.refresh_token);
+            const payload = { Authorization: `Bearer ${newToken.access_token}` };
+            await client.ping(payload);
+            scheduleTokenRefresh(newToken);
+        },
+        // expire_in is in seconds
+        currentToken.expires_in * 1000 - 10 * 1000, // substract 10 seconds
+    );
+}
+```
+
+### 3. Subscribing to a Subscription
 
 ```javascript
 client.subscribe(

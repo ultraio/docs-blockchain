@@ -80,3 +80,11 @@ Below is an example of an error message returned following a validation error:
 ### Network errors
 
 Network errors refer to problems encountered during communication with the GraphQL server, typically leading to a response status code in the 4xx or 5xx range, indicating an unsuccessful attempt and resulting in no data being returned.
+
+## GraphQL over WebSocket
+
+When using WebSocket, you can get errors with the code `4401` in the following situations:
+- Your access token is invalid.
+- Your refresh token is invalid.
+- Missing ping message with a valid refreshed access token before the current access token expiration.
+- Reaching the limit of WebSocket connections per user.

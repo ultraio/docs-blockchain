@@ -16089,6 +16089,14 @@ Below is an example of an error message returned following a validation error:
 
 Network errors refer to problems encountered during communication with the GraphQL server, typically leading to a response status code in the 4xx or 5xx range, indicating an unsuccessful attempt and resulting in no data being returned.
 
+## GraphQL over WebSocket
+
+When using WebSocket, you can get errors with the code `4401` in the following situations:
+- Your access token is invalid.
+- Your refresh token is invalid.
+- Missing ping message with a valid refreshed access token before the current access token expiration.
+- Reaching the limit of WebSocket connections per user.
+
 ---
 title: 'Introduction'
 deploy: ['staging', 'mainnet']
@@ -17399,7 +17407,7 @@ query UniqBuyOffers(
     "uniqBuyOffers": {
       "data": [UniqBuyOffer],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -18488,7 +18496,7 @@ query UniqFactories(
     "uniqFactories": {
       "data": [UniqFactory],
       "pagination": Pagination,
-      "totalCount": 987
+      "totalCount": 123
     }
   }
 }
@@ -19315,7 +19323,7 @@ query UniqsOfFactory(
   "factoryId": 987,
   "ids": [987],
   "pagination": PaginationInput,
-  "resale": true,
+  "resale": false,
   "serialRange": UniqSerialRangeInput
 }
 ```
@@ -19801,7 +19809,7 @@ query UniqsOfWallet(
     "uniqsOfWallet": {
       "data": [Uniq],
       "pagination": Pagination,
-      "totalCount": 123
+      "totalCount": 987
     }
   }
 }
@@ -19904,7 +19912,9 @@ To implement subscriptions with the `graphql-ws` library, follow these basic ste
 
 3. **Authenticate the Connection**: During the connection initialization, include an authorization header to authenticate the user. This is crucial for secure communications.
 
-4. **Subscribe to Events**: Use the connection to subscribe to the desired events. When these events occur, the server will push updates to the client.
+4. **Schedule a refresh of the token**: After the authentication phase your access token will have an expiration time. So you must schedule a ping message with a refreshed access token before your current access token expire. This operation must be recursivelly repeated.
+
+5. **Subscribe to Events**: Use the connection to subscribe to the desired events. When these events occur, the server will push updates to the client.
 
 ## Step-by-Step Example with Code
 
@@ -19923,7 +19933,26 @@ const client = createClient({
 });
 ```
 
-### 2. Subscribing to a Subscription
+
+### 2. Schedule token refresh
+
+```javascript
+function scheduleTokenRefresh(currentToken) {
+    setTimeout(
+    async () => {
+            // implement the refreshToken with your favorite libraries...
+            const newToken = refreshToken(currentToken.refresh_token);
+            const payload = { Authorization: `Bearer ${newToken.access_token}` };
+            await client.ping(payload);
+            scheduleTokenRefresh(newToken);
+        },
+        // expire_in is in seconds
+        currentToken.expires_in * 1000 - 10 * 1000, // substract 10 seconds
+    );
+}
+```
+
+### 3. Subscribing to a Subscription
 
 ```javascript
 client.subscribe(
@@ -21909,7 +21938,7 @@ ISO 4217 standards for currency representation.
 ``` js
 {
   "code": "xyz789",
-  "symbol": "xyz789"
+  "symbol": "abc123"
 }
 ```
 
@@ -21940,7 +21969,7 @@ values as specified by [IEEE
 ##### Example
 
 ``` js
-123.45
+987.65
 ```
 
 
@@ -22022,7 +22051,7 @@ is 25.
 ##### Example
 
 ``` js
-{"limit": 123, "skip": 123}
+{"limit": 987, "skip": 987}
 ```
 
 
@@ -22113,7 +22142,7 @@ represent free-form human-readable text.
 ##### Example
 
 ``` js
-"abc123"
+"xyz789"
 ```
 
 
@@ -22243,7 +22272,7 @@ ID and/or burned.
 ##### Example
 
 ``` js
-{"enabled": false, "uniqBurned": false, "uniqId": 987}
+{"enabled": true, "uniqBurned": true, "uniqId": 987}
 ```
 
 
@@ -22356,8 +22385,8 @@ changes, including multiple URIs for alternate versions or updates.
 
 ``` js
 {
-  "contentType": "xyz789",
-  "uris": ["xyz789"]
+  "contentType": "abc123",
+  "uris": ["abc123"]
 }
 ```
 
@@ -22419,7 +22448,7 @@ effectively.
 {
   "data": [UniqEffectiveBuyOffer],
   "pagination": Pagination,
-  "totalCount": 123
+  "totalCount": 987
 }
 ```
 
@@ -22550,7 +22579,7 @@ Enable filtering on uniq factory buy offers.
 ##### Example
 
 ``` js
-{"enabled": false}
+{"enabled": true}
 ```
 
 
@@ -22747,7 +22776,7 @@ purposes.
 {
   "data": [UniqFactory],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -22776,7 +22805,7 @@ source, cached content, and resolved information.
 {
   "cachedSource": UniqResource,
   "content": UniqFactoryMetadataContent,
-  "locked": true,
+  "locked": false,
   "source": UniqResource,
   "status": "INVALID",
   "validationFailures": [UniqMetadataFailure]
@@ -22802,7 +22831,7 @@ factory, providing detailed information about each attribute.
 
 ``` js
 {
-  "key": "abc123",
+  "key": "xyz789",
   "value": UniqMetadataAttributeDescriptor
 }
 ```
@@ -22834,7 +22863,7 @@ names, descriptions, media, and additional properties.
   "attributes": [UniqFactoryMetadataAttribute],
   "description": "xyz789",
   "medias": UniqMedias,
-  "name": "xyz789",
+  "name": "abc123",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
   "subName": "abc123"
@@ -23066,7 +23095,7 @@ pagination to manage and navigate through large datasets effectively.
 {
   "data": [Uniq],
   "pagination": Pagination,
-  "totalCount": 987
+  "totalCount": 123
 }
 ```
 
@@ -23152,7 +23181,7 @@ structured format for easy reference and interpretation.
 ``` js
 {
   "descriptor": UniqMetadataAttributeDescriptor,
-  "key": "xyz789",
+  "key": "abc123",
   "value": "true | \"myStringValue\" | 987 | 987.65"
 }
 ```
@@ -23178,9 +23207,9 @@ including whether the attribute is dynamic and its data type.
 
 ``` js
 {
-  "description": "abc123",
-  "dynamic": false,
-  "name": "abc123",
+  "description": "xyz789",
+  "dynamic": true,
+  "name": "xyz789",
   "type": "ISODateString"
 }
 ```
@@ -23242,7 +23271,7 @@ additional data attributes.
   "name": "xyz789",
   "properties": {"someProperty": "myStringValue", "otherProperty": 987},
   "resources": [UniqMetadataResource],
-  "subName": "abc123"
+  "subName": "xyz789"
 }
 ```
 
@@ -23294,7 +23323,7 @@ information, and a default message.
 {
   "code": "xyz789",
   "context": [UniqMetadataFailureContextEntry],
-  "defaultMessage": "xyz789"
+  "defaultMessage": "abc123"
 }
 ```
 
@@ -23318,8 +23347,8 @@ failure context.
 
 ``` js
 {
-  "key": "abc123",
-  "value": "abc123"
+  "key": "xyz789",
+  "value": "xyz789"
 }
 ```
 
@@ -23420,9 +23449,9 @@ verification.
 
 ``` js
 {
-  "contentType": "abc123",
+  "contentType": "xyz789",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
 
@@ -23444,7 +23473,7 @@ authentic and unaltered through cryptographic verification.
 ##### Example
 
 ``` js
-{"hash": "xyz789", "type": "SHA256"}
+{"hash": "abc123", "type": "SHA256"}
 ```
 
 
@@ -23600,9 +23629,9 @@ for integrity verification and a specific URI for retrieval.
 
 ``` js
 {
-  "contentType": "xyz789",
+  "contentType": "abc123",
   "integrity": UniqResourceIntegrity,
-  "uri": "xyz789"
+  "uri": "abc123"
 }
 ```
 

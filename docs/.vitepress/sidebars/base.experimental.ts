@@ -438,12 +438,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             text: 'Ultra Wallet',
             items: getMarkdownFiles('/products/ultra-wallet'),
             collapsed: true,
-        },
-        {
-            text: 'Ultra Web Wallet',
-            items: getMarkdownFiles('/products/ultra-web-wallet'),
-            collapsed: true,
-        },
+        },        
         {
             text: 'Chain API',
             items: getMarkdownFiles('/products/chain-api'),

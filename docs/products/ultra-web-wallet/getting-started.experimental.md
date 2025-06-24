@@ -61,6 +61,34 @@ To log out the user and clear local credentials:
 await wallet.disconnect();
 ```
 
+## ⚠️ Important: Popup Handling Requirements
+
+To ensure proper functioning of the Ultra Web Wallet, **all API calls that trigger UI actions (such as login, purchase, or signature requests)** must be initiated **within a direct user action**, such as a `click` or `tap` event.
+
+Browsers enforce strict popup blockers for non-user-initiated windows. If your call to the wallet (e.g., `ultra.login()` or `ultra.purchaseItem()`) is not triggered from a user interaction, the popup will likely be blocked, and no action will occur.
+
+### ✅ Correct Usage (inside a button event):
+
+```js
+button.addEventListener("click", async () => {
+  await wallet.connect();
+});
+```
+
+### ❌ Incorrect Usage (auto-triggered or delayed):
+
+```js
+// This will likely be blocked
+setTimeout(() => {
+  wallet.connect();
+}, 1000);
+```
+
+:::info TIP
+🛡 Always ensure wallet methods are triggered synchronously inside user input events to avoid UX issues.
+::: 
+
+
 ## Next Steps
 
 After connecting, you can:

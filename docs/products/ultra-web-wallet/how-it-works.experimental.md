@@ -8,7 +8,7 @@ outline: [0, 4]
 
 # How It Works
 
-The Ultra Web Wallet is tightly integrated with the Ultra ecosystem to provide a smooth and secure Web3 experience—without requiring users to install browser extensions.
+The Ultra Web Wallet is tightly integrated with the Ultra ecosystem to provide a smooth and secure Web3 experience without requiring users to install browser extensions.
 
 ## Authentication & Key Management
 

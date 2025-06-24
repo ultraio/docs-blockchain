@@ -24,7 +24,7 @@ When users first log in, the SDK initiates a secure registration flow through Ul
 
 ## Transaction Signing
 
-All blockchain interactions—such as transactions and message signing—are performed **client-side**. The Web Wallet handles these securely, displaying transaction data to the user for confirmation before signing. This reduces the risk of unauthorized activity or invisible transactions.
+All blockchain interactions—such as transactions and message signing are performed **client-side**. The Web Wallet handles these securely, displaying transaction data to the user for confirmation before signing. This reduces the risk of unauthorized activity or invisible transactions.
 
 ## No Custodial Risk
 

@@ -80,7 +80,7 @@ To get your referral code, go to the Ultra Desktop client and then to the Wallet
 Once you copy your referral link, you can extract the referral code from the URL. For example, from the following link:
 
 ```
-https://wallet.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5
+https://ultra.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5
 ```
 
 The referral code is: `ecd1f052-9d0d-4b84-8dd3-10a753d044b5`.

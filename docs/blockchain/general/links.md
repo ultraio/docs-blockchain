@@ -30,6 +30,7 @@ These include anything from best security practices, tools, and even other commu
 
 * [Smart Contract Examples](https://github.com/blockmatic/antelope-contracts-list)
 * [Wallet Test App](https://stackblitz.com/edit/ultra-wallet-test?file=index.js)
+* [Web Wallet Test App](https://stackblitz.com/edit/ultra-wallet-sdk-example)
 * [Vite Example Wallet App](https://github.com/Stuyk/ultra-wallet-app-template)
 
 

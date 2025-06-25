@@ -4,6 +4,7 @@ packages/*/docs/.vitepress/cache
 dist
 .DS_Store
 .meta
+.idea/
 
 # =======================================
 # Global Ignores

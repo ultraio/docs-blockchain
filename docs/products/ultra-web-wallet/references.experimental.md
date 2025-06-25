@@ -12,6 +12,7 @@ Here are useful links and resources to learn more about Ultra Web Wallet, its SD
 ## SDK Documentation
 
 -   [`@ultraos/wallet-sdk` on npm](https://www.npmjs.com/package/@ultraos/wallet-sdk)
+-   [Demo application](https://stackblitz.com/edit/ultra-wallet-sdk-example)
 
 ## Related Products
 

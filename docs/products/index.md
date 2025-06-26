@@ -22,6 +22,12 @@ Check out some of the various libraries, code examples and products we have avai
         <td><a href="https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Download</a></td>
         <td><a href="./ultra-wallet/index">Tutorial</a></td>
     </tr>
+     <tr>
+        <td>Ultra Wallet SDK</td>
+        <td>Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the browser extension or via a Ultra Web Wallet.</td>
+        <td><a href="https://www.npmjs.com/package/@ultraos/wallet-sdk">NPM</a></td>
+        <td><a href="./ultra-wallet-sdk/index">Tutorial</a></td>
+    </tr>
     <tr>
         <td>Developer Tools Docker Image</td>
         <td>A docker container that contains binaries for cleos, nodeos, keosd, and ultratest. This image has everything to start a local blockchain.</td>

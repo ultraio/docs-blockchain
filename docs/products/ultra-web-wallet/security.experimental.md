@@ -1,7 +1,7 @@
 ---
 title: 'Security Model'
 
-order: 6
+order: 1
 outline: [0, 4]
 ---
 

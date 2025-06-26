@@ -436,13 +436,24 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         },
         {
             text: 'Ultra Wallet',
-            items: getMarkdownFiles('/products/ultra-wallet'),
-            collapsed: true,
-        },
-        {
-            text: 'Ultra Web Wallet',
-            items: getMarkdownFiles('/products/ultra-web-wallet'),
-            collapsed: true,
+            items: [
+                {
+                    text: 'Wallet Browser Extension',
+                    link: '/products/index',
+                    items: getMarkdownFiles('/products/ultra-wallet'),
+                    collapsed: true,
+                },
+                {
+                    text: 'Web Wallet',
+                    items: getMarkdownFiles('/products/ultra-web-wallet'),
+                    collapsed: true,
+                },
+                {
+                    text: 'Wallet SDK',
+                    items: getMarkdownFiles('/products/ultra-wallet-sdk'),
+                    collapsed: true,
+                },
+            ],
         },
         {
             text: 'Chain API',

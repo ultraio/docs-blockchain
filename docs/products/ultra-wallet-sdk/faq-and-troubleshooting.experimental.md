@@ -1,7 +1,7 @@
 ---
 title: 'FAQ / Troubleshooting'
 
-order: 7
+order: 3
 outline: [0, 4]
 ---
 

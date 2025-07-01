@@ -92,6 +92,10 @@ To streamline authentication flows and avoid browser restrictions on multiple po
 
 This is particularly useful for dApps that need to verify user identity using a signed challenge (i.e., the nonce) — commonly used in Web3 login/session flows.
 
+:::info Note
+If the `nonce` parameter is specified, the `connect()` method will always prompt the user to reconnect, even if a trusted session already exists.
+:::
+
 #### Usage
 
 ```ts

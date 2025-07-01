@@ -203,7 +203,7 @@ let currentProducer = ref<string>('eosnation');
 let currentLinkIndex = ref<number>(0);
 let moveSidebarDown = ref<boolean>(false);
 
-onMounted(() => {});
+onMounted(() => { });
 </script>
 
 <template>
@@ -215,11 +215,8 @@ onMounted(() => {});
             <left-sidebar :class="moveSidebarDown ? ['remove-pad'] : []">
                 <ul class="sidebar-links">
                     <li v-for="(link, index) in links" :key="index">
-                        <a
-                            :href="link.href"
-                            @click="currentLinkIndex = index"
-                            :class="currentLinkIndex === index ? ['active'] : []"
-                        >
+                        <a :href="link.href" @click="currentLinkIndex = index"
+                            :class="currentLinkIndex === index ? ['active'] : []">
                             {{ link.text }}
                         </a>
                     </li>
@@ -227,11 +224,8 @@ onMounted(() => {});
             </left-sidebar>
             <div class="main-content">
                 <div class="hero">
-                    <img
-                        :src="withBase('/svgs/ultra-horizontal.svg')"
-                        width="150"
-                        style="margin-bottom: 48px; margin-top: 5px"
-                    />
+                    <img :src="withBase('/svgs/ultra-horizontal.svg')" width="150"
+                        style="margin-bottom: 48px; margin-top: 5px" />
                     <!-- Top Text -->
                     <div class="headline">
                         <span v-for="text in data.headline.split(' ')">
@@ -243,9 +237,8 @@ onMounted(() => {});
                 <section id="getting-started">
                     <p class="getting-started-description">
                         Take advantage of all of the best features of decentralized technologies
-                        <span class="highlight"
-                            >without the downsides of high costs, hard on-boarding, and slow networks</span
-                        >.
+                        <span class="highlight">without the downsides of high costs, hard on-boarding, and slow
+                            networks</span>.
                     </p>
 
                     <div class="quick-start-grid">
@@ -372,10 +365,9 @@ onMounted(() => {});
                     <p>
                         Ultra provides a unique, easy to use, and flexible NFT standard which is focused on both
                         deploying digital assets and making them easily accessible to buyers, sellers, and traders.
-                        <span class="highlight"
-                            >This means that creators have instant access to a market for their Uniqs that is mainstream
-                            ready.</span
-                        >
+                        <span class="highlight">This means that creators have instant access to a market for their Uniqs
+                            that is mainstream
+                            ready.</span>
                     </p>
                     <img class="splash-image" src="/images/home/splash_contentcreators.png" alt="Game Developers" />
 
@@ -528,7 +520,7 @@ onMounted(() => {});
 }
 
 .VPContent.has-sidebar {
-    background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+    background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),  no-repeat;
 }
 
 .main-content {
@@ -761,7 +753,7 @@ onMounted(() => {});
     max-height: 1000px;
 }
 
-.main-container > p {
+.main-container>p {
     color: #e8d4ff;
     font-weight: 400;
     line-height: 32px;
@@ -825,7 +817,7 @@ onMounted(() => {});
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),  no-repeat;
     }
 }
 
@@ -836,7 +828,7 @@ onMounted(() => {});
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),  no-repeat;
     }
 
     .main-container #getting-started {
@@ -851,7 +843,7 @@ onMounted(() => {});
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),  no-repeat;
     }
 
     .main-container .sections {
@@ -891,7 +883,7 @@ onMounted(() => {});
     }
 
     .VPContent.has-sidebar {
-        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%);
+        background: linear-gradient(-135deg, var(--vp-c-brand-light) -40%, rgba(0, 0, 0, 0) 25%),  no-repeat;
     }
 
     .main-container .main-content {
@@ -1144,6 +1136,7 @@ onMounted(() => {});
     .coreflex .left {
         width: 100% !important;
     }
+
     .coreflex .right {
         display: none;
     }

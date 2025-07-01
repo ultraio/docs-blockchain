@@ -12377,6 +12377,7 @@ These include anything from best security practices, tools, and even other commu
 
 * [Smart Contract Examples](https://github.com/blockmatic/antelope-contracts-list)
 * [Wallet Test App](https://stackblitz.com/edit/ultra-wallet-test?file=index.js)
+* [Web Wallet Test App](https://stackblitz.com/edit/ultra-wallet-sdk-example)
 * [Vite Example Wallet App](https://github.com/Stuyk/ultra-wallet-app-template)
 
 
@@ -15836,6 +15837,12 @@ Check out some of the various libraries, code examples and products we have avai
         <td>The Ultra Wallet is a non-custodial crypto wallet that allows you to store your UOS and Uniqs.</td>
         <td><a href="https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Download</a></td>
         <td><a href="./ultra-wallet/index">Tutorial</a></td>
+    </tr>
+     <tr>
+        <td>Ultra Wallet SDK</td>
+        <td>Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the browser extension or via a Ultra Web Wallet.</td>
+        <td><a href="https://www.npmjs.com/package/@ultraos/wallet-sdk">NPM</a></td>
+        <td><a href="./ultra-wallet-sdk/index">Tutorial</a></td>
     </tr>
     <tr>
         <td>Developer Tools Docker Image</td>
@@ -23790,6 +23797,520 @@ If you have desire to add some functionality on your own or suggest some of the 
 -   [Tutorial - Token transfer and Uniq purchase transactions](../../tutorials/fundamentals/tutorial-token-transfer-and-nft-purchase.md)
 
 ---
+title: 'Core API Methods'
+
+order: 2
+outline: [0, 4]
+---
+
+# Core API Methods
+
+The `@ultraos/wallet-sdk` provides a unified interface for interacting with both the Ultra Web Wallet and the Ultra Wallet Extension. This means you can implement wallet functionality once, and the SDK will handle which wallet environment (web or extension) is used behind the scenes.
+
+## Response Format
+
+The Ultra Web Wallet SDK returns responses in the same format as the Ultra Wallet Extension.
+
+Each successful method call returns a consistent object structure with the following top-level fields:
+
+-   `status`: Always `"success"` for resolved calls
+-   `data`: The actual payload of the response, specific to each method
+
+Example structure:
+
+```ts
+{
+  status: "success",
+  data: {
+    // method-specific values here
+  }
+}
+```
+
+For full details on the structure of each method’s response, refer to the shared documentation:
+
+[See Ultra Wallet Response Format →](../ultra-wallet/response-format.md)
+
+## Connect
+
+Initiates the connection process with the wallet. For Web Wallet users, this includes authenticating via Ultra SSO and registering the device.
+
+```ts
+try {
+    const response = await wallet.connect();
+    response.data.blockchainid;
+    // ej1vx2ft3ht4
+    response.data.publicKey;
+    // EOS7uRb72dR8jrLjNuC9UoevBBH3YbVZfNKUtYCfLkV7aPGcmDjs7
+} catch (err) {
+    // { status: "error", message: "Connection rejected" }
+}
+```
+
+### Eagerly Connecting
+
+After a web application connects to the Ultra Wallet for the first time, it gains a trusted status.
+Once this trust is established, the application can seamlessly link with Ultra Wallet during future visits or when the page is refreshed,
+eliminating the need to ask the user for authorization. This concept is commonly known as "eagerly connecting".
+
+To implement this, web applications should pass an `onlyIfTrusted` option into the `connect()` call.
+
+```ts
+try {
+    await wallet.connect({ onlyIfTrusted: true });
+} catch (err) {
+    // { status: 'error', code: 4001, message: 'The user rejected the request.' }
+}
+```
+
+### Sending a Referral Code
+
+An application can send its referral code to the wallet. The referral code will be used if the user signs up during the connection process.
+
+To implement this, applications should pass the `referralCode` option into the `connect()` call.
+
+```ts
+wallet.connect({ referralCode: 'ecd1f052-9d0d-4b84-8dd3-10a753d044b5' });
+```
+
+To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section. Click the link to copy it.
+
+Once you copy your referral link, you can extract the referral code from the URL. For example, from the following link:
+
+```
+https://ultra.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5
+```
+
+The referral code is: `ecd1f052-9d0d-4b84-8dd3-10a753d044b5`.
+
+
+### Connect with Nonce
+
+To streamline authentication flows and avoid browser restrictions on multiple popup windows, the `connect()` method supports an optional `nonce` parameter. When provided, the Ultra Web Wallet will automatically sign the nonce after completing key synchronization.
+
+This is particularly useful for dApps that need to verify user identity using a signed challenge (i.e., the nonce) — commonly used in Web3 login/session flows.
+
+#### Usage
+
+```ts
+try {
+  const response = await wallet.connect({ nonce: 'abc123randomnonce' });
+
+  console.log(response.data.blockchainid);     // e.g., "aa1aa2aa3aa4"
+  console.log(response.data.publicKey);        // e.g., "EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx"
+  console.log(response.data.nonce);            // "message: abc123randomnonce" (note: nonce must start with 'message:', '0x', or 'UOSx')
+  console.log(response.data.signedNonce);      // Signed message
+} catch (err) {
+  // { status: "error", message: "Connection rejected" }
+}
+```
+
+> **Important:** The `nonce` string must begin with one of the supported prefixes: `'message:'`, `'0x'`, or `'UOSx'`. This ensures compatibility with Ultra Wallet’s signature rules.
+
+#### Response Format
+
+When a `nonce` is provided, the response `data` object will include:
+
+- `blockchainid`: User's Ultra Blockchain ID
+- `publicKey`: Associated public key
+- `nonce`: The original nonce sent by the dApp
+- `signedNonce`: The message signature generated by the Ultra Wallet
+
+This signed payload can then be verified off-chain or used to create stateless sessions server-side.
+
+> Note: The signed message uses the standard `signMessage()` behavior with the same signature rules.
+
+
+## Disconnect
+
+The `disconnect()` method revokes the connection permission that the user granted to the web application. If the application is already disconnected, the Promise will throw an error.
+
+```ts
+try {
+  await wallet.disconnect();
+} catch (err) {
+  // { status: "error", message: "Forbidden" }
+```
+
+## Sign Message
+
+In some cases, a web application can also request the user to sign a given message to verify the ownership of a blockchain account. Applications are free to write their messages which will be displayed to users from within the Ultra Wallet's signature prompt using the method `signMessage()`. These messages should have one of the following prefixes: `0x`, `UOSx`, or `message:`.
+
+```ts
+const signature = await wallet.signMessage('message: Hello, blockchain!');
+```
+
+:::info
+Message signatures do not involve network fees.
+:::
+
+## Sign Transaction
+
+Once a web application is connected to the Ultra Wallet, it can prompt the user for permission to sign and push transactions on their behalf.
+
+### Create a transaction object
+
+Ultra Wallet uses a simplified format for transaction objects. The required fields are `action`, `contract`, and `data`.
+
+Example: sending tokens between accounts.
+
+```json
+{
+    "action": "transfer",
+    "contract": "eosio.token",
+    "data": {
+        "memo": "This is a transaction test",
+        "quantity": "11.20000000 UOS",
+        "from": "ej1vx2ft3ht4",
+        "to": "nwyklp2aa1qd"
+    }
+}
+```
+
+### Sign the transaction object
+
+Once the transaction is created, you can request the wallet to sign and broadcast it using `signTransaction()`:
+
+```ts
+try {
+    const response = await wallet.signTransaction(txObject);
+    response.data.transactionHash;
+    // 51c6d324522a0ee05baeee2a8857b016e47481207850074ee83f914e6adc45ae
+} catch (err) {
+    // { status: "error", message: "Transaction declined" }
+}
+```
+
+### Sign multiple transactions at the same time
+
+You can also pass an array of transactions to sign them together in a single call:
+
+```ts
+const txArray = [
+    {
+        action: 'transfer',
+        contract: 'eosio.token',
+        data: {
+            memo: '',
+            quantity: '11.20000000 UOS',
+            from: 'ej1vx2ft3ht4',
+            to: 'nwyklp2aa1qd',
+        },
+    },
+    {
+        action: 'buy',
+        contract: 'eosio.nft.ft',
+        data: {
+            buy: {
+                token_id: 9974,
+                buyer: 'mg1vg2lv3fs4',
+                receiver: 'mg1vg2lv3fs4',
+                max_price: '78.00000000 UOS',
+                memo: '',
+                promoter_id: null,
+            },
+        },
+    },
+];
+
+try {
+    const response = await wallet.signTransaction(txArray);
+    response.data.transactionHash;
+} catch (err) {
+    // { status: "error", message: "Transaction declined" }
+}
+```
+
+### Sign a transaction without broadcasting to the blockchain
+
+You can sign one or more transactions and receive the full signed payload without broadcasting it by passing `{ signOnly: true }`:
+
+```ts
+try {
+    const response = await wallet.signTransaction(txObject, { signOnly: true });
+    response.data;
+    /**
+   {
+      "expiration": "...",
+      "ref_block_num": ...,
+      "actions": [...],
+      "signatures": [...],
+      ...
+   }
+  */
+} catch (err) {
+    // { status: "error", message: "Transaction declined" }
+}
+```
+
+## Get Chain ID
+
+Retrieves the current chain ID based on the environment configuration.
+
+```ts
+const chainId = await wallet.getChainId();
+```
+
+## Purchase Item
+
+To facilitate the purchase of a Uniq Factory with FIAT or blockchain tokens, the Ultra platform provides the `wallet.purchaseItem(itemType, itemId)` method. This method initiates a complete purchase flow for a specific item, identified by its type and ID on the blockchain.
+
+### Parameters
+
+-   `itemType`: For Uniq Factory purchases, use `"UniqFactory"`.
+-   `itemId`: The numeric identifier of the Uniq Factory product on the blockchain.
+
+When this method is called, a popup will appear showing the Ultra purchase flow. Users can complete their purchase using credit/debit cards or UOS tokens.
+
+Upon success, the result includes:
+
+-   `orderHash`: Reference ID for customer support
+-   `items`: An array of purchased items containing:
+    -   `productId`: The requested item ID
+    -   `artifactId`: The minted Uniq on the blockchain
+    -   `blockchainTransactionId`: Transaction ID confirming the mint on-chain
+
+If the user cancels or an error occurs, the promise will reject with an error message.
+
+```ts
+try {
+    const response = await wallet.purchaseItem('UniqFactory', '599');
+    // {
+    //   status: "success",
+    //   data: {
+    //     orderHash: "XXX",
+    //     items: [{
+    //       productId: 599,
+    //       artifactId: 7777,
+    //       blockchainTransactionId: "XXX",
+    //     }],
+    //   },
+    // }
+} catch (err) {
+    // { status: "error", message: "Purchase canceled" }
+}
+```
+
+## Error Codes
+
+The Ultra Web Wallet SDK follows the same error interface as the Ultra Wallet Extension.
+
+When a method fails (e.g., the user cancels a transaction or rejects a connection request), the rejected promise will contain a standardized error object with fields like `status`, `code`, and `message`.
+
+You can refer to the shared error documentation for full details on all possible error responses:
+
+See [Ultra Wallet Error Codes](../ultra-wallet/errors.md).
+
+---
+title: 'FAQ / Troubleshooting'
+
+order: 3
+outline: [0, 4]
+---
+
+# FAQ / Troubleshooting
+
+Below are common questions and issues developers may encounter when integrating or using the Ultra Web Wallet via the `@ultraos/wallet-sdk`.
+
+## Why am I seeing "EBA account required"?
+
+The Ultra Web Wallet currently supports only **Easy Blockchain Account (EBA)** users. If you're using a self-managed account, you won't be able to connect via the Web Wallet. Ensure the account you're testing with is EBA-enabled.
+
+## The wallet doesn't connect. What should I check?
+
+-   Confirm the `env` parameter matches the desired Ultra environment (e.g., `'testnet'`, `'mainnet'`).
+-   Ensure you're using a compatible browser with secure (HTTPS) context.
+-   Check your app’s domain is approved to interact with Ultra SSO if necessary.
+-   Clear local storage or try an incognito window for a fresh auth attempt.
+
+## Why is the Ultra Wallet Extension being used instead of the Web Wallet?
+
+The SDK automatically checks if the Ultra Wallet Extension is installed. If detected, it takes priority over the Web Wallet to maintain compatibility with user preferences. To test Web Wallet specifically, disable or uninstall the extension.
+
+## Can I use this SDK in mobile browsers?
+
+Yes. The Ultra Web Wallet SDK is compatible with mobile browsers, although support is still considered experimental. Functionality may vary depending on browser capabilities and operating system restrictions.
+
+## I'm not seeing anything or getting a browser error—what should I check?
+
+The Ultra Web Wallet requires permission to open a popup window to complete certain actions such as connecting the wallet or processing a transaction.
+
+If nothing happens when calling a method like `connect()` or `purchaseItem()`, ensure the following:
+
+-   Your application is not blocking popups via custom browser settings or extensions.
+-   The user has not previously blocked popups for your domain.
+-   The action was initiated as a result of a direct user gesture (e.g., button click), as modern browsers restrict popups outside user-initiated events.
+
+If you're testing locally, try enabling popups for `localhost` or your local dev server's URL.
+
+## What if I need to switch networks?
+
+The `env` option passed to `UltraWallet` must match the target Ultra blockchain environment. You cannot dynamically switch environments after instantiating the SDK—you’ll need to re-initialize with a new configuration.
+
+## Where are keys stored and is it safe?
+
+The private key is securely stored in the user’s browser, encrypted with a key partially derived from Ultra. Ultra cannot access the full key, and signing occurs client-side, ensuring high levels of security.
+
+---
+title: 'Getting Started'
+
+order: 1
+outline: [0, 4]
+---
+
+# Getting Started
+
+To begin using the Ultra Web Wallet in your application, you’ll need to integrate the `@ultraos/wallet-sdk`. This SDK provides a unified interface for both the Ultra Wallet Extension and the Ultra Web Wallet.
+
+## Installation
+
+First, install the SDK via npm:
+
+```bash
+npm install @ultraos/wallet-sdk
+```
+
+## SDK Initialization
+
+To begin interacting with Ultra Web Wallet or Ultra Wallet Extension, you need to create an instance of the `UltraWallet` class provided by the `@ultraos/wallet-sdk`.
+
+This instance will be used throughout your application to trigger wallet connections, sign transactions, and more.
+
+```ts
+import { UltraWallet } from '@ultraos/wallet-sdk';
+
+const wallet = new UltraWallet({
+  env: 'testnet', // Required. Defines the target Ultra network.
+});
+```
+
+The `env` option determines which Ultra blockchain network the wallet connects to. Supported values:
+
+- `'mainnet'` – Ultra's production blockchain.
+- `'testnet'` – Public network for development and testing.
+
+Unlike the Ultra Wallet Extension—which allows users to select their active network manually—the Web Wallet relies on this `env` configuration to determine network context at runtime.
+
+::: warning
+⚠️ Always verify that your environment is set appropriately before deploying to production.
+:::
+
+## Connecting the Wallet
+
+Use the `connect()` method to initiate the login process and register the device with the Ultra Web Wallet:
+
+```ts
+const result = await wallet.connect();
+console.log('Connected:', result);
+```
+
+If the Ultra Wallet Extension is installed, it will be used by default. Otherwise, the SDK will automatically fall back to the Web Wallet.
+
+## Disconnecting
+
+To log out the user and clear local credentials:
+
+```ts
+await wallet.disconnect();
+```
+
+## ⚠️ Important: Popup Handling Requirements
+
+To ensure proper functioning of the Ultra Web Wallet, **all API calls that trigger UI actions (such as connect, purchase, or signature requests)** must be initiated **within a direct user action**, such as a `click` or `tap` event.
+
+Browsers enforce strict popup blockers for non-user-initiated windows. If your call to the wallet (e.g., `ultra.connect()` or `ultra.purchaseItem()`) is not triggered from a user interaction, the popup will likely be blocked, and no action will occur.
+
+### ✅ Correct Usage (inside a button event):
+
+```js
+button.addEventListener("click", async () => {
+  await wallet.connect();
+});
+```
+
+### ❌ Incorrect Usage (auto-triggered or delayed):
+
+```js
+// This will likely be blocked
+setTimeout(() => {
+  wallet.connect();
+}, 1000);
+```
+
+:::info TIP
+🛡 Always ensure wallet methods are triggered synchronously inside user input events to avoid UX issues.
+::: 
+
+
+## Next Steps
+
+After connecting, you can:
+
+- Sign blockchain transactions with `signTransaction()`
+- Sign raw messages with `signMessage()`
+- Get the current chain ID with `getChainId()`
+- Perform on-chain purchases with `purchaseItem()`
+
+These methods are covered in detail in the [Core API Methods](./core-api-methods.md).
+
+---
+title: 'Introduction'
+
+order: -1
+outline: [0, 4]
+---
+
+# Ultra Wallet SDK
+
+Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the
+browser extension or via a Ultra Web Wallet.
+
+## ✨ Features
+
+-   Automatically detects and uses the Ultra Wallet Extension if available.
+-   Falls back to a Web Wallet if the extension is not installed.
+-   Connect, sign messages, sign transactions, and initiate purchases with a simple API.
+-   Environment support: `mainnet`, `testnet`, or custom wallet URLs.
+
+---
+title: 'Introduction'
+
+order: -1
+outline: [0, 4]
+---
+
+# Ultra Wallet SDK
+
+Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the
+browser extension or via a Ultra Web Wallet.
+
+## ✨ Features
+
+-   Automatically detects and uses the Ultra Wallet Extension if available.
+-   Falls back to a Web Wallet if the extension is not installed.
+-   Connect, sign messages, sign transactions, and initiate purchases with a simple API.
+-   Environment support: `mainnet`, `testnet`, or custom wallet URLs.
+
+---
+title: 'Introduction'
+
+order: -1
+outline: [0, 4]
+---
+
+# Ultra Wallet SDK
+
+Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the
+browser extension or via a Ultra Web Wallet.
+
+## ✨ Features
+
+-   Automatically detects and uses the Ultra Wallet Extension if available.
+-   Falls back to a Web Wallet if the extension is not installed.
+-   Connect, sign messages, sign transactions, and initiate purchases with a simple API.
+-   Environment support: `mainnet`, `testnet`, or custom wallet URLs.
+
+---
 title: 'How to add custom networks'
 
 order: 12
@@ -24061,6 +24582,42 @@ ultra.connect({referralCode: 'ecd1f052-9d0d-4b84-8dd3-10a753d044b5'});
 To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section, click on the link to copy it.
 
 Once you copy your referral link you can get the referral code from the URL. For example, the next link https://ultra.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5 has the referral code `ecd1f052-9d0d-4b84-8dd3-10a753d044b5`.
+
+### Connect with Nonce
+
+To streamline authentication flows and avoid browser restrictions on multiple popup windows, the `connect()` method supports an optional `nonce` parameter. When provided, the Ultra Web Wallet will automatically sign the nonce after completing key synchronization.
+
+This is particularly useful for dApps that need to verify user identity using a signed challenge (i.e., the nonce) — commonly used in Web3 login/session flows.
+
+#### Usage
+
+```ts
+try {
+  const response = await ultra.connect({ nonce: 'abc123randomnonce' });
+
+  console.log(response.data.blockchainid);     // e.g., "aa1aa2aa3aa4"
+  console.log(response.data.publicKey);        // e.g., "EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx"
+  console.log(response.data.nonce);            // "message: abc123randomnonce"
+  console.log(response.data.signedNonce);      // Signed message
+} catch (err) {
+  // { status: "error", message: "Connection rejected" }
+}
+```
+
+> **Important:** The `nonce` string must begin with one of the supported prefixes: `'message:'`, `'0x'`, or `'UOSx'`. This ensures compatibility with Ultra Wallet’s signature rules.
+
+#### Response Format
+
+When a `nonce` is provided, the response `data` object will include:
+
+- `blockchainid`: User's Ultra Blockchain ID
+- `publicKey`: Associated public key
+- `nonce`: The original nonce sent by the dApp
+- `signedNonce`: The message signature generated by the Ultra Wallet
+
+This signed payload can then be verified off-chain or used to create stateless sessions server-side.
+
+> Note: The signed message uses the standard `signMessage()` behavior with the same signature rules.
 
 ## Disconnecting
 
@@ -24456,6 +25013,130 @@ try {
 ```
 
 If the user declines the message signing or closes the window, the Promise will return an error.
+
+---
+title: 'How It Works'
+
+order: 0
+outline: [0, 4]
+---
+
+
+# How It Works
+
+The Ultra Web Wallet is tightly integrated with the Ultra ecosystem to provide a smooth and secure Web3 experience without requiring users to install browser extensions.
+
+## Authentication & Key Management
+
+When a user connects via Ultra Web Wallet, the authentication flow begins with Ultra SSO (Single Sign-On). This process:
+
+- Authenticates the user.
+- Registers the device with Ultra's EBA (Easy Blockchain Account) service.
+- Securely synchronizes a private key that is stored on the user's local device.
+
+Ultra does not store full private keys. Instead, keys are split and encrypted—one part held by Ultra and the other stored securely on the client device—ensuring non-custodial ownership.
+
+## Fallback Strategy: Extension or Web Wallet
+
+The `@ultraos/wallet-sdk` automatically detects whether the Ultra Wallet Extension is installed. If it is, the extension is prioritized. If not, the SDK seamlessly falls back to the Web Wallet experience.
+
+This makes it easy for developers to support both environments without needing to change implementation logic.
+
+## Signing Flow
+
+Once authenticated, any Web3 event—such as signing messages or submitting transactions—can be triggered by the client application using the Wallet SDK. The general flow is:
+
+1. App requests an action via SDK (e.g., `signTransaction()`).
+2. SDK communicates with Ultra Web Wallet UI.
+3. Web Wallet securely signs the transaction.
+4. Result is returned to the app for submission or follow-up logic.
+
+This flow abstracts away the complexity of handling private keys, making Ultra Web Wallet a powerful tool for dApp developers.
+
+---
+title: 'Introduction'
+
+order: -1
+outline: [0, 4]
+---
+
+# Ultra Web Wallet
+
+
+![](/images/web-wallet-main.png)
+
+The **Ultra Web Wallet** is a browser-based, non-custodial wallet designed to enable seamless and secure interaction with the Ultra blockchain. It offers full Web3 capabilities through a lightweight, installation-free experience tailored for EBA (Easy Blockchain Account) users.
+
+Unlike traditional browser extensions, Ultra Web Wallet stores the user's private key directly on their device in an encrypted format. This ensures user ownership and security while eliminating the need for external installations. 
+
+To simplify integration, Ultra provides a unified JavaScript SDK (`@ultraos/wallet-sdk`) that supports both the Web Wallet and the Ultra Wallet Extension. This abstraction allows developers to implement wallet features once and support both environments automatically.
+
+Whether you're building games, marketplaces, or dApps, Ultra Web Wallet makes onboarding and secure transaction signing frictionless for users—especially those new to Web3.
+
+::: info Note
+ 🔐 Ultra never stores the full private key — encryption is split between the user's device and Ultra's backend, ensuring secure key custody while maintaining decentralization principles.
+:::
+---
+title: 'References & External Links'
+
+order: 9
+outline: [0, 4]
+---
+
+# References & External Links
+
+Here are useful links and resources to learn more about Ultra Web Wallet, its SDK, and how to build with the Ultra blockchain.
+
+## SDK Documentation
+
+-   [`@ultraos/wallet-sdk` on npm](https://www.npmjs.com/package/@ultraos/wallet-sdk)
+-   [Demo application](https://stackblitz.com/edit/ultra-wallet-sdk-example)
+
+## Related Products
+
+-   [Ultra Wallet](../ultra-wallet/index.md) — documentation for Ultra Wallet
+
+---
+title: 'Security Model'
+
+order: 1
+outline: [0, 4]
+---
+
+# Security Model
+
+Ultra Web Wallet is designed with a strong focus on user privacy and key safety, using a **non-custodial** approach that gives users full control of their blockchain assets without requiring external wallet software.
+
+## Key Management
+
+The Ultra Web Wallet uses a dual-part key encryption model:
+
+-   **Client-side Storage:** The user's private key is stored locally in the browser, encrypted with a key only partially derived from Ultra.
+-   **Ultra's Partial Key:** Ultra holds a partial encryption key used to assist in encrypting/decrypting the user’s private key, but never has full access to the key itself.
+
+This ensures that even if Ultra's backend were compromised, user keys would remain protected.
+
+## Device Registration via Ultra SSO
+
+When users first log in, the SDK initiates a secure registration flow through Ultra SSO. During this process, the device is uniquely identified and securely provisioned to interact with the Web Wallet, enabling signing operations without ever exposing private keys directly.
+
+## Transaction Signing
+
+All blockchain interactions—such as transactions and message signing are performed **client-side**. The Web Wallet handles these securely, displaying transaction data to the user for confirmation before signing. This reduces the risk of unauthorized activity or invisible transactions.
+
+## No Custodial Risk
+
+Because the Ultra Web Wallet does not store complete private keys or user funds on Ultra servers, there is **no custodial liability**. This reinforces a user-first model where only the user can access and control their digital identity and assets.
+
+## Best Practices for Developers
+
+-   Always set the correct environment (`env`) when initializing the SDK.
+-   Encourage users to use secure browsers and avoid shared/public machines.
+-   Never cache or store sensitive SDK responses (e.g., signed transactions) unnecessarily.
+
+:::info
+🔐 With its layered encryption, secure device linking, and decentralized storage design, Ultra Web Wallet ensures a modern and responsible approach to Web3 security.
+:::
 
 ---
 title: 'Introduction'

@@ -111,6 +111,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
+            text: 'RNG',
+            items: getMarkdownFiles('/tutorials/rng'),
+            collapsed: true,
+        },
+        {
             text: 'Substreams',
             items: getMarkdownFiles('/tutorials/substreams'),
             collapsed: true,
@@ -387,6 +392,21 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/airgrab'),
         },
     ],
+    '/tutorials/rng': [
+        {
+            text: 'Tutorials',
+            items: [
+                {
+                    text: '< Go Back to Tutorials',
+                    link: '/tutorials/index/index',
+                },
+            ],
+        },
+        {
+            text: 'RNG',
+            items: getMarkdownFiles('/tutorials/rng'),
+        },
+    ],
     // ################
     // Game Developers
     // ################
@@ -655,6 +675,18 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
                 {
                     text: 'Actions',
                     items: getMarkdownFiles('/blockchain/contracts/airgrab-contract/airgrab-actions'),
+                    collapsed: true,
+                },
+            ],
+            collapsed: true,
+        },
+        {
+            text: 'RNG Contract',
+            items: [
+                ...getMarkdownFiles('/blockchain/contracts/rng-contract'),
+                {
+                    text: 'Actions',
+                    items: getMarkdownFiles('/blockchain/contracts/rng-contract/rng-actions'),
                     collapsed: true,
                 },
             ],

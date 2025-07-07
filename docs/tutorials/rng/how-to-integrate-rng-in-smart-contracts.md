@@ -386,7 +386,7 @@ uint64_t result = min + (random_value % (max - min + 1));
 ## Next Steps
 
 - [RNG Contract Reference](/blockchain/contracts/rng-contract/) - Detailed contract documentation
-- [requestrand - Request random numbers](/blockchain/contracts/rng-contract/rng-actions/requestrand.md) - Main action for requesting RNG
-- [RNG Contract Tables](/blockchain/contracts/rng-contract/rng-tables.md) - Table structures
+- [requestrand - Request random numbers](/blockchain/contracts/rng-contract/rng-actions/requestrand) - Main action for requesting RNG
+- [RNG Contract Tables](/blockchain/contracts/rng-contract/rng-tables) - Table structures
 
 The Ultra RNG service provides enterprise-grade random number generation for your smart contracts. The integration is simple, secure, and ready for production use. 

@@ -189,9 +189,22 @@ function addMdIfMissing(link: LinkInfo) {
 
     let idx = link.link.indexOf('#');
     if (idx >= 0) {
-        link.link = link.link.substring(0, idx) + '.md' + link.link.substring(idx);
+        const pathPart = link.link.substring(0, idx);
+        const hashPart = link.link.substring(idx);
+        
+        // Handle directory paths that end with '/'
+        if (pathPart.endsWith('/')) {
+            link.link = pathPart + 'index.md' + hashPart;
+        } else {
+            link.link = pathPart + '.md' + hashPart;
+        }
     } else {
-        link.link = link.link + '.md';
+        // Handle directory paths that end with '/'
+        if (link.link.endsWith('/')) {
+            link.link = link.link + 'index.md';
+        } else {
+            link.link = link.link + '.md';
+        }
     }
 }
 

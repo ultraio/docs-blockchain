@@ -159,6 +159,21 @@ General tutorials to help feed your curiosity.
     </tr>
 </table>
 
+## RNG
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>How to Integrate RNG in Smart Contracts</td>
+        <td>Learn how to integrate the Ultra RNG contract into your smart contract to generate secure, verifiable random numbers</td>
+        <td><a href="../rng/how-to-integrate-rng-in-smart-contracts.md">Link</a></td>
+    </tr>
+</table>
+
 ## Uniq Factories
 
 <table>

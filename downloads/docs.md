@@ -9684,6 +9684,559 @@ Stores the latest conversion rate pushed from any exchange.
 | latest_rate | rate        | Pair of `asset` storing the conversion rate of USD to UOS and a `uint64_t` UTC timestamp when this last rate was pushed |
 
 ---
+title: 'RNG Contract Overview'
+order: -99
+
+---
+
+# RNG Contract
+
+## Overview
+
+`ultra.rng` contract provides a secure and verifiable random number generation service for Ultra blockchain applications. It uses BLS12-381 cryptographic signatures to ensure the randomness cannot be manipulated by any party, including the oracle.
+
+For Ultra, the RNG service is deployed under account `ultra.rng` and provides a decentralized solution for generating random numbers that can be used in games, lotteries, and other applications requiring randomness.
+
+## Contract features
+
+### 1 - Request Random Numbers
+
+-   Any smart contract can request a random number by calling the `requestrand` action with a unique seed and association ID.
+-   The contract maintains a job queue and assigns unique job IDs to each request.
+-   Seeds must be unique and cannot be zero to ensure proper randomness.
+
+### 2 - Oracle Service Integration
+
+-   The Ultra oracle service monitors the RNG contract for new random number requests.
+-   When a request is detected, the oracle service generates a cryptographically secure random value.
+-   The oracle service calls the `setrand` action with the generated random value and BLS12-381 signature.
+-   The oracle service also manages the public key by calling `setpubkey` when needed.
+
+### 3 - Verifiable Randomness
+
+-   Uses BLS12-381 cryptographic signatures to ensure the randomness cannot be manipulated.
+-   The oracle signs the random value with a private key, and the signature can be verified on-chain.
+-   This prevents both the oracle and any other party from predicting or manipulating the random numbers.
+
+### 4 - Callback System
+
+-   When the oracle service calls `setrand`, the RNG contract verifies the signature and calls the `receiverand` action on the requesting contract.
+-   The callback includes the association ID and the generated random number.
+-   This allows contracts to receive random numbers asynchronously.
+
+### 5 - Administrative Controls
+
+-   The oracle service can set the public key used for signature verification via `setpubkey`.
+-   DApps can be banned or unbanned from using the RNG service.
+-   Jobs can be killed to clean up the job queue.
+-   All administrative actions can be disabled through the contract manager.
+
+### 6 - Security Features
+
+-   Banned accounts are silently ignored when requesting random numbers.
+-   Seeds are tracked to prevent reuse.
+-   Job IDs are unique and incrementing.
+-   All actions require proper authentication.
+
+## Integration
+
+To use the RNG contract in your smart contract:
+
+1.  Implement a `receiverand` action that accepts `uint64_t assoc_id` and `uint64_t random_value` parameters.
+2.  Call `requestrand` with a unique seed and association ID to request a random number.
+3.  Handle the callback in your `receiverand` action to use the generated random number.
+
+For a complete step-by-step tutorial on integrating the RNG contract into your smart contract, see [How to Integrate RNG in Smart Contracts](/tutorials/rng/how-to-integrate-rng-in-smart-contracts.md).
+
+The RNG contract provides a secure, decentralized solution for random number generation that can be trusted for critical applications like gaming, lotteries, and other use cases requiring verifiable randomness.
+
+---
+title: 'ban'
+order: 5
+
+---
+
+# ban
+
+Bans a dapp from requesting random numbers. Banned accounts are silently ignored when they call the `requestrand` action.
+
+-   Parameters
+
+| Fields | Type        | Description                    |
+| ------ | ----------- | ------------------------------ |
+| `dapp` | eosio::name | Account name of dapp to ban    |
+
+Required Permissions: `ultra.rng`
+
+-   `cleos` Example
+
+```shell script
+cleos push action ultra.rng ban '["malicious.dapp"]' -p ultra.rng@active
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rng',
+                    name: 'ban',
+                    authorization: [
+                        {
+                            actor: 'ultra.rng',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        dapp: 'malicious.dapp',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+## Notes
+
+-   This action can only be called by the `ultra.rng` contract itself
+-   The dapp must not already be banned
+-   Banned accounts are silently ignored when requesting random numbers
+-   This is typically used to prevent abuse of the RNG service 
+---
+title: 'killjobs'
+order: 3
+
+---
+
+# killjobs
+
+Removes jobs from the jobs table. This action is typically called by the Oracle to clean up dangling or expired jobs.
+
+-   Parameters
+
+| Fields    | Type                    | Description                    |
+| --------- | ----------------------- | ------------------------------ |
+| `job_ids` | std::vector\<uint64_t>  | Vector of job IDs to remove    |
+
+Required Permissions: `ultra.rng`
+
+-   `cleos` Example
+
+```shell script
+cleos push action ultra.rng killjobs '[[123, 124, 125]]' -p ultra.rng@active
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rng',
+                    name: 'killjobs',
+                    authorization: [
+                        {
+                            actor: 'ultra.rng',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        job_ids: [123, 124, 125],
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+## Notes
+
+-   This action can only be called by the `ultra.rng` contract itself
+-   The `job_ids` vector cannot be empty
+-   Jobs that don't exist are silently ignored
+-   This is typically used for maintenance and cleanup purposes 
+---
+title: 'requestrand'
+order: 1
+
+---
+
+# requestrand
+
+Allows a smart contract to request a random number generation. The request is queued and will be processed by the oracle. When the random number is generated, the RNG contract will call the `receiverand` action on the requesting contract.
+
+-   Parameters
+
+| Fields      | Type         | Description                                    |
+| ----------- | ------------ | ---------------------------------------------- |
+| `assoc_id`  | uint64_t     | User-defined association ID for the request   |
+| `seed`      | uint64_t     | Seed value used for random number generation  |
+| `caller`    | eosio::name  | Account that requested the random number      |
+
+Required Permissions: `caller`
+
+-   `cleos` Example
+
+```shell script
+cleos push action ultra.rng requestrand '[12345, 987654321, "mygame.contract"]' -p mygame.contract@active
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rng',
+                    name: 'requestrand',
+                    authorization: [
+                        {
+                            actor: 'mygame.contract',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        assoc_id: 12345,
+                        seed: 987654321,
+                        caller: 'mygame.contract',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+## Notes
+
+-   The `seed` parameter must be unique and cannot be zero
+-   The `caller` account must implement a `receiverand` action to receive the random number
+-   Banned accounts are silently ignored when requesting random numbers
+-   The request will be queued and processed asynchronously by the oracle 
+---
+title: 'setpubkey'
+order: 4
+
+---
+
+# setpubkey
+
+Sets the BLS12-381 public key used for signature verification. This key is used to verify that random values are properly signed by the Ultra oracle service. The oracle service calls this action to update the public key when needed.
+
+-   Parameters
+
+| Fields | Type                    | Description                                    |
+| ------ | ----------------------- | ---------------------------------------------- |
+| `pk`   | std::vector\<uint8_t>   | BLS12-381 public key in raw bytes              |
+
+Required Permissions: `ultra.rng`
+
+-   `cleos` Example
+
+```shell script
+cleos push action ultra.rng setpubkey '["0x1234567890abcdef..."]' -p ultra.rng@active
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rng',
+                    name: 'setpubkey',
+                    authorization: [
+                        {
+                            actor: 'ultra.rng',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        pk: [0x12, 0x34, 0x56, 0x78, 0x90, 0xab, 0xcd, 0xef, ...],
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+## Notes
+
+-   This action can only be called by the `ultra.rng` contract itself
+-   The `pk` parameter must be exactly 48 bytes (sizeof(g1))
+-   When a new public key is set, the entire seed history is wiped
+-   Seeds from existing jobs are re-inserted into the seeds table
+-   The next_job_id is preserved when updating the public key
+-   The Ultra oracle service manages this public key and calls this action when needed 
+---
+title: 'setrand'
+order: 2
+
+---
+
+# setrand
+
+Used by the Ultra oracle service to set the generated random value for a specific job. The oracle service monitors the RNG contract for new requests, generates cryptographically secure random values, and calls this action with the BLS12-381 signature. This action verifies the signature and then calls the `receiverand` action on the requesting contract.
+
+-   Parameters
+
+| Fields         | Type                    | Description                                    |
+| -------------- | ----------------------- | ---------------------------------------------- |
+| `job_id`       | uint64_t                | Unique job identifier                          |
+| `random_value` | std::vector\<uint8_t>   | BLS12-381 signed random value                  |
+
+Required Permissions: `ultra.rng`
+
+-   `cleos` Example
+
+```shell script
+cleos push action ultra.rng setrand '[123, "0x1234567890abcdef..."]' -p ultra.rng@active
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rng',
+                    name: 'setrand',
+                    authorization: [
+                        {
+                            actor: 'ultra.rng',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        job_id: 123,
+                        random_value: [0x12, 0x34, 0x56, 0x78, 0x90, 0xab, 0xcd, 0xef, ...],
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+## Notes
+
+-   This action can only be called by the `ultra.rng` contract itself
+-   The `random_value` must be exactly 96 bytes (sizeof(g2))
+-   The signature is verified using BLS12-381 pairing
+-   After verification, the job is removed from the jobs table
+-   The `receiverand` action is called on the requesting contract with the association ID and random value
+-   The Ultra oracle service is responsible for monitoring requests and calling this action 
+---
+title: 'unban'
+order: 6
+
+---
+
+# unban
+
+Unbans a dapp from requesting random numbers. The dapp will be able to request random numbers again after being unbanned.
+
+-   Parameters
+
+| Fields | Type        | Description                    |
+| ------ | ----------- | ------------------------------ |
+| `dapp` | eosio::name | Account name of dapp to unban  |
+
+Required Permissions: `ultra.rng`
+
+-   `cleos` Example
+
+```shell script
+cleos push action ultra.rng unban '["malicious.dapp"]' -p ultra.rng@active
+```
+
+-   `eos-js` Example
+
+```typescript
+(async () => {
+    const result = await api.transact(
+        {
+            actions: [
+                {
+                    account: 'ultra.rng',
+                    name: 'unban',
+                    authorization: [
+                        {
+                            actor: 'ultra.rng',
+                            permission: 'active',
+                        },
+                    ],
+                    data: {
+                        dapp: 'malicious.dapp',
+                    },
+                },
+            ],
+        },
+        {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        }
+    );
+})();
+```
+
+## Notes
+
+-   This action can only be called by the `ultra.rng` contract itself
+-   The dapp must already be banned
+-   After being unbanned, the dapp can request random numbers again
+-   This is typically used to restore access after a temporary ban 
+---
+title: 'RNG Tables'
+order: 1
+
+---
+
+# RNG Tables
+
+## jobs
+
+Stores pending random number generation jobs
+
+-   Code: `ultra.rng`
+-   Table: `jobs`
+-   Scope: `ultra.rng`
+-   Key: `id`
+-   Data
+
+| Fields      | Type         | Description                                    |
+| ----------- | ------------ | ---------------------------------------------- |
+| `id`        | uint64_t     | Unique job identifier                          |
+| `assoc_id`  | uint64_t     | User-defined association ID for the request   |
+| `seed`      | uint64_t     | Seed value used for random number generation  |
+| `caller`    | eosio::name  | Account that requested the random number      |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.rng ultra.rng jobs
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.rng", "code":"ultra.rng", "table":"jobs", "json": true}'
+```
+
+## banlist
+
+Stores banned accounts that cannot request random numbers
+
+-   Code: `ultra.rng`
+-   Table: `banlist`
+-   Scope: `ultra.rng`
+-   Key: `dapp`
+-   Data
+
+| Fields | Type        | Description                    |
+| ------ | ----------- | ------------------------------ |
+| `dapp` | eosio::name | Account name of banned dapp    |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.rng ultra.rng banlist
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.rng", "code":"ultra.rng", "table":"banlist", "json": true}'
+```
+
+## seeds
+
+Stores used seed values to prevent reuse
+
+-   Code: `ultra.rng`
+-   Table: `seeds`
+-   Scope: `ultra.rng`
+-   Key: `val`
+-   Data
+
+| Fields | Type     | Description                    |
+| ------ | -------- | ------------------------------ |
+| `val`  | uint64_t | Seed value that has been used |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.rng ultra.rng seeds
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.rng", "code":"ultra.rng", "table":"seeds", "json": true}'
+```
+
+## pubkey
+
+Stores the BLS12-381 public key used for signature verification
+
+-   Code: `ultra.rng`
+-   Table: `pubkey`
+-   Scope: `ultra.rng`
+-   Key: `ultra.rng`
+-   Data
+
+| Fields         | Type     | Description                                    |
+| -------------- | -------- | ---------------------------------------------- |
+| `pk`           | g1       | BLS12-381 public key for signature verification |
+| `next_job_id`  | uint64_t | Next available job ID                          |
+
+-   `cleos` Query Example
+
+```shell script
+cleos get table ultra.rng ultra.rng pubkey
+```
+
+-   `curl` query example
+
+```shell script
+curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"ultra.rng", "code":"ultra.rng", "table":"pubkey", "json": true}'
+```
+
+---
 title: 'Data Structures Overview'
 order: 6
 
@@ -29372,6 +29925,21 @@ General tutorials to help feed your curiosity.
     </tr>
 </table>
 
+## RNG
+
+<table>
+    <tr>
+        <td>Tutorial Name</td>
+        <td>Summary</td>
+        <td>Link</td>
+    </tr>
+    <tr>
+        <td>How to Integrate RNG in Smart Contracts</td>
+        <td>Learn how to integrate the Ultra RNG contract into your smart contract to generate secure, verifiable random numbers</td>
+        <td><a href="../rng/how-to-integrate-rng-in-smart-contracts.md">Link</a></td>
+    </tr>
+</table>
+
 ## Uniq Factories
 
 <table>
@@ -30002,6 +30570,398 @@ Check your browser's console (F12) and see if an `object` prints out.
 ![](./images/ultra-wallet-present.png)
 
 Looks good, let's move on to the next section.
+---
+title: 'How to Integrate RNG in Smart Contracts'
+order: 1
+
+---
+
+# How to Integrate RNG in Smart Contracts
+
+This guide shows you how to add secure, verifiable random number generation to your Ultra smart contract using the `ultra.rng` service.
+
+## Quick Start
+
+Want to add randomness to your contract? Here's what you need to do:
+
+1. **Add the `receiverand` action** to your contract
+2. **Call `requestrand`** when you need a random number
+3. **Handle the callback** in your `receiverand` action
+
+That's it! The Ultra oracle service handles the rest.
+
+## How It Works
+
+The Ultra RNG system is designed to be simple for developers:
+
+```
+Your Contract → ultra.rng → Oracle Service → Your Contract
+     ↓              ↓              ↓              ↓
+  requestrand   queues job    generates &    receiverand
+                & assigns     signs random   callback with
+                job ID        number         random value
+```
+
+**Key Points:**
+- Your contract requests a random number via `requestrand`
+- The Ultra oracle service monitors and processes requests automatically
+- Your contract receives the random number via the `receiverand` callback
+- The system uses BLS12-381 cryptography to ensure the randomness cannot be manipulated
+
+## Step 1: Add the Required Action to Your Contract
+
+Your contract must implement a `receiverand` action that the RNG service will call:
+
+```cpp
+#include <eosio/eosio.hpp>
+
+class [[eosio::contract("mycontract")]] mycontract : public eosio::contract {
+public:
+    mycontract(eosio::name receiver, eosio::name code, eosio::datastream<const char*> ds)
+        : contract(receiver, code, ds) {}
+
+    // This action will be called by the RNG service
+    [[eosio::action]]
+    void receiverand(uint64_t assoc_id, uint64_t random_value) {
+        // Only the RNG contract can call this
+        require_auth("ultra.rng"_n);
+        
+        // Handle your random number here
+        handle_random_result(assoc_id, random_value);
+    }
+
+private:
+    void handle_random_result(uint64_t assoc_id, uint64_t random_value) {
+        // Your logic here - example: roll a dice
+        uint64_t dice_roll = (random_value % 6) + 1;
+        
+        // Store result, update state, etc.
+        // ...
+    }
+};
+```
+
+## Step 2: Request a Random Number
+
+When you need randomness in your contract, call the RNG service:
+
+```cpp
+[[eosio::action]]
+void start_game(eosio::name player) {
+    require_auth(player);
+    
+    // Generate a unique request ID
+    uint64_t request_id = get_next_request_id();
+    
+    // Generate a unique seed (important for security)
+    uint64_t seed = current_time_point().sec_since_epoch() + player.value + request_id;
+    
+    // Store the pending request
+    pending_requests.emplace(get_self(), [&](auto& req) {
+        req.id = request_id;
+        req.player = player;
+        req.timestamp = current_time_point();
+    });
+    
+    // Request the random number
+    eosio::action(
+        eosio::permission_level{get_self(), "active"_n},
+        "ultra.rng"_n,
+        "requestrand"_n,
+        std::make_tuple(request_id, seed, get_self())
+    ).send();
+}
+```
+
+## Step 3: Handle the Random Number
+
+The RNG service will call your `receiverand` action with the random number:
+
+```cpp
+[[eosio::action]]
+void receiverand(uint64_t assoc_id, uint64_t random_value) {
+    require_auth("ultra.rng"_n);
+    
+    // Find your pending request
+    auto req_it = pending_requests.find(assoc_id);
+    check(req_it != pending_requests.end(), "Request not found");
+    
+    // Use the random number for your logic
+    uint64_t game_result = random_value % 100; // 0-99
+    
+    // Update your contract state
+    game_results.emplace(get_self(), [&](auto& result) {
+        result.id = game_results.available_primary_key();
+        result.player = req_it->player;
+        result.value = game_result;
+        result.timestamp = current_time_point();
+    });
+    
+    // Clean up the pending request
+    pending_requests.erase(req_it);
+}
+```
+
+## Complete Integration Example
+
+Here's a complete example showing how to integrate RNG into a simple game contract:
+
+```cpp
+#include <eosio/eosio.hpp>
+#include <eosio/time.hpp>
+
+class [[eosio::contract("rnggame")]] rnggame : public eosio::contract {
+public:
+    rnggame(eosio::name receiver, eosio::name code, eosio::datastream<const char*> ds)
+        : contract(receiver, code, ds) {}
+
+    // User action to start a random game
+    [[eosio::action]]
+    void play_game(eosio::name player) {
+        require_auth(player);
+        
+        // Check if player can play
+        check(get_player_balance(player) >= 100, "Insufficient balance");
+        
+        // Deduct fee
+        update_balance(player, -100);
+        
+        // Generate unique request ID
+        uint64_t request_id = get_next_request_id();
+        uint64_t seed = current_time_point().sec_since_epoch() + player.value + request_id;
+        
+        // Store pending game
+        pending_games.emplace(get_self(), [&](auto& game) {
+            game.request_id = request_id;
+            game.player = player;
+            game.timestamp = current_time_point();
+        });
+        
+        // Request random number
+        eosio::action(
+            eosio::permission_level{get_self(), "active"_n},
+            "ultra.rng"_n,
+            "requestrand"_n,
+            std::make_tuple(request_id, seed, get_self())
+        ).send();
+    }
+
+    // RNG callback - called by ultra.rng contract
+    [[eosio::action]]
+    void receiverand(uint64_t assoc_id, uint64_t random_value) {
+        require_auth("ultra.rng"_n);
+        
+        auto game_it = pending_games.find(assoc_id);
+        check(game_it != pending_games.end(), "Game request not found");
+        
+        // Determine game outcome (example: win if random_value > 50)
+        bool is_winner = random_value > 50;
+        uint64_t payout = is_winner ? 200 : 0; // Win: 2x, Lose: 0
+        
+        // Update player balance
+        update_balance(game_it->player, payout);
+        
+        // Record game result
+        game_history.emplace(get_self(), [&](auto& result) {
+            result.id = game_history.available_primary_key();
+            result.player = game_it->player;
+            result.random_value = random_value;
+            result.is_winner = is_winner;
+            result.payout = payout;
+            result.timestamp = current_time_point();
+        });
+        
+        // Clean up
+        pending_games.erase(game_it);
+    }
+
+private:
+    // Data structures
+    struct [[eosio::table]] pending_game {
+        uint64_t request_id;
+        eosio::name player;
+        eosio::time_point timestamp;
+        
+        uint64_t primary_key() const { return request_id; }
+    };
+    
+    struct [[eosio::table]] game_result {
+        uint64_t id;
+        eosio::name player;
+        uint64_t random_value;
+        bool is_winner;
+        uint64_t payout;
+        eosio::time_point timestamp;
+        
+        uint64_t primary_key() const { return id; }
+    };
+    
+    struct [[eosio::table]] player_balance {
+        eosio::name player;
+        uint64_t balance;
+        
+        uint64_t primary_key() const { return player.value; }
+    };
+    
+    // Table instances
+    typedef eosio::multi_index<"pendinggames"_n, pending_game> pending_games_t;
+    typedef eosio::multi_index<"gamehistory"_n, game_result> game_history_t;
+    typedef eosio::multi_index<"playerbalance"_n, player_balance> player_balance_t;
+    
+    pending_games_t pending_games{get_self(), get_self().value};
+    game_history_t game_history{get_self(), get_self().value};
+    player_balance_t player_balances{get_self(), get_self().value};
+    
+    // Helper functions
+    uint64_t get_next_request_id() {
+        return current_time_point().sec_since_epoch();
+    }
+    
+    uint64_t get_player_balance(eosio::name player) {
+        auto balance_it = player_balances.find(player.value);
+        return balance_it != player_balances.end() ? balance_it->balance : 0;
+    }
+    
+    void update_balance(eosio::name player, int64_t delta) {
+        auto balance_it = player_balances.find(player.value);
+        if (balance_it == player_balances.end()) {
+            player_balances.emplace(get_self(), [&](auto& balance) {
+                balance.player = player;
+                balance.balance = delta > 0 ? delta : 0;
+            });
+        } else {
+            player_balances.modify(balance_it, get_self(), [&](auto& balance) {
+                balance.balance = std::max(0ULL, (uint64_t)((int64_t)balance.balance + delta));
+            });
+        }
+    }
+};
+```
+
+## Testing Your Integration
+
+### 1. Deploy Your Contract
+
+```bash
+# Compile and deploy
+eosio-cpp -o rnggame.wasm rnggame.cpp
+cleos set contract rnggame /path/to/contract -p rnggame@active
+```
+
+### 2. Test the Integration
+
+```bash
+# Start a game
+cleos push action rnggame play_game '["player1"]' -p player1@active
+
+# Check pending games
+cleos get table rnggame rnggame pendinggames
+
+# Wait for oracle processing, then check results
+cleos get table rnggame rnggame gamehistory
+```
+
+### 3. Monitor the Process
+
+```bash
+# Check if your request was queued
+cleos get table ultra.rng ultra.rng jobs
+
+# Monitor for the callback
+cleos get actions rnggame
+```
+
+## Important Implementation Details
+
+### Unique Seeds
+Always use unique seeds to prevent replay attacks:
+```cpp
+uint64_t seed = current_time_point().sec_since_epoch() + player.value + request_id;
+```
+
+### Request Tracking
+Store pending requests to handle the callback:
+```cpp
+pending_requests.emplace(get_self(), [&](auto& req) {
+    req.id = request_id;
+    req.player = player;
+    req.timestamp = current_time_point();
+});
+```
+
+### Security
+Only allow the RNG contract to call your callback:
+```cpp
+require_auth("ultra.rng"_n);
+```
+
+### Error Handling
+Always check if the request exists:
+```cpp
+auto req_it = pending_requests.find(assoc_id);
+check(req_it != pending_requests.end(), "Request not found");
+```
+
+## Common Patterns
+
+### Random Selection
+```cpp
+uint64_t selection = random_value % total_options;
+```
+
+### Weighted Random
+```cpp
+uint64_t weighted_result = random_value % 100;
+if (weighted_result < 30) {
+    // 30% chance
+} else if (weighted_result < 60) {
+    // 30% chance
+} else {
+    // 40% chance
+}
+```
+
+### Range Generation
+```cpp
+uint64_t min = 1;
+uint64_t max = 100;
+uint64_t result = min + (random_value % (max - min + 1));
+```
+
+## Best Practices
+
+1. **Always use unique seeds** - Combine timestamp, user ID, and request ID
+2. **Store pending requests** - Track requests to handle callbacks properly
+3. **Validate callbacks** - Check that the RNG contract is calling your action
+4. **Handle errors gracefully** - Implement proper error handling for missing requests
+5. **Test thoroughly** - Test your integration before deploying to mainnet
+6. **Monitor performance** - The oracle service may take time to process requests
+
+## Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| `Request not found` | Ensure you're storing pending requests properly |
+| `Authentication errors` | Check that your contract has the correct permissions |
+| `Seed already used` | Use unique seeds for each request |
+| `No response received` | Check that your request was queued in the RNG jobs table |
+| `Banned account` | Contact Ultra support if your contract is banned |
+
+## Use Cases
+
+- **Gaming**: Dice rolls, card games, loot boxes
+- **NFTs**: Random trait generation, rarity distribution
+- **Lotteries**: Fair random selection
+- **Airdrops**: Random recipient selection
+- **Gambling**: Provably fair games
+
+## Next Steps
+
+- [RNG Contract Reference](/blockchain/contracts/rng-contract/) - Detailed contract documentation
+- [requestrand - Request random numbers](/blockchain/contracts/rng-contract/rng-actions/requestrand) - Main action for requesting RNG
+- [RNG Contract Tables](/blockchain/contracts/rng-contract/rng-tables) - Table structures
+
+The Ultra RNG service provides enterprise-grade random number generation for your smart contracts. The integration is simple, secure, and ready for production use. 
 ---
 title: 'Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension'
 

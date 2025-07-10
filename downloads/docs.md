@@ -15498,7 +15498,7 @@ support:
       link: "mailto:developers@ultra.io"
       text: "developers@ultra.io"
     - title: "Discord"
-      link: "https://discord.gg/invite/U7raPf6qZu"
+      link: "https://discord.gg/gk2CC6Xech"
       text: "Join Discord"
 
 footer:
@@ -31377,7 +31377,7 @@ You can also change your workdir (output directory) with `-v`. Refer to docker [
 If you get `docker unavailable` error message make sure you have disconnected from docker container by clicking on the bottom-left corner.
 
 \
-For any further assistance don't hesitate to contract the team on [discord](https://discord.com/invite/U7raPf6qZu).
+For any further assistance don't hesitate to contract the team on [discord](https://discord.gg/gk2CC6Xech).
 
 ---
 title: 'Connecting to Pinax Substreams endpoints'
@@ -32167,7 +32167,7 @@ We are working on the new bridge and will share detailed instructions when it's 
 ### **Support**
 For urgent inquiries, contact our team:
 - **Email**: contact@ultra.io
-- **Discord**: [Join our server](https://discord.com/invite/WfJCN6YbGk)
+- **Discord**: [Join our server](https://discord.gg/gk2CC6Xech)
 
 ---
 

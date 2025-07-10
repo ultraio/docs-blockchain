@@ -24,7 +24,7 @@ We are working on the new bridge and will share detailed instructions when it's 
 ### **Support**
 For urgent inquiries, contact our team:
 - **Email**: contact@ultra.io
-- **Discord**: [Join our server](https://discord.com/invite/WfJCN6YbGk)
+- **Discord**: [Join our server](https://discord.gg/gk2CC6Xech)
 
 ---
 

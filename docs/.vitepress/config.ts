@@ -28,7 +28,7 @@ export default defineConfig({
         sidebar: getSidebar('base'),
         socialLinks: [
             { icon: 'github', link: 'https://github.com/ultraio/docs-blockchain' },
-            { icon: 'discord', link: 'https://discord.gg/invite/U7raPf6qZu' },
+            { icon: 'discord', link: 'https://discord.gg/gk2CC6Xech' },
         ],
         search: {
             provider: 'local',

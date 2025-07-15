@@ -34456,6 +34456,7 @@ struct key_value_pair {
     key_value_store key_value;   // The custom value
 };
 typedef vector<key_value_pair> key_value_vec;
+typedef map<uint8_t, key_value_store> key_value_map;
 ```
 
 **Key Properties**:
@@ -34463,6 +34464,16 @@ typedef vector<key_value_pair> key_value_vec;
 - **Index-Based References**: Uses `key_index` to point to factory key definitions
 - **Unordered**: Custom values can be stored in any order
 - **Optional**: Uniqs may have no custom values (all defaults)
+
+### Integration Performance Note
+
+For external integrators, the `key_value_map` structure can be used to read existing `key_value_vector` data:
+
+- **Storage Format**: On-chain data is stored as `key_value_vector` (for compatibility)
+- **Reading Format**: External contracts can deserialize as `key_value_map` for O(log n) lookups
+- **Performance Trade-off**: Map requires sorting overhead during deserialization but provides faster lookups
+- **Use Case**: Map approach may benefit contracts with many keys (>20) or very frequent lookups
+- **Backward Compatibility**: Existing contracts using vector format continue to work unchanged
 
 ## Proper Integration Pattern
 
@@ -34508,6 +34519,45 @@ string level = get_uniq_key_value<string>(uniq, factory_keys, "Level");
 uint64_t rarity = get_uniq_key_value<uint64_t>(uniq, factory_keys, "Rarity");
 ```
 
+### Alternative: Map-Based Integration for Specific Use Cases
+
+For external integrators with many keys or very frequent lookups, you can deserialize the same data as a map:
+
+```cpp
+// Using map structure for better performance
+template<typename T>
+T get_uniq_key_value_fast(const token_v1& uniq, const factory_keys& factory_keys, const string& key_name) {
+    // 1. Find key definition index by name
+    uint8_t key_index = find_key_def_index(factory_keys.key_defs, key_name);
+    const auto& key_def = factory_keys.key_defs[key_index];
+    
+    // 2. Deserialize key_values as map for O(log n) lookup
+    if (uniq.key_values && uniq.key_values->has_value()) {
+        // Note: Same binary data, different deserialization
+        key_value_map key_map = deserialize_as_map(uniq.key_values->value());
+        
+        auto it = key_map.find(key_index);
+        if (it != key_map.end()) {
+            return get<T>(it->second);  // Found custom value
+        }
+    }
+    
+    // 3. Fallback to factory default
+    return get<T>(key_def.default_value.value());
+}
+
+// Usage - same API, better performance
+string level = get_uniq_key_value_fast<string>(uniq, factory_keys, "Level");
+uint64_t rarity = get_uniq_key_value_fast<uint64_t>(uniq, factory_keys, "Rarity");
+```
+
+**Performance Analysis**:
+- **Vector approach**: O(n) linear search, but no deserialization overhead
+- **Map approach**: O(log n) lookup, but requires sorting during deserialization  
+- **For typical use**: Vector likely faster for ~10 keys or less due to sorting overhead
+- **For large datasets**: Map becomes beneficial with many keys (>20) or frequent lookups
+- **Binary compatibility**: Both read the same on-chain data
+
 ### Data Flow Example
 
 ```
@@ -34542,11 +34592,25 @@ key_values = [
 // ✅ Good - Resilient to changes
 auto value = get_uniq_key_value<string>(uniq, factory_keys, "AttributeName");
 
+// ✅ Alternative - For high-scale scenarios with many keys or frequent lookups
+auto value = get_uniq_key_value_fast<string>(uniq, factory_keys, "AttributeName");
+
 // ❌ Bad - Fragile and will break
 auto value = get<string>(uniq.key_values->value()[0].key_value);
 ```
 
-### 2. Handle Default Values Properly
+### 2. Choose Integration Approach Based on Use Case
+```cpp
+// ✅ Vector approach - Recommended for typical use cases
+// Use when: ~10 keys or less, occasional lookups, simple integration
+auto value = get_uniq_key_value<string>(uniq, factory_keys, "AttributeName");
+
+// ✅ Map approach - For specific high-scale scenarios
+// Use when: Many keys (>20), very frequent lookups, large datasets
+auto value = get_uniq_key_value_fast<string>(uniq, factory_keys, "AttributeName");
+```
+
+### 3. Handle Default Values Properly
 ```cpp
 // ✅ Your lookup function should automatically:
 // 1. Check if Uniq has custom value
@@ -34554,7 +34618,7 @@ auto value = get<string>(uniq.key_values->value()[0].key_value);
 // 3. Error if neither exists
 ```
 
-### 3. Validate Factory Schema Once
+### 4. Validate Factory Schema Once
 ```cpp
 // ✅ At function start, validate factory has expected keys
 void validate_factory_keys(const factory_keys& keys, const vector<string>& expected) {
@@ -34571,7 +34635,7 @@ void validate_factory_keys(const factory_keys& keys, const vector<string>& expec
 }
 ```
 
-### 4. Understand Business Logic vs Data Access
+### 5. Understand Business Logic vs Data Access
 ```cpp
 // Business logic validation (workflow states)
 check(!uniq.key_values->has_value(), "uniq should be fresh");     // Before processing
@@ -34629,9 +34693,15 @@ check(uniq.key_values->has_value(), "missing key values");  // Shouldn't be requ
 Uniq On-chain Data is a powerful flexible schema system, not a fixed data structure. Proper integration requires:
 
 1. **Name-based key lookup** instead of position-based access
-2. **Default value fallback** for efficient storage
-3. **Order independence** awareness for robust code
-4. **Business logic separation** from data access patterns
+2. **Appropriate performance approach** - vector for typical use cases, map for high-scale scenarios
+3. **Default value fallback** for efficient storage
+4. **Order independence** awareness for robust code
+5. **Business logic separation** from data access patterns
+
+**Integration Options**:
+- **Vector approach**: Simple, direct deserialization - recommended for typical use cases (~10 keys or less)
+- **Map approach**: Same data with sorted structure - beneficial for large datasets (>20 keys) or very frequent lookups
+- **Binary compatibility**: Both approaches read identical on-chain data
 
 Following these patterns ensures your integration is robust, maintainable, and won't break as the system evolves.
 

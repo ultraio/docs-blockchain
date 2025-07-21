@@ -1972,6 +1972,2154 @@ curl <NODEOS_API_IP>/v1/chain/get_table_rows -X POST -d '{"scope":"<CAMPAIGN>", 
 ```
 
 ---
+title: 'AOM Assembly Contract'
+order: 104
+---
+
+# AOM Assembly Contract (aom.assembly)
+
+The AOM Assembly contract manages assembly line construction and operations within the Ash of Mankind ecosystem. This contract handles the creation of specialized production facilities that can manufacture complex items using patents and assembly line factories.
+
+## Overview
+
+The assembly contract enables players to:
+- Build assembly lines on construction land using patent Uniqs
+- Manage assembly line construction timers
+- Upgrade assembly line production capabilities
+- Handle patent licensing and production rewards
+
+## Tables
+
+### Configuration Tables
+
+#### `global` (Singleton)
+- **Scope**: Contract (`aom.assembly`)
+- **Description**: Global contract state
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `locked` | `bool` | Emergency lock status |
+
+#### `asmblysttngs` (Singleton)
+- **Scope**: Contract (`aom.assembly`)
+- **Description**: Assembly line configuration
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `required_factory_id` | `uint64_t` | Factory ID for assembly line factory Uniqs |
+| `construction_duration_sec` | `uint32_t` | Construction time in seconds |
+| `building_fee` | `map<symbol, uint64_t>` | Required fees for construction |
+| `instant_construction_fee` | `map<symbol, uint64_t>` | Fees for instant completion |
+| `production_upgrade_fee` | `map<symbol, uint64_t>` | Fees for production upgrades |
+| `production_speed_upgrade_increment` | `uint64_t` | Speed increase per upgrade (precision: 2) |
+| `max_production_speed` | `uint64_t` | Maximum production speed (precision: 2) |
+
+#### `metadata` (Multi-Index)
+- **Scope**: Contract (`aom.assembly`)
+- **Primary Key**: `patent_factory_id`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `patent_factory_id` | `uint64_t` | Patent Uniq factory ID |
+| `metadata_url` | `string` | JSON metadata URL for assembly lines |
+| `metadata_hash` | `checksum256` | Metadata content hash |
+
+### Operational Tables
+
+#### `construction` (Multi-Index)
+- **Scope**: Contract (`aom.assembly`)
+- **Primary Key**: `uniq_id`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `uniq_id` | `uint64_t` | Assembly line factory Uniq under construction |
+| `patent_factory_id` | `uint64_t` | Patent factory ID used for construction |
+| `completion_block_time` | `uint32_t` | When construction completes |
+
+#### `feebuffer` (Singleton)
+- **Scope**: User account
+- **Description**: Buffered fees for multi-asset payments
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `action_type` | `string` | Type of action being paid for |
+| `factory_uniq_id` | `uint64_t` | Factory Uniq ID (or upgrade count for production upgrades) |
+| `fee` | `map<symbol, uint64_t>` | Accumulated fees by asset |
+
+## Actions
+
+### Administrative Actions
+
+#### `updasmbsttng`
+Updates assembly line settings.
+
+**Authorization**: Contract (`aom.assembly`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `assembly_settings` | New assembly settings |
+
+**Behavior**: 
+Sets global assembly line parameters including construction duration and upgrade fees.
+
+**CLI Example**:
+```bash
+cleos push action aom.assembly updasmbsttng '{"row": {"required_factory_id": 300, "construction_duration_sec": 7200, "building_fee": [["4,ASH", 2000], ["4,STEEL", 100]], "instant_construction_fee": [["4,ASH", 10000]], "production_upgrade_fee": [["4,ASH", 1500]], "production_speed_upgrade_increment": 50, "max_production_speed": 400}}' -p aom.assembly@active
+```
+
+#### `updmetadata`
+Updates metadata mapping for patent types.
+
+**Authorization**: Contract (`aom.assembly`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `metadata` | Metadata configuration |
+
+**Behavior**: 
+Maps patent factory IDs to their corresponding assembly line metadata.
+
+**CLI Example**:
+```bash
+cleos push action aom.assembly updmetadata '{"row": {"patent_factory_id": 400, "metadata_url": "https://example.com/sword-assembly.json", "metadata_hash": "def456..."}}' -p aom.assembly@active
+```
+
+#### `setlocked`
+Emergency lock/unlock the contract.
+
+**Authorization**: Contract (`aom.assembly`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `locked` | `bool` | Lock status |
+
+**CLI Example**:
+```bash
+cleos push action aom.assembly setlocked '{"locked": true}' -p aom.assembly@active
+```
+
+### Gameplay Actions
+
+#### `cutribbon`
+Completes assembly line construction.
+
+**Authorization**: Uniq owner
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uniq_id` | `uint64_t` | Assembly line factory Uniq to complete |
+| `uniq_owner` | `name` | Owner of the factory Uniq |
+
+**Behavior**: 
+- Validates construction is complete (time elapsed)
+- Updates factory metadata with assembly line type
+- Sets initial production speed to 1 (0.01x speed)
+- Updates JSON metadata based on patent type
+- Removes construction timer entry
+
+**CLI Example**:
+```bash
+cleos push action aom.assembly cutribbon '{"uniq_id": 12345, "uniq_owner": "alice"}' -p alice@active
+```
+
+#### `clearbuffer`
+Clears fee buffer and refunds assets.
+
+**Authorization**: User
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user` | `name` | User to clear buffer for |
+
+**CLI Example**:
+```bash
+cleos push action aom.assembly clearbuffer '{"user": "alice"}' -p alice@active
+```
+
+## Token Transfer Actions
+
+The contract accepts token transfers for assembly line operations through the `on_transfer` notification.
+
+### Assembly Line Construction
+**Memo Format**: `BuildAssemblyLine,<factory_uniq_id>[,<patent_uniq_id>]`
+
+**Two-Phase Process**:
+1. **Fee Collection**: Send required assets without patent_uniq_id to accumulate fees
+2. **Construction Start**: Send final asset with patent_uniq_id to begin construction
+
+**Validation**:
+- Factory Uniq must be from correct assembly line factory
+- Patent Uniq must be owned by user
+- All required fees must be paid
+
+**Examples**:
+```bash
+# Phase 1: Send construction fees
+cleos transfer alice aom.assembly "2000.0000 ASH" "BuildAssemblyLine,12345"
+cleos transfer alice aom.assembly "100.0000 STEEL" "BuildAssemblyLine,12345"
+
+# Phase 2: Start construction with patent
+cleos transfer alice aom.assembly "0.0001 ASH" "BuildAssemblyLine,12345,67890"
+```
+
+### Instant Assembly Construction
+**Memo Format**: `AssemblyInstantConstruction,<factory_uniq_id>[,<patent_uniq_id>]`
+
+**Two-Phase Process**:
+1. **Fee Collection**: Send required assets without patent_uniq_id
+2. **Instant Completion**: Send final asset with patent_uniq_id to instantly complete
+
+**Behavior**:
+- Sets completion time to current block time
+- Allows immediate `cutribbon` call
+
+**Examples**:
+```bash
+# Phase 1: Send instant construction fees
+cleos transfer alice aom.assembly "10000.0000 ASH" "AssemblyInstantConstruction,12345"
+
+# Phase 2: Complete instantly with patent
+cleos transfer alice aom.assembly "0.0001 ASH" "AssemblyInstantConstruction,12345,67890"
+```
+
+### Production Speed Upgrades
+**Memo Format**: `UpgradeProductionSpeed[,<factory_uniq_id>]`
+
+**Two-Phase Process**:
+1. **Fee Collection**: Send upgrade fees without factory_uniq_id (fees determine upgrade count)
+2. **Upgrade Application**: Send final fee with factory_uniq_id to apply upgrades
+
+**Examples**:
+```bash
+# Phase 1: Send upgrade fees (for 3 upgrades)
+cleos transfer alice aom.assembly "4500.0000 ASH" "UpgradeProductionSpeed"
+
+# Phase 2: Apply upgrades to assembly line
+cleos transfer alice aom.assembly "0.0001 ASH" "UpgradeProductionSpeed,12345"
+```
+
+### Fee Transfers
+The contract also handles special transfers for patent licensing and production rewards:
+
+#### Transfer Order Permit Fee
+**Memo Format**: `TransferOrderPermitFee,<patent_uniq_id>,<uniq_owner>`
+
+Transfers fees related to patent usage permissions.
+
+#### Transfer Production Reward
+**Memo Format**: `TransferProductionReward,<factory_uniq_id>,<uniq_owner>`
+
+Transfers production rewards to assembly line operators.
+
+## Assembly Line Mechanics
+
+### Construction Requirements
+
+Assembly line construction requires:
+
+1. **Assembly Line Factory Uniq**: Must be from the configured factory ID
+2. **Patent Uniq**: Must own a patent that defines what can be produced
+3. **Construction Fees**: Multi-asset payment for building materials
+
+### Patent Integration
+
+Patents define what assembly lines can produce:
+
+- **Patent Factory ID**: Determines the type of items that can be manufactured
+- **Metadata Mapping**: Links patent types to assembly line visual assets
+- **Production Licensing**: Patent ownership grants production rights
+
+### Production Speed System
+
+Assembly lines start with minimal production speed and can be upgraded:
+
+- **Initial Speed**: 1 (0.01x speed, precision: 2)
+- **Upgrade Increment**: Configurable speed increase per upgrade
+- **Maximum Speed**: Configurable upper limit
+- **Upgrade Cost**: Multi-asset fees for speed improvements
+
+## Integration with On-Chain Data
+
+### Factory Metadata Management
+
+Assembly lines update their on-chain metadata during construction:
+
+1. **AssemblyType**: Set to the type of assembly line being built
+2. **ProductionSpeed**: Initially set to minimum value (1)
+
+### Patent Validation
+
+The contract validates patent Uniqs to ensure proper licensing:
+
+- **Ownership Verification**: User must own the patent being used
+- **Patent Type**: Patent factory ID determines assembly line capabilities
+
+### Metadata Updates
+
+The contract updates both on-chain key-value data and JSON metadata:
+
+- **On-Chain Data**: Stores operational parameters (type, speed)
+- **JSON Metadata**: Visual representation based on patent type
+
+## Cross-Contract Integration
+
+### Permission Management
+
+The contract uses specific permissions for operations:
+- **AOM_UNIQS** account for metadata updates
+- **setvalsa** permission for on-chain data modifications
+- **settknmeta** permission for JSON metadata updates
+
+### Asset Handling
+
+Like other AOM contracts:
+- **ASH Tokens**: Transferred to `aom.vault` as revenue
+- **Other Tokens**: Transferred to `aom.coins` for retirement
+
+## Fee Management
+
+### Multi-Asset Construction Fees
+
+Assembly line construction requires various materials:
+
+```cpp
+// Example fee structure
+building_fee: [
+    ["4,ASH", 2000],     // 2000 ASH tokens
+    ["4,STEEL", 100],    // 100 STEEL tokens
+    ["4,COPPER", 50]     // 50 COPPER tokens
+]
+```
+
+### Upgrade Fee Calculation
+
+Production speed upgrades use proportional fees:
+
+```cpp
+// Number of upgrades = total_fee_amount / individual_upgrade_fee
+upgrade_count = transfer_amount / upgrade_fee_per_upgrade
+```
+
+### Fee Buffering Process
+
+1. **Accumulation**: Players send assets incrementally
+2. **Validation**: Contract validates each asset type and amount
+3. **Execution**: When all fees collected, operation executes
+4. **Settlement**: Fees distributed to vault or retired
+
+## Security Considerations
+
+- **Ownership Validation**: Strict validation of both factory and patent ownership
+- **Patent Verification**: Ensures users own patents they're using for construction
+- **Fee Integrity**: Robust validation prevents fee manipulation
+- **Time Validation**: Ensures construction timers are properly enforced
+- **State Consistency**: Prevents invalid assembly line states
+- **Emergency Controls**: Contract locking for emergency situations
+
+## Query Examples
+
+### Get Assembly Settings
+```bash
+cleos get table aom.assembly aom.assembly asmblysttngs
+```
+
+### Get Patent Metadata Mappings
+```bash
+cleos get table aom.assembly aom.assembly metadata
+```
+
+### Get Active Construction
+```bash
+cleos get table aom.assembly aom.assembly construction
+```
+
+### Get User Fee Buffer
+```bash
+cleos get table aom.assembly alice feebuffer
+```
+---
+title: 'AOM Coins Contract'
+order: 105
+---
+
+# AOM Coins Contract (aom.coins)
+
+The AOM Coins contract serves as the token management hub for the Ash of Mankind ecosystem. This lightweight contract handles token retirement operations and acts as an intermediary for resource token lifecycle management across all AOM contracts.
+
+## Overview
+
+The coins contract provides:
+- Token retirement services for resource tokens
+- Centralized token lifecycle management
+- Integration point for cross-contract token operations
+- Asset validation and security controls
+
+## Contract Architecture
+
+The AOM Coins contract follows a minimalist design focused on a single critical function: secure token retirement. This approach ensures:
+
+- **Security**: Minimal attack surface with focused functionality
+- **Reliability**: Simple logic reduces potential failure points  
+- **Integration**: Clean interface for other contracts to retire tokens
+- **Auditability**: Easy to verify token retirement operations
+
+## Actions
+
+### Token Notification Handler
+
+#### `on_transfer`
+Handles incoming token transfers for retirement operations.
+
+**Authorization**: Automatic (notification handler)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `from` | `name` | Account sending tokens |
+| `to` | `name` | This contract (aom.coins) |
+| `quantity` | `asset` | Amount and type of tokens |
+| `memo` | `string` | Transfer memo |
+
+**Behavior**: 
+- Validates tokens are from `eosio.token` contract
+- Processes "retire" memo by calling token retirement
+- Ignores outbound transfers from the contract itself
+
+**Memo Formats**:
+
+##### Token Retirement
+**Memo**: `retire`
+
+Retires the transferred tokens from circulation, reducing total supply.
+
+**Validation**:
+- Must be called by authorized token issuer
+- Token contract validates issuer permissions
+- Invalid retirement attempts will fail automatically
+
+**Example**:
+```bash
+# Retire 1000 IRON tokens (called by AOM contracts)
+cleos transfer aom.mining aom.coins "1000.0000 IRON" "retire"
+```
+
+## Integration with AOM Ecosystem
+
+### Cross-Contract Token Flows
+
+The coins contract serves as the retirement endpoint for various AOM operations:
+
+#### From Mining Contract
+- **Upgrade Fees**: Non-ASH tokens from mine upgrades
+- **Instant Prospecting**: Resource tokens paid for instant completion
+
+#### From Construction Contract  
+- **Building Fees**: Non-ASH tokens from construction costs
+- **Instant Construction**: Resource tokens for instant building
+
+#### From Processing Contract
+- **Upgrade Fees**: Non-ASH tokens from production speed upgrades
+
+#### From Assembly Contract
+- **Construction Fees**: Non-ASH tokens from assembly line building
+- **Upgrade Fees**: Non-ASH tokens from assembly line upgrades
+
+### Token Lifecycle Management
+
+The AOM ecosystem implements a sophisticated token economy where:
+
+1. **Resource Generation**: Raw materials mined from land
+2. **Resource Processing**: Raw materials converted to refined goods
+3. **Resource Consumption**: Refined goods used for construction/upgrades
+4. **Token Retirement**: Used tokens removed from circulation
+
+```
+[Mining] → [Processing] → [Construction/Upgrades] → [Retirement]
+   ↓              ↓              ↓                      ↓
+ IRON          STEEL         (consumed)           (retired)
+ COAL          COPPER        (consumed)           (retired)
+ STONE         GLASS         (consumed)           (retired)
+```
+
+### Asset Categorization
+
+The AOM system treats different assets differently:
+
+#### ASH (Primary Currency)
+- **Usage**: Payment for services and upgrades
+- **Flow**: Transferred to `aom.vault` as revenue
+- **Lifecycle**: Recirculated within ecosystem
+
+#### Resource Tokens (Secondary Assets)
+- **Usage**: Construction materials and upgrade components
+- **Flow**: Transferred to `aom.coins` for retirement
+- **Lifecycle**: Removed from circulation after use
+
+## Security Model
+
+### Authorization Validation
+
+The contract implements multiple security layers:
+
+#### Transfer Source Validation
+```cpp
+check(get_first_receiver() == "eosio.token"_n, "only tokens from eosio.token are accepted");
+```
+
+Only accepts tokens from the official Ultra token contract.
+
+#### Self-Transfer Exclusion
+```cpp
+if(from == _self) return;
+```
+
+Ignores outbound transfers to prevent recursion loops.
+
+#### Asset Validation
+```cpp
+check(quantity.is_valid(), "invalid asset");
+check(quantity.amount > 0, "must transfer a positive amount");
+```
+
+Ensures only valid, positive amounts are processed.
+
+#### Issuer Authorization
+The retirement operation relies on the token contract's built-in authorization:
+
+```cpp
+// This will fail if this account is not the issuer of quantity
+action(
+    permission_level{ _self, "active"_n },
+    "eosio.token"_n,
+    "retire"_n,
+    make_tuple(quantity, memo)
+).send();
+```
+
+Only accounts authorized as token issuers can successfully retire tokens.
+
+### Failure Modes and Recovery
+
+#### Invalid Retirement Attempts
+- **Unauthorized Retirement**: Token contract rejects non-issuer attempts
+- **Invalid Assets**: Contract rejects malformed or zero amounts
+- **Wrong Token Source**: Contract rejects tokens from unauthorized contracts
+
+#### Transaction Rollback
+Failed retirement attempts cause complete transaction rollback, ensuring:
+- No partial operations
+- Consistent state across all contracts
+- Automatic fee refunds in calling contracts
+
+## Operational Considerations
+
+### Gas Efficiency
+
+The contract is optimized for minimal resource usage:
+- **Simple Logic**: Reduces CPU consumption
+- **No State Storage**: Avoids RAM costs
+- **Direct Passthrough**: Minimal processing overhead
+
+### Error Handling
+
+Clear error messages aid in debugging and user experience:
+- `"invalid asset"` - Malformed asset format
+- `"must transfer a positive amount"` - Zero or negative amounts
+- `"only tokens from eosio.token are accepted"` - Wrong token contract
+
+### Integration Testing
+
+When integrating with the coins contract, test scenarios should include:
+
+1. **Valid Retirement**: Proper memo format with authorized issuer
+2. **Invalid Asset**: Malformed asset amounts or symbols
+3. **Unauthorized Source**: Tokens from wrong contracts
+4. **Non-Issuer Retirement**: Attempts by non-authorized accounts
+
+## Contract Deployment and Management
+
+### Deployment Requirements
+
+The AOM Coins contract requires:
+- **Token Issuer Permissions**: Must be authorized issuer for resource tokens
+- **Active Permissions**: Sufficient permissions to call token retirement
+- **Integration Setup**: Other AOM contracts must reference correct account name
+
+### Monitoring and Maintenance
+
+Key metrics to monitor:
+- **Retirement Volume**: Track tokens removed from circulation
+- **Failed Transactions**: Monitor authorization failures
+- **Integration Health**: Verify cross-contract calls succeed
+
+### Upgrade Considerations
+
+Contract upgrades should maintain:
+- **API Compatibility**: Other AOM contracts depend on stable interface
+- **Security Model**: Authorization patterns must remain secure
+- **Token Compatibility**: Must work with existing token contracts
+
+## Usage Examples
+
+### Direct Retirement (Testing)
+```bash
+# Retire tokens directly (must be issuer)
+cleos transfer alice aom.coins "100.0000 IRON" "retire"
+```
+
+### Cross-Contract Integration
+```cpp
+// Example from another AOM contract
+action(
+    permission_level{ _self, "active"_n },
+    ULTRA_FT,
+    "transfer"_n,
+    make_tuple(
+        _self,
+        "aom.coins"_n,
+        asset(amount, symbol),
+        string("retire")
+    )
+).send();
+```
+
+## Best Practices
+
+### For Integrating Contracts
+1. **Batch Operations**: Group multiple retirements when possible
+2. **Error Handling**: Prepare for retirement failures
+3. **Asset Validation**: Validate assets before sending
+4. **Permission Management**: Ensure proper issuer setup
+
+### For System Administration
+1. **Permission Auditing**: Regularly verify issuer permissions
+2. **Transaction Monitoring**: Track retirement patterns
+3. **Integration Testing**: Test all cross-contract flows
+4. **Security Reviews**: Regular security assessment of token flows
+
+The AOM Coins contract demonstrates that critical infrastructure can be both simple and secure, providing essential token management services while maintaining minimal complexity and maximum reliability.
+---
+title: 'AOM Construction Contract'
+order: 102
+---
+
+# AOM Construction Contract (aom.constrct)
+
+The AOM Construction contract manages building construction on land parcels within the Ash of Mankind ecosystem. This contract handles the creation of various structures including mines, factories, and other buildings on both resource and construction land.
+
+## Overview
+
+The construction contract enables players to:
+- Build structures on prospected resource land and construction land
+- Manage construction timers and completion
+- Handle instant construction for premium fees
+- Update land metadata and visual assets upon completion
+
+## Tables
+
+### Configuration Tables
+
+#### `global` (Singleton)
+- **Scope**: Contract (`aom.constrct`)
+- **Description**: Global contract state
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `locked` | `bool` | Emergency lock status |
+
+#### `basesettings` (Singleton)
+- **Scope**: Contract (`aom.constrct`)
+- **Description**: Base construction configuration
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `valid_construction_land_factory_ids` | `vector<uint64_t>` | Valid factory IDs for construction land |
+
+#### `cnstrcsttngs` (Multi-Index)
+- **Scope**: Contract (`aom.constrct`)
+- **Primary Key**: `string_idx(building_type)`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `building_type` | `string` | Type of building (e.g., "Mine", "Factory") |
+| `required_factory_id` | `uint64_t` | Required land factory ID |
+| `construction_duration_sec` | `uint32_t` | Construction time in seconds |
+| `building_fee` | `map<symbol, uint64_t>` | Required fees for construction |
+| `instant_construction_fee` | `map<symbol, uint64_t>` | Fees for instant completion |
+
+#### `metadata` (Multi-Index)
+- **Scope**: Contract (`aom.constrct`)
+- **Primary Key**: `string_idx(land_state)`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `land_state` | `string` | Land state identifier |
+| `metadata_url` | `string` | JSON metadata URL |
+| `metadata_hash` | `checksum256` | Metadata content hash |
+
+### Operational Tables
+
+#### `construction` (Multi-Index)
+- **Scope**: Contract (`aom.constrct`)
+- **Primary Key**: `uniq_id`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `uniq_id` | `uint64_t` | Uniq under construction |
+| `building_type` | `string` | Type of building being constructed |
+| `completion_block_time` | `uint32_t` | When construction completes |
+
+#### `feebuffer` (Singleton)
+- **Scope**: User account
+- **Description**: Buffered fees for multi-asset payments
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `building_type` | `string` | Type of building being paid for |
+| `fee` | `map<symbol, uint64_t>` | Accumulated fees by asset |
+
+## Actions
+
+### Administrative Actions
+
+#### `updbasesttng`
+Updates base construction settings.
+
+**Authorization**: Contract (`aom.constrct`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `construction_base_settings` | New base settings |
+
+**Behavior**: 
+Sets valid construction land factory IDs.
+
+**CLI Example**:
+```bash
+cleos push action aom.constrct updbasesttng '{"row": {"valid_construction_land_factory_ids": [200, 201, 202]}}' -p aom.constrct@active
+```
+
+#### `updcnststtng`
+Updates construction settings for a building type.
+
+**Authorization**: Contract (`aom.constrct`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `construction_settings` | Building configuration |
+
+**Behavior**: 
+Configures construction parameters for a specific building type.
+
+**CLI Example**:
+```bash
+cleos push action aom.constrct updcnststtng '{"row": {"building_type": "Mine", "required_factory_id": 123, "construction_duration_sec": 3600, "building_fee": [["4,ASH", 1000], ["4,IRON", 500]], "instant_construction_fee": [["4,ASH", 5000]]}}' -p aom.constrct@active
+```
+
+#### `updmetadata`
+Updates metadata mapping for land states.
+
+**Authorization**: Contract (`aom.constrct`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `metadata` | Metadata configuration |
+
+**Behavior**: 
+Maps land states to their corresponding JSON metadata URLs and hashes.
+
+**CLI Example**:
+```bash
+cleos push action aom.constrct updmetadata '{"row": {"land_state": "ResourceLandIronMine", "metadata_url": "https://example.com/iron-mine.json", "metadata_hash": "abc123..."}}' -p aom.constrct@active
+```
+
+#### `setlocked`
+Emergency lock/unlock the contract.
+
+**Authorization**: Contract (`aom.constrct`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `locked` | `bool` | Lock status |
+
+**CLI Example**:
+```bash
+cleos push action aom.constrct setlocked '{"locked": true}' -p aom.constrct@active
+```
+
+### Gameplay Actions
+
+#### `cutribbon`
+Completes construction of a building.
+
+**Authorization**: Uniq owner
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uniq_id` | `uint64_t` | Uniq to complete construction for |
+| `uniq_owner` | `name` | Owner of the Uniq |
+
+**Behavior**: 
+- Validates construction is complete (time elapsed)
+- Updates land metadata with final building type
+- Sets initial building parameters (production speed, storage)
+- Updates JSON metadata for visual representation
+- Removes construction timer entry
+
+**Special Handling for Mines**:
+- Calls `aom.mining::minebuilt` to initialize collection timer
+- Sets storage capacity based on resource type settings
+- Updates metadata key format for resource-specific buildings
+
+**CLI Example**:
+```bash
+cleos push action aom.constrct cutribbon '{"uniq_id": 12345, "uniq_owner": "alice"}' -p alice@active
+```
+
+#### `clearbuffer`
+Clears fee buffer and refunds assets.
+
+**Authorization**: User
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user` | `name` | User to clear buffer for |
+
+**CLI Example**:
+```bash
+cleos push action aom.constrct clearbuffer '{"user": "alice"}' -p alice@active
+```
+
+## Token Transfer Actions
+
+The contract accepts token transfers for construction operations through the `on_transfer` notification.
+
+### Building Construction
+**Memo Format**: `Build,<building_type>[,<uniq_id>]`
+
+**Two-Phase Process**:
+1. **Fee Collection**: Send required assets without uniq_id to accumulate fees
+2. **Construction Start**: Send final asset with uniq_id to begin construction
+
+**Validation**:
+- Land must be from correct factory for building type
+- Land must be in appropriate state (unbuilt or prospected)
+- All required fees must be paid
+
+**Examples**:
+```bash
+# Phase 1: Send ASH tokens
+cleos transfer alice aom.constrct "1000.0000 ASH" "Build,Mine"
+
+# Phase 2: Send IRON tokens and start construction
+cleos transfer alice aom.constrct "500.0000 IRON" "Build,Mine,12345"
+```
+
+### Instant Construction
+**Memo Format**: `InstantConstruction,<building_type>[,<uniq_id>]`
+
+**Two-Phase Process**:
+1. **Fee Collection**: Send required assets without uniq_id
+2. **Instant Completion**: Send final asset with uniq_id to instantly complete
+
+**Behavior**:
+- Sets completion time to current block time
+- Allows immediate `cutribbon` call
+
+**Examples**:
+```bash
+# Phase 1: Send instant construction fees
+cleos transfer alice aom.constrct "5000.0000 ASH" "InstantConstruction,Mine"
+
+# Phase 2: Complete instantly
+cleos transfer alice aom.constrct "0.0001 ASH" "InstantConstruction,Mine,12345"
+```
+
+## Land Type Validation
+
+The contract validates land compatibility with building types:
+
+### Resource Land
+- **Valid Buildings**: Only "Mine"
+- **Factory Requirements**: 5-key schema with ResourceType metadata
+- **State Requirements**: Must be prospected (have ResourceType set)
+
+### Construction Land  
+- **Valid Buildings**: Any except "Mine"
+- **Factory Requirements**: 3-key schema (BuildingType, ProductionSpeed, BuildingName)
+- **State Requirements**: Must be unbuilt (no key_values set)
+
+## Integration with On-Chain Data
+
+### Factory Schema Validation
+
+The contract validates factory schemas match building requirements:
+
+#### Resource Land Schema (5 keys):
+1. **BuildingType** (string) - Default: "Unbuilt"
+2. **ResourceType** (string) - Default: "Unprospected" 
+3. **ResourceQty** (uint64)
+4. **ProductionSpeed** (uint64)
+5. **StorageCapacity** (uint64)
+
+#### Construction Land Schema (3 keys):
+1. **BuildingType** (string) - Default: "Unbuilt"
+2. **ProductionSpeed** (uint64)
+3. **BuildingName** (string)
+
+### Metadata State Management
+
+The contract manages complex state transitions:
+
+1. **Construction Start**: "Unbuilt" → "Unfinished {BuildingType}"
+2. **Construction Complete**: "Unfinished {BuildingType}" → "{BuildingType}"
+
+### JSON Metadata Updates
+
+Upon construction completion, the contract updates the Uniq's JSON metadata to reflect the new visual appearance. Metadata keys follow patterns:
+
+- **Resource Mines**: "ResourceLand{ResourceType}{BuildingType}"
+- **Construction Buildings**: "ConstructionLand{BuildingType}"
+
+## Fee Management
+
+### Multi-Asset Payments
+
+The construction system supports complex fee structures requiring multiple asset types:
+
+```cpp
+// Example fee structure for building a Mine
+building_fee: [
+    ["4,ASH", 1000],     // 1000 ASH tokens
+    ["4,IRON", 500],     // 500 IRON tokens  
+    ["4,STONE", 200]     // 200 STONE tokens
+]
+```
+
+### Fee Buffering Process
+
+1. **Accumulation**: Players send assets incrementally
+2. **Validation**: Contract validates each asset type and amount
+3. **Execution**: When all fees collected, operation executes
+4. **Retirement**: Non-ASH tokens retired, ASH sent to vault
+
+### Asset Handling
+
+- **ASH Tokens**: Transferred to `aom.vault` as revenue
+- **Other Tokens**: Transferred to `aom.coins` for retirement
+
+## Cross-Contract Integration
+
+### Mining Contract Integration
+
+For mine construction:
+1. Validates resource settings from `aom.mining`
+2. Sets initial storage capacity based on resource type
+3. Calls `aom.mining::minebuilt` to initialize collection timer
+
+### Permission Management
+
+The contract uses specific permissions for cross-contract calls:
+- **AOM_UNIQS** account for metadata updates
+- **setvalsa** permission for on-chain data modifications
+- **settknmeta** permission for JSON metadata updates
+
+## Security Considerations
+
+- **Ownership Validation**: Strict validation of Uniq ownership
+- **State Consistency**: Prevents invalid construction on inappropriate land
+- **Fee Integrity**: Robust validation prevents fee manipulation
+- **Time Validation**: Ensures construction timers are properly enforced
+- **Factory Validation**: Validates land factory compatibility
+- **Emergency Controls**: Contract locking for emergency situations
+---
+title: 'AOM Mining Contract'
+order: 101
+---
+
+# AOM Mining Contract (aom.mining)
+
+The AOM Mining contract manages resource prospecting, mining operations, and mine upgrades within the Ash of Mankind ecosystem. This contract handles the discovery of natural resources on land parcels and their subsequent extraction through built mines.
+
+## Overview
+
+The mining contract enables players to:
+- Prospect unbuilt resource land to discover natural resources
+- Build and operate mines to extract resources over time
+- Upgrade mine production speed and storage capacity
+- Collect accumulated resources from active mines
+
+## Tables
+
+### Global Settings
+
+#### `global` (Singleton)
+- **Scope**: Contract (`aom.mining`)
+- **Description**: Global contract state
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `locked` | `bool` | Emergency lock status |
+
+#### `basesettings` (Singleton)
+- **Scope**: Contract (`aom.mining`)  
+- **Description**: Base mining configuration
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `prospecting_duration_sec` | `uint32_t` | Seconds required for prospecting |
+| `instant_prospecting_fee` | `map<symbol, uint64_t>` | Fees for instant prospecting |
+| `upgrade_production_speed_fee` | `map<symbol, uint64_t>` | Fees for production speed upgrades |
+| `upgrade_storage_capacity_fee` | `map<symbol, uint64_t>` | Fees for storage capacity upgrades |
+| `valid_resource_land_factory_ids` | `vector<uint64_t>` | Valid factory IDs for resource land |
+
+#### `resourcestng` (Multi-Index)
+- **Scope**: Contract (`aom.mining`)
+- **Primary Key**: `resource_symbol.code().raw()`
+- **Secondary Index**: `type` (by `resource_type`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `resource_symbol` | `symbol` | Token symbol for this resource |
+| `resource_type` | `string` | Resource type name (e.g., "Iron", "Coal") |
+| `to_be_prospected` | `uint64_t` | Remaining prospectable quantity |
+| `min_droprate_qty` | `uint64_t` | Minimum quantity when found |
+| `max_droprate_qty` | `uint64_t` | Maximum quantity when found |
+| `base_daily_mining_qty` | `uint64_t` | Base daily production rate |
+| `base_storage_qty` | `uint64_t` | Base storage capacity |
+| `max_storage_qty` | `uint64_t` | Maximum storage capacity |
+| `production_speed_upgrade_increment` | `uint64_t` | Production speed increase per upgrade (precision: 2) |
+| `max_production_speed` | `uint64_t` | Maximum production speed (precision: 2) |
+
+### Operational Tables
+
+#### `prospecttime` (Multi-Index)
+- **Scope**: Contract (`aom.mining`)
+- **Primary Key**: `uniq_id`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `uniq_id` | `uint64_t` | Uniq being prospected |
+| `completion_block_time` | `uint32_t` | When prospecting completes |
+
+#### `cllctngtime` (Multi-Index)
+- **Scope**: Contract (`aom.mining`)
+- **Primary Key**: `uniq_id`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `uniq_id` | `uint64_t` | Mine Uniq ID |
+| `last_collected` | `uint32_t` | Last collection timestamp |
+
+#### `rngrequests` (Multi-Index)
+- **Scope**: Contract (`aom.mining`)
+- **Primary Key**: `assoc_id`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `assoc_id` | `uint64_t` | RNG request association ID |
+| `uniq_id` | `uint64_t` | Uniq being prospected |
+| `uniq_owner` | `name` | Owner of the Uniq |
+
+#### `feebuffer` (Singleton)
+- **Scope**: User account
+- **Description**: Buffered fees for multi-asset payments
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `action_type` | `string` | Type of action being paid for |
+| `total_num` | `uint64_t` | Total number of upgrades |
+| `fee` | `map<symbol, uint64_t>` | Accumulated fees by asset |
+
+## Actions
+
+### Administrative Actions
+
+#### `updbasesttng`
+Updates base mining settings.
+
+**Authorization**: Contract (`aom.mining`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `mining_base_settings` | New base settings |
+
+**Behavior**: 
+Sets global mining parameters including prospecting duration and upgrade fees.
+
+**CLI Example**:
+```bash
+cleos push action aom.mining updbasesttng '{"row": {"prospecting_duration_sec": 86400, "instant_prospecting_fee": [["4,ASH", 1000]], "upgrade_production_speed_fee": [["4,ASH", 500]], "upgrade_storage_capacity_fee": [["4,ASH", 300]], "valid_resource_land_factory_ids": [123, 124, 125]}}' -p aom.mining@active
+```
+
+#### `updrsrcsttng`
+Updates resource-specific settings.
+
+**Authorization**: Contract (`aom.mining`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `mining_resource_settings` | Resource configuration |
+
+**Behavior**: 
+Configures parameters for a specific resource type including drop rates and production values.
+
+**CLI Example**:
+```bash
+cleos push action aom.mining updrsrcsttng '{"row": {"resource_symbol": "4,IRON", "resource_type": "Iron", "to_be_prospected": 1000, "min_droprate_qty": 100, "max_droprate_qty": 500, "base_daily_mining_qty": 50, "base_storage_qty": 1000, "max_storage_qty": 10000, "production_speed_upgrade_increment": 25, "max_production_speed": 500}}' -p aom.mining@active
+```
+
+#### `setlocked`
+Emergency lock/unlock the contract.
+
+**Authorization**: Contract (`aom.mining`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `locked` | `bool` | Lock status |
+
+**CLI Example**:
+```bash
+cleos push action aom.mining setlocked '{"locked": true}' -p aom.mining@active
+```
+
+### Gameplay Actions
+
+#### `strtprspctng`
+Initiates prospecting on unbuilt resource land.
+
+**Authorization**: Uniq owner
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uniq_owner` | `name` | Owner of the land Uniq |
+| `uniq_id` | `uint64_t` | Land Uniq to prospect |
+
+**Behavior**: 
+- Validates land is unbuilt resource land from valid factory
+- Creates prospecting timer entry
+- Updates land metadata to "Unfinished Prospection"
+
+**Technical Requirements**:
+- Land must have no key_values set (unbuilt state)
+- Factory must have correct 5-key schema with proper defaults
+- Land cannot already be under prospecting
+
+**CLI Example**:
+```bash
+cleos push action aom.mining strtprspctng '{"uniq_owner": "alice", "uniq_id": 12345}' -p alice@active
+```
+
+#### `reqprspctrep`
+Requests prospecting completion with randomness.
+
+**Authorization**: Uniq owner
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uniq_owner` | `name` | Owner of the land Uniq |
+| `uniq_id` | `uint64_t` | Land Uniq being prospected |
+| `seed` | `uint64_t` | Random seed value |
+
+**Behavior**: 
+- Validates prospecting is complete (time elapsed)
+- Requests random number from Ultra RNG service
+- Removes prospecting timer entry
+
+**CLI Example**:
+```bash
+cleos push action aom.mining reqprspctrep '{"uniq_owner": "alice", "uniq_id": 12345, "seed": 987654321}' -p alice@active
+```
+
+#### `receiverand`
+Receives random number and completes prospecting.
+
+**Authorization**: `ultra.rng` (RNG service)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `assoc_id` | `uint64_t` | RNG request association ID |
+| `random_value` | `uint64_t` | Generated random number |
+
+**Behavior**: 
+- Uses random value to determine resource type and quantity
+- Updates land metadata with discovered resource
+- Decrements available resources in settings
+- Updates land JSON metadata
+
+**Note**: This action is called automatically by the RNG service.
+
+#### `collectrsrcs`
+Collects accumulated resources from a mine.
+
+**Authorization**: Uniq owner
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uniq_owner` | `name` | Owner of the mine Uniq |
+| `uniq_id` | `uint64_t` | Mine Uniq ID |
+
+**Behavior**: 
+- Calculates resources produced since last collection
+- Issues resource tokens to owner
+- Updates mine's remaining resources
+- Records new collection timestamp
+
+**Production Formula**:
+```cpp
+produced_amount = (time_elapsed * base_daily_mining_qty * production_speed / 86400 + 50) / 100
+produced_amount = min(produced_amount, remaining_resources)
+produced_amount = min(produced_amount, storage_capacity)
+```
+
+**CLI Example**:
+```bash
+cleos push action aom.mining collectrsrcs '{"uniq_owner": "alice", "uniq_id": 12345}' -p alice@active
+```
+
+#### `clearbuffer`
+Clears fee buffer and refunds assets.
+
+**Authorization**: User
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user` | `name` | User to clear buffer for |
+
+**CLI Example**:
+```bash
+cleos push action aom.mining clearbuffer '{"user": "alice"}' -p alice@active
+```
+
+### Internal Actions
+
+#### `minebuilt`
+Called by construction contract when a mine is built.
+
+**Authorization**: `aom.constrct`
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `uniq_id` | `uint64_t` | Newly built mine ID |
+
+**Behavior**: 
+Creates initial collection timer entry for the new mine.
+
+## Token Transfer Actions
+
+The contract accepts token transfers for various upgrade operations through the `on_transfer` notification.
+
+### Instant Prospecting
+**Memo Format**: `InstantProspect[,<uniq_id>]`
+
+Send required fees to instantly complete prospecting for a land parcel.
+
+### Production Speed Upgrade  
+**Memo Format**: `UpgradeProductionSpeed[,<uniq_id>]`
+
+Send fees to upgrade a mine's production speed. Multiple upgrades can be purchased with proportional fees.
+
+### Storage Capacity Upgrade
+**Memo Format**: `UpgradeStorageCapacity[,<uniq_id>]`
+
+Send fees to upgrade a mine's storage capacity. Multiple upgrades can be purchased with proportional fees.
+
+## Integration with On-Chain Data
+
+The mining contract extensively uses Ultra's on-chain data system to manage land state:
+
+### Factory Schema Requirements
+
+Resource land factories must have exactly 5 keys:
+1. **BuildingType** (string) - Default: "Unbuilt"
+2. **ResourceType** (string) - Default: "Unprospected"  
+3. **ResourceQty** (uint64)
+4. **ProductionSpeed** (uint64)
+5. **StorageCapacity** (uint64)
+
+### State Transitions
+
+Land parcels progress through these states:
+1. **Unbuilt** → **Unfinished Prospection** (prospecting started)
+2. **Unfinished Prospection** → **Unbuilt** + ResourceType (prospecting completed)
+3. **Unbuilt** → **Mine** (construction completed)
+
+### Metadata Updates
+
+The contract updates both on-chain key-value data and JSON metadata to maintain consistency between game state and display assets.
+
+## Security Considerations
+
+- **Ownership Validation**: All operations validate Uniq ownership
+- **State Consistency**: Extensive validation prevents invalid state transitions
+- **Random Number Security**: Uses Ultra's secure RNG service
+- **Fee Validation**: Robust checks prevent fee manipulation
+- **Emergency Controls**: Contract locking mechanism for emergencies
+---
+title: 'AOM Processing Contract'
+order: 103
+---
+
+# AOM Processing Contract (aom.processi)
+
+The AOM Processing contract manages resource conversion and production within the Ash of Mankind ecosystem. This contract enables players to transform raw materials into processed goods using various building types, implementing time-based production cycles and progressive claiming mechanisms.
+
+## Overview
+
+The processing contract enables players to:
+- Convert raw resources into processed materials
+- Manage time-based production cycles
+- Upgrade building production capabilities
+- Claim processed goods progressively or in full
+- Handle owner reclamation of unclaimed production
+
+## Tables
+
+### Configuration Tables
+
+#### `global` (Singleton)
+- **Scope**: Contract (`aom.processi`)
+- **Description**: Global contract state
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `locked` | `bool` | Emergency lock status |
+
+#### `prcsngsttngs` (Multi-Index)
+- **Scope**: Contract (`aom.processi`)
+- **Primary Key**: `output_resource.code().raw()`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `output_resource` | `symbol` | Symbol of the produced resource |
+| `required_building_type` | `string` | Building type required for production |
+| `base_conversion_duration_sec` | `uint32_t` | Base production time in seconds |
+| `input_resources` | `map<symbol, uint64_t>` | Required input materials and quantities |
+
+#### `bldngsttngs` (Multi-Index)
+- **Scope**: Contract (`aom.processi`)
+- **Primary Key**: `string_idx(building_type)`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `building_type` | `string` | Type of building (e.g., "Smelter", "Forge") |
+| `production_fee` | `uint32_t` | Production fee percentage (precision: 2) |
+| `upgrade_fee` | `map<symbol, uint64_t>` | Fees for upgrading production speed |
+| `production_speed_upgrade_increment` | `uint64_t` | Speed increase per upgrade (precision: 2) |
+| `max_production_speed` | `uint64_t` | Maximum production speed (precision: 2) |
+
+### Operational Tables
+
+#### `processing` (Multi-Index)
+- **Scope**: Uniq ID
+- **Primary Key**: `start_block_time`
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `user` | `name` | User who started the production |
+| `output_resource` | `symbol` | Resource being produced |
+| `total_qty` | `uint64_t` | Total quantity being produced |
+| `claimed_qty` | `uint64_t` | Quantity already claimed |
+| `start_block_time` | `uint32_t` | Production start timestamp |
+| `end_block_time` | `uint32_t` | Production completion timestamp |
+
+#### `processiuser` (Multi-Index)
+- **Scope**: User account
+- **Primary Key**: `index`
+- **Secondary Index**: `start` (by `start_block_time`)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `index` | `uint64_t` | Unique entry index |
+| `uniq_id` | `uint64_t` | Building Uniq used for production |
+| `output_resource` | `symbol` | Resource being produced |
+| `total_qty` | `uint64_t` | Total quantity being produced |
+| `claimed_qty` | `uint64_t` | Quantity already claimed |
+| `start_block_time` | `uint32_t` | Production start timestamp |
+| `end_block_time` | `uint32_t` | Production completion timestamp |
+
+### Buffer Tables
+
+#### `resbuffer` (Singleton)
+- **Scope**: User account
+- **Description**: Buffered resources for production
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `output_resource` | `symbol` | Desired output resource |
+| `total_qty` | `uint64_t` | Total output quantity |
+| `input_resources` | `map<symbol, uint64_t>` | Accumulated input resources |
+
+#### `feebuffer` (Singleton)
+- **Scope**: User account
+- **Description**: Buffered fees for upgrades
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `building_type` | `string` | Building type being upgraded |
+| `total_upgrades` | `uint64_t` | Number of upgrades being purchased |
+| `upgrade_fee` | `map<symbol, uint64_t>` | Accumulated upgrade fees |
+
+## Actions
+
+### Administrative Actions
+
+#### `updprocsttng`
+Updates processing settings for a resource.
+
+**Authorization**: Contract (`aom.processi`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `processing_settings` | Resource processing configuration |
+
+**Behavior**: 
+Configures how a specific resource is produced, including required inputs and building type.
+
+**CLI Example**:
+```bash
+cleos push action aom.processi updprocsttng '{"row": {"output_resource": "4,STEEL", "required_building_type": "Smelter", "base_conversion_duration_sec": 7200, "input_resources": [["4,IRON", 2], ["4,COAL", 1]]}}' -p aom.processi@active
+```
+
+#### `updbldsttng`
+Updates building settings for production capabilities.
+
+**Authorization**: Contract (`aom.processi`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `row` | `building_settings` | Building configuration |
+
+**Behavior**: 
+Configures production parameters for a building type including fees and upgrade limits.
+
+**CLI Example**:
+```bash
+cleos push action aom.processi updbldsttng '{"row": {"building_type": "Smelter", "production_fee": 500, "upgrade_fee": [["4,ASH", 1000]], "production_speed_upgrade_increment": 25, "max_production_speed": 300}}' -p aom.processi@active
+```
+
+#### `updatefees`
+Updates production fees for a building type.
+
+**Authorization**: Contract (`aom.processi`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `building_type` | `name` | Building type to update |
+| `production_fee` | `uint32_t` | New production fee (precision: 2) |
+
+**CLI Example**:
+```bash
+cleos push action aom.processi updatefees '{"building_type": "smelter", "production_fee": 750}' -p aom.processi@active
+```
+
+#### `setlocked`
+Emergency lock/unlock the contract.
+
+**Authorization**: Contract (`aom.processi`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `locked` | `bool` | Lock status |
+
+**CLI Example**:
+```bash
+cleos push action aom.processi setlocked '{"locked": true}' -p aom.processi@active
+```
+
+### Gameplay Actions
+
+#### `collectprod`
+Collects processed goods from a production run.
+
+**Authorization**: User or Uniq owner (depending on `owner_claims`)
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user` | `name` | User who started production |
+| `uniq_owner` | `name` | Owner of the building Uniq |
+| `owner_claims` | `bool` | Whether owner is claiming vs user |
+| `uniq_id` | `uint64_t` | Building Uniq ID |
+| `start_block_time` | `uint32_t` | Production start time identifier |
+
+**Behavior**: 
+- **User Claims**: Can claim progressively during production or fully after completion
+- **Owner Claims**: Can claim unclaimed goods 2 weeks after production completion
+
+**Progressive Claiming Formula**:
+```cpp
+claimable_amount = (total_qty - claimed_qty) * elapsed_time / total_production_time
+```
+
+**CLI Examples**:
+```bash
+# User claims during production
+cleos push action aom.processi collectprod '{"user": "alice", "uniq_owner": "bob", "owner_claims": false, "uniq_id": 12345, "start_block_time": 1640995200}' -p alice@active
+
+# Owner reclaims after 2 weeks
+cleos push action aom.processi collectprod '{"user": "alice", "uniq_owner": "bob", "owner_claims": true, "uniq_id": 12345, "start_block_time": 1640995200}' -p bob@active
+```
+
+#### `clearbuffer`
+Clears resource/fee buffers and refunds assets.
+
+**Authorization**: User
+
+**Parameters**:
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `user` | `name` | User to clear buffers for |
+
+**CLI Example**:
+```bash
+cleos push action aom.processi clearbuffer '{"user": "alice"}' -p alice@active
+```
+
+## Token Transfer Actions
+
+The contract accepts token transfers for production and upgrade operations through the `on_transfer` notification.
+
+### Resource Production
+**Memo Format**: `Production,<output_resource>,<total_qty>[,<uniq_id>]`
+
+**Two-Phase Process**:
+1. **Resource Collection**: Send input resources without uniq_id to accumulate materials
+2. **Production Start**: Send final resource with uniq_id to begin production
+
+**Example Production Flow**:
+```bash
+# Phase 1: Send input resources
+cleos transfer alice aom.processi "200.0000 IRON" "Production,4,STEEL,100"
+cleos transfer alice aom.processi "100.0000 COAL" "Production,4,STEEL,100"
+
+# Phase 2: Start production with building
+cleos transfer alice aom.processi "0.0001 IRON" "Production,4,STEEL,100,12345"
+```
+
+### Production Speed Upgrades
+**Memo Format**: `UpgradeProductionSpeed,<building_type>[,<uniq_id>]`
+
+**Two-Phase Process**:
+1. **Fee Collection**: Send upgrade fees without uniq_id
+2. **Upgrade Application**: Send final fee with uniq_id to apply upgrades
+
+**Example Upgrade Flow**:
+```bash
+# Phase 1: Send upgrade fees (for 2 upgrades)
+cleos transfer alice aom.processi "2000.0000 ASH" "UpgradeProductionSpeed,Smelter"
+
+# Phase 2: Apply upgrades to building
+cleos transfer alice aom.processi "0.0001 ASH" "UpgradeProductionSpeed,Smelter,12345"
+```
+
+## Production Mechanics
+
+### Production Formula
+
+The production system calculates completion time based on:
+
+```cpp
+adjusted_duration = base_duration * 100 / production_speed
+end_time = start_time + adjusted_duration
+```
+
+Where:
+- `base_duration`: Base conversion time from settings
+- `production_speed`: Building's current speed (precision: 2, default: 100)
+
+### Progressive Claiming
+
+Users can claim processed goods before production completes:
+
+1. **During Production**: Proportional claiming based on elapsed time
+2. **After Completion**: Full remaining amount claimable
+3. **Owner Reclaim**: After 2 weeks, building owner can claim unclaimed goods
+
+### Resource Requirements
+
+Production requires exact resource ratios as configured in processing settings:
+
+```cpp
+// Example: Steel production requires 2 IRON + 1 COAL per unit
+input_resources: [
+    ["4,IRON", 2],
+    ["4,COAL", 1]
+]
+```
+
+## Building Integration
+
+### Building Type Validation
+
+The contract validates that buildings can produce specific resources:
+
+1. **Building Ownership**: User must own or have access to the building
+2. **Building Type**: Must match `required_building_type` for the resource
+3. **Building State**: Building must be operational (not under construction)
+
+### Production Speed System
+
+Buildings have upgradeable production speeds:
+
+- **Base Speed**: 100 (100% speed, precision: 2)
+- **Upgrade Increment**: Configurable per building type
+- **Maximum Speed**: Configurable limit per building type
+
+### Fee Structure
+
+Production operations include fees paid to building owners:
+
+- **Production Fee**: Percentage of input resources (precision: 2)
+- **Upgrade Fees**: Fixed asset amounts for speed improvements
+
+## Buffer Management
+
+### Resource Buffering
+
+The system buffers input resources to handle multi-asset production requirements:
+
+1. **Accumulation**: Resources collected as they're sent
+2. **Validation**: Ensures correct ratios and quantities
+3. **Consumption**: All required resources consumed when production starts
+
+### Fee Buffering
+
+Upgrade operations buffer fees for multi-asset upgrade costs:
+
+1. **Collection**: Upgrade fees accumulated incrementally
+2. **Validation**: Ensures all required fees are present
+3. **Processing**: Upgrades applied when all fees collected
+
+## Cross-Contract Integration
+
+### Token Management
+
+- **Input Consumption**: Resources transferred to contract and consumed
+- **Output Production**: New tokens issued via `aom.coins` contract
+- **Fee Handling**: ASH fees transferred to vault, others retired
+
+### Building Verification
+
+The contract integrates with building systems to verify:
+
+- Building ownership and state
+- Building type compatibility
+- Production capability and speed
+
+## Security Considerations
+
+- **Ownership Validation**: Strict validation of building access rights
+- **Resource Integrity**: Prevents manipulation of input/output ratios
+- **Time Validation**: Ensures proper production timing
+- **Fee Validation**: Robust checks prevent fee manipulation
+- **Buffer Limits**: Prevents resource/fee buffer overflow
+- **Reclaim Protection**: 2-week delay protects user claiming rights
+- **Emergency Controls**: Contract locking for emergency situations
+
+## Query Examples
+
+### Get Processing Settings
+```bash
+cleos get table aom.processi aom.processi prcsngsttngs
+```
+
+### Get Building Settings
+```bash
+cleos get table aom.processi aom.processi bldngsttngs
+```
+
+### Get Active Production (by Uniq)
+```bash
+cleos get table aom.processi 12345 processing
+```
+
+### Get User Production History
+```bash
+cleos get table aom.processi alice processiuser
+```
+---
+title: 'AOM Contracts'
+order: 100
+---
+
+# Ash of Mankind (AOM) Smart Contracts
+
+The Ash of Mankind (AOM) smart contracts form an integrated gaming ecosystem built on Ultra's blockchain. These contracts enable land-based gameplay where players can prospect for resources, build structures, mine materials, and create products through an interconnected system of NFT-based assets and tokenized resources.
+
+## How to Use AOM Contracts
+
+The AOM ecosystem consists of five interconnected smart contracts that work together to create a complete gaming experience:
+
+- **aom.mining** - Prospect land, mine resources, upgrade production
+- **aom.constrct** - Build structures on land parcels  
+- **aom.assembly** - Create assembly lines for manufacturing
+- **aom.processi** - Process raw materials into refined goods
+- **aom.coins** - Handle token retirement and lifecycle
+
+## Getting Started
+
+### Prerequisites
+
+To interact with AOM contracts you need:
+
+1. **Land Uniqs** - NFTs representing land parcels (resource or construction land)
+2. **ASH Tokens** - Primary currency for fees and operations
+3. **Resource Tokens** - Materials for construction and upgrades
+
+### Basic Workflow
+
+#### 1. Acquire Land
+Buy land through the `aom.buy` contract which handles multi-asset payments:
+
+```bash
+# Purchase resource land (requires multiple assets)
+cleos transfer yourname aom.buy "100.0000 ASH" "BuyUniq"
+cleos transfer yourname aom.buy "50.0000 AFE" "BuyUniq,4963"  # AFE = Iron token
+```
+
+#### 2. Prospect for Resources (Resource Land Only)
+```bash
+# Start prospecting (24-hour timer)
+cleos push action aom.mining strtprspctng '{"uniq_owner": "yourname", "uniq_id": 12345}' -p yourname@active
+
+# After timer expires, request random result
+cleos push action aom.mining reqprspctrep '{"uniq_owner": "yourname", "uniq_id": 12345, "seed": 987654321}' -p yourname@active
+
+# OR pay for instant prospecting
+cleos transfer yourname aom.mining "1000.0000 ASH" "InstantProspect,12345"
+```
+
+#### 3. Build Structures
+```bash
+# Send construction fees (multi-asset payment system)
+cleos transfer yourname aom.constrct "1000.0000 ASH" "Build,Mine"
+cleos transfer yourname aom.constrct "500.0000 AFE" "Build,Mine,12345"  # Triggers construction
+
+# Wait for construction timer, then complete
+cleos push action aom.constrct cutribbon '{"uniq_id": 12345, "uniq_owner": "yourname"}' -p yourname@active
+
+# OR pay for instant construction
+cleos transfer yourname aom.constrct "5000.0000 ASH" "InstantConstruction,Mine,12345"
+```
+
+#### 4. Collect Resources
+```bash
+# Collect accumulated resources from active mines
+cleos push action aom.mining collectrsrcs '{"uniq_owner": "yourname", "uniq_id": 12345}' -p yourname@active
+```
+
+#### 5. Process Materials
+```bash
+# Send input resources for processing (example: Iron -> Iron Plates)
+cleos transfer yourname aom.processi "200.0000 AFE" "Production,8,AFEPLT,100"     # Iron input
+cleos transfer yourname aom.processi "50.0000 AWATER" "Production,8,AFEPLT,100,67890"  # Final input + building ID
+
+# Claim processed goods (progressive or full)
+cleos push action aom.processi collectprod '{"user": "yourname", "uniq_owner": "buildingowner", "owner_claims": false, "uniq_id": 67890, "start_block_time": 1640995200}' -p yourname@active
+```
+
+## Land Types and Usage
+
+### Resource Land
+**Purpose**: Prospect for natural resources and build mines
+
+**Required Factory Schema**:
+- BuildingType (string) - Default: "Unbuilt"
+- ResourceType (string) - Default: "Unprospected"  
+- ResourceQty (uint64)
+- ProductionSpeed (uint64)
+- StorageCapacity (uint64)
+
+**Workflow**:
+1. Prospect → 2. Build Mine → 3. Collect Resources → 4. Upgrade Production
+
+### Construction Land
+**Purpose**: Build processing facilities and assembly lines
+
+**Required Factory Schema**:
+- BuildingType (string) - Default: "Unbuilt"
+- ProductionSpeed (uint64)
+- BuildingName (string)
+
+**Workflow**:
+1. Build Structure → 2. Process Resources → 3. Upgrade Facilities
+
+## Asset Management
+
+### Token Types
+
+#### Primary Currency
+- **ASH** - Main game currency for fees and services
+
+#### Resource Tokens (Mined from land)
+- **AUN** (Unobtainium) - Rare strategic resource
+- **AFE** (Iron) - Common construction material
+- **AAL** (Aluminium) - Lightweight construction material  
+- **AAU** (Gold) - Precious metal for electronics
+- **ALI** (Lithium) - Battery and technology component
+- **ASI** (Silica) - Glass and electronics material
+- **ACA** (Calcium) - Concrete and construction material
+- **AWATER** (Water) - Essential for many processes
+
+#### Processed Materials (Created by processing facilities)
+- **AFEPLT** (Iron Plates) - Processed iron for construction
+- **AFEBLK** (Iron Blocks) - Heavy iron construction components
+- **AGLSSHT** (Glass Sheets) - Processed silica for buildings
+- **ACONBLK** (Concrete Blocks) - Processed concrete materials
+- **AHYDROG** (Hydrogen) - Processed energy component
+
+### Asset Flow Patterns
+
+#### ASH Token Flow
+- **Revenue**: Sent to `aom.vault` 
+- **Usage**: Fees, upgrades, instant completion
+- **Circulation**: Remains in ecosystem
+
+#### Resource Token Flow  
+- **Generation**: Mined from land (8 decimal precision)
+- **Usage**: Construction materials, processing inputs
+- **Retirement**: Consumed via `aom.coins` contract
+
+#### Material Token Flow
+- **Creation**: Processed from raw resources in facilities
+- **Usage**: Advanced construction and assembly
+- **Retirement**: Consumed in higher-tier production
+
+### Fee Buffering System
+Many operations require multiple asset types. The system buffers payments:
+
+1. **Send Assets Incrementally**: Transfer each required asset type
+2. **Trigger Operation**: Send final asset with operation parameters
+3. **Automatic Execution**: System validates and executes when complete
+
+### Factory IDs
+- **Resource Land Factory**: 4963
+- **Construction Land Factory**: 4962
+
+## Practical Examples
+
+### Complete Mining Setup
+Full workflow from land acquisition to resource collection:
+
+```bash
+# 1. Buy resource land
+cleos transfer yourname aom.buy "100.0000 ASH" "BuyUniq"
+cleos transfer yourname aom.buy "50.0000 AFE" "BuyUniq,4963"
+
+# 2. Start prospecting (wait 24 hours or pay for instant)
+cleos push action aom.mining strtprspctng '{"uniq_owner": "yourname", "uniq_id": 12345}' -p yourname@active
+# OR instant: cleos transfer yourname aom.mining "1000.0000 ASH" "InstantProspect,12345"
+
+# 3. Get prospection results (after timer expires)
+cleos push action aom.mining reqprspctrep '{"uniq_owner": "yourname", "uniq_id": 12345, "seed": 987654321}' -p yourname@active
+
+# 4. Build mine (multi-asset payment)
+cleos transfer yourname aom.constrct "1000.0000 ASH" "Build,Mine"
+cleos transfer yourname aom.constrct "500.0000 AFE" "Build,Mine,12345"
+
+# 5. Complete construction (after timer)
+cleos push action aom.constrct cutribbon '{"uniq_id": 12345, "uniq_owner": "yourname"}' -p yourname@active
+
+# 6. Collect resources regularly
+cleos push action aom.mining collectrsrcs '{"uniq_owner": "yourname", "uniq_id": 12345}' -p yourname@active
+```
+
+### Processing Facility Workflow
+Set up resource processing from raw materials to finished goods:
+
+```bash
+# 1. Buy construction land
+cleos transfer yourname aom.buy "200.0000 ASH" "BuyUniq"
+cleos transfer yourname aom.buy "100.0000 ACONBLK" "BuyUniq,4962"
+
+# 2. Build processing facility (e.g., Metal Foundry)
+cleos transfer yourname aom.constrct "2000.0000 ASH" "Build,Metal Foundry"
+cleos transfer yourname aom.constrct "800.0000 AFE" "Build,Metal Foundry,67890"
+
+# 3. Complete construction
+cleos push action aom.constrct cutribbon '{"uniq_id": 67890, "uniq_owner": "yourname"}' -p yourname@active
+
+# 4. Process resources (Iron + Water -> Iron Plates)
+cleos transfer yourname aom.processi "200.0000 AFE" "Production,8,AFEPLT,100"
+cleos transfer yourname aom.processi "50.0000 AWATER" "Production,8,AFEPLT,100,67890"
+
+# 5. Claim processed materials (can be done progressively)
+cleos push action aom.processi collectprod '{"user": "yourname", "uniq_owner": "yourname", "owner_claims": false, "uniq_id": 67890, "start_block_time": 1640995200}' -p yourname@active
+```
+
+### Upgrade Operations
+Enhance your infrastructure for better efficiency:
+
+```bash
+# Upgrade mine production speed (multiple levels)
+cleos transfer yourname aom.mining "1000.0000 ASH" "UpgradeProductionSpeed"
+cleos transfer yourname aom.mining "200.0000 AFEPLT" "UpgradeProductionSpeed,12345"
+
+# Upgrade mine storage capacity
+cleos transfer yourname aom.mining "800.0000 ASH" "UpgradeStorageCapacity"
+cleos transfer yourname aom.mining "100.0000 ACONBLK" "UpgradeStorageCapacity,12345"
+
+# Upgrade processing facility speed
+cleos transfer yourname aom.processi "1500.0000 ASH" "UpgradeProductionSpeed"
+cleos transfer yourname aom.processi "300.0000 AGLSSHT" "UpgradeProductionSpeed,67890"
+```
+
+### Emergency Operations
+Handle issues and cancel operations:
+
+```bash
+# Clear fee buffers and get refunds
+cleos push action aom.mining clearbuffer '{"user": "yourname"}' -p yourname@active
+cleos push action aom.constrct clearbuffer '{"user": "yourname"}' -p yourname@active
+cleos push action aom.processi clearbuffer '{"user": "yourname"}' -p yourname@active
+
+# Owner reclaim from processing (after 2 weeks)
+cleos push action aom.processi collectprod '{"user": "processor", "uniq_owner": "yourname", "owner_claims": true, "uniq_id": 67890, "start_block_time": 1640995200}' -p yourname@active
+```
+
+## Integration Patterns
+
+### Multi-Asset Payments
+Many operations require multiple resource types. Use this pattern:
+
+1. **Send Required Assets**: Transfer each asset type separately
+2. **Trigger Execution**: Send final asset with operation parameters  
+3. **Automatic Processing**: Contract executes when all requirements met
+
+### Time-Based Operations
+Several contracts use time-based mechanics:
+
+- **Prospecting**: 24-hour default duration
+- **Construction**: Variable based on building type
+- **Resource Generation**: Continuous based on production speed
+- **Processing**: Based on recipe complexity
+
+### Cross-Contract Dependencies
+Operations often involve multiple contracts:
+
+1. **Mine Construction**: `aom.constrct` → `aom.mining` (initialization)
+2. **Resource Processing**: User → Building Owner → `aom.processi`
+3. **Token Retirement**: All contracts → `aom.coins`
+
+## Troubleshooting
+
+### Common Issues
+
+#### "Contract Locked" Error
+All contracts can be emergency-locked by administrators. Wait for unlock or contact support.
+
+#### "Asset Amount Incorrect" Error
+Ensure you're sending the exact fee amounts configured in contract settings.
+
+#### "Uniq Not Found" Error
+Verify you own the Uniq and it exists in your account.
+
+#### "Missing Fee" Error in Multi-Asset Operations
+Complete all required asset transfers before triggering operation execution.
+
+### Query Contract State
+
+Check current settings and configurations:
+
+```bash
+# View mining settings
+cleos get table aom.mining aom.mining basesettings
+cleos get table aom.mining aom.mining resourcestng
+
+# View construction settings  
+cleos get table aom.constrct aom.constrct cnstrcsttngs
+
+# View processing settings
+cleos get table aom.processi aom.processi prcsngsttngs
+
+# Check your fee buffers
+cleos get table aom.mining yourname feebuffer
+```
+
+### Monitor Operations
+
+Track ongoing operations:
+
+```bash
+# Check prospecting timers
+cleos get table aom.mining aom.mining prospecttime
+
+# Check construction progress
+cleos get table aom.constrct aom.constrct construction
+
+# View active processing
+cleos get table aom.processi yourname processiuser
+```
+
+## DApp Integration Patterns
+
+### UI State Management
+
+The official AOM DApp demonstrates key integration patterns:
+
+#### Multi-Asset Payment Flow
+```javascript
+// 1. Collect fees incrementally
+fees.map((fee, i) => ({
+    contract: "eosio.token",
+    action: "transfer", 
+    data: {
+        from: user,
+        to: targetContract,
+        quantity: fee.quantity.toString(),
+        memo: actionType + (i === fees.length-1 ? `,${uniqId}` : "")
+    }
+}))
+```
+
+#### Timer Management
+```javascript
+// Track completion progress
+let progress = Math.min(100, 
+    (Math.max(0, duration - (completionTime - currentTime)) / duration * 100)
+);
+
+// Display remaining time
+timeLeft(completionTime - currentTime)
+```
+
+#### Contract State Queries
+```javascript
+// Fetch settings tables on startup
+await fetchAOMProcessingSettings()
+await fetchAOMMiningBaseSettings() 
+await fetchAOMMiningResourceSettings()
+await fetchAOMConstructionSettings()
+
+// Query user-specific data
+await fetchAccountLandUniqs(account)
+await fetchAccountBalances(account)
+```
+
+### Real-World Contract Usage
+
+#### Land State Transitions
+The DApp tracks land through these metadata states:
+- `"Unprospected"` → `"Unfinished Prospection"` → `"[ResourceType]"`
+- `"Unbuilt"` → `"Unfinished [BuildingType]"` → `"[BuildingType]"`
+
+#### Progressive Operations
+```javascript
+// Start operation
+setSR({ actionButton: "START PROSPECTING", ... })
+
+// Show progress during operation  
+setSR({ body: () => `${progress}% complete` })
+
+// Complete operation
+setSR({ actionButton: "REQUEST REPORT", ... })
+```
+
+#### Asset Precision Handling
+All resource tokens use 8 decimal precision:
+```javascript
+const RESOURCES = new Map([
+    ['a_Iron', {symbolCode: 'AFE', precision: 8}],
+    ['a_Water', {symbolCode: 'AWATER', precision: 8}]
+]);
+```
+
+### Development Integration
+
+#### For DApp Developers
+
+When integrating AOM contracts:
+
+1. **Fee Buffer Management**: Track partial payments and completion states
+2. **Timer Visualization**: Show progress bars and countdowns for operations
+3. **State Validation**: Check land metadata before allowing operations
+4. **Error Recovery**: Provide clear fee buffer clearing options
+5. **Real-time Updates**: Refresh state after successful transactions
+
+#### Critical Implementation Details
+
+```javascript
+// Always include random seed for prospecting
+seed: Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+
+// Handle Ultra Wallet responses
+if(res.status === "success") {
+    // Update UI state
+    // Refresh balances
+    // Show success notification
+}
+
+// Use timeouts for blockchain finality
+setTimeout(() => {
+    fetchAccountBalances(account)
+    fetchAccountLandUniq(account, uniqId)
+}, 3000); // Allow time for RNG response
+```
+
+### Production Configuration
+
+#### Resource Processing Recipes
+Common processing combinations observed in the DApp:
+
+- **Iron + Water → Iron Plates** (`AFE` + `AWATER` → `AFEPLT`)
+- **Silica + Calcium → Glass Sheets** (`ASI` + `ACA` → `AGLSSHT`)
+- **Iron + Calcium → Concrete Blocks** (`AFE` + `ACA` → `ACONBLK`)
+
+#### Building Types and Requirements
+- **Metal Foundry**: Processes iron and aluminum materials
+- **Glass Foundry**: Creates glass products from silica
+- **Hydrogen Plant**: Produces hydrogen from water
+- **Concrete Plant**: Makes concrete from calcium and other materials
+
+### System Administration
+
+#### Contract Configuration
+All settings are stored in contract tables and can be updated:
+
+```bash
+# Update mining drop rates
+cleos push action aom.mining updrsrcsttng '{"row": {...}}' -p aom.mining@active
+
+# Update construction costs
+cleos push action aom.constrct updcnststtng '{"row": {...}}' -p aom.constrct@active
+
+# Update processing recipes
+cleos push action aom.processi updprocsttng '{"row": {...}}' -p aom.processi@active
+```
+
+#### Economic Balance Monitoring
+- Track `to_be_prospected` values to manage resource scarcity
+- Monitor production rates vs consumption rates
+- Adjust upgrade costs based on player progression
+- Balance timer durations with instant completion fees
+
+The Ash of Mankind contracts demonstrate how blockchain gaming can create complex, interconnected systems while maintaining user-friendly interfaces and robust security. The modular design allows for independent updates while the fee buffering system enables sophisticated multi-asset operations that feel natural to players.
+---
 title: 'addethaddr'
 
 outline: [0, 4]

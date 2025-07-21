@@ -71,7 +71,7 @@ npm run build:all
 
 Deployments are based on the name.
 
-Any file without the extension `.experimental.md` or `.mainnet.md` or `.staging.md` will only be deployed to their respective environments.
+Any file with the extension `.experimental.md` or `.mainnet.md` or `.staging.md` will only be deployed to their respective environments.
 
 If the file **does not contain** any of the above extensions, it will be deployed to all environments.
 

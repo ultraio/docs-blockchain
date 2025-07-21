@@ -22,6 +22,7 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
     let configData = fs.readFileSync(`${docsFolder}/.vitepress/config.ts`, 'utf-8');
     if (docsFolder.includes('staging')) {
         configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/staging/'");
+        configData = configData.replace("getSidebar('base')", "getSidebar('staging')");
         fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
         console.log(`Updated Base Path for Staging`);
     }

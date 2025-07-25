@@ -26599,7 +26599,7 @@ If the `nonce` parameter is specified, the `connect()` method will always prompt
 
 ```ts
 try {
-  const response = await wallet.connect({ nonce: 'abc123randomnonce' });
+  const response = await wallet.connect({ nonce: 'message: abc123randomnonce' });
 
   console.log(response.data.blockchainid);     // e.g., "aa1aa2aa3aa4"
   console.log(response.data.publicKey);        // e.g., "EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx"
@@ -27298,7 +27298,7 @@ This is particularly useful for dApps that need to verify user identity using a 
 
 ```ts
 try {
-  const response = await ultra.connect({ nonce: 'abc123randomnonce' });
+  const response = await ultra.connect({ nonce: 'message: abc123randomnonce' });
 
   console.log(response.data.blockchainid);     // e.g., "aa1aa2aa3aa4"
   console.log(response.data.publicKey);        // e.g., "EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx"

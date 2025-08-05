@@ -26882,9 +26882,9 @@ To begin interacting with Ultra Web Wallet or Ultra Wallet Extension, you need t
 This instance will be used throughout your application to trigger wallet connections, sign transactions, and more.
 
 ```ts
-import { UltraWallet } from '@ultraos/wallet-sdk';
+import { UltraWalletSDK } from '@ultraos/wallet-sdk';
 
-const wallet = new UltraWallet({
+const wallet = new UltraWalletSDK({
   env: 'testnet', // Required. Defines the target Ultra network.
 });
 ```

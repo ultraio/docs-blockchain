@@ -20,14 +20,16 @@ async function generate() {
         <div class="wrapper">
             <template v-if="privateKey">
                 <table>
-                    <tr>
-                        <td>Public</td>
-                        <td>{{ wharfkit.PrivateKey.from(privateKey).toPublic().toLegacyString() }}</td>
-                    </tr>
-                    <tr>
-                        <td>Private</td>
-                        <td>{{ privateKey }}</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>Public</td>
+                            <td>{{ wharfkit.PrivateKey.from(privateKey).toPublic().toLegacyString() }}</td>
+                        </tr>
+                        <tr>
+                            <td>Private</td>
+                            <td>{{ privateKey }}</td>
+                        </tr>
+                    </tbody>
                 </table>
                 <strong>Never reveal your private key to anyone.</strong>
             </template>

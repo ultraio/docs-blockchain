@@ -19,6 +19,7 @@ const navbar: DefaultTheme.NavItem[] = [
                     { text: 'Fungitable Token', link: '/tutorials/token/index' },
                     { text: 'RNG', link: '/tutorials/rng/how-to-integrate-rng-in-smart-contracts' },
                     { text: 'Airgrab', link: '/tutorials/airgrab/index' },
+                    { text: 'Ultra Bridge', link: '/tutorials/ultra-bridge/index' },
                 ],
             },
         ],

@@ -107,6 +107,74 @@ Only shows in mainnet
 </Mainnet>
 ```
 
+## Environment-Specific Navigation Configuration
+
+For more complex environment-specific navigation changes (such as adding/removing entire menu sections), the documentation system supports environment-specific sidebar and navbar configurations.
+
+### Sidebar Configuration
+
+Located in `/docs/.vitepress/sidebars/`:
+- **`base.ts`** - Base sidebar configuration used by all environments
+- **`staging.ts`** - Staging-specific additions/overrides
+- **`mainnet.ts`** - Mainnet-specific additions/overrides
+
+The system merges base + environment-specific configurations using the `getSidebar()` function:
+
+```typescript
+// In config.ts
+sidebar: getSidebar('base')        // For base/experimental
+sidebar: getSidebar('staging')     // For staging (base + staging additions)
+sidebar: getSidebar('mainnet')     // For mainnet (base + mainnet additions)
+```
+
+### Navbar Configuration
+
+Located in `/docs/.vitepress/navbars/`:
+- **`base.ts`** - Base navbar configuration used by all environments
+- **`staging.ts`** - Staging-specific navbar (can override entire sections)
+- **`mainnet.ts`** - Mainnet-specific navbar additions/overrides
+- **`navbar.ts`** - Contains the `getNavbar()` function that handles environment logic
+
+The system uses environment-specific navbar configurations using the `getNavbar()` function:
+
+```typescript
+// In config.ts
+nav: getNavbar('base')        // For base/experimental
+nav: getNavbar('staging')     // For staging
+nav: getNavbar('mainnet')     // For mainnet
+```
+
+### When to Use Each Approach
+
+- **Environment tags** (`<Staging>`, `<Mainnet>`, `<Experimental>`): 
+  - Use for small text changes within content files
+  - **Cannot contain links**
+  - Good for environment-specific notes, warnings, or instructions
+
+- **Environment-specific sidebars/navbars**:
+  - Use for adding/removing entire navigation sections
+  - Can contain links and complex navigation structures
+  - Good for environment-specific tutorials, features, or products
+
+### Example Use Cases
+
+**Environment Tags**: Different API endpoints per environment
+```html
+Base URL: <Staging>https://api.staging.ultra.io</Staging><Mainnet>https://api.ultra.io</Mainnet>
+```
+
+**Environment-Specific Navigation**: Adding staging-only tutorials
+```typescript
+// In staging.ts sidebar
+'/tutorials/index': [
+    {
+        text: 'Ultra Bridge', // Only appears in staging
+        items: getMarkdownFiles('/tutorials/ultra-bridge'),
+        collapsed: true,
+    },
+],
+```
+
 ## File Order Guide
 
 `order` is an optional property in the front matter at the top.

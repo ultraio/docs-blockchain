@@ -24,13 +24,13 @@ The Ultra Bridge is a decentralized application that enables seamless token tran
 
 ## Tutorial Sections
 
-- [Getting Started with Ultra Bridge](./getting-started.staging.md) - Learn the basics and prerequisites
-- [Connecting Your Wallets](./connecting-wallets.staging.md) - How to connect Ultra and EVM wallets
-- [Ultra to EVM Bridge](./ultra-to-evm.staging.md) - Complete guide for transferring from Ultra to EVM
-- [EVM to Ultra Bridge](./evm-to-ultra.staging.md) - Complete guide for transferring from EVM to Ultra
-- [Resuming Transactions](./resuming-transactions.staging.md) - How to resume interrupted Ultra to EVM transactions
-- [Maintenance Mode](./maintenance-mode.staging.md) - Understanding scheduled maintenance
-- [Troubleshooting](./troubleshooting.staging.md) - Common issues and solutions
+- [Getting Started with Ultra Bridge](./getting-started) - Learn the basics and prerequisites
+- [Connecting Your Wallets](./connecting-wallets) - How to connect Ultra and EVM wallets
+- [Ultra to EVM Bridge](./ultra-to-evm) - Complete guide for transferring from Ultra to EVM
+- [EVM to Ultra Bridge](./evm-to-ultra) - Complete guide for transferring from EVM to Ultra
+- [Resuming Transactions](./resuming-transactions) - How to resume interrupted Ultra to EVM transactions
+- [Maintenance Mode](./maintenance-mode) - Understanding scheduled maintenance
+- [Troubleshooting](./troubleshooting) - Common issues and solutions
 
 ## Prerequisites
 

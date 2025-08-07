@@ -23,6 +23,7 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
     if (docsFolder.includes('staging')) {
         configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/staging/'");
         configData = configData.replace("getSidebar('base')", "getSidebar('staging')");
+        configData = configData.replace("getNavbar('base')", "getNavbar('staging')");
         fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
         console.log(`Updated Base Path for Staging`);
     }
@@ -31,6 +32,12 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
         configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/experimental/'");
         fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
         console.log(`Updated Base Path for Experimental`);
+    }
+
+    if (docsFolder.includes('mainnet')) {
+        configData = configData.replace("getNavbar('base')", "getNavbar('mainnet')");
+        fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
+        console.log(`Updated Navbar for Mainnet`);
     }
 
     const files = fg.globSync(`${docsFolder}/**/*`);

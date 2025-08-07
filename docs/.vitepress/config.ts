@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress';
 import { fileURLToPath } from 'node:url';
 import basicSSL from '@vitejs/plugin-basic-ssl';
 
-import nav from './navbar';
+import { getNavbar } from './navbars/navbar';
 import { getSidebar } from './sidebar';
 
 let BASE_URL = '/';
@@ -24,7 +24,7 @@ export default defineConfig({
     appearance: 'force-dark',
     cleanUrls: false,
     themeConfig: {
-        nav,
+        nav: getNavbar('base'),
         sidebar: getSidebar('base'),
         socialLinks: [
             { icon: 'github', link: 'https://github.com/ultraio/docs-blockchain' },

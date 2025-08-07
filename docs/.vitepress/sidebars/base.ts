@@ -130,11 +130,7 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             items: getMarkdownFiles('/tutorials/Ultra-EVM'),
             collapsed: true,
         },
-        {
-            text: 'Ultra Bridge',
-            items: getMarkdownFiles('/tutorials/ultra-bridge'),
-            collapsed: true,
-        },    ],
+    ],
     '/tutorials/general': [
         {
             text: 'Tutorials',
@@ -410,22 +406,6 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'RNG',
             items: getMarkdownFiles('/tutorials/rng'),
-        },
-    ],
-    '/tutorials/ultra-bridge': [
-        {
-            text: 'Tutorials',
-            items: [
-                {
-                    text: '< Go Back to Tutorials',
-                    link: '/tutorials/index/index',
-                },
-            ],
-        },
-        {
-            text: 'Ultra Bridge',
-            items: getMarkdownFiles('/tutorials/ultra-bridge'),
-            collapsed: false,
         },
     ],
     // ################

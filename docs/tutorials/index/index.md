@@ -262,20 +262,22 @@ General tutorials to help feed your curiosity.
 
 ## Ultra Bridge
 
-<table>
-    <tbody>
-        <tr>
-            <td>Tutorial Name</td>
-            <td>Summary</td>
-            <td>Link</td>
-        </tr>
-        <tr>
-            <td>Ultra Bridge Tutorial</td>
-            <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
-            <td><a href="../ultra-bridge/index">Link</a></td>
-        </tr>
-    </tbody>
-</table>
+<Staging>
+    <table>
+        <tbody>
+            <tr>
+                <td>Tutorial Name</td>
+                <td>Summary</td>
+                <td>Link</td>
+            </tr>
+            <tr>
+                <td>Ultra Bridge Tutorial</td>
+                <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
+                <td><a href="../ultra-bridge/index.staging">Link</a></td>
+            </tr>
+        </tbody>
+    </table>
+</Staging>
 
 ## Others
 
@@ -305,7 +307,7 @@ General tutorials to help feed your curiosity.
             <tr>
                 <td>Connecting to Pinax Substreams endpoints</td>
                 <td>Learn how to connect to Pinax Substreams endpoints</td>
-                <td><a href="../substreams/connecting-to-pinax-substreams-endpoints">Link</a></td>
+                <td><a href="../substreams/connecting-to-pinax-substreams-endpoints.experimental">Link</a></td>
             </tr>
         </Experimental>
     </tbody>

@@ -7,12 +7,12 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
     // ################
     '/tutorials/index': [
         {
-            text: 'Ultra Bridge',
-            items: getMarkdownFiles('/tutorials/ultra-bridge'),
+            text: 'Substreams',
+            items: getMarkdownFiles('/tutorials/substreams'),
             collapsed: true,
-        },
+        }
     ],
-    '/tutorials/ultra-bridge': [
+    '/tutorials/substreams': [
         {
             text: 'Tutorials',
             items: [
@@ -23,11 +23,10 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
-            text: 'Ultra Bridge',
-            items: getMarkdownFiles('/tutorials/ultra-bridge'),
-            collapsed: false,
+            text: 'Substreams',
+            items: getMarkdownFiles('/tutorials/substreams'),
         },
-    ]
+    ],
 };
 
 export default sidebar;

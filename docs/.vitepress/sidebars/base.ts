@@ -116,11 +116,6 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             collapsed: true,
         },
         {
-            text: 'Substreams',
-            items: getMarkdownFiles('/tutorials/substreams'),
-            collapsed: true,
-        },
-        {
             text: 'Airgrab',
             items: getMarkdownFiles('/tutorials/airgrab'),
             collapsed: true,
@@ -361,21 +356,6 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
         {
             text: 'Oracle',
             items: getMarkdownFiles('/tutorials/oracle'),
-        },
-    ],
-    '/tutorials/substreams': [
-        {
-            text: 'Tutorials',
-            items: [
-                {
-                    text: '< Go Back to Tutorials',
-                    link: '/tutorials/index/index',
-                },
-            ],
-        },
-        {
-            text: 'Substreams',
-            items: getMarkdownFiles('/tutorials/substreams'),
         },
     ],
     '/tutorials/airgrab': [

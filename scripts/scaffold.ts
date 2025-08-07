@@ -30,6 +30,7 @@ for (let environment of ['experimental', 'staging', 'mainnet']) {
 
     if (docsFolder.includes('experimental')) {
         configData = configData.replace("BASE_URL = '/'", "BASE_URL = '/experimental/'");
+        configData = configData.replace("getSidebar('base')", "getSidebar('experimental')");
         fs.writeFileSync(`${docsFolder}/.vitepress/config.ts`, configData);
         console.log(`Updated Base Path for Experimental`);
     }

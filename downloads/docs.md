@@ -18527,96 +18527,98 @@ order: 0
 Check out some of the various libraries, code examples and products we have available.
 
 <table>
-    <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>URL</th>
-        <th>Tutorial</th>
-    </tr>
-    <tr>
-        <td>Ultra Wallet</td>
-        <td>The Ultra Wallet is a non-custodial crypto wallet that allows you to store your UOS and Uniqs.</td>
-        <td><a href="https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Download</a></td>
-        <td><a href="./ultra-wallet/index">Tutorial</a></td>
-    </tr>
-     <tr>
-        <td>Ultra Wallet SDK</td>
-        <td>Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the browser extension or via a Ultra Web Wallet.</td>
-        <td><a href="https://www.npmjs.com/package/@ultraos/wallet-sdk">NPM</a></td>
-        <td><a href="./ultra-wallet-sdk/index">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Developer Tools Docker Image</td>
-        <td>A docker container that contains binaries for cleos, nodeos, keosd, and ultratest. This image has everything to start a local blockchain.</td>
-        <td><a href="https://quay.io/repository/ultra.io/3rdparty-devtools?tab=tags&tag=latest">Image</a></td>
-        <td><a href="../tutorials/docker/getting-started">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Ultratest</td>
-        <td>A testing framework built by Ultra to test smart contracts. Only available inside the docker image.</td>
-        <td>N/A</td>
-        <td><a href="./ultratest/index">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Uniq Metadata Tool</td>
-        <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
-        <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
-        <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Ultra Tool Kit</td>
-        <td>Browser-based utility to interact with Ultra Blockchain</td>
-        <td><a href="https://github.com/ultraio/ultra-tool-kit">Source</a></td>
-        <td><a href="./ultra-tool-kit/index">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Chain API</td>
-        <td>Ultra's block producers provide infrastructure to query various chain data such as accounts, user balances, and more.</td>
-        <td>N/A</td>
-        <td><a href="./chain-api/index">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Ultra API</td>
-        <td>Ultra is providing direct access to uniq data in a easily digestable API. Lookup Uniq data quickly, and easily.</td>
-        <td>N/A</td>
-        <td><a href="./nft-api/introduction">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Ultra Ledger Lib</td>
-        <td>Sign transactions with your Ledger devices on Antelope chains.</td>
-        <td><a href="https://www.npmjs.com/package/@ultraos/ultra-ledger-lib">NPM</a></td>
-        <td>N/A</td>
-    </tr>
-    <tr>
-        <td>Ultra Signer Lib</td>
-        <td>Sign transactions with a private keys, Google KMS, or Keosd instances.</td>
-        <td><a href="https://www.npmjs.com/package/@ultraos/ultra-signer-lib">NPM</a></td>
-        <td>N/A</td>
-    </tr>
-    <tr>
-        <td>Ultra API Lib</td>
-        <td>Simplify table and chain api lookups with this handy NPM package.</td>
-        <td><a href="https://www.npmjs.com/package/@ultraos/ultra-api-lib">NPM</a></td>
-        <td>N/A</td>
-    </tr>
-    <tr>
-        <td>Contract Builder Lib</td>
-        <td>Build smart contracts from the CLI with docker and this CLI tool.</td>
-        <td><a href="https://www.npmjs.com/package/@ultraos/contract-builder">NPM</a></td>
-        <td>N/A</td>
-    </tr>
-    <tr>
-        <td>Smart Contract VS Code Extension</td>
-        <td>An all-inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to Ultra/EOS blockchain.</td>
-        <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
-        <td><a href="../tutorials/smart-contracts/compile.md">Tutorial</a></td>
-    </tr>
-    <tr>
-        <td>Uniq Discord Bot</td>
-        <td>A bot that links Discord Users with Ultra Accounts, and allows custom role integration based on owned uniqs.</td>
-        <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
-        <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>URL</th>
+            <th>Tutorial</th>
+        </tr>
+        <tr>
+            <td>Ultra Wallet</td>
+            <td>The Ultra Wallet is a non-custodial crypto wallet that allows you to store your UOS and Uniqs.</td>
+            <td><a href="https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln">Download</a></td>
+            <td><a href="./ultra-wallet/index">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Ultra Wallet SDK</td>
+            <td>Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the browser extension or via a Ultra Web Wallet.</td>
+            <td><a href="https://www.npmjs.com/package/@ultraos/wallet-sdk">NPM</a></td>
+            <td><a href="./ultra-wallet-sdk/index">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Developer Tools Docker Image</td>
+            <td>A docker container that contains binaries for cleos, nodeos, keosd, and ultratest. This image has everything to start a local blockchain.</td>
+            <td><a href="https://quay.io/repository/ultra.io/3rdparty-devtools?tab=tags&tag=latest">Image</a></td>
+            <td><a href="../tutorials/docker/getting-started">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Ultratest</td>
+            <td>A testing framework built by Ultra to test smart contracts. Only available inside the docker image.</td>
+            <td>N/A</td>
+            <td><a href="./ultratest/index">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Uniq Metadata Tool</td>
+            <td>A CLI tool that helps with creation and validation of Uniq Metadata files.</td>
+            <td><a href="https://github.com/ultraio/metadata-tool">Source</a></td>
+            <td><a href="./uniq-metadata-tool/index">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Ultra Tool Kit</td>
+            <td>Browser-based utility to interact with Ultra Blockchain</td>
+            <td><a href="https://github.com/ultraio/ultra-tool-kit">Source</a></td>
+            <td><a href="./ultra-tool-kit/index">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Chain API</td>
+            <td>Ultra's block producers provide infrastructure to query various chain data such as accounts, user balances, and more.</td>
+            <td>N/A</td>
+            <td><a href="./chain-api/index">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Ultra API</td>
+            <td>Ultra is providing direct access to uniq data in a easily digestable API. Lookup Uniq data quickly, and easily.</td>
+            <td>N/A</td>
+            <td><a href="./nft-api/introduction">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Ultra Ledger Lib</td>
+            <td>Sign transactions with your Ledger devices on Antelope chains.</td>
+            <td><a href="https://www.npmjs.com/package/@ultraos/ultra-ledger-lib">NPM</a></td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Ultra Signer Lib</td>
+            <td>Sign transactions with a private keys, Google KMS, or Keosd instances.</td>
+            <td><a href="https://www.npmjs.com/package/@ultraos/ultra-signer-lib">NPM</a></td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Ultra API Lib</td>
+            <td>Simplify table and chain api lookups with this handy NPM package.</td>
+            <td><a href="https://www.npmjs.com/package/@ultraos/ultra-api-lib">NPM</a></td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Contract Builder Lib</td>
+            <td>Build smart contracts from the CLI with docker and this CLI tool.</td>
+            <td><a href="https://www.npmjs.com/package/@ultraos/contract-builder">NPM</a></td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Smart Contract VS Code Extension</td>
+            <td>An all-inclusive tool to build smart contracts, create transactions, create accounts, and deploy contracts to Ultra/EOS blockchain.</td>
+            <td><a href="https://marketplace.visualstudio.com/items?itemName=ultraio.ultra-cpp">Download</a></td>
+            <td><a href="../tutorials/smart-contracts/compile.md">Tutorial</a></td>
+        </tr>
+        <tr>
+            <td>Uniq Discord Bot</td>
+            <td>A bot that links Discord Users with Ultra Accounts, and allows custom role integration based on owned uniqs.</td>
+            <td><a href="https://github.com/ultraio/ultra-discord-uniq-roles-bot">Source</a></td>
+            <td><a href="./uniq-discord-bot/index">Tutorial</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ---
@@ -31926,269 +31928,305 @@ General tutorials to help feed your curiosity.
 ## Fundamentals
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>Tutorial - Generate a key and create a developer Testnet account</td>
-        <td>Create your personal Ultra Testnet account to interact with the blockchain</td>
-        <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Setup the Ultra Wallet</td>
-        <td>Learn how to use our Ultra Wallet extension and set it up</td>
-        <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Log in to the Ultra Tool Kit</td>
-        <td>A brief introduction to the tool kit along with learning how log in to the tool kit using Ultra Wallet</td>
-        <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Obtaining UOS and purchasing RAM</td>
-        <td>Obtaining UOS tokens on Testnet and purchasing RAM</td>
-        <td><a href="../fundamentals/tutorial-obtain-token-and-purchase-ram">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Token transfer and Uniq purchase transactions</td>
-        <td>Demonstrating token transfer and Uniq purchasing</td>
-        <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Tutorial - Generate a key and create a developer Testnet account</td>
+            <td>Create your personal Ultra Testnet account to interact with the blockchain</td>
+            <td><a href="../fundamentals/tutorial-generate-key-and-create-testnet-account">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Setup the Ultra Wallet</td>
+            <td>Learn how to use our Ultra Wallet extension and set it up</td>
+            <td><a href="../fundamentals/tutorial-setup-the-wallet">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Log in to the Ultra Tool Kit</td>
+            <td>A brief introduction to the tool kit along with learning how log in to the tool kit using Ultra Wallet</td>
+            <td><a href="../fundamentals/tutorial-login-to-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Obtaining UOS and purchasing RAM</td>
+            <td>Obtaining UOS tokens on Testnet and purchasing RAM</td>
+            <td><a href="../fundamentals/tutorial-obtain-token-and-purchase-ram">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Token transfer and Uniq purchase transactions</td>
+            <td>Demonstrating token transfer and Uniq purchasing</td>
+            <td><a href="../fundamentals/tutorial-token-transfer-and-nft-purchase">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## Guides
 
 <table>
-    <tr>
-        <td>Guide Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>How to create Ultra Pro Wallet using Ultra Wallet Extension</td>
-        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Wallet Extension</td>
-        <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to create Ultra Pro Wallet using Ultra Tool Kit</td>
-        <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Tool Kit</td>
-        <td><a href="../guides/how-to-create-ultra-pro-wallet-using-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to get Tokens</td>
-        <td>How to get tokens for interactions on the testnet</td>
-        <td><a href="../guides/how-to-get-tokens">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to read the Block Explorer</td>
-        <td>Learn how to use our block explorer for reading data</td>
-        <td><a href="../guides/how-to-read-the-block-explorer">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to get RAM</td>
-        <td>Use this tutorial to get RAM on the Testnet for your account</td>
-        <td><a href="../guides/how-to-get-ram">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to make a REST Request</td>
-        <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
-        <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to purchase UOS tokens on Ultra Mainnet</td>
-        <td>How to purchase native UOS token on Ultra Mainnet using Ultra Wallet Extension</td>
-        <td><a href="../guides/how-to-buy-uos">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Guide Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>How to create Ultra Pro Wallet using Ultra Wallet Extension</td>
+            <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Wallet Extension</td>
+            <td><a href="../guides/how-to-create-ultra-pro-wallet">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to create Ultra Pro Wallet using Ultra Tool Kit</td>
+            <td>Create an Ultra Pro Wallet for developers on Mainnet using Ultra Tool Kit</td>
+            <td><a href="../guides/how-to-create-ultra-pro-wallet-using-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to get Tokens</td>
+            <td>How to get tokens for interactions on the testnet</td>
+            <td><a href="../guides/how-to-get-tokens">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to read the Block Explorer</td>
+            <td>Learn how to use our block explorer for reading data</td>
+            <td><a href="../guides/how-to-read-the-block-explorer">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to get RAM</td>
+            <td>Use this tutorial to get RAM on the Testnet for your account</td>
+            <td><a href="../guides/how-to-get-ram">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to make a REST Request</td>
+            <td>Learn how to use various Ultra API endpoints to consume data for your application</td>
+            <td><a href="../guides/how-to-make-a-rest-request">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to purchase UOS tokens on Ultra Mainnet</td>
+            <td>How to purchase native UOS token on Ultra Mainnet using Ultra Wallet Extension</td>
+            <td><a href="../guides/how-to-buy-uos">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## Advanced Guides
 
 <table>
-    <tr>
-        <td>Guide Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>How to log in to the Ultra Tool Kit using Anchor Wallet</td>
-        <td>Learn how to setup your keys with Anchor wallet and log in to the tool kit using Anchor wallet.</td>
-        <td><a href="../advanced-guides/how-to-login-to-toolkit-using-anchor-wallet">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to log in to the Ultra Tool Kit using Ledger</td>
-        <td>Learn how to create your account and log in to the tool kit using a Ledger device.</td>
-        <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension</td>
-        <td>Learn how to deploy a smart contract on the Ultra Mainnet using the Ultra Smart Contract Visual Studio Code Extension</td>
-        <td><a href="../advanced-guides/how-to-deploy-smart-contracts-to-mainnet-using-ultra-smart-contract-vscode-extension">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Guide Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>How to log in to the Ultra Tool Kit using Anchor Wallet</td>
+            <td>Learn how to setup your keys with Anchor wallet and log in to the tool kit using Anchor wallet.</td>
+            <td><a href="../advanced-guides/how-to-login-to-toolkit-using-anchor-wallet">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to log in to the Ultra Tool Kit using Ledger</td>
+            <td>Learn how to create your account and log in to the tool kit using a Ledger device.</td>
+            <td><a href="../advanced-guides/how-to-login-to-toolkit-using-ledger">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to deploy smart contracts on Ultra Mainnet using the Ultra Smart Contract VS Code Extension</td>
+            <td>Learn how to deploy a smart contract on the Ultra Mainnet using the Ultra Smart Contract Visual Studio Code Extension</td>
+            <td><a href="../advanced-guides/how-to-deploy-smart-contracts-to-mainnet-using-ultra-smart-contract-vscode-extension">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## Projects
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>Vite, Vue and Ultra Wallet</td>
-        <td>Learn how to build a basic web application with vite, vue, and the ultra wallet.</td>
-        <td><a href="../projects/vite-vue-ultra-wallet/index">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Vite, Vue and Ultra Wallet</td>
+            <td>Learn how to build a basic web application with vite, vue, and the ultra wallet.</td>
+            <td><a href="../projects/vite-vue-ultra-wallet/index">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## Smart Contracts
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>Tutorial - Install and Setup the Ultra Smart Contract VS Code Extension</td>
-        <td>Learn how to install and use the Ultra Smart Contract VS Code Extension.</td>
-        <td><a href="../smart-contracts/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
-        <td>Build and compile smart contracts using the Ultra Smart Contract VS Code Extension</td>
-        <td><a href="../smart-contracts/compile">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
-        <td>Deploy smart contracts using the Ultra Smart Contract VS Code Extension</td>
-        <td><a href="../smart-contracts/deploy">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
-        <td>Interact with smart contracts using the Ultra Smart Contract VS Code Extension</td>
-        <td><a href="../smart-contracts/transact">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Tutorial - Install and Setup the Ultra Smart Contract VS Code Extension</td>
+            <td>Learn how to install and use the Ultra Smart Contract VS Code Extension.</td>
+            <td><a href="../smart-contracts/index">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Compile Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+            <td>Build and compile smart contracts using the Ultra Smart Contract VS Code Extension</td>
+            <td><a href="../smart-contracts/compile">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Deploy Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+            <td>Deploy smart contracts using the Ultra Smart Contract VS Code Extension</td>
+            <td><a href="../smart-contracts/deploy">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Interact with Smart Contracts using the Ultra Smart Contract VS Code Extension</td>
+            <td>Interact with smart contracts using the Ultra Smart Contract VS Code Extension</td>
+            <td><a href="../smart-contracts/transact">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## RNG
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>How to Integrate RNG in Smart Contracts</td>
-        <td>Learn how to integrate the Ultra RNG contract into your smart contract to generate secure, verifiable random numbers</td>
-        <td><a href="../rng/how-to-integrate-rng-in-smart-contracts.md">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>How to Integrate RNG in Smart Contracts</td>
+            <td>Learn how to integrate the Ultra RNG contract into your smart contract to generate secure, verifiable random numbers</td>
+            <td><a href="../rng/how-to-integrate-rng-in-smart-contracts.md">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## Uniq Factories
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>How to create Uniq Metadata</td>
-        <td>Learn how to create metadata for Uniq factories and Uniqs.</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to validate uniq metadata using Ultra Tool Kit's Schema Validator</td>
-        <td>Learn how to validate uniq metadata files using Ultra Tool Kit's schema validation feature</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to create a Uniq Factory using Ultra Tool Kit</td>
-        <td>Learn how to create your first uniq factory using Ultra Tool Kit</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to mint a Uniq using the Ultra Tool Kit</td>
-        <td>Learn how to mint your first uniq using Ultra Tool Kit</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to update metadata using the Ultra Tool Kit</td>
-        <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
-        <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to perform advanced actions with Uniqs and Factories using Ultra Tool Kit</td>
-        <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Tool Kit</td>
-        <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
-    </tr>
-    <tr>
-        <td>How to add first-hand purchase options using Tool Kit</td>
-        <td>Learn how to use Ultra Tool Kit to add or remove a direct purchase option from your Factory</td>
-        <td><a href="../uniq-factories/factory-management/how-to-add-first-hand-purchase-using-toolkit">Link</a></td>
-    </tr>
-    <tr>
-        <td>Uniq Avatars</td>
-        <td>Learn how to manage your uniq avatar as a user</td>
-        <td><a href="../uniq-factories/uniq-avatar/index">Link</a></td>
-    </tr>
-
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>How to create Uniq Metadata</td>
+            <td>Learn how to create metadata for Uniq factories and Uniqs.</td>
+            <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-metadata">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to validate uniq metadata using Ultra Tool Kit's Schema Validator</td>
+            <td>Learn how to validate uniq metadata files using Ultra Tool Kit's schema validation feature</td>
+            <td><a href="../uniq-factories/creating-uniq-factories/how-to-validate-uniq-metadata-using-schema-validator-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to create a Uniq Factory using Ultra Tool Kit</td>
+            <td>Learn how to create your first uniq factory using Ultra Tool Kit</td>
+            <td><a href="../uniq-factories/creating-uniq-factories/how-to-create-uniq-factory-using-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to mint a Uniq using the Ultra Tool Kit</td>
+            <td>Learn how to mint your first uniq using Ultra Tool Kit</td>
+            <td><a href="../uniq-factories/creating-uniq-factories/how-to-mint-uniq-using-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to update metadata using the Ultra Tool Kit</td>
+            <td>Learn how to update the metadata for uniq factory, default uniq and uniq tokens.</td>
+            <td><a href="../uniq-factories/creating-uniq-factories/how-to-update-uniq-metadata-using-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to perform advanced actions with Uniqs and Factories using Ultra Tool Kit</td>
+            <td>Learn how to transfer Uniqs, burn Uniqs add authorized minters to your factory using Ultra Tool Kit</td>
+            <td><a href="../uniq-factories/factory-management/how-to-perform-advanced-actions-with-uniqs-and-factories">Link</a></td>
+        </tr>
+        <tr>
+            <td>How to add first-hand purchase options using Tool Kit</td>
+            <td>Learn how to use Ultra Tool Kit to add or remove a direct purchase option from your Factory</td>
+            <td><a href="../uniq-factories/factory-management/how-to-add-first-hand-purchase-using-toolkit">Link</a></td>
+        </tr>
+        <tr>
+            <td>Uniq Avatars</td>
+            <td>Learn how to manage your uniq avatar as a user</td>
+            <td><a href="../uniq-factories/uniq-avatar/index">Link</a></td>
+        </tr>
+    </tbody>
 </table>
 
 ## Docker
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>Tutorial - Install Docker and get started with Developer Tools Docker image</td>
-        <td>Learn how to install Docker and use our Development Tools Docker image</td>
-        <td><a href="../docker/getting-started">Link</a></td>
-    </tr>
-    <tr>
-        <td>Tutorial - Creating and Compiling Smart Contracts with Docker</td>
-        <td>Learn how to create and compile smart contract with Developer Tools Docker using cdt-cpp</td>
-        <td><a href="../docker/how-to-compile-smart-contract">Link</a></td>
-    </tr>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Tutorial - Install Docker and get started with Developer Tools Docker image</td>
+            <td>Learn how to install Docker and use our Development Tools Docker image</td>
+            <td><a href="../docker/getting-started">Link</a></td>
+        </tr>
+        <tr>
+            <td>Tutorial - Creating and Compiling Smart Contracts with Docker</td>
+            <td>Learn how to create and compile smart contract with Developer Tools Docker using cdt-cpp</td>
+            <td><a href="../docker/how-to-compile-smart-contract">Link</a></td>
+        </tr>
+    </tbody>
 </table>
+
+## Ultra Bridge
+
+<Staging>
+    <table>
+        <tbody>
+            <tr>
+                <td>Tutorial Name</td>
+                <td>Summary</td>
+                <td>Link</td>
+            </tr>
+            <tr>
+                <td>Ultra Bridge Tutorial</td>
+                <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
+                <td><a href="../ultra-bridge/index.staging">Link</a></td>
+            </tr>
+        </tbody>
+    </table>
+</Staging>
 
 ## Others
 
 <table>
-    <tr>
-        <td>Tutorial Name</td>
-        <td>Summary</td>
-        <td>Link</td>
-    </tr>
-    <tr>
-        <td>Learn the Basics</td>
-        <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
-        <td><a href="../general/basics/index">Link</a></td>
-    </tr>
-    <tr>
-        <td>Create a Test Network Account</td>
-        <td>Learn how to create a test network account on Ultra's Test Network</td>
-        <td><a href="../general/basics/create-a-testnet-account">Link</a></td>
-    </tr>
-    <tr>
-        <td>Get Test Network Tokens</td>
-        <td>Learn how to obtain test network tokens</td>
-        <td><a href="../general/faucet/index">Link</a></td>
-    </tr>
-    <Experimental>
+    <tbody>
         <tr>
-            <td>Connecting to Pinax Substreams endpoints</td>
-            <td>Learn how to connect to Pinax Substreams endpoints</td>
-            <td><a href="../substreams/connecting-to-pinax-substreams-endpoints">Link</a></td>
-        f</tr>
-    </Experimental>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Learn the Basics</td>
+            <td>A basic guide on spinning up a local chain, and interacting with your own instance of our blockchain</td>
+            <td><a href="../general/basics/index">Link</a></td>
+        </tr>
+        <tr>
+            <td>Create a Test Network Account</td>
+            <td>Learn how to create a test network account on Ultra's Test Network</td>
+            <td><a href="../general/basics/create-a-testnet-account">Link</a></td>
+        </tr>
+        <tr>
+            <td>Get Test Network Tokens</td>
+            <td>Learn how to obtain test network tokens</td>
+            <td><a href="../general/faucet/index">Link</a></td>
+        </tr>
+        <Experimental>
+            <tr>
+                <td>Connecting to Pinax Substreams endpoints</td>
+                <td>Learn how to connect to Pinax Substreams endpoints</td>
+                <td><a href="../substreams/connecting-to-pinax-substreams-endpoints.experimental">Link</a></td>
+            </tr>
+        </Experimental>
+    </tbody>
 </table>
 
 ---
@@ -33634,8 +33672,6 @@ await emitter.start();
 console.log("✅ Done")
 ```
 
-
-
 ---
 title: 'Getting Started'
 
@@ -34427,6 +34463,681 @@ Usage of the actions for config token tax
 ## Benefits
 
 - Allow token creator have more flexible policy with their token
+---
+title: 'Connect Wallets'
+outline: [0, 4]
+order: 2
+---
+
+# Connect Your Wallets
+
+Connect both Ultra and EVM wallets to start bridging tokens.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## Connection Steps
+
+### 1. Open Bridge Interface
+
+Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Connect Wallet" buttons for both Network.
+
+![Main Bridge Interface](./images/01-main-interface.png)
+
+### 2. Connect Ultra Wallet
+
+- **Select Ultra Testnet** network
+- **Click "Connect Ultra Wallet"** in Ultra section
+- **Approve connection** in wallet extension/popup
+- **Verify connection** - address and UOS balance visible
+
+![Ultra Wallet Connection](./images/02-ultra-wallet-connection.png)
+
+### 3. Connect EVM Wallet
+
+- **Select Ethereum Sepolia** testnet
+- **Click "Connect EVM Wallet"** in EVM section
+- **Choose wallet type** (MetaMask, WalletConnect, etc.)
+- **Approve connection** in your EVM wallet
+- **Verify connection** - address and token balances visible
+
+![EVM Wallet Connection](./images/03-evm-wallet-connection.png)
+
+## Connection Checklist
+
+**Ultra Wallet:**
+- ✅ Connected to Ultra Testnet
+- ✅ Address displayed
+- ✅ UOS balance visible
+
+**EVM Wallet:**
+- ✅ Connected to Ethereum Sepolia
+- ✅ Address displayed
+- ✅ Token balances visible
+
+## Network Mismatch
+
+If you see network mismatch warnings:
+
+![Network Mismatch Warning](./images/04-network-mismatch.png)
+
+1. **Use "Switch Network" button** if available
+2. **Manually switch** in your wallet settings
+3. **Verify correct networks:** Ultra Testnet + Ethereum Sepolia
+
+## Next Steps
+
+1. **[Ultra→EVM Transfer](./ultra-to-evm)** - Move tokens to Ethereum
+2. **[EVM→Ultra Transfer](./evm-to-ultra)** - Move tokens to Ultra
+3. **[Resume Transfers](./resuming-transactions)** - Continue interrupted transfers
+
+---
+title: 'EVM → Ultra Transfer'
+outline: [0, 4]
+order: 4
+---
+
+# EVM → Ultra Transfer
+
+Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra→EVM transfers.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## Transfer Process
+
+1. **Approve** - Allow bridge to spend your tokens
+2. **Transfer** - Submit bridge transaction
+3. **Complete** - Tokens automatically arrive in Ultra wallet
+
+## Prerequisites
+
+- ✅ Both wallets connected to correct networks
+- ✅ UOS tokens in EVM wallet (previously bridged)
+- ✅ Sepolia ETH for gas fees (approval + transfer)
+
+## Step-by-Step Transfer
+
+### 1. Configure Transfer
+
+- **Verify connections**: Ethereum Sepolia + Ultra Testnet
+- **Select UOS token** in dropdown  
+- **Enter amount** or use "All" button
+- **Set destination**: Use connected Ultra address or enter manually
+- **Review transaction details**
+
+![EVM to Ultra Setup](./images/11-evm-to-ultra-setup.png)
+
+### 2. Execute Two-Step Process
+
+**Step A: Token Approval**
+- **Click "Move Assets"**
+- **Approve spending cap** in EVM wallet
+- **Wait for approval confirmation**
+
+![EVM to Ultra Spending Cap](./images/12-evm-to-ultra-spending-cap.png)
+
+**Step B: Transfer Tokens**
+- **EVM wallet opens again** automatically
+- **Confirm transfer transaction**
+- **Wait for transfer confirmation**
+
+![EVM to Ultra Transfer Confirmation](./images/13-evm-to-ultra-transfer-confirmation.png)
+
+### 3. Transfer Complete
+
+- Tokens arrive in Ultra wallet within ~15 minutes (depending on EVM network congestion)
+- Success message displayed with transaction hash
+- No additional claiming step required
+
+![EVM to Ultra Success](./images/14-evm-to-ultra-success.png)
+
+## Key Differences vs Ultra→EVM
+
+| Feature | EVM→Ultra | Ultra→EVM |
+|---------|-------------|-------------|
+| **Steps** | 2 wallet confirmations | Multiple stages + claiming |
+| **Completion** | Automatic | Manual "Move Assets" required |
+| **Resume** | Not available | Available if interrupted |
+| **Complexity** | Simpler | More complex |
+
+## Important Notes
+
+**Two-Transaction Process**
+- **Approval**: Allow bridge to spend your tokens (requires Sepolia ETH gas)
+- **Transfer**: Actually move the tokens (requires Sepolia ETH gas)
+- **No fees** on Ultra side (Ultra has no transaction fees)
+
+**Simpler Than Ultra→EVM**
+- No manual claiming step required
+- Tokens arrive in Ultra wallet within ~15 minutes (depending on EVM network congestion)
+
+## Next Steps
+
+1. **[Ultra→EVM Transfer](./ultra-to-evm)** - Transfer tokens back to Ethereum
+2. **[Maintenance Mode](./maintenance-mode)** - Understanding scheduled downtime
+3. **[Troubleshooting](./troubleshooting)** - Fix common issues
+
+## Need Help?
+
+- **[Troubleshooting Guide](./troubleshooting)** - Common solutions
+- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support  
+- **Email**: contact@ultra.io
+- **Blockchain Explorers**: Verify transactions independently
+
+---
+title: 'Getting Started'
+outline: [0, 4]
+order: 1
+---
+
+# Getting Started
+
+Set up your wallets to start bridging tokens.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## 1. Install Ultra Wallet
+
+**Ultra Wallet Extension**
+- Install [Ultra Wallet extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
+- Create account or import existing one
+- Get free testnet tokens from [faucet](https://faucet.testnet.app.ultra.io/)
+
+**Ultra Web Wallet**
+- Use browser-based wallet (no installation required)
+- Connect via Ultra SSO
+- Get free testnet tokens from [faucet](https://faucet.testnet.app.ultra.io/)
+
+## 2. Install EVM Wallet
+
+**MetaMask**
+- Install from [metamask.io](https://metamask.io/)
+- Add Ethereum Sepolia testnet
+- Add UOS token contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+
+**Other Options**
+- WalletConnect, Coinbase Wallet, Trust Wallet
+
+## 3. Get Testnet Tokens
+
+**Ultra Testnet UOS**
+- Visit [Ultra Faucet](https://faucet.testnet.app.ultra.io/)
+- Enter your account name
+- Receive free UOS tokens
+
+**Ethereum Sepolia ETH**
+- Use Sepolia faucet for gas fees (only needed when claiming Ultra→EVM transfers)
+
+## Next Steps
+
+1. **[Connect Wallets](./connecting-wallets)** - Connect to the bridge
+2. **[Ultra→EVM Transfer](./ultra-to-evm)** - Move tokens to Ethereum
+3. **[EVM→Ultra Transfer](./evm-to-ultra)** - Move tokens to Ultra
+
+---
+title: 'Overview'
+outline: [0, 4]
+order: -99
+---
+
+# Ultra Bridge
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+Transfer UOS tokens between Ultra blockchain and Ethereum networks.
+
+![Ultra Bridge Main Interface](./images/01-main-interface.png)
+
+## Tutorial Flow
+
+1. **[Setup](./getting-started)** - Install wallets and get testnet tokens
+2. **[Connect](./connecting-wallets)** - Connect Ultra and EVM wallets  
+3. **[Ultra → EVM](./ultra-to-evm)** - Transfer from Ultra to Ethereum
+4. **[EVM → Ultra](./evm-to-ultra)** - Transfer from Ethereum to Ultra
+5. **[Resume Ultra→EVM](./resuming-transactions)** - Continue interrupted Ultra→EVM transfers
+6. **[Troubleshoot](./troubleshooting)** - Fix common issues
+
+## Requirements
+
+- Ultra Wallet (extension or web wallet)
+- EVM Wallet (MetaMask, WalletConnect, etc.)
+- Sepolia ETH for gas fees (claiming Ultra→EVM transfers only)
+
+**Networks:**
+- Ultra Testnet - Get tokens via [faucet](https://faucet.testnet.app.ultra.io/)
+- Ethereum Sepolia
+
+**UOS Token Contract (Sepolia)**: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+
+---
+title: 'Maintenance Mode'
+outline: [0, 4]
+order: 6
+---
+
+# Maintenance Mode
+
+Understanding bridge maintenance periods and how they affect transfers.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## Overview
+
+Scheduled maintenance ensures bridge security and performance. **During active maintenance, ALL bridge functions are unavailable** - no new transfers, no claims, and no resume functions will work.
+
+## Maintenance States
+
+### 1. Scheduled Maintenance
+- **Indicator**: Countdown timer to maintenance start
+- **Recommended**: Complete pending transactions before deadline
+- **Duration**: Announced in advance
+
+![Scheduled Maintenance](./images/18-scheduled-maintenance.png)
+
+### 2. Imminent Maintenance  
+- **Indicator**: Warning with short countdown (<30 min)
+- **Recommended**: Do NOT start new transactions
+- **Warning**: Transfers started now may experience long delays and extended arrival times
+- **Status**: Complete in-progress transfers quickly
+
+![Imminent Maintenance](./images/19-imminent-maintenance.png)
+
+### 3. Active Maintenance
+- **Indicator**: Clear maintenance message  
+- **Recommended**: Wait for maintenance completion - all bridge functions unavailable
+- **Status**: All transfers, claims, and resume functions blocked
+
+![Active Maintenance](./images/20-active-maintenance.png)
+
+## Impact on Transfers
+
+- **Existing transfers**: Postponed until maintenance completes
+- **Ready to claim**: Cannot be claimed until maintenance ends  
+- **New transfers**: Completely blocked
+- **Resume function**: Unavailable during maintenance, returns afterward
+- **Data safety**: All pending transfers preserved and resumable
+
+## After Maintenance
+
+**When maintenance ends:**
+1. **Check resume function** for pending transfers
+2. **Complete any ready claims**
+3. **Test with small amount** first
+
+**Transfer stuck during maintenance?** Use [Resume Function](./resuming-transactions) - this is normal behavior and transfers will continue after maintenance.
+
+## Next Steps
+
+1. **[Troubleshooting](./troubleshooting)** - Common issues and solutions  
+2. **[Ultra→EVM Transfer](./ultra-to-evm)** - Complete transfer guide
+3. **[Resume Transfers](./resuming-transactions)** - Continue interrupted transfers
+
+## Need Help?
+
+- **[Troubleshooting Guide](./troubleshooting)** - Common solutions
+- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **Email**: contact@ultra.io  
+- **Monitor announcements** for maintenance updates
+
+---
+title: 'Resume Ultra→EVM Transfers'
+outline: [0, 4]
+order: 5
+---
+
+# Resume Ultra→EVM Transfers
+
+Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete automatically and don't need resuming.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## When You Need Resume Ultra→EVM
+
+**Common Scenarios:**
+- Browser closed before completing Ultra→EVM transfer
+- "Move Assets" step not completed in Ultra→EVM transfer
+- Transaction shows "Ready to Claim" but not claimed on EVM side
+
+**Important:**
+- **Ultra→EVM transfers only** - EVM→Ultra completes automatically
+- **Sepolia ETH required** for final claiming transaction on EVM
+
+## How to Resume
+
+### 1. Find Resume Ultra→EVM Option
+
+- **Open bridge interface**
+- **Look for "Resume" card** on main page
+- **Card appears** if you have pending Ultra→EVM transfers
+
+![Resume Request Card](./images/15-resume-request-card.png)
+
+### 2. Select Ultra→EVM Transfer to Resume
+
+- **Click "Resume" button/card**
+- **View pending Ultra→EVM requests** in dialog
+- **Select specific Ultra→EVM transaction** to continue
+
+![Resume Dialog](./images/16-resume-dialog.png)
+
+**Information Shown:**
+- Request ID and timestamp
+- Token amount and addresses
+- Current status (Ready to Claim, Processing, etc.)
+- Validation progress
+
+### 3. Complete the EVM Claim
+
+- **Check Ultra→EVM transaction status** in selected request
+- **Click "Move Assets" button** if ready to claim on EVM
+- **EVM wallet opens** for final confirmation
+- **Review Sepolia ETH gas fees** and approve transaction
+- **High fees?** You can cancel and resume later when EVM congestion is lower
+- **Wait for confirmation** on Ethereum Sepolia network
+
+![Claim Transaction](./images/17-claim-transaction.png)
+
+### 4. Verify Completion
+
+- Success message displayed
+- Tokens arrive in EVM wallet within ~15 minutes (depending on EVM network congestion)
+- Transaction marked complete
+
+**Add UOS Token if needed:**
+- Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Symbol: `UOS`, Decimals: `4`
+
+## Common Resume Issues
+
+**No Resume Card Visible**
+- Ensure you have pending Ultra→EVM transactions
+- Check correct network connections
+- Refresh page
+
+**Move Assets Button Not Available** 
+- Verify transaction ready to claim
+- Check EVM network connection
+- Ensure sufficient ETH for gas
+
+**Move Assets Transaction Fails**
+- Check ETH balance for gas fees
+- Verify transaction still valid
+- Try Move Assets again
+
+**Transaction Not Found**
+- Verify correct networks connected
+- Check transaction was actually submitted
+- Review transaction hash on explorers
+
+## Transaction States
+
+1. **Submitted** → Sent to Ultra network
+2. **Processing** → Bridge processing request
+3. **Ready to Claim** → Ready for EVM completion
+4. **Claiming** → User claiming on EVM
+5. **Completed** → Successfully finished
+
+**Resume needed when:**
+- Browser closed before completion
+- Network issues prevented finishing
+- Insufficient gas caused failure
+- User forgot to complete claim step
+
+## Next Steps
+
+1. **[Ultra→EVM Transfer](./ultra-to-evm)** - Learn the complete process
+2. **[EVM→Ultra Transfer](./evm-to-ultra)** - Transfer tokens back
+3. **[Troubleshooting](./troubleshooting)** - Fix common issues
+
+## Need Help?
+
+- **[Troubleshooting Guide](./troubleshooting)** - Common solutions
+- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **Email**: contact@ultra.io
+- **Include transaction details** when seeking help
+
+---
+title: 'Troubleshooting'
+
+outline: [0, 4]
+order: 7
+---
+
+# Ultra Bridge Troubleshooting
+
+Quick solutions for common Ultra Bridge issues.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## Wallet Connection Issues
+
+### Wallet Won't Connect
+- Refresh page and unlock wallet extension
+- Clear browser cache or try different browser
+- Ensure wallet is on correct network (Ultra Testnet/Ethereum Sepolia)
+
+### Wrong Network
+- Use network switch dialog or manually switch in wallet
+- Verify both Ultra and EVM wallets on correct networks
+- Check network selectors in bridge interface
+
+### Connection Timeout
+- Check internet connection and refresh page
+- Ensure wallet extensions are responsive
+- Try disconnecting and reconnecting wallets
+
+## Transaction Issues
+
+### Transaction Stuck/Failed
+- Ultra transactions have no fees (Ultra blockchain is feeless)
+- For EVM claiming: verify sufficient Sepolia ETH for gas fees
+- Wait for network confirmation (can take several minutes)
+- Use resume function for Ultra→EVM transfers
+- Contact support if stuck >30 minutes
+
+### Tokens Not Visible
+- **Wait up to 15 minutes** after successful Move Assets for tokens to arrive (depending on EVM network congestion)
+- **Add UOS token to EVM wallet:**
+  - Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+  - Symbol: `UOS`
+  - Decimals: `4`
+
+![Transaction Failed](./images/21-transaction-failed.png)
+
+## Ultra → EVM Issues
+
+### Missing "Move Assets" Button
+- Refresh page and check transfer status dialog
+- Use resume function to access claim
+- Ensure EVM wallet connected with sufficient ETH
+
+### EVM Confirmation Fails
+- Check ETH balance for gas fees
+- **High gas fees?** Cancel and wait for lower EVM congestion, then resume
+- Verify transaction still valid
+- Try confirmation again or use resume function
+
+## EVM → Ultra Issues
+
+### Token Approval Fails
+- Ensure sufficient ETH for gas fees
+- Check token contract status
+- Retry approval transaction
+
+### Transfer Fails After Approval
+- Verify approval was successful
+- Check ETH balance for transfer gas
+- Try transfer again
+
+## Resume Function Issues
+
+### No Resume Card Visible
+- Confirm pending Ultra→EVM transactions exist
+- Check correct network connections
+- Refresh page
+
+### Cannot Claim
+- Verify transaction ready to claim
+- Ensure correct EVM network connection
+- Check ETH balance for claim gas fees
+
+## Maintenance Mode
+
+### Bridge Unavailable
+- Wait for maintenance completion
+- Check maintenance announcements
+- Monitor bridge status
+
+### Transaction Stuck During Maintenance
+- Wait for maintenance to complete
+- Use resume function after maintenance
+- Contact support if still stuck
+
+## Getting Support
+
+**When to Contact:**
+- Critical issues preventing usage
+- Missing tokens after successful transaction
+- Persistent errors after troubleshooting
+
+**Information to Provide:**
+- Error screenshots
+- Transaction hashes
+- Wallet addresses (no private keys)
+- Browser/wallet versions
+- Steps to reproduce
+
+**Contact Methods:**
+- [Ultra Discord](https://discord.com/invite/WfJCN6YbGk)
+- Email: contact@ultra.io
+- [Documentation](https://developers.ultra.io/)
+
+## Best Practices
+
+### Prevention
+- Test with small amounts first
+- Verify sufficient Sepolia ETH for claiming (Ultra→EVM only)
+- Confirm correct networks
+- Check for maintenance announcements
+
+### During Issues
+- Document errors with screenshots
+- Try basic steps: refresh, reconnect, restart
+- Don't panic - most issues are resolvable
+
+### After Resolution
+- Verify functionality works
+- Save transaction details
+- Test with small amounts first
+
+---
+title: 'Ultra → EVM Transfer'
+outline: [0, 4]
+order: 3
+---
+
+# Ultra → EVM Transfer
+
+Transfer UOS tokens from Ultra blockchain to Ethereum network.
+
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+
+## Transfer Process
+
+1. **Submit** - Send bridge transaction on Ultra
+2. **Process** - Validators confirm the transaction  
+3. **Claim** - Complete transfer on Ethereum (requires "Move Assets" step)
+
+## Prerequisites
+
+- ✅ Both wallets connected to correct networks
+- ✅ UOS tokens in Ultra wallet
+- ✅ Sepolia ETH in EVM wallet for gas fees
+
+## Step-by-Step Transfer
+
+### 1. Configure Transfer
+
+- **Verify connections**: Ultra Testnet + Ethereum Sepolia
+- **Select UOS token** in dropdown
+- **Enter amount** or use "All" button
+- **Set destination**: Use connected EVM address or enter manually
+- **Review transaction details**
+
+![Ultra to EVM Setup](./images/05-ultra-to-evm-setup.png)
+
+### 2. Submit Transaction
+
+- **Click "Move Assets"**
+- **Approve in Ultra wallet**
+- **Wait for Ultra network confirmation**
+
+![Ultra to EVM Transaction Confirmation](./images/06-ultra-to-evm-confirmation.png)
+
+### 3. Monitor Progress
+
+Transaction progresses through stages:
+1. **Pending** → Submitted to Ultra
+2. **Finding Request** → Processing
+3. **Waiting Attestations** → Validator confirmation
+4. **Ready to Claim** → Ready for EVM completion
+
+![Ultra to EVM Transfer Status](./images/07-ultra-to-evm-transfer-status.png)
+
+### 4. Complete Transfer (Critical)
+
+**⚠️ Important**: You must complete the claiming step:
+
+- **Click "Move Assets"** button when available
+- **EVM wallet opens** automatically
+- **Review Sepolia ETH gas fees** (only fee in the process) and confirm
+- **Wait for confirmation** on Ethereum network
+
+![Ultra to EVM Move Assets](./images/08-ultra-to-evm-move-assets.png)
+
+![Ultra to EVM EVM Wallet Confirmation](./images/09-ultra-to-evm-evm-confirmation.png)
+
+### 5. Verify Success
+
+- Success message displayed
+- Transaction hash provided
+- Tokens arrive in EVM wallet within ~15 minutes (depending on EVM network congestion)
+
+![Ultra to EVM Success](./images/10-ultra-to-evm-success.png)
+
+**Add UOS Token to Wallet:**
+- Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Symbol: `UOS`
+- Decimals: `4`
+
+## Important Notes
+
+**Two-Step Process**
+- Ultra→EVM requires manual completion with "Move Assets" button
+- Keep browser open during entire transfer
+- EVM wallet confirmation required at the end
+
+**Gas Fees Required**
+- **No fees** on Ultra network (Ultra has no transaction fees)
+- **Sepolia ETH** for final EVM confirmation (only fee in the process)
+- **High fees?** You can wait for lower EVM congestion and resume the transfer later
+
+**If Something Goes Wrong**
+- Use **[Resume Function](./resuming-transactions)** for interrupted transfers
+- Check **[Troubleshooting Guide](./troubleshooting)** for common issues
+
+## Next Steps
+
+1. **[EVM→Ultra Transfer](./evm-to-ultra)** - Transfer tokens back to Ultra
+2. **[Resume Transfers](./resuming-transactions)** - Continue interrupted transfers
+3. **[Troubleshooting](./troubleshooting)** - Fix common issues
+
+## Need Help?
+
+- **[Troubleshooting Guide](./troubleshooting)** - Common solutions
+- **[Resume Function](./resuming-transactions)** - Continue interrupted transfers
+- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **Email**: contact@ultra.io
+
 ---
 title: 'How to create multiple Uniq Factories using the Ultra Tool Kit'
 order: 5

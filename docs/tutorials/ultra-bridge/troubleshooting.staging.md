@@ -5,414 +5,129 @@ outline: [0, 4]
 order: 7
 ---
 
-# Troubleshooting
+# Ultra Bridge Troubleshooting
 
-This guide provides solutions for common issues you may encounter while using the Ultra Bridge. If you don't find your specific issue here, please contact support.
+Quick solutions for common Ultra Bridge issues.
 
-**Testnet Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
 
-## Common Issues
+## Wallet Connection Issues
 
-### Wallet Connection Problems
+### Wallet Won't Connect
+- Refresh page and unlock wallet extension
+- Clear browser cache or try different browser
+- Ensure wallet is on correct network (Ultra Testnet/Ethereum Sepolia)
 
-#### Wallet Won't Connect
+### Wrong Network
+- Use network switch dialog or manually switch in wallet
+- Verify both Ultra and EVM wallets on correct networks
+- Check network selectors in bridge interface
 
-**Problem**: Wallet extension doesn't respond or connection fails
+### Connection Timeout
+- Check internet connection and refresh page
+- Ensure wallet extensions are responsive
+- Try disconnecting and reconnecting wallets
 
-**Symptoms**:
-- Clicking "Connect Wallet" doesn't work
-- Wallet popup doesn't appear
-- Connection times out
+## Transaction Issues
 
-**Solutions**:
-1. **Refresh the page** and try again
-2. **Ensure your wallet extension is installed** and unlocked
-3. **Check if you're on the correct network**
-4. **Clear browser cache and cookies**
-5. **Try a different browser**
-6. **Restart your browser**
-7. **Check wallet extension permissions**
+### Transaction Stuck/Failed
+- Ultra transactions have no fees (Ultra blockchain is feeless)
+- For EVM claiming: verify sufficient Sepolia ETH for gas fees
+- Wait for network confirmation (can take several minutes)
+- Use resume function for Ultra→EVM transfers
+- Contact support if stuck >30 minutes
 
-#### Wrong Network Connected
-
-**Problem**: Connected to wrong testnet network
-
-**Symptoms**:
-- Network mismatch warning appears
-- Transaction fails due to wrong network
-- Wallet shows different network than expected
-
-**Solutions**:
-1. **Use the network switch dialog** if available
-2. **Manually switch networks** in your wallet
-3. **Ensure both wallets are on the correct networks**
-4. **Check the network selector** in the bridge interface
-5. **Disconnect and reconnect** wallets
-
-#### Connection Timeout
-
-**Problem**: Connection request times out
-
-**Symptoms**:
-- Connection request hangs
-- No response from wallet
-- Timeout error message
-
-**Solutions**:
-1. **Check your internet connection**
-2. **Try refreshing the page**
-3. **Ensure wallet extensions are responsive**
-4. **Try disconnecting and reconnecting**
-5. **Check if wallet extension is working properly**
-
-#### Address Not Displayed
-
-**Problem**: Wallet connects but address doesn't show
-
-**Symptoms**:
-- Wallet shows as connected
-- No address displayed
-- Cannot proceed with transaction
-
-**Solutions**:
-1. **Check if the wallet is properly unlocked**
-2. **Try disconnecting and reconnecting**
-3. **Ensure you have the correct permissions**
-4. **Check browser console for errors**
-5. **Try a different wallet**
-
-### Transaction Issues
-
-#### Transaction Stuck
-
-**Problem**: Transaction shows "Pending" for too long
-
-**Symptoms**:
-- Transaction remains in "Pending" state
-- No progress for extended period
-- No confirmation received
-
-**Solutions**:
-1. **Check network congestion**
-2. **Verify you have sufficient gas fees**
-3. **Wait for network confirmation** (can take several minutes)
-4. **Use the resume function** if available
-5. **Contact support** if stuck for more than 30 minutes
-
-#### Transaction Failed
-
-**Problem**: Transaction fails during processing
-
-**Symptoms**:
-- Transaction fails with error message
-- Gas fees deducted but transaction fails
-- Error dialog appears
-
-**Solutions**:
-1. **Check the error message** for specific details
-2. **Verify you have sufficient gas fees**
-3. **Try the transaction again**
-4. **Check network conditions**
-5. **Contact support** if the issue persists
+### Tokens Not Visible
+- **Wait up to 15 minutes** after successful Move Assets for tokens to arrive (depending on EVM network congestion)
+- **Add UOS token to EVM wallet:**
+  - Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+  - Symbol: `UOS`
+  - Decimals: `4`
 
 ![Transaction Failed](./images/21-transaction-failed.png)
 
-#### Insufficient Balance
-
-**Problem**: "Insufficient balance" error
-
-**Symptoms**:
-- Error message about insufficient balance
-- Cannot complete transaction
-- Balance shows but transaction fails
-
-**Solutions**:
-1. **Check your wallet balance**
-2. **Ensure you have enough tokens for the transfer**
-3. **Account for gas fees and bridge fees**
-4. **Consider reducing the transfer amount**
-5. **Check if you have the correct token selected**
-
-#### Tokens Not Visible in Wallet
-
-**Problem**: Bridged tokens don't appear in wallet
-
-**Symptoms**:
-- Transaction completed successfully
-- Tokens not visible in wallet
-- Balance doesn't update
-
-**Solutions**:
-1. **Add the Test UOS Token** to your EVM wallet:
-   - **Contract Address**: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
-   - **Token Symbol**: UOS
-   - **Decimals**: 4
-2. **Refresh your wallet** after adding the token
-3. **Check the transaction hash** on blockchain explorer
-4. **Wait a few minutes** for the wallet to sync
-
-#### Network Mismatch
-
-**Problem**: Wrong network connected
-
-**Symptoms**:
-- Network mismatch warning
-- Cannot proceed with transaction
-- Wrong network displayed
-
-**Solutions**:
-1. **Use the network switch dialog** if available
-2. **Manually switch networks** in your wallet
-3. **Ensure both wallets are on the correct networks**
-4. **Check network selectors** in the bridge interface
-
-### Ultra to EVM Specific Issues
-
-#### "Move Assets" Button Not Appearing
-
-**Problem**: Transfer status completes but "Move Assets" button doesn't show
-
-**Symptoms**:
-- Transfer status shows completion
-- No "Move Assets" button visible
-- Cannot complete the transfer
-
-**Solutions**:
-1. **Refresh the page** and check again
-2. **Look for the button in the transfer status dialog**
-3. **Try the resume function** if available
-4. **Contact support** if the issue persists
-
-#### EVM Wallet Confirmation Fails
-
-**Problem**: EVM wallet confirmation transaction fails
-
-**Symptoms**:
-- EVM wallet confirmation fails
-- Gas fees deducted but confirmation fails
-- Cannot complete the transfer
-
-**Solutions**:
-1. **Ensure you have enough ETH for gas fees**
-2. **Check if the transaction is still valid**
-3. **Try the confirmation again**
-4. **Use the resume function** if needed
-5. **Check EVM network conditions**
-
-#### Transaction Shows "Ready to Claim" But No Claim Button
-
-**Problem**: Transaction is ready but you can't claim
-
-**Symptoms**:
-- Transaction shows "Ready to Claim"
-- No claim button available
-- Cannot access claim function
-
-**Solutions**:
-1. **Use the resume function** to access the claim
-2. **Check if you're connected to the correct EVM network**
-3. **Ensure your EVM wallet has sufficient ETH for gas**
-4. **Contact support** if the issue persists
-
-### EVM to Ultra Specific Issues
-
-#### Token Approval Fails
-
-**Problem**: Spending cap approval transaction fails
-
-**Symptoms**:
-- Token approval fails
-- Cannot proceed with transfer
-- Gas fees deducted but approval fails
-
-**Solutions**:
-1. **Ensure you have enough ETH for gas fees**
-2. **Check if the token contract is working properly**
-3. **Try the approval again**
-4. **Contact support** if the issue persists
-
-#### Transfer Confirmation Fails
-
-**Problem**: Transfer confirmation transaction fails
-
-**Symptoms**:
-- Transfer confirmation fails
-- Approval successful but transfer fails
-- Cannot complete the transfer
-
-**Solutions**:
-1. **Ensure you have enough ETH for gas fees**
-2. **Check if the approval was successful**
-3. **Try the transfer again**
-4. **Contact support** if the issue persists
-
-### Resume Function Issues
-
-#### No Resume Card Visible
-
-**Problem**: You don't see a resume card on the main interface
-
-**Symptoms**:
-- No resume card or button visible
-- Expected pending transactions not shown
-
-**Solutions**:
-1. **Ensure you have pending Ultra to EVM transactions**
-2. **Check if you're connected to the correct networks**
-3. **Refresh the page** and check again
-4. **Contact support** if you believe you should have pending transactions
-
-#### Claim Button Not Available
-
-**Problem**: Transaction is selected but no claim button appears
-
-**Symptoms**:
-- Transaction selected in resume dialog
-- No claim button visible
-- Cannot proceed with claim
-
-**Solutions**:
-1. **Check if the transaction is actually ready to claim**
-2. **Ensure you're connected to the correct EVM network**
-3. **Verify your EVM wallet has sufficient ETH for gas**
-4. **Try refreshing the dialog**
-
-#### Claim Transaction Fails
-
-**Problem**: EVM claim transaction fails
-
-**Symptoms**:
-- Claim transaction fails
-- Gas fees deducted but claim fails
-- Cannot complete the claim
-
-**Solutions**:
-1. **Ensure you have enough ETH for gas fees**
-2. **Check if the transaction is still valid**
-3. **Try the claim again**
-4. **Contact support** if the issue persists
-
-### Maintenance Mode Issues
-
-#### Bridge Shows "Unavailable"
-
-**Problem**: Bridge interface shows maintenance mode
-
-**Symptoms**:
-- Bridge shows maintenance message
-- Cannot start new transactions
-- Maintenance countdown or status displayed
-
-**Solutions**:
-1. **Wait for maintenance to complete**
-2. **Check maintenance announcements**
-3. **Monitor bridge status**
-4. **Try again after maintenance completes**
-
-#### Transaction Stuck During Maintenance
-
-**Problem**: Transaction was in progress when maintenance started
-
-**Symptoms**:
-- Transaction stuck during maintenance
-- Cannot complete or resume transaction
-- Maintenance started during transfer
-
-**Solutions**:
-1. **Wait for maintenance to complete**
-2. **Use resume function after maintenance**
-3. **Contact support** if transaction is still stuck
-
-## Getting Help
-
-### When to Contact Support
-
-Contact support if you encounter:
-- **Critical issues** that prevent bridge usage
-- **Lost funds** or missing tokens
-- **Security concerns** or suspicious activity
-- **Persistent errors** not resolved by troubleshooting
-- **Maintenance issues** that persist after maintenance completes
-
-### How to Contact Support
-
-#### Before Contacting Support
-
-1. **Document the Issue**:
-   - Take screenshots of error messages
-   - Note transaction hashes
-   - Record wallet addresses (without private keys)
-   - Document steps that led to the issue
-
-2. **Check Common Solutions**:
-   - Review this troubleshooting guide
-   - Check if the issue is network-related
-   - Verify wallet connections and balances
-   - Try basic troubleshooting steps
-
-3. **Gather Information**:
-   - Browser type and version
-   - Wallet extensions and versions
-   - Network connections
-   - Error messages and timestamps
-
-#### Contact Methods
-
-- **Discord**: Join the [Ultra Discord community](https://discord.com/invite/WfJCN6YbGk)
-- **Email**: contact@ultra.io
-- **Documentation**: Check the [Ultra documentation](https://developers.ultra.io/)
-- **Community**: Ask other users for help
-
-### Information to Provide
-
-When contacting support, include:
-- **Detailed description** of the issue
-- **Steps to reproduce** the problem
-- **Screenshots** of error messages
-- **Transaction hashes** if applicable
-- **Wallet addresses** (without private keys)
-- **Browser and wallet information**
-- **Network and connection details**
+## Ultra → EVM Issues
+
+### Missing "Move Assets" Button
+- Refresh page and check transfer status dialog
+- Use resume function to access claim
+- Ensure EVM wallet connected with sufficient ETH
+
+### EVM Confirmation Fails
+- Check ETH balance for gas fees
+- **High gas fees?** Cancel and wait for lower EVM congestion, then resume
+- Verify transaction still valid
+- Try confirmation again or use resume function
+
+## EVM → Ultra Issues
+
+### Token Approval Fails
+- Ensure sufficient ETH for gas fees
+- Check token contract status
+- Retry approval transaction
+
+### Transfer Fails After Approval
+- Verify approval was successful
+- Check ETH balance for transfer gas
+- Try transfer again
+
+## Resume Function Issues
+
+### No Resume Card Visible
+- Confirm pending Ultra→EVM transactions exist
+- Check correct network connections
+- Refresh page
+
+### Cannot Claim
+- Verify transaction ready to claim
+- Ensure correct EVM network connection
+- Check ETH balance for claim gas fees
+
+## Maintenance Mode
+
+### Bridge Unavailable
+- Wait for maintenance completion
+- Check maintenance announcements
+- Monitor bridge status
+
+### Transaction Stuck During Maintenance
+- Wait for maintenance to complete
+- Use resume function after maintenance
+- Contact support if still stuck
+
+## Getting Support
+
+**When to Contact:**
+- Critical issues preventing usage
+- Missing tokens after successful transaction
+- Persistent errors after troubleshooting
+
+**Information to Provide:**
+- Error screenshots
+- Transaction hashes
+- Wallet addresses (no private keys)
+- Browser/wallet versions
+- Steps to reproduce
+
+**Contact Methods:**
+- [Ultra Discord](https://discord.com/invite/WfJCN6YbGk)
+- Email: contact@ultra.io
+- [Documentation](https://developers.ultra.io/)
 
 ## Best Practices
 
 ### Prevention
-
-1. **Test First**: Always test with small amounts
-2. **Check Balances**: Ensure sufficient funds for gas fees
-3. **Verify Networks**: Confirm correct network connections
-4. **Monitor Maintenance**: Check for scheduled maintenance
-5. **Keep Software Updated**: Update wallet extensions regularly
+- Test with small amounts first
+- Verify sufficient Sepolia ETH for claiming (Ultra→EVM only)
+- Confirm correct networks
+- Check for maintenance announcements
 
 ### During Issues
-
-1. **Don't Panic**: Most issues can be resolved
-2. **Document Everything**: Keep records of transactions and errors
-3. **Try Basic Steps**: Refresh, reconnect, restart
-4. **Check Resources**: Review this guide and documentation
-5. **Contact Support**: When basic steps don't work
+- Document errors with screenshots
+- Try basic steps: refresh, reconnect, restart
+- Don't panic - most issues are resolvable
 
 ### After Resolution
-
-1. **Verify Functionality**: Test that everything works
-2. **Save Information**: Keep transaction hashes and details
-3. **Learn from Experience**: Note what caused the issue
-4. **Share Knowledge**: Help others with similar issues
-
-## Next Steps
-
-After resolving your issue:
-
-1. **[Ultra to EVM Bridge](./ultra-to-evm.staging.md)** - Complete Ultra to EVM guide
-2. **[EVM to Ultra Bridge](./evm-to-ultra.staging.md)** - Complete EVM to Ultra guide
-3. **[Resuming Transactions](./resuming-transactions.staging.md)** - Resume interrupted transactions
-4. **[Maintenance Mode](./maintenance-mode.staging.md)** - Understanding maintenance
-
-## Getting Help
-
-If you need additional assistance:
-
-- **Check this troubleshooting guide** for common solutions
-- **Join the [Ultra Discord community](https://discord.com/invite/WfJCN6YbGk)**
-- **Contact support at contact@ultra.io**
-- **Review the [Ultra documentation](https://developers.ultra.io/)**
+- Verify functionality works
+- Save transaction details
+- Test with small amounts first

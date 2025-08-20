@@ -16607,7 +16607,7 @@ You need to be a registered developer to get access to Ultra’s Game Developer 
 2.   Register your Ultra account.
 3.   Submit your Ultra Developer application:
       1. Gather any relevant docs and info: Email address, Company information, and anything else you consider relevant.
-      2. Send it all by email to [partnerships@ultra.io](mailto:partnerships@ultra.io)
+      2. Send it all by email to [publishing@ultra.io](mailto:publishing@ultra.io)
 
 Once we validate your application you will receive a confirmation email. When this happens, you should close Ultra if it was open and restart it.
 

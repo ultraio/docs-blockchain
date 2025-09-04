@@ -28,6 +28,7 @@ import { UltraWalletSDK } from '@ultraos/wallet-sdk';
 
 const wallet = new UltraWalletSDK({
   env: 'testnet', // Required. Defines the target Ultra network.
+  provider: 'web' // Optional. Use a specific provider independetly of auto-detection 
 });
 ```
 
@@ -36,7 +37,9 @@ The `env` option determines which Ultra blockchain network the wallet connects t
 - `'mainnet'` – Ultra's production blockchain.
 - `'testnet'` – Public network for development and testing.
 
-Unlike the Ultra Wallet Extension—which allows users to select their active network manually—the Web Wallet relies on this `env` configuration to determine network context at runtime.
+> Unlike the Ultra Wallet Extension—which allows users to select their active network manually—the Web Wallet relies on this `env` configuration to determine network context at runtime.
+
+The `provider` property allows developers to explicitly select the wallet implementation to use (e.g., `'web'` or `'extension'`). Currently, the Web Wallet does not support Non-EBA accounts. If your application requires support for Non-EBA accounts, you should use the Extension instead.
 
 ::: warning
 ⚠️ Always verify that your environment is set appropriately before deploying to production.

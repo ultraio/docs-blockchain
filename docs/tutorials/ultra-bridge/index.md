@@ -6,7 +6,7 @@ order: -99
 
 # Ultra Bridge
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
@@ -14,7 +14,7 @@ Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
 ## Tutorial Flow
 
-1. **[Setup](./getting-started)** - Install wallets and get testnet tokens
+1. **[Setup](./getting-started)** - Install wallets and fund them
 2. **[Connect](./connecting-wallets)** - Connect Ultra and EVM wallets  
 3. **[Ultra → EVM](./ultra-to-evm)** - Transfer from Ultra to Ethereum
 4. **[EVM → Ultra](./evm-to-ultra)** - Transfer from Ethereum to Ultra
@@ -25,10 +25,10 @@ Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
 - Ultra Wallet (extension or web wallet)
 - EVM Wallet (MetaMask, WalletConnect, etc.)
-- Sepolia ETH for gas fees (claiming Ultra→EVM transfers only)
+- ETH for gas fees (claiming Ultra→EVM transfers only)
 
 **Networks:**
-- Ultra Testnet - Get tokens via [faucet](https://faucet.testnet.app.ultra.io/)
-- Ethereum Sepolia
+- Ultra Mainnet - Fund your wallet with UOS
+- Ethereum Mainnet
 
-**UOS Token Contract (Sepolia)**: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+**UOS Token Contract (Ethereum Mainnet)**: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`

@@ -262,22 +262,20 @@ General tutorials to help feed your curiosity.
 
 ## Ultra Bridge
 
-<Staging>
-    <table>
-        <tbody>
-            <tr>
-                <td>Tutorial Name</td>
-                <td>Summary</td>
-                <td>Link</td>
-            </tr>
-            <tr>
-                <td>Ultra Bridge Tutorial</td>
-                <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
-                <td><a href="../ultra-bridge/index.staging">Link</a></td>
-            </tr>
-        </tbody>
-    </table>
-</Staging>
+<table>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Ultra Bridge Tutorial</td>
+            <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
+            <td><a href="../ultra-bridge/index">Link</a></td>
+        </tr>
+    </tbody>
+</table>
 
 ## Others
 

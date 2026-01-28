@@ -8,39 +8,37 @@ order: 1
 
 Set up your wallets to start bridging tokens.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## 1. Install Ultra Wallet
 
 **Ultra Wallet Extension**
 - Install [Ultra Wallet extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
 - Create account or import existing one
-- Get free testnet tokens from [faucet](https://faucet.testnet.app.ultra.io/)
+- Fund your wallet with UOS on Ultra Mainnet
 
 **Ultra Web Wallet**
 - Use browser-based wallet (no installation required)
 - Connect via Ultra SSO
-- Get free testnet tokens from [faucet](https://faucet.testnet.app.ultra.io/)
+- Fund your wallet with UOS on Ultra Mainnet
 
 ## 2. Install EVM Wallet
 
 **MetaMask**
 - Install from [metamask.io](https://metamask.io/)
-- Add Ethereum Sepolia testnet
-- Add UOS token contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Connect to Ethereum Mainnet
+- Add UOS token contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 
 **Other Options**
 - WalletConnect, Coinbase Wallet, Trust Wallet
 
-## 3. Get Testnet Tokens
+## 3. Get Tokens
 
-**Ultra Testnet UOS**
-- Visit [Ultra Faucet](https://faucet.testnet.app.ultra.io/)
-- Enter your account name
-- Receive free UOS tokens
+**Ultra Mainnet UOS**
+- Acquire UOS on Ultra Mainnet and fund your Ultra wallet/account
 
-**Ethereum Sepolia ETH**
-- Use Sepolia faucet for gas fees (only needed when claiming Ultra→EVM transfers)
+**Ethereum Mainnet ETH**
+- Ensure your EVM wallet has ETH for gas fees (claiming Ultra→EVM transfers only)
 
 ## Next Steps
 

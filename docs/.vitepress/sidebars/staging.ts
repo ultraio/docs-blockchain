@@ -1,33 +1,5 @@
 import { DefaultTheme } from 'vitepress';
-import { getMarkdownFiles } from './helper';
 
-const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
-    // ################
-    // Tutorials - staging additions
-    // ################
-    '/tutorials/index': [
-        {
-            text: 'Ultra Bridge',
-            items: getMarkdownFiles('/tutorials/ultra-bridge'),
-            collapsed: true,
-        },
-    ],
-    '/tutorials/ultra-bridge': [
-        {
-            text: 'Tutorials',
-            items: [
-                {
-                    text: '< Go Back to Tutorials',
-                    link: '/tutorials/index/index',
-                },
-            ],
-        },
-        {
-            text: 'Ultra Bridge',
-            items: getMarkdownFiles('/tutorials/ultra-bridge'),
-            collapsed: false,
-        },
-    ]
-};
+const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {};
 
 export default sidebar;

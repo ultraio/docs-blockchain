@@ -8,7 +8,7 @@ order: 3
 
 Transfer UOS tokens from Ultra blockchain to Ethereum network.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Transfer Process
 
@@ -20,13 +20,13 @@ Transfer UOS tokens from Ultra blockchain to Ethereum network.
 
 - ✅ Both wallets connected to correct networks
 - ✅ UOS tokens in Ultra wallet
-- ✅ Sepolia ETH in EVM wallet for gas fees
+- ✅ ETH in EVM wallet for gas fees
 
 ## Step-by-Step Transfer
 
 ### 1. Configure Transfer
 
-- **Verify connections**: Ultra Testnet + Ethereum Sepolia
+- **Verify connections**: Ultra Mainnet + Ethereum Mainnet
 - **Select UOS token** in dropdown
 - **Enter amount** or use "All" button
 - **Set destination**: Use connected EVM address or enter manually
@@ -58,7 +58,7 @@ Transaction progresses through stages:
 
 - **Click "Move Assets"** button when available
 - **EVM wallet opens** automatically
-- **Review Sepolia ETH gas fees** (only fee in the process) and confirm
+- **Review ETH gas fees** (only fee in the process) and confirm
 - **Wait for confirmation** on Ethereum network
 
 ![Ultra to EVM Move Assets](./images/08-ultra-to-evm-move-assets.png)
@@ -74,7 +74,7 @@ Transaction progresses through stages:
 ![Ultra to EVM Success](./images/10-ultra-to-evm-success.png)
 
 **Add UOS Token to Wallet:**
-- Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 - Symbol: `UOS`
 - Decimals: `4`
 
@@ -87,7 +87,7 @@ Transaction progresses through stages:
 
 **Gas Fees Required**
 - **No fees** on Ultra network (Ultra has no transaction fees)
-- **Sepolia ETH** for final EVM confirmation (only fee in the process)
+- **ETH** for final EVM confirmation (only fee in the process)
 - **High fees?** You can wait for lower EVM congestion and resume the transfer later
 
 **If Something Goes Wrong**

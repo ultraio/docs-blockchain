@@ -8,19 +8,19 @@ order: 2
 
 Connect both Ultra and EVM wallets to start bridging tokens.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Connection Steps
 
 ### 1. Open Bridge Interface
 
-Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Connect Wallet" buttons for both Network.
+Navigate to [Ultra Bridge](https://bridge.ultra.io/) - you'll see "Connect Wallet" buttons for both Network.
 
 ![Main Bridge Interface](./images/01-main-interface.png)
 
 ### 2. Connect Ultra Wallet
 
-- **Select Ultra Testnet** network
+- **Select Ultra Mainnet** network
 - **Click "Connect Ultra Wallet"** in Ultra section
 - **Approve connection** in wallet extension/popup
 - **Verify connection** - address and UOS balance visible
@@ -29,7 +29,7 @@ Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Conne
 
 ### 3. Connect EVM Wallet
 
-- **Select Ethereum Sepolia** testnet
+- **Select Ethereum Mainnet**
 - **Click "Connect EVM Wallet"** in EVM section
 - **Choose wallet type** (MetaMask, WalletConnect, etc.)
 - **Approve connection** in your EVM wallet
@@ -40,12 +40,12 @@ Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Conne
 ## Connection Checklist
 
 **Ultra Wallet:**
-- ✅ Connected to Ultra Testnet
+- ✅ Connected to Ultra Mainnet
 - ✅ Address displayed
 - ✅ UOS balance visible
 
 **EVM Wallet:**
-- ✅ Connected to Ethereum Sepolia
+- ✅ Connected to Ethereum Mainnet
 - ✅ Address displayed
 - ✅ Token balances visible
 
@@ -57,7 +57,7 @@ If you see network mismatch warnings:
 
 1. **Use "Switch Network" button** if available
 2. **Manually switch** in your wallet settings
-3. **Verify correct networks:** Ultra Testnet + Ethereum Sepolia
+3. **Verify correct networks:** Ultra Mainnet + Ethereum Mainnet
 
 ## Next Steps
 

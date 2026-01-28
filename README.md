@@ -163,12 +163,12 @@ nav: getNavbar('mainnet')     // For mainnet
 Base URL: <Staging>https://api.staging.ultra.io</Staging><Mainnet>https://api.ultra.io</Mainnet>
 ```
 
-**Environment-Specific Navigation**: Adding staging-only tutorials
+**Navigation**: Adding tutorials to all environments
 ```typescript
-// In staging.ts sidebar
+// In base.ts sidebar
 '/tutorials/index': [
     {
-        text: 'Ultra Bridge', // Only appears in staging
+        text: 'Ultra Bridge',
         items: getMarkdownFiles('/tutorials/ultra-bridge'),
         collapsed: true,
     },

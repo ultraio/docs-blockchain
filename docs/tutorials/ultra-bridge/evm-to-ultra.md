@@ -8,7 +8,7 @@ order: 4
 
 Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra→EVM transfers.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Transfer Process
 
@@ -20,13 +20,13 @@ Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra�
 
 - ✅ Both wallets connected to correct networks
 - ✅ UOS tokens in EVM wallet (previously bridged)
-- ✅ Sepolia ETH for gas fees (approval + transfer)
+- ✅ ETH for gas fees (approval + transfer)
 
 ## Step-by-Step Transfer
 
 ### 1. Configure Transfer
 
-- **Verify connections**: Ethereum Sepolia + Ultra Testnet
+- **Verify connections**: Ethereum Mainnet + Ultra Mainnet
 - **Select UOS token** in dropdown  
 - **Enter amount** or use "All" button
 - **Set destination**: Use connected Ultra address or enter manually
@@ -70,8 +70,8 @@ Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra�
 ## Important Notes
 
 **Two-Transaction Process**
-- **Approval**: Allow bridge to spend your tokens (requires Sepolia ETH gas)
-- **Transfer**: Actually move the tokens (requires Sepolia ETH gas)
+- **Approval**: Allow bridge to spend your tokens (requires ETH gas)
+- **Transfer**: Actually move the tokens (requires ETH gas)
 - **No fees** on Ultra side (Ultra has no transaction fees)
 
 **Simpler Than Ultra→EVM**

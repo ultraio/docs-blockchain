@@ -8,7 +8,7 @@ order: 5
 
 Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete automatically and don't need resuming.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## When You Need Resume Ultra→EVM
 
@@ -19,7 +19,7 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 
 **Important:**
 - **Ultra→EVM transfers only** - EVM→Ultra completes automatically
-- **Sepolia ETH required** for final claiming transaction on EVM
+- **ETH required** for final claiming transaction on EVM
 
 ## How to Resume
 
@@ -50,9 +50,9 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 - **Check Ultra→EVM transaction status** in selected request
 - **Click "Move Assets" button** if ready to claim on EVM
 - **EVM wallet opens** for final confirmation
-- **Review Sepolia ETH gas fees** and approve transaction
+- **Review ETH gas fees** and approve transaction
 - **High fees?** You can cancel and resume later when EVM congestion is lower
-- **Wait for confirmation** on Ethereum Sepolia network
+- **Wait for confirmation** on Ethereum Mainnet
 
 ![Claim Transaction](./images/17-claim-transaction.png)
 
@@ -63,7 +63,7 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 - Transaction marked complete
 
 **Add UOS Token if needed:**
-- Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 - Symbol: `UOS`, Decimals: `4`
 
 ## Common Resume Issues

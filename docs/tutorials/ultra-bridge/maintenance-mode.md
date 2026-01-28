@@ -8,7 +8,7 @@ order: 6
 
 Understanding bridge maintenance periods and how they affect transfers.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Overview
 

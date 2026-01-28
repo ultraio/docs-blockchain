@@ -32178,22 +32178,20 @@ General tutorials to help feed your curiosity.
 
 ## Ultra Bridge
 
-<Staging>
-    <table>
-        <tbody>
-            <tr>
-                <td>Tutorial Name</td>
-                <td>Summary</td>
-                <td>Link</td>
-            </tr>
-            <tr>
-                <td>Ultra Bridge Tutorial</td>
-                <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
-                <td><a href="../ultra-bridge/index.staging">Link</a></td>
-            </tr>
-        </tbody>
-    </table>
-</Staging>
+<table>
+    <tbody>
+        <tr>
+            <td>Tutorial Name</td>
+            <td>Summary</td>
+            <td>Link</td>
+        </tr>
+        <tr>
+            <td>Ultra Bridge Tutorial</td>
+            <td>Complete guide for bridging tokens between Ultra and EVM networks using the Ultra Bridge DApp</td>
+            <td><a href="../ultra-bridge/index">Link</a></td>
+        </tr>
+    </tbody>
+</table>
 
 ## Others
 
@@ -34473,19 +34471,19 @@ order: 2
 
 Connect both Ultra and EVM wallets to start bridging tokens.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Connection Steps
 
 ### 1. Open Bridge Interface
 
-Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Connect Wallet" buttons for both Network.
+Navigate to [Ultra Bridge](https://bridge.ultra.io/) - you'll see "Connect Wallet" buttons for both Network.
 
 ![Main Bridge Interface](./images/01-main-interface.png)
 
 ### 2. Connect Ultra Wallet
 
-- **Select Ultra Testnet** network
+- **Select Ultra Mainnet** network
 - **Click "Connect Ultra Wallet"** in Ultra section
 - **Approve connection** in wallet extension/popup
 - **Verify connection** - address and UOS balance visible
@@ -34494,7 +34492,7 @@ Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Conne
 
 ### 3. Connect EVM Wallet
 
-- **Select Ethereum Sepolia** testnet
+- **Select Ethereum Mainnet**
 - **Click "Connect EVM Wallet"** in EVM section
 - **Choose wallet type** (MetaMask, WalletConnect, etc.)
 - **Approve connection** in your EVM wallet
@@ -34505,12 +34503,12 @@ Navigate to [Ultra Bridge](https://bridge.testnet.ultra.io/) - you'll see "Conne
 ## Connection Checklist
 
 **Ultra Wallet:**
-- ✅ Connected to Ultra Testnet
+- ✅ Connected to Ultra Mainnet
 - ✅ Address displayed
 - ✅ UOS balance visible
 
 **EVM Wallet:**
-- ✅ Connected to Ethereum Sepolia
+- ✅ Connected to Ethereum Mainnet
 - ✅ Address displayed
 - ✅ Token balances visible
 
@@ -34522,7 +34520,7 @@ If you see network mismatch warnings:
 
 1. **Use "Switch Network" button** if available
 2. **Manually switch** in your wallet settings
-3. **Verify correct networks:** Ultra Testnet + Ethereum Sepolia
+3. **Verify correct networks:** Ultra Mainnet + Ethereum Mainnet
 
 ## Next Steps
 
@@ -34540,7 +34538,7 @@ order: 4
 
 Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra→EVM transfers.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Transfer Process
 
@@ -34552,13 +34550,13 @@ Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra�
 
 - ✅ Both wallets connected to correct networks
 - ✅ UOS tokens in EVM wallet (previously bridged)
-- ✅ Sepolia ETH for gas fees (approval + transfer)
+- ✅ ETH for gas fees (approval + transfer)
 
 ## Step-by-Step Transfer
 
 ### 1. Configure Transfer
 
-- **Verify connections**: Ethereum Sepolia + Ultra Testnet
+- **Verify connections**: Ethereum Mainnet + Ultra Mainnet
 - **Select UOS token** in dropdown  
 - **Enter amount** or use "All" button
 - **Set destination**: Use connected Ultra address or enter manually
@@ -34602,8 +34600,8 @@ Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra�
 ## Important Notes
 
 **Two-Transaction Process**
-- **Approval**: Allow bridge to spend your tokens (requires Sepolia ETH gas)
-- **Transfer**: Actually move the tokens (requires Sepolia ETH gas)
+- **Approval**: Allow bridge to spend your tokens (requires ETH gas)
+- **Transfer**: Actually move the tokens (requires ETH gas)
 - **No fees** on Ultra side (Ultra has no transaction fees)
 
 **Simpler Than Ultra→EVM**
@@ -34633,39 +34631,37 @@ order: 1
 
 Set up your wallets to start bridging tokens.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## 1. Install Ultra Wallet
 
 **Ultra Wallet Extension**
 - Install [Ultra Wallet extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln)
 - Create account or import existing one
-- Get free testnet tokens from [faucet](https://faucet.testnet.app.ultra.io/)
+- Fund your wallet with UOS on Ultra Mainnet
 
 **Ultra Web Wallet**
 - Use browser-based wallet (no installation required)
 - Connect via Ultra SSO
-- Get free testnet tokens from [faucet](https://faucet.testnet.app.ultra.io/)
+- Fund your wallet with UOS on Ultra Mainnet
 
 ## 2. Install EVM Wallet
 
 **MetaMask**
 - Install from [metamask.io](https://metamask.io/)
-- Add Ethereum Sepolia testnet
-- Add UOS token contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Connect to Ethereum Mainnet
+- Add UOS token contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 
 **Other Options**
 - WalletConnect, Coinbase Wallet, Trust Wallet
 
-## 3. Get Testnet Tokens
+## 3. Get Tokens
 
-**Ultra Testnet UOS**
-- Visit [Ultra Faucet](https://faucet.testnet.app.ultra.io/)
-- Enter your account name
-- Receive free UOS tokens
+**Ultra Mainnet UOS**
+- Acquire UOS on Ultra Mainnet and fund your Ultra wallet/account
 
-**Ethereum Sepolia ETH**
-- Use Sepolia faucet for gas fees (only needed when claiming Ultra→EVM transfers)
+**Ethereum Mainnet ETH**
+- Ensure your EVM wallet has ETH for gas fees (claiming Ultra→EVM transfers only)
 
 ## Next Steps
 
@@ -34681,7 +34677,7 @@ order: -99
 
 # Ultra Bridge
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
@@ -34689,7 +34685,7 @@ Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
 ## Tutorial Flow
 
-1. **[Setup](./getting-started)** - Install wallets and get testnet tokens
+1. **[Setup](./getting-started)** - Install wallets and fund them
 2. **[Connect](./connecting-wallets)** - Connect Ultra and EVM wallets  
 3. **[Ultra → EVM](./ultra-to-evm)** - Transfer from Ultra to Ethereum
 4. **[EVM → Ultra](./evm-to-ultra)** - Transfer from Ethereum to Ultra
@@ -34700,13 +34696,13 @@ Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
 - Ultra Wallet (extension or web wallet)
 - EVM Wallet (MetaMask, WalletConnect, etc.)
-- Sepolia ETH for gas fees (claiming Ultra→EVM transfers only)
+- ETH for gas fees (claiming Ultra→EVM transfers only)
 
 **Networks:**
-- Ultra Testnet - Get tokens via [faucet](https://faucet.testnet.app.ultra.io/)
-- Ethereum Sepolia
+- Ultra Mainnet - Fund your wallet with UOS
+- Ethereum Mainnet
 
-**UOS Token Contract (Sepolia)**: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+**UOS Token Contract (Ethereum Mainnet)**: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 
 ---
 title: 'Maintenance Mode'
@@ -34718,7 +34714,7 @@ order: 6
 
 Understanding bridge maintenance periods and how they affect transfers.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Overview
 
@@ -34788,7 +34784,7 @@ order: 5
 
 Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete automatically and don't need resuming.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## When You Need Resume Ultra→EVM
 
@@ -34799,7 +34795,7 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 
 **Important:**
 - **Ultra→EVM transfers only** - EVM→Ultra completes automatically
-- **Sepolia ETH required** for final claiming transaction on EVM
+- **ETH required** for final claiming transaction on EVM
 
 ## How to Resume
 
@@ -34830,9 +34826,9 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 - **Check Ultra→EVM transaction status** in selected request
 - **Click "Move Assets" button** if ready to claim on EVM
 - **EVM wallet opens** for final confirmation
-- **Review Sepolia ETH gas fees** and approve transaction
+- **Review ETH gas fees** and approve transaction
 - **High fees?** You can cancel and resume later when EVM congestion is lower
-- **Wait for confirmation** on Ethereum Sepolia network
+- **Wait for confirmation** on Ethereum Mainnet
 
 ![Claim Transaction](./images/17-claim-transaction.png)
 
@@ -34843,7 +34839,7 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 - Transaction marked complete
 
 **Add UOS Token if needed:**
-- Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 - Symbol: `UOS`, Decimals: `4`
 
 ## Common Resume Issues
@@ -34906,14 +34902,14 @@ order: 7
 
 Quick solutions for common Ultra Bridge issues.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Wallet Connection Issues
 
 ### Wallet Won't Connect
 - Refresh page and unlock wallet extension
 - Clear browser cache or try different browser
-- Ensure wallet is on correct network (Ultra Testnet/Ethereum Sepolia)
+- Ensure wallet is on correct network (Ultra Mainnet/Ethereum Mainnet)
 
 ### Wrong Network
 - Use network switch dialog or manually switch in wallet
@@ -34929,7 +34925,7 @@ Quick solutions for common Ultra Bridge issues.
 
 ### Transaction Stuck/Failed
 - Ultra transactions have no fees (Ultra blockchain is feeless)
-- For EVM claiming: verify sufficient Sepolia ETH for gas fees
+- For EVM claiming: verify sufficient ETH for gas fees
 - Wait for network confirmation (can take several minutes)
 - Use resume function for Ultra→EVM transfers
 - Contact support if stuck >30 minutes
@@ -34937,7 +34933,7 @@ Quick solutions for common Ultra Bridge issues.
 ### Tokens Not Visible
 - **Wait up to 15 minutes** after successful Move Assets for tokens to arrive (depending on EVM network congestion)
 - **Add UOS token to EVM wallet:**
-  - Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+  - Contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
   - Symbol: `UOS`
   - Decimals: `4`
 
@@ -35015,7 +35011,7 @@ Quick solutions for common Ultra Bridge issues.
 
 ### Prevention
 - Test with small amounts first
-- Verify sufficient Sepolia ETH for claiming (Ultra→EVM only)
+- Verify sufficient ETH for claiming (Ultra→EVM only)
 - Confirm correct networks
 - Check for maintenance announcements
 
@@ -35039,7 +35035,7 @@ order: 3
 
 Transfer UOS tokens from Ultra blockchain to Ethereum network.
 
-**Bridge URL**: [https://bridge.testnet.ultra.io/](https://bridge.testnet.ultra.io/)
+**Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
 ## Transfer Process
 
@@ -35051,13 +35047,13 @@ Transfer UOS tokens from Ultra blockchain to Ethereum network.
 
 - ✅ Both wallets connected to correct networks
 - ✅ UOS tokens in Ultra wallet
-- ✅ Sepolia ETH in EVM wallet for gas fees
+- ✅ ETH in EVM wallet for gas fees
 
 ## Step-by-Step Transfer
 
 ### 1. Configure Transfer
 
-- **Verify connections**: Ultra Testnet + Ethereum Sepolia
+- **Verify connections**: Ultra Mainnet + Ethereum Mainnet
 - **Select UOS token** in dropdown
 - **Enter amount** or use "All" button
 - **Set destination**: Use connected EVM address or enter manually
@@ -35089,7 +35085,7 @@ Transaction progresses through stages:
 
 - **Click "Move Assets"** button when available
 - **EVM wallet opens** automatically
-- **Review Sepolia ETH gas fees** (only fee in the process) and confirm
+- **Review ETH gas fees** (only fee in the process) and confirm
 - **Wait for confirmation** on Ethereum network
 
 ![Ultra to EVM Move Assets](./images/08-ultra-to-evm-move-assets.png)
@@ -35105,7 +35101,7 @@ Transaction progresses through stages:
 ![Ultra to EVM Success](./images/10-ultra-to-evm-success.png)
 
 **Add UOS Token to Wallet:**
-- Contract: `0x3AC63AA2c077D676Fa24a7BCE05b05A2F81237FE`
+- Contract: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 - Symbol: `UOS`
 - Decimals: `4`
 
@@ -35118,7 +35114,7 @@ Transaction progresses through stages:
 
 **Gas Fees Required**
 - **No fees** on Ultra network (Ultra has no transaction fees)
-- **Sepolia ETH** for final EVM confirmation (only fee in the process)
+- **ETH** for final EVM confirmation (only fee in the process)
 - **High fees?** You can wait for lower EVM congestion and resume the transfer later
 
 **If Something Goes Wrong**

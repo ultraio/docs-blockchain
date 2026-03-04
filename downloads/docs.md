@@ -34679,6 +34679,8 @@ order: -99
 
 **Bridge URL**: [https://bridge.ultra.io/](https://bridge.ultra.io/)
 
+**Mainnet Bridge Contract (Ethereum)**: `0x95cCdDC90266F5A31732eFeF6Ab69Baf53a54E50`
+
 Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 
 ![Ultra Bridge Main Interface](./images/01-main-interface.png)
@@ -34702,7 +34704,9 @@ Transfer UOS tokens between Ultra blockchain and Ethereum networks.
 - Ultra Mainnet - Fund your wallet with UOS
 - Ethereum Mainnet
 
-**UOS Token Contract (Ethereum Mainnet)**: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
+**Contract Addresses (Ethereum Mainnet):**
+- **Bridge Contract**: `0x95cCdDC90266F5A31732eFeF6Ab69Baf53a54E50`
+- **UOS Token Contract**: `0xD13c7342e1ef687C5ad21b27c2b65D772cAb5C8c`
 
 ---
 title: 'Maintenance Mode'

@@ -52,6 +52,37 @@ Chain ID:
 https://ultra.eosphere.io/v1/chain/get_info
 ```
 
+## P2P Peering Endpoints
+
+These are the public P2P endpoints provided by Ultra block producers for node operators to connect their nodes to the network. Add these as `p2p-peer-address` entries in your nodeos `config.ini`.
+
+**Main Network (Production)**
+
+| Block Producer | P2P Endpoint |
+|----------------|-------------|
+| EOSphere | `peer1-ultra.eosphere.io:9877` |
+| EOSphere | `peer2-ultra.eosphere.io:9878` |
+| EOS Sweden | `p2p.ultra.eossweden.org:9776` |
+| EOSUSA | `ultra.eosusa.io:9881` |
+| CryptoLions | `p2p.ultra.cryptolions.io:9876` |
+
+**Test Network (Staging)**
+
+| Block Producer | P2P Endpoint |
+|----------------|-------------|
+| EOS Sweden | `p2p.testnet.ultra.eossweden.org:59776` |
+| CryptoLions | `p2p.ultra-testnet.cryptolions.io:9876` |
+
+**Example config.ini**
+
+```ini
+p2p-peer-address = peer1-ultra.eosphere.io:9877
+p2p-peer-address = peer2-ultra.eosphere.io:9878
+p2p-peer-address = p2p.ultra.eossweden.org:9776
+p2p-peer-address = ultra.eosusa.io:9881
+p2p-peer-address = p2p.ultra.cryptolions.io:9876
+```
+
 ## Hyperion Endpoints
 
 These allow for a `/v2` API call, useful for `get-transaction` API endpoint

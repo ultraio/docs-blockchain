@@ -26,7 +26,7 @@ curl -X GET https://api.ultra.eossweden.org/v1/chain/get_info
 	"last_irreversible_block_id": "03ad57....",
 	"head_block_id": "03ad5....",
 	"head_block_time": "2022-06-10T23:26:11.500",
-	"head_block_producer": "eaborosphere",
+	"head_block_producer": "eosphereiobp",
 	"virtual_block_cpu_limit": 400000,
 	"virtual_block_net_limit": 1048576,
 	"block_cpu_limit": 399999,

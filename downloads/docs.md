@@ -15082,10 +15082,6 @@ These include anything from best security practices, tools, and even other commu
 * [Vite Example Wallet App](https://github.com/Stuyk/ultra-wallet-app-template)
 
 
-### Snapshots
-
-* [EOSNation Snapshots](https://snapshots.eosnation.io/)
-
 ### Security
 
 * [Slow Mist Security Best Practices](https://github.com/slowmist/eos-smart-contract-security-best-practices/blob/master/README_EN.md)
@@ -18036,7 +18032,7 @@ curl -X GET https://api.ultra.eossweden.org/v1/chain/get_info
 	"last_irreversible_block_id": "03ad57....",
 	"head_block_id": "03ad5....",
 	"head_block_time": "2022-06-10T23:26:11.500",
-	"head_block_producer": "eosnationftw",
+	"head_block_producer": "eosphereiobp",
 	"virtual_block_cpu_limit": 400000,
 	"virtual_block_net_limit": 1048576,
 	"block_cpu_limit": 399999,
@@ -18198,7 +18194,7 @@ If the response has "more" with an account name that means there are more entrie
 
 ::: details NFT query
 ```shell
-curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"token.b","scope":"fy1rp2kk3np4","code":"eosio.nft.ft","limit":1,"json":true}'
+curl -s -X POST https://ultra.eosphere.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"token.b","scope":"fy1rp2kk3np4","code":"eosio.nft.ft","limit":1,"json":true}'
 
 # output example
 {
@@ -18230,7 +18226,7 @@ curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Conten
 
 ::: details factory query
 ```shell
-curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"factory.b","scope":"eosio.nft.ft","code":"eosio.nft.ft","lower_bound":2,"limit":1,"json":true}'
+curl -s -X POST https://ultra.eosphere.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"factory.b","scope":"eosio.nft.ft","code":"eosio.nft.ft","lower_bound":2,"limit":1,"json":true}'
 
 # example output
 {
@@ -18409,7 +18405,7 @@ Chain ID:
 a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097
 ```
 
-- http://ultra.api.eosnation.io
+- https://ultra.eosphere.io
 - https://ultra.eosrio.io
 - https://api.ultra.cryptolions.io/
 - https://ultra-api.eoseoul.io/
@@ -18425,7 +18421,7 @@ Chain ID:
 ```
 
 - https://ultratest-api.eoseoul.io/
-- http://ultratest.api.eosnation.io
+- https://ultra-testnet.eosphere.io
 - https://testnet.ultra.eosrio.io
 - https://test.ultra.eosusa.io
 - https://api.ultra-testnet.cryptolions.io
@@ -18434,7 +18430,38 @@ Chain ID:
 **Example**
 
 ```
-http://ultra.api.eosnation.io/v1/chain/get_info
+https://ultra.eosphere.io/v1/chain/get_info
+```
+
+## P2P Peering Endpoints
+
+These are the public P2P endpoints provided by Ultra block producers for node operators to connect their nodes to the network. Add these as `p2p-peer-address` entries in your nodeos `config.ini`.
+
+**Main Network (Production)**
+
+| Block Producer | P2P Endpoint |
+|----------------|-------------|
+| EOSphere | `peer1-ultra.eosphere.io:9877` |
+| EOSphere | `peer2-ultra.eosphere.io:9878` |
+| EOS Sweden | `p2p.ultra.eossweden.org:9776` |
+| EOSUSA | `ultra.eosusa.io:9881` |
+| CryptoLions | `p2p.ultra.cryptolions.io:9876` |
+
+**Test Network (Staging)**
+
+| Block Producer | P2P Endpoint |
+|----------------|-------------|
+| EOS Sweden | `p2p.testnet.ultra.eossweden.org:59776` |
+| CryptoLions | `p2p.ultra-testnet.cryptolions.io:9876` |
+
+**Example config.ini**
+
+```ini
+p2p-peer-address = peer1-ultra.eosphere.io:9877
+p2p-peer-address = peer2-ultra.eosphere.io:9878
+p2p-peer-address = p2p.ultra.eossweden.org:9776
+p2p-peer-address = ultra.eosusa.io:9881
+p2p-peer-address = p2p.ultra.cryptolions.io:9876
 ```
 
 ## Hyperion Endpoints
@@ -29259,7 +29286,7 @@ The goal of this tutorial is to login into the Ultra Tool Kit using Anchor Walle
     - **For Mainnet:**
         - Chain ID: `a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097`
         - Name of Blockchain: `Ultra Mainnet`
-        - Default Node: `https://ultra.api.eosnation.io`
+        - Default Node: `https://ultra.eosphere.io`
         - Default Token Symbol: `UOS`
 
     ![](./images/anchor-wallet-add-new-chain.png)
@@ -29268,7 +29295,7 @@ The goal of this tutorial is to login into the Ultra Tool Kit using Anchor Walle
     - **For Testnet:**
         - Chain ID: `7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9`
         - Name of Blockchain: `Ultra Testnet`
-        - Default Node: `https://ultratest.api.eosnation.io`
+        - Default Node: `https://ultra-testnet.eosphere.io`
         - Default Token Symbol: `UOS`
 
     Click on the `Save` button to proceed.
@@ -30897,7 +30924,7 @@ Once the transaction is signed, a confirmation screen will display indicating th
 
 #### Step 7a: Access Your User Inventory Page
 
-To confirm the purchase of your new Uniq, navigate to the Ultra tool kit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultratest.api.eosnation.io](https://ultratest.api.eosnation.io).
+To confirm the purchase of your new Uniq, navigate to the Ultra tool kit page ([https://toolkit.ultra.io/user](https://toolkit.ultra.io/user)). Once there, enter your account name (e.g. `1aa2aa3aa4in`) in the `Start the search by entering a username` field. Make sure to set your endpoint to the test network at the top right corner, which for this example is [https://ultra-testnet.eosphere.io](https://ultra-testnet.eosphere.io).
 
 ![](./images/purchase-user-uniq-explorer.png)
 
@@ -31713,7 +31740,7 @@ You may need to perform a REST request if you're looking up user balance, user a
 Observe the following URL:
 
 ```
-http://ultra.api.eosnation.io/v1/chain/get_info
+https://ultra.eosphere.io/v1/chain/get_info
 ```
 
 It is composed of two parts:
@@ -31722,7 +31749,7 @@ It is composed of two parts:
 <block_producer_url><endpoint>
 ```
 
-Block Producer URL: `http://ultra.api.eosnation.io`
+Block Producer URL: `https://ultra.eosphere.io`
 
 Endpoint: `/v1/chain/get_info`
 
@@ -31735,20 +31762,20 @@ Use a CLI, or write some code in the language of your choice.
 ::: code-group
 
 ```sh [curl]
-curl http://ultra.api.eosnation.io/v1/chain/get_info
+curl https://ultra.eosphere.io/v1/chain/get_info
 ```
 
 ```js [JavaScript]
 const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: 'false'};
 
-fetch('http://ultra.api.eosnation.io/v1/chain/get_info', options)
+fetch('https://ultra.eosphere.io/v1/chain/get_info', options)
   .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));
 ```
 
 ```C# [C#]
-var client = new RestClient("http://ultra.api.eosnation.io/v1/chain/get_info");
+var client = new RestClient("https://ultra.eosphere.io/v1/chain/get_info");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Content-Type", "application/json");
 IRestResponse response = client.Execute(request);
@@ -31765,7 +31792,7 @@ import (
 
 func main() {
 
-	url := "http://ultra.api.eosnation.io/v1/chain/get_info"
+	url := "https://ultra.eosphere.io/v1/chain/get_info"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -31783,7 +31810,7 @@ func main() {
 ```
 
 ```Java [Java]
-HttpResponse<String> response = Unirest.get("http://ultra.api.eosnation.io/v1/chain/get_info")
+HttpResponse<String> response = Unirest.get("https://ultra.eosphere.io/v1/chain/get_info")
   .header("Content-Type", "application/json")
   .asString();
 ```
@@ -32275,19 +32302,19 @@ Then you can utilize the `rates` field to get the UOS conversion rate. Note that
 For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
 
 ```bash
-cleos -u https://ultra.api.eosnation.io get table eosio.oracle MINUTES finalaverage | jq '.rows[0].average.price'
+cleos -u https://ultra.eosphere.io get table eosio.oracle MINUTES finalaverage | jq '.rows[0].average.price'
 ```
 
 For `lastknwnrate` table
 
 ```bash
-cleos -u https://ultra.api.eosnation.io get table eosio.oracle eosio.oracle lastknwnrate | jq '.rows[0].latest_rate.price'
+cleos -u https://ultra.eosphere.io get table eosio.oracle eosio.oracle lastknwnrate | jq '.rows[0].latest_rate.price'
 ```
 
 For `finalrates` table (can use 1, 2 or 3)
 
 ```bash
-cleos -u https://ultra.api.eosnation.io get table eosio.oracle 1 finalrates | jq '.rows[0].rates'
+cleos -u https://ultra.eosphere.io get table eosio.oracle 1 finalrates | jq '.rows[0].rates'
 ```
 
 ## Get conversion rate using Wharfkit
@@ -32318,7 +32345,7 @@ const rows = await contract.table("finalrates").query({scope:1}).next()
 For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
 
 ```js
-const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+const rows = await fetch(`https://ultra.eosphere.io/v1/chain/get_table_rows`, {
     method:"POST",
     body:JSON.stringify({
         json: true,
@@ -32332,7 +32359,7 @@ const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows
 For `lastknwnrate` table
 
 ```js
-const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+const rows = await fetch(`https://ultra.eosphere.io/v1/chain/get_table_rows`, {
     method:"POST",
     body:JSON.stringify({
         json: true,
@@ -32346,7 +32373,7 @@ const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows
 For `finalrates` table (can use 1, 2 or 3)
 
 ```js
-const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+const rows = await fetch(`https://ultra.eosphere.io/v1/chain/get_table_rows`, {
     method:"POST",
     body:JSON.stringify({
         json: true,

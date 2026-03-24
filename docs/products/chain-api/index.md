@@ -24,7 +24,7 @@ Chain ID:
 a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097
 ```
 
-- http://ultra.api.eosnation.io
+- https://ultra.eosphere.io
 - https://ultra.eosrio.io
 - https://api.ultra.cryptolions.io/
 - https://ultra-api.eoseoul.io/
@@ -40,7 +40,7 @@ Chain ID:
 ```
 
 - https://ultratest-api.eoseoul.io/
-- http://ultratest.api.eosnation.io
+- https://ultra-testnet.eosphere.io
 - https://testnet.ultra.eosrio.io
 - https://test.ultra.eosusa.io
 - https://api.ultra-testnet.cryptolions.io
@@ -49,7 +49,7 @@ Chain ID:
 **Example**
 
 ```
-http://ultra.api.eosnation.io/v1/chain/get_info
+https://ultra.eosphere.io/v1/chain/get_info
 ```
 
 ## Hyperion Endpoints

@@ -41,7 +41,7 @@ The goal of this tutorial is to login into the Ultra Tool Kit using Anchor Walle
     - **For Mainnet:**
         - Chain ID: `a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097`
         - Name of Blockchain: `Ultra Mainnet`
-        - Default Node: `https://ultra.api.eosnation.io`
+        - Default Node: `https://ultra.eosphere.io`
         - Default Token Symbol: `UOS`
 
     ![](./images/anchor-wallet-add-new-chain.png)
@@ -50,7 +50,7 @@ The goal of this tutorial is to login into the Ultra Tool Kit using Anchor Walle
     - **For Testnet:**
         - Chain ID: `7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9`
         - Name of Blockchain: `Ultra Testnet`
-        - Default Node: `https://ultratest.api.eosnation.io`
+        - Default Node: `https://ultra-testnet.eosphere.io`
         - Default Token Symbol: `UOS`
 
     Click on the `Save` button to proceed.

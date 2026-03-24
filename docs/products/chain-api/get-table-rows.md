@@ -65,7 +65,7 @@ If the response has "more" with an account name that means there are more entrie
 
 ::: details NFT query
 ```shell
-curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"token.b","scope":"fy1rp2kk3np4","code":"eosio.nft.ft","limit":1,"json":true}'
+curl -s -X POST https://ultra.eosphere.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"token.b","scope":"fy1rp2kk3np4","code":"eosio.nft.ft","limit":1,"json":true}'
 
 # output example
 {
@@ -97,7 +97,7 @@ curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Conten
 
 ::: details factory query
 ```shell
-curl -s -X POST http://ultra.api.eosnation.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"factory.b","scope":"eosio.nft.ft","code":"eosio.nft.ft","lower_bound":2,"limit":1,"json":true}'
+curl -s -X POST https://ultra.eosphere.io/v1/chain/get_table_rows -H 'Content-Type: application/json' --data '{"table":"factory.b","scope":"eosio.nft.ft","code":"eosio.nft.ft","lower_bound":2,"limit":1,"json":true}'
 
 # example output
 {

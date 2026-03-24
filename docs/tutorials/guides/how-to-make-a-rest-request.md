@@ -17,7 +17,7 @@ You may need to perform a REST request if you're looking up user balance, user a
 Observe the following URL:
 
 ```
-http://ultra.api.eosnation.io/v1/chain/get_info
+https://ultra.eosphere.io/v1/chain/get_info
 ```
 
 It is composed of two parts:
@@ -26,7 +26,7 @@ It is composed of two parts:
 <block_producer_url><endpoint>
 ```
 
-Block Producer URL: `http://ultra.api.eosnation.io`
+Block Producer URL: `https://ultra.eosphere.io`
 
 Endpoint: `/v1/chain/get_info`
 
@@ -39,20 +39,20 @@ Use a CLI, or write some code in the language of your choice.
 ::: code-group
 
 ```sh [curl]
-curl http://ultra.api.eosnation.io/v1/chain/get_info
+curl https://ultra.eosphere.io/v1/chain/get_info
 ```
 
 ```js [JavaScript]
 const options = {method: 'GET', headers: {'Content-Type': 'application/json'}, body: 'false'};
 
-fetch('http://ultra.api.eosnation.io/v1/chain/get_info', options)
+fetch('https://ultra.eosphere.io/v1/chain/get_info', options)
   .then(response => response.json())
   .then(response => console.log(response))
   .catch(err => console.error(err));
 ```
 
 ```C# [C#]
-var client = new RestClient("http://ultra.api.eosnation.io/v1/chain/get_info");
+var client = new RestClient("https://ultra.eosphere.io/v1/chain/get_info");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Content-Type", "application/json");
 IRestResponse response = client.Execute(request);
@@ -69,7 +69,7 @@ import (
 
 func main() {
 
-	url := "http://ultra.api.eosnation.io/v1/chain/get_info"
+	url := "https://ultra.eosphere.io/v1/chain/get_info"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -87,7 +87,7 @@ func main() {
 ```
 
 ```Java [Java]
-HttpResponse<String> response = Unirest.get("http://ultra.api.eosnation.io/v1/chain/get_info")
+HttpResponse<String> response = Unirest.get("https://ultra.eosphere.io/v1/chain/get_info")
   .header("Content-Type", "application/json")
   .asString();
 ```

@@ -46,19 +46,19 @@ Then you can utilize the `rates` field to get the UOS conversion rate. Note that
 For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
 
 ```bash
-cleos -u https://ultra.api.eosnation.io get table eosio.oracle MINUTES finalaverage | jq '.rows[0].average.price'
+cleos -u https://ultra.eosphere.io get table eosio.oracle MINUTES finalaverage | jq '.rows[0].average.price'
 ```
 
 For `lastknwnrate` table
 
 ```bash
-cleos -u https://ultra.api.eosnation.io get table eosio.oracle eosio.oracle lastknwnrate | jq '.rows[0].latest_rate.price'
+cleos -u https://ultra.eosphere.io get table eosio.oracle eosio.oracle lastknwnrate | jq '.rows[0].latest_rate.price'
 ```
 
 For `finalrates` table (can use 1, 2 or 3)
 
 ```bash
-cleos -u https://ultra.api.eosnation.io get table eosio.oracle 1 finalrates | jq '.rows[0].rates'
+cleos -u https://ultra.eosphere.io get table eosio.oracle 1 finalrates | jq '.rows[0].rates'
 ```
 
 ## Get conversion rate using Wharfkit
@@ -89,7 +89,7 @@ const rows = await contract.table("finalrates").query({scope:1}).next()
 For `finalaverage` table (can use `SECONDS`, `MINUTES`, `HOURS`, `DAYS`)
 
 ```js
-const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+const rows = await fetch(`https://ultra.eosphere.io/v1/chain/get_table_rows`, {
     method:"POST",
     body:JSON.stringify({
         json: true,
@@ -103,7 +103,7 @@ const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows
 For `lastknwnrate` table
 
 ```js
-const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+const rows = await fetch(`https://ultra.eosphere.io/v1/chain/get_table_rows`, {
     method:"POST",
     body:JSON.stringify({
         json: true,
@@ -117,7 +117,7 @@ const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows
 For `finalrates` table (can use 1, 2 or 3)
 
 ```js
-const rows = await fetch(`https://ultra.api.eosnation.io/v1/chain/get_table_rows`, {
+const rows = await fetch(`https://ultra.eosphere.io/v1/chain/get_table_rows`, {
     method:"POST",
     body:JSON.stringify({
         json: true,

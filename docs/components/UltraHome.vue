@@ -199,7 +199,7 @@ interface UltraHomeMatter {
 
 let data = ref<UltraHomeMatter>(frontmatter.value as UltraHomeMatter);
 let blockCount = ref<number>(5000000);
-let currentProducer = ref<string>('eosnation');
+let currentProducer = ref<string>('eosphere');
 let currentLinkIndex = ref<number>(0);
 let moveSidebarDown = ref<boolean>(false);
 

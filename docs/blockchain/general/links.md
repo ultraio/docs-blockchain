@@ -34,10 +34,6 @@ These include anything from best security practices, tools, and even other commu
 * [Vite Example Wallet App](https://github.com/Stuyk/ultra-wallet-app-template)
 
 
-### Snapshots
-
-* [EOSNation Snapshots](https://snapshots.eosnation.io/)
-
 ### Security
 
 * [Slow Mist Security Best Practices](https://github.com/slowmist/eos-smart-contract-security-best-practices/blob/master/README_EN.md)

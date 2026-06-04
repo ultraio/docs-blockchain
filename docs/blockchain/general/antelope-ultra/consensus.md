@@ -36,3 +36,9 @@ Proof of Authority (PoA) is a reputation-based consensus algorithm that introduc
 The PoA consensus algorithm leverages the value of identities, which means that block validators are not staking coins but their own reputation instead. Therefore, PoA blockchains are secured by the validating nodes that are arbitrarily selected as trustworthy entities.
 
 The Proof of Authority model relies on a limited number of block validators and this is what makes it a highly scalable system. Blocks and transactions are verified by pre-approved participants, who act as moderators of the system.
+
+## Instant Finality
+
+Proof of Authority decides *who* produces blocks. Separately, Ultra adds **Instant Finality** (introduced in Antelope Spring 1.x, powered by the Savanna consensus protocol), bringing time-to-finality down from minutes to about **1 second**.
+
+See [Instant Finality](./finality.md) for details.

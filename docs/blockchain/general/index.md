@@ -17,6 +17,12 @@ Block producers are given a specific order based on their geographical location 
 
 See [Proof of Authority](./antelope-ultra/consensus.md#proof-of-authority-poa)
 
+## Instant Finality
+
+Ultra now delivers **Instant Finality** (introduced in Antelope Spring 1.x), finalizing transactions in about **1 second** — a major improvement over legacy Antelope's multi-minute finality, and faster than most major blockchains. It adds a finality layer on top of Proof of Authority without changing how Block Producers are selected.
+
+See [Instant Finality](./antelope-ultra/finality.md)
+
 ## Block Producer Schedule
 
 During the initial Testnets and Mainnet, it will be Ultra who is defining the Block Producer schedule. There is not an ordered, elected ranking like on other Antelope chains. There is no voting for Block Producers.

@@ -31,6 +31,12 @@ const popularresources = [
         icon: '/images/links/learn.svg',
     },
     {
+        href: 'blockchain/general/antelope-ultra/finality.html',
+        title: 'Instant Finality',
+        desc: 'How Ultra finalizes transactions in about 1 second, and why it matters for users and developers.',
+        icon: '/images/links/ultra.svg',
+    },
+    {
         href: 'tutorials/smart-contracts/index.html',
         title: 'Build Smart Contracts',
         desc: 'Documentation on our smart contract system and how to build them.',
@@ -238,7 +244,7 @@ onMounted(() => { });
                     <p class="getting-started-description">
                         Take advantage of all of the best features of decentralized technologies
                         <span class="highlight">without the downsides of high costs, hard on-boarding, and slow
-                            networks</span>.
+                            networks</span> — with <span class="highlight">~1-second transaction finality</span>.
                     </p>
 
                     <div class="quick-start-grid">

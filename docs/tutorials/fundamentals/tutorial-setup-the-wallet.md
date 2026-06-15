@@ -6,7 +6,9 @@ oultine: [0, 5]
 
 # Tutorial - Setup the Ultra Wallet
 
-Ultra Wallet browser extension is a crypto wallet that helps you access decentralized applications on Ultra blockchain and securely manage digital assets. This tutorial will cover the simplest process of setting up the Ultra Wallet and adding your keys to the wallet.
+The Ultra Wallet browser extension is a self-custody crypto wallet that helps you access decentralized applications on the Ultra blockchain and securely manage your digital assets. This tutorial covers setting up the Ultra Wallet (version 2.x) and adding your developer account so it can be used in later tutorials.
+
+> **What's new in 2.x:** The wallet now stores all of your keys in a single, on-device encrypted **vault** protected by one password. From that vault you can manage multiple accounts and keys, create new blockchain accounts on-device, switch networks, and connect to dApps. See [Managing accounts and keys](../../products/ultra-wallet/managing-accounts-and-keys.md) and [Networks and settings](../../products/ultra-wallet/networks-and-settings.md) for the full feature set.
 
 ## Prerequisites
 
@@ -15,12 +17,12 @@ Ultra Wallet browser extension is a crypto wallet that helps you access decentra
 
 ## Goal
 
-The goal of this tutorial is to add your developer account to the Ultra Wallet. The Ultra Wallet will be used in later tutorials to demonstrate interaction with the blockchain.
+The goal of this tutorial is to create your wallet vault and add your developer account to the Ultra Wallet. The Ultra Wallet will be used in later tutorials to demonstrate interaction with the blockchain.
 
-## Setup
+## Install the extension
 
-1. Download or use Chrome, Brave, or Chromium Equivalent
-2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page
+1. Download or use Chrome, Brave, or a Chromium equivalent.
+2. Install the [Ultra Wallet Chrome Extension](https://chromewebstore.google.com/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln). Simply click `Add to` on the extension page.
 
 ## Open Ultra Wallet
 
@@ -28,48 +30,60 @@ Open your `Ultra Wallet` by clicking it inside of the extensions panel.
 
 ![](./images/ultra-wallet-extension-panel.png)
 
-## Set the Network
+## Create your wallet password
 
-Set your network to `Testnet` since we created our account on testnet in the previous tutorial.
+On first run, the wallet asks you to create a password for your vault. This password encrypts every key you store in the wallet and is **never sent anywhere** — if you lose it you will not be able to unlock your wallet again, so store it securely.
 
-![](./images/wallet-set-network-testnet.png)
+1. Enter a strong password, confirm it, and select `Create Wallet`.
 
-## Add Account to Ultra Wallet
+![](./images/wallet-2x-create-password.png)
 
-1. Click on `Use Private Key & Password`.
+## Add an account
 
-![](./images/wallet-use-private-key.png)
+Once your vault is ready, the wallet opens on the **Accounts** screen. From here you can add an account in a few ways:
 
-2. Set a password, read and agree to the [Terms of Service](https://ultra.io/terms) and [Privacy Policy](https://ultra.io/privacy) and then click on the `Set Password` button.
+-   **Add Ultra Account** — log in with an existing [Ultra account](https://ultra.io/). This links the account's key into your vault. Best for everyday users.
+-   **Import Private Key** — paste an existing private key. The wallet automatically discovers every blockchain account that key controls. Best for developers and advanced users.
+-   **Create Ultra Pro Account** — create a brand-new blockchain account on-chain by paying a small amount of UOS from an account you already have (available once you have at least one account).
 
-![](./images/wallet-set-pwd.png)
+![](./images/wallet-2x-add-account-options.png)
 
-3. Paste your private key that you generated in the [Generate a key and create a developer Testnet account Tutorial](./tutorial-generate-key-and-create-testnet-account.md), and click on the `Import Account` button.
+For this tutorial we will **import the private key** generated in the [previous tutorial](./tutorial-generate-key-and-create-testnet-account.md).
 
-![](./images/import-private-key-wallet.png)
+1. Select `Import Private Key`, paste your private key, and select `Import Key`.
 
-4. You will see a list of accounts along with their permissions that are controlled by your private key. Select the account with `@active` permission in it, and click the `Import Accounts` button.
+![](./images/wallet-2x-import-key.png)
 
-![](./images/wallet-account-permission-select.png)
+2. The wallet automatically discovers every account your key controls and lists them on the **Accounts** screen along with their permissions.
 
-5. Once done, you will see a success message. You have now successfully imported your private key into your Ultra Wallet.
+![](./images/wallet-2x-select-accounts.png)
 
-![](./images/wallet-import-done.png)
+3. Your account is now stored in the vault, controlled by your password.
+
+## Switch to Testnet
+
+The wallet connects to Mainnet by default. Because our developer account lives on Testnet, switch networks:
+
+1. Open the menu, choose `Networks`, and select `Testnet`.
+
+![](./images/wallet-2x-network-switch.png)
+
+Your home screen now reflects your Testnet account and its UOS balance.
+
+![](./images/wallet-2x-home.png)
 
 ## Unlocking Ultra Wallet
 
-1. Open the wallet extension and click on the `Unlock Wallet` button.
+The wallet locks itself after a period of inactivity (configurable in the menu).
 
-![](./images/wallet-unlock.png)
+1. Open the wallet extension and enter the password you set earlier.
 
-2. Enter the password that you set in the previous steps, and click the `Unlock Wallet` button.
+![](./images/wallet-2x-unlock.png)
 
-![](./images/wallet-unlock-pwd.png)
-
-3. Once unlocked, you will be able to see your account name and your UOS balance.
-
-![](./images/wallet-unlocked.png)
+2. Once unlocked, you will see your account name, your UOS balance, and your token list.
 
 ## What's next?
 
-The next tutorial will cover using the Ultra Wallet to login into Ultra Tool Kit - [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md)
+-   Learn how to [manage accounts and keys](../../products/ultra-wallet/managing-accounts-and-keys.md) in your vault.
+-   Configure [networks and settings](../../products/ultra-wallet/networks-and-settings.md), including custom networks and the side panel.
+-   The next tutorial covers using the Ultra Wallet to log in to the Ultra Tool Kit - [Tutorial - Log in to the Ultra Tool Kit](./tutorial-login-to-toolkit.md).

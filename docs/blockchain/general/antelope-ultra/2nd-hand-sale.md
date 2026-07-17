@@ -45,6 +45,8 @@ The above information cannot be updated once the token factory is created, no ma
 
 The buyer can specify the name of the promoter when buying an NFT. In Ultra marketplace, Ultra can set it to an Ultra’s account, but buyer could edit it with some effort.
 
+If the buyer does not specify a promoter, the promoter share is **not** dropped: it is paid to the default promoter configured on-chain by Ultra (the `default_promoter` of the `saleshrlmcfg` table — scope `1` for 2nd hand sales, currently the `ultra.dfprom` account). The share only becomes 0 when promoter payments are disabled or no default promoter is configured.
+
 ### Overall 2nd hand Shares distribution in a buy event
 
 -   Once an NFT is sold at X amount of UOS. The shares are as follows:
@@ -53,7 +55,7 @@ The buyer can specify the name of the promoter when buying an NFT. In Ultra mark
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
 | X \* Ultra global share percentage [0-10%]                                                 | The amount of UOS goes to Ultra.nft.ft account (configurable)                                                |
 | X \* resale share percentages [0-70%]                                                      | Resale shares go to all beneficiaries                                                                        |
-| X \* promoter share percentage [0-10%]                                                     | The promoter share goes to the promoter that is confrimed by the buyer. If no promoter, then this share is 0 |
+| X \* promoter share percentage [0-10%]                                                     | The promoter share goes to the promoter confirmed by the buyer. If the buyer confirms no promoter, it goes to Ultra’s default promoter (`default_promoter` in `saleshrlmcfg`, currently `ultra.dfprom`); it is 0 only when promoter payments are disabled or no default promoter is set |
 | X \* (1 - global share percentage - sum of resale percentages - promoter share percentage) | After given shares to Ultra, token factory beneficiaries, promoter, the rest goes to the owner of the NFT    |
 
 For example; Token A from token Factory F is on resell at the price of 100 UOS.
@@ -75,6 +77,8 @@ When a user buys token A specify the promoter opensea.
 -   Promoter opensea receives 5% \* 100 UOS = 5 UOS
 
 -   Seller A got 100 UOS - 2UOS - 10 UOS - 20 UOS - 5UOS = 62UOS
+
+If the buyer instead specifies no promoter, the 5% promoter share (5 UOS) is paid to Ultra’s default promoter (`ultra.dfprom`) rather than being skipped; the seller still receives 62 UOS.
 
 ## Relevant actions
 

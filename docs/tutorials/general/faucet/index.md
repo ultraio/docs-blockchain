@@ -28,7 +28,7 @@ Click on Create Account
 Make sure the account was created
 
 ```sh
-cleos -u https://ultratest-api.eoseoul.io get account 1aa2aa3aa4ae
+cleos -u https://test.ultra.eosusa.io get account 1aa2aa3aa4ae
 ```
 
 ## Claiming tokens

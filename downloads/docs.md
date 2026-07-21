@@ -18502,7 +18502,6 @@ a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097
 - https://ultra.eosphere.io
 - https://ultra.eosrio.io
 - https://api.ultra.cryptolions.io/
-- https://ultra-api.eoseoul.io/
 - https://ultra.eosusa.io
 - https://api.ultra.eossweden.org
 
@@ -18514,7 +18513,6 @@ Chain ID:
 7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9
 ```
 
-- https://ultratest-api.eoseoul.io/
 - https://ultra-testnet.eosphere.io
 - https://testnet.ultra.eosrio.io
 - https://test.ultra.eosusa.io
@@ -31458,7 +31456,7 @@ Click on Create Account
 Make sure the account was created
 
 ```sh
-cleos -u https://ultratest-api.eoseoul.io get account 1aa2aa3aa4ae
+cleos -u https://test.ultra.eosusa.io get account 1aa2aa3aa4ae
 ```
 
 ## Claiming tokens

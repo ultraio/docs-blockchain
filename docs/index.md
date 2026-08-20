@@ -11,7 +11,7 @@ support:
       link: "mailto:developers@ultra.io"
       text: "developers@ultra.io"
     - title: "Discord"
-      link: "https://discord.gg/gk2CC6Xech"
+      link: "https://discord.gg/spkfet9q7j"
       text: "Join Discord"
 
 footer:

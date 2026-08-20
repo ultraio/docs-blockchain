@@ -111,6 +111,6 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 ## Need Help?
 
 - **[Troubleshooting Guide](./troubleshooting)** - Common solutions
-- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **[Ultra Discord](https://discord.gg/spkfet9q7j)** - Community support
 - **Email**: contact@ultra.io
 - **Include transaction details** when seeking help

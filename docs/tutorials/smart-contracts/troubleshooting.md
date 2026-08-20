@@ -37,4 +37,4 @@ You can also change your workdir (output directory) with `-v`. Refer to docker [
 If you get `docker unavailable` error message make sure you have disconnected from docker container by clicking on the bottom-left corner.
 
 \
-For any further assistance don't hesitate to contract the team on [discord](https://discord.gg/gk2CC6Xech).
+For any further assistance don't hesitate to contract the team on [discord](https://discord.gg/spkfet9q7j).

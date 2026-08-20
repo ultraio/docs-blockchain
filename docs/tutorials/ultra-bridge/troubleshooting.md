@@ -110,7 +110,7 @@ Quick solutions for common Ultra Bridge issues.
 - Steps to reproduce
 
 **Contact Methods:**
-- [Ultra Discord](https://discord.com/invite/WfJCN6YbGk)
+- [Ultra Discord](https://discord.gg/spkfet9q7j)
 - Email: contact@ultra.io
 - [Documentation](https://developers.ultra.io/)
 

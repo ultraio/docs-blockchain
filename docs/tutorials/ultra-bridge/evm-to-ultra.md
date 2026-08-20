@@ -87,6 +87,6 @@ Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultraâ†
 ## Need Help?
 
 - **[Troubleshooting Guide](./troubleshooting)** - Common solutions
-- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support  
+- **[Ultra Discord](https://discord.gg/spkfet9q7j)** - Community support  
 - **Email**: contact@ultra.io
 - **Blockchain Explorers**: Verify transactions independently

@@ -17736,7 +17736,7 @@ support:
       link: "mailto:developers@ultra.io"
       text: "developers@ultra.io"
     - title: "Discord"
-      link: "https://discord.gg/gk2CC6Xech"
+      link: "https://discord.gg/spkfet9q7j"
       text: "Join Discord"
 
 footer:
@@ -33680,7 +33680,7 @@ You can also change your workdir (output directory) with `-v`. Refer to docker [
 If you get `docker unavailable` error message make sure you have disconnected from docker container by clicking on the bottom-left corner.
 
 \
-For any further assistance don't hesitate to contract the team on [discord](https://discord.gg/gk2CC6Xech).
+For any further assistance don't hesitate to contract the team on [discord](https://discord.gg/spkfet9q7j).
 
 ---
 title: 'Connecting to Pinax Substreams endpoints'
@@ -34468,7 +34468,7 @@ We are working on the new bridge and will share detailed instructions when it's 
 ### **Support**
 For urgent inquiries, contact our team:
 - **Email**: contact@ultra.io
-- **Discord**: [Join our server](https://discord.gg/gk2CC6Xech)
+- **Discord**: [Join our server](https://discord.gg/spkfet9q7j)
 
 ---
 
@@ -34736,7 +34736,7 @@ Transfer UOS tokens from Ethereum back to Ultra blockchain. Simpler than Ultra�
 ## Need Help?
 
 - **[Troubleshooting Guide](./troubleshooting)** - Common solutions
-- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support  
+- **[Ultra Discord](https://discord.gg/spkfet9q7j)** - Community support  
 - **Email**: contact@ultra.io
 - **Blockchain Explorers**: Verify transactions independently
 
@@ -34893,7 +34893,7 @@ Scheduled maintenance ensures bridge security and performance. **During active m
 ## Need Help?
 
 - **[Troubleshooting Guide](./troubleshooting)** - Common solutions
-- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **[Ultra Discord](https://discord.gg/spkfet9q7j)** - Community support
 - **Email**: contact@ultra.io  
 - **Monitor announcements** for maintenance updates
 
@@ -35010,7 +35010,7 @@ Continue interrupted Ultra→EVM transfers. EVM→Ultra transfers complete autom
 ## Need Help?
 
 - **[Troubleshooting Guide](./troubleshooting)** - Common solutions
-- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **[Ultra Discord](https://discord.gg/spkfet9q7j)** - Community support
 - **Email**: contact@ultra.io
 - **Include transaction details** when seeking help
 
@@ -35126,7 +35126,7 @@ Quick solutions for common Ultra Bridge issues.
 - Steps to reproduce
 
 **Contact Methods:**
-- [Ultra Discord](https://discord.com/invite/WfJCN6YbGk)
+- [Ultra Discord](https://discord.gg/spkfet9q7j)
 - Email: contact@ultra.io
 - [Documentation](https://developers.ultra.io/)
 
@@ -35254,7 +35254,7 @@ Transaction progresses through stages:
 
 - **[Troubleshooting Guide](./troubleshooting)** - Common solutions
 - **[Resume Function](./resuming-transactions)** - Continue interrupted transfers
-- **[Ultra Discord](https://discord.com/invite/WfJCN6YbGk)** - Community support
+- **[Ultra Discord](https://discord.gg/spkfet9q7j)** - Community support
 - **Email**: contact@ultra.io
 
 ---

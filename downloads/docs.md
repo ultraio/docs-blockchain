@@ -27847,37 +27847,54 @@ order: 0
 outline: [0, 4]
 ---
 
-
 # How It Works
 
-The Ultra Web Wallet is tightly integrated with the Ultra ecosystem to provide a smooth and secure Web3 experience without requiring users to install browser extensions.
+The Ultra Web Wallet uses a popup and JSON-RPC messages over `window.postMessage` to handle dApp requests. The dApp never receives the user's private key.
 
-## Authentication & Key Management
+## Provider selection
 
-When a user connects via Ultra Web Wallet, the authentication flow begins with Ultra SSO (Single Sign-On). This process:
+When `UltraWalletSDK` is created without a fixed provider, it checks for the Ultra Wallet Browser Extension. It uses the extension when detected and otherwise creates the Web Wallet provider.
 
-- Authenticates the user.
-- Registers the device with Ultra's EBA (Easy Blockchain Account) service.
-- Securely synchronizes a private key that is stored on the user's local device.
+You can select the Web Wallet explicitly:
 
-Ultra does not store full private keys. Instead, keys are split and encrypted—one part held by Ultra and the other stored securely on the client device—ensuring non-custodial ownership.
+```ts
+const wallet = new UltraWalletSDK({
+    environment: 'mainnet',
+    provider: 'web',
+});
+```
 
-## Fallback Strategy: Extension or Web Wallet
+`environment` accepts `mainnet`, `testnet`, or a custom Web Wallet URL. It defaults to `mainnet`.
 
-The `@ultraos/wallet-sdk` automatically detects whether the Ultra Wallet Extension is installed. If it is, the extension is prioritized. If not, the SDK seamlessly falls back to the Web Wallet experience.
+## Connection flow
 
-This makes it easy for developers to support both environments without needing to change implementation logic.
+1. A user action in the dApp calls `wallet.connect()`.
+2. The SDK opens the configured Web Wallet URL in a popup and waits for its readiness handshake.
+3. The Web Wallet authenticates the user through Ultra SSO.
+4. For a new browser device, the wallet generates a key pair locally and registers the public key with the user's EBA account. Returning devices are activated using their existing local wallet data.
+5. The user approves the dApp origin. That trusted origin is stored locally for the signed-in user, allowing later `connect()` calls to resolve without another approval prompt.
+6. The wallet returns the blockchain account name and public key to the dApp.
 
-## Signing Flow
+Passing a `nonce` to `connect()` also asks the wallet to sign that nonce. A nonce must begin with `message:`, `0x`, or `UOSx`. A nonce connection is not silently auto-approved, even for an already trusted origin.
 
-Once authenticated, any Web3 event—such as signing messages or submitting transactions—can be triggered by the client application using the Wallet SDK. The general flow is:
+## Signing flow
 
-1. App requests an action via SDK (e.g., `signTransaction()`).
-2. SDK communicates with Ultra Web Wallet UI.
-3. Web Wallet securely signs the transaction.
-4. Result is returned to the app for submission or follow-up logic.
+For messages and transactions:
 
-This flow abstracts away the complexity of handling private keys, making Ultra Web Wallet a powerful tool for dApp developers.
+1. The dApp calls `signMessage()` or `signTransaction()` from a user action.
+2. The SDK opens or focuses the Web Wallet popup and sends the request after the readiness handshake.
+3. The Web Wallet verifies that the dApp origin is connected and displays the request for approval.
+4. After approval, signing happens in the Web Wallet using the locally stored encrypted key.
+5. A transaction is signed and broadcast to the configured Ultra network by default. With `{ signOnly: true }`, the wallet returns the signed transaction without broadcasting it.
+6. The result is returned to the dApp and the popup closes.
+
+Only one Web Wallet request can be pending from an SDK instance at a time.
+
+## Network and event model
+
+The Web Wallet's network is selected when the SDK instance is created. To target a different environment, create a new `UltraWalletSDK` instance with a different `environment` value.
+
+The Web Wallet transport is request/response only. Long-lived wallet events and runtime network switching are available through the browser-extension provider, not the Web Wallet provider.
 
 ---
 title: 'Introduction'
@@ -27888,20 +27905,43 @@ outline: [0, 4]
 
 # Ultra Web Wallet
 
-
 ![](/images/web-wallet-main.png)
 
-The **Ultra Web Wallet** is a browser-based, non-custodial wallet designed to enable seamless and secure interaction with the Ultra blockchain. It offers full Web3 capabilities through a lightweight, installation-free experience tailored for EBA (Easy Blockchain Account) users.
+The **Ultra Web Wallet** is a browser-based, non-custodial wallet for Easy Blockchain Account (EBA) users. It opens in a popup when a dApp uses `@ultraos/wallet-sdk`, so users can connect and approve signing requests without installing a browser extension.
 
-Unlike traditional browser extensions, Ultra Web Wallet stores the user's private key directly on their device in an encrypted format. This ensures user ownership and security while eliminating the need for external installations. 
+The SDK presents the same top-level API for the Web Wallet and the Ultra Wallet Browser Extension. By default, it uses the extension when one is detected and falls back to the Web Wallet otherwise. A dApp can also explicitly request the Web Wallet provider.
 
-To simplify integration, Ultra provides a unified JavaScript SDK (`@ultraos/wallet-sdk`) that supports both the Web Wallet and the Ultra Wallet Extension. This abstraction allows developers to implement wallet features once and support both environments automatically.
+## Current capabilities
 
-Whether you're building games, marketplaces, or dApps, Ultra Web Wallet makes onboarding and secure transaction signing frictionless for users—especially those new to Web3.
+The Web Wallet currently supports:
 
-::: info Note
- 🔐 Ultra never stores the full private key — encryption is split between the user's device and Ultra's backend, ensuring secure key custody while maintaining decentralization principles.
+- Connecting and disconnecting a dApp.
+- Signing messages.
+- Signing one or more transaction actions. Transactions are broadcast by default; the `signOnly` option returns the signed transaction without broadcasting it.
+- Returning the configured Ultra network's chain ID.
+
+The Web Wallet currently supports EBA accounts only. Persistent wallet events, runtime network switching, network management, and the extension's broader account-query APIs are not supported by the popup transport.
+
+## Integrating the Web Wallet
+
+Install and initialize the [Ultra Wallet SDK](../ultra-wallet-sdk/index.md):
+
+```ts
+import { UltraWalletSDK } from '@ultraos/wallet-sdk';
+
+const wallet = new UltraWalletSDK({
+    environment: 'mainnet',
+});
+```
+
+This configuration automatically uses the extension when available. To always use the Web Wallet, set `provider: 'web'`.
+
+Calls that open the wallet, such as `connect()`, `signMessage()`, and `signTransaction()`, should be made directly from a user action such as a button click. Browsers may block popups created outside a user gesture.
+
+::: info Key storage
+The private key is generated and retained in an encrypted vault in the Web Wallet's browser storage. The encryption key is assembled during authentication from a device-local part and a part returned by Ultra's device service; Ultra does not store the complete private key.
 :::
+
 ---
 title: 'References & External Links'
 
@@ -27911,16 +27951,17 @@ outline: [0, 4]
 
 # References & External Links
 
-Here are useful links and resources to learn more about Ultra Web Wallet, its SDK, and how to build with the Ultra blockchain.
+## Integration resources
 
-## SDK Documentation
+- [Ultra Wallet SDK documentation](../ultra-wallet-sdk/index.md)
+- [`@ultraos/wallet-sdk` on npm](https://www.npmjs.com/package/@ultraos/wallet-sdk)
+- [Web Wallet demo application](https://stackblitz.com/edit/ultra-wallet-sdk-example)
 
--   [`@ultraos/wallet-sdk` on npm](https://www.npmjs.com/package/@ultraos/wallet-sdk)
--   [Demo application](https://stackblitz.com/edit/ultra-wallet-sdk-example)
+## Related documentation
 
-## Related Products
-
--   [Ultra Wallet](../ultra-wallet/index.md) — documentation for Ultra Wallet
+- [Ultra Wallet Browser Extension](../ultra-wallet/index.md)
+- [Ultra account types](../../blockchain/general/antelope-ultra/account-types.md)
+- [Public and private keys](../../blockchain/general/antelope-ultra/public-and-private-keys.md)
 
 ---
 title: 'Security Model'
@@ -27931,38 +27972,45 @@ outline: [0, 4]
 
 # Security Model
 
-Ultra Web Wallet is designed with a strong focus on user privacy and key safety, using a **non-custodial** approach that gives users full control of their blockchain assets without requiring external wallet software.
+The Ultra Web Wallet is non-custodial: transaction and message signing happens in the user's browser, and Ultra does not store the complete private key.
 
-## Key Management
+## Key generation and storage
 
-The Ultra Web Wallet uses a dual-part key encryption model:
+When a browser device is registered, the Web Wallet generates the private/public key pair locally. It sends the public key for registration with the user's EBA account and saves the private key in an encrypted vault in the Web Wallet origin's local browser storage.
 
--   **Client-side Storage:** The user's private key is stored locally in the browser, encrypted with a key only partially derived from Ultra.
--   **Ultra's Partial Key:** Ultra holds a partial encryption key used to assist in encrypting/decrypting the user’s private key, but never has full access to the key itself.
+The vault encryption key is assembled from two parts during authentication:
 
-This ensures that even if Ultra's backend were compromised, user keys would remain protected.
+- A user/device part retained in the Web Wallet's local storage in encrypted form.
+- An Ultra part returned by the device activation service after the user authenticates.
 
-## Device Registration via Ultra SSO
+Neither the encrypted local vault nor Ultra's server-side part is sufficient on its own to recover the private key. This model still depends on the security of the user's browser, device, Ultra account, and the Web Wallet service; it should not be treated as protection against every form of compromise.
 
-When users first log in, the SDK initiates a secure registration flow through Ultra SSO. During this process, the device is uniquely identified and securely provisioned to interact with the Web Wallet, enabling signing operations without ever exposing private keys directly.
+Clearing site data for the Web Wallet removes its local device and vault data. The user may need to register the browser as a new device on the next connection.
 
-## Transaction Signing
+## Authentication and device registration
 
-All blockchain interactions—such as transactions and message signing are performed **client-side**. The Web Wallet handles these securely, displaying transaction data to the user for confirmation before signing. This reduces the risk of unauthorized activity or invisible transactions.
+The popup authenticates through Ultra SSO. A new device registers its generated public key with the EBA service and waits until the account/device update is confirmed before enabling signing. Some device-management operations can require a higher SSO authentication level.
 
-## No Custodial Risk
+The Web Wallet currently supports EBA accounts only.
 
-Because the Ultra Web Wallet does not store complete private keys or user funds on Ultra servers, there is **no custodial liability**. This reinforces a user-first model where only the user can access and control their digital identity and assets.
+## dApp permissions and request approval
 
-## Best Practices for Developers
+The Web Wallet stores approved dApp origins locally for each signed-in user. A previously approved origin can reconnect silently; disconnecting removes that local approval.
 
--   Always set the correct environment (`env`) when initializing the SDK.
--   Encourage users to use secure browsers and avoid shared/public machines.
--   Never cache or store sensitive SDK responses (e.g., signed transactions) unnecessarily.
+Message and transaction requests are shown in the Web Wallet for user approval. Messages must begin with `message:`, `0x`, or `UOSx`. Transactions are broadcast only after approval unless the dApp requests `signOnly`, in which case the signed transaction is returned without broadcasting.
 
-:::info
-🔐 With its layered encryption, secure device linking, and decentralized storage design, Ultra Web Wallet ensures a modern and responsible approach to Web3 security.
-:::
+## Communication boundary
+
+The SDK and Web Wallet exchange JSON-RPC messages through the popup. The SDK sends requests only to the configured wallet origin and accepts responses only from that origin. The Web Wallet binds a popup session to the origin that initiated the request and sends its response back to that origin.
+
+## Developer practices
+
+- Use the official `@ultraos/wallet-sdk` package.
+- Set the intended `environment` explicitly and use `provider: 'web'` when the Web Wallet is required rather than an automatic fallback.
+- Invoke popup-opening methods directly from a user gesture.
+- Display the transaction details in the dApp before opening the wallet, and treat rejected or closed requests as normal outcomes.
+- Do not request signatures for opaque data that users cannot independently understand.
+- Avoid retaining signed payloads longer than the application requires.
 
 ---
 title: 'Introduction'

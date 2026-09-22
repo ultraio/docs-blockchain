@@ -104,8 +104,8 @@ await wallet.signTransaction({
 -   The extension merges `authorizations` and `authorization` and removes duplicates.
 -   Call [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations) first to see which `account@permission` pairs the extension can actually sign for.
 
-::: warning Web Wallet
-The Web Wallet reads only the legacy `authorizations` string array. It ignores the structured `authorization` field and falls back to the connected account with `active`. If you need a non-default authorization with Web Wallet users, pass `authorizations: ['account@permission']` too.
+::: warning Older Web Wallet releases
+Older Web Wallet releases read only the legacy `authorizations` string array, and sign as the connected account with `active` when it is missing. If you need a non-default authorization with Web Wallet users, also pass `authorizations: ['account@permission']`.
 :::
 
 ### Multiple actions in one transaction

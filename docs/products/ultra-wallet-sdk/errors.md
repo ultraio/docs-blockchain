@@ -56,7 +56,7 @@ The codes follow [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193#provider-err
 | `-32003` | Transaction rejected  | Signing or broadcasting failed. The chain's error text is included. |
 | `-32005` | Limit exceeded        | More than 10 pending requests from your origin. |
 | `-32600` | Invalid request       | The request object is malformed. |
-| `-32601` | Method not found      | The wallet does not implement the method, such as `addNetwork()`. |
+| `-32601` | Method not found      | The wallet does not implement the method, for example a method removed from the SDK called directly on `window.ultra`. |
 | `-32602` | Invalid params        | A parameter has the wrong format, such as a `switchNetwork()` chain ID that is not 64 hex characters. |
 | `-32603` | Internal error        | An unexpected wallet-side failure. |
 

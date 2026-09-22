@@ -35,7 +35,7 @@ These are extension-only features. With the Web Wallet provider, they reject, th
 
 ## `getAccounts()` returns strings, not objects
 
-That is how the extension currently behaves. See [getAccounts()](./accounts-and-networks.md#getaccounts).
+Extension 2.2.13 and earlier return bare account names. See [getAccounts()](./accounts-and-networks.md#getaccounts).
 
 ## `connect()` says it succeeded, but `accounts` is empty or missing
 
@@ -46,7 +46,7 @@ That is how the extension currently behaves. See [getAccounts()](./accounts-and-
 
 -   The transaction must be authorized by an account and permission the wallet holds a key for. Check with [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations).
 -   Omit the authorization to use the connected account with `active`.
--   With the Web Wallet, pass custom authorizations in the legacy `authorizations` field. See [Authorizations](./signing.md#authorizations).
+-   With older Web Wallet releases, also pass custom authorizations in the legacy `authorizations` field. See [Authorizations](./signing.md#authorizations).
 
 ## `signMessage()` fails with "Missing or invalid parameters"
 

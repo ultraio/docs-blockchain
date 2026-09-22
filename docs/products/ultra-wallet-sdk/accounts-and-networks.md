@@ -10,7 +10,7 @@ outline: [0, 4]
 The Browser Extension can hold **many accounts** and switch between **several networks**. The methods on this page let your dApp read that state. Apart from `getChainId()`, they are **extension-only**. [Events](./events.md) tell you when the state changes.
 
 ::: warning Web Wallet
-With the Web Wallet provider, `getAccounts()`, `getSelectedAccount()` and `getAvailableAuthorizations()` open the popup and then reject, because the Web Wallet does not implement them. `getNetwork()`, `getNetworks()`, `switchNetwork()` and `addNetwork()` throw `Not supported in web provider`. Check [which provider is active](./getting-started.md#choosing-a-provider) before calling them. A Web Wallet user always has exactly one account, which `connect()` returns.
+With the Web Wallet provider, `getAccounts()`, `getSelectedAccount()` and `getAvailableAuthorizations()` open the popup and then reject, because the Web Wallet does not implement them. `getNetwork()`, `getNetworks()` and `switchNetwork()` throw `Not supported in web provider`. Check [which provider is active](./getting-started.md#choosing-a-provider) before calling them. A Web Wallet user always has exactly one account, which `connect()` returns.
 :::
 
 ## Accounts
@@ -44,13 +44,20 @@ The wallet's selected account is authoritative. Your dApp cannot change it. It c
 getAccounts(): Promise<UltraResponse<AccountInfo[]>>
 ```
 
-Lists the accounts the wallet can sign for on the current network.
-
-::: warning Runtime shape
-The type declares `AccountInfo[]`, but the extension currently returns **account names as strings**, such as `['aa1aa2aa3aa4', 'bb1bb2bb3bb4']`. For permissions and keys, use `connect()`'s `accounts` field, `getSelectedAccount()` or `getAvailableAuthorizations()`. Code that handles both shapes is safe:
+Lists every account the wallet can sign for on the current network, with its permissions and keys. It returns the same shape as `connect()`'s `accounts` field:
 
 ```ts
 const { data } = await wallet.getAccounts();
+// [
+//   { accountName: 'aa1aa2aa3aa4', permissions: [{ name: 'active', publicKeys: ['EOS7HUZ…'] }] },
+//   { accountName: 'bb1bb2bb3bb4', permissions: [{ name: 'active', publicKeys: ['EOS5Xa…'] }] },
+// ]
+```
+
+::: warning Older extensions
+Extension **2.2.13 and earlier** return bare account names (`['aa1aa2aa3aa4', 'bb1bb2bb3bb4']`) instead. Until your users have upgraded, read the names defensively:
+
+```ts
 const names = (data as unknown[]).map((a) => (typeof a === 'string' ? a : (a as { accountName: string }).accountName));
 ```
 :::
@@ -138,12 +145,6 @@ await wallet.switchNetwork(TESTNET);
 
 Trust is per origin across networks, so your dApp stays connected after the switch.
 
-### addNetwork()
+### Adding a network
 
-```ts
-addNetwork(params: { name: string; chainId: string; nodeUrl: string }): Promise<UltraResponse<void>>
-```
-
-::: danger Not available
-The method is still in the SDK, but **no wallet accepts it**. For security reasons, the extension does not let dApps add networks, and a call rejects with `-32601` (method does not exist). Users add custom networks themselves in **Settings → Networks** in the extension. Point them there, then call `switchNetwork()`.
-:::
+dApps cannot add networks. A network added by a website, without the user reviewing it, could route the user's signing requests through an attacker's node. The extension therefore removed that capability, and SDK 0.6.0 removed `addNetwork()`. Ask users to add a custom network themselves in the extension's **Settings → Networks**, then call `switchNetwork()` with its chain ID.

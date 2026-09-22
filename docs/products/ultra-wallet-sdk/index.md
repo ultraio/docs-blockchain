@@ -30,12 +30,11 @@ connectButton.addEventListener('click', async () => {
 | Capability                                                          | Method(s)                                                         |
 | ------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | Connect / disconnect a dApp                                         | `connect()`, `disconnect()`                                       |
-| Prove account ownership (login challenge, identity attestation)     | `connect({ nonce })`, `connect({ requireAttestation })`, `signMessage()` |
+| Prove account ownership (login challenge)                           | `connect({ nonce })`, `signMessage()`                             |
 | Sign and broadcast transactions, or sign only                       | `signTransaction()`                                               |
 | Read the user's accounts and signing authorities                    | `getAccounts()`, `getSelectedAccount()`, `getAvailableAuthorizations()` |
 | Read and switch the active network                                  | `getChainId()`, `getNetwork()`, `getNetworks()`, `switchNetwork()` |
 | React to account, network and disconnect changes                    | `on()`, `off()`, `dispose()`                                      |
-| Launch Ultra's hosted checkout (currently unavailable, see [Purchasing Items](./purchasing-items.md)) | `purchaseItem()` |
 
 ## Provider support
 
@@ -43,6 +42,7 @@ Not every method is available with both wallets. Web Wallet requests travel thro
 
 | Method                                                   | Browser Extension | Web Wallet                                   |
 | -------------------------------------------------------- | :---------------: | :------------------------------------------: |
+| Networks                                                 | Mainnet, Testnet, custom | Mainnet only                           |
 | `connect()` / `disconnect()`                             | ✅                | ✅                                           |
 | `signMessage()`                                          | ✅                | ✅                                           |
 | `signTransaction()` (incl. `signOnly`)                   | ✅                | ✅                                           |
@@ -51,21 +51,17 @@ Not every method is available with both wallets. Web Wallet requests travel thro
 | `getAvailableAuthorizations()`                           | ✅                | ❌                                           |
 | `getNetwork()` / `getNetworks()` / `switchNetwork()`     | ✅                | ❌                                           |
 | `on()` / `off()` events                                  | ✅                | ❌ (no-op)                                   |
-| `purchaseItem()`                                         | ❌                | ❌                                           |
 | `connect()` result: `accounts`, `selectedAccount`, `network` | ✅            | ❌ (legacy fields only)                      |
-| Identity attestation                                     | ✅ (extension 2.2.13+) | ❌                                      |
-| `addNetwork()`                                           | ❌                | ❌                                           |
 
 See [Getting Started → Choosing a provider](./getting-started.md#choosing-a-provider) to learn how to detect which wallet is active.
 
 ## Versions
 
-This documentation covers `@ultraos/wallet-sdk` **0.3.x**, plus the identity attestation additions in **0.4.0 / 0.5.0**. Sections that need a newer version say so.
+This documentation covers `@ultraos/wallet-sdk` **0.6.0**. Install it with `npm install @ultraos/wallet-sdk@^0.6.0`.
 
 | SDK version | Highlights                                                                                                   |
 | ----------- | ------------------------------------------------------------------------------------------------------------ |
-| 0.5.0       | `connect({ requireAttestation: true })` asks the wallet for an identity attestation                          |
-| 0.4.0       | Optional `attestation` field on the connect result                                                           |
+| 0.6.0       | Removed `purchaseItem()` and `addNetwork()` (no wallet serves them); `nonce` / `signedNonce` typed on the connect result |
 | 0.3.x       | Multi-account results, structured `authorization`, `getAvailableAuthorizations()`, network API, events, `dispose()`; ESM-only package (0.3.2) |
 | 0.2.0       | `provider` option to force the extension or the Web Wallet                                                   |
 | 0.1.x       | `nonce` on `connect()`                                                                                       |
@@ -77,6 +73,5 @@ This documentation covers `@ultraos/wallet-sdk` **0.3.x**, plus the identity att
 -   [Signing](./signing.md): messages, transactions, multiple actions, and sign-only.
 -   [Accounts & Networks](./accounts-and-networks.md): read the user's accounts and switch networks.
 -   [Events](./events.md): react to account and network changes.
--   [Identity Attestation](./identity-attestation.md): verify who the user is on your backend.
--   [Purchasing Items](./purchasing-items.md): selling Uniqs on chain.
+-   [Selling Uniqs](./selling-uniqs.md): on-chain purchases from a Uniq Factory.
 -   [Errors](./errors.md) and the [API Reference](./api-reference.md).

@@ -31,7 +31,6 @@ try {
 | -------------------- | --------- | ----------- |
 | `onlyIfTrusted`      | `boolean` | Never show a prompt. Resolve only if the origin is already trusted, otherwise reject with `4001`. See [Eager reconnect](#eager-reconnect). |
 | `nonce`              | `string`  | A challenge for the wallet to sign during connection. See [Login with a signed nonce](#login-with-a-signed-nonce). Must start with `message:`, `0x` or `UOSx`. |
-| `requireAttestation` | `boolean` | _SDK 0.5.0+._ Ask for a signed identity attestation. See [Identity Attestation](./identity-attestation.md). |
 | `referralCode`       | `string`  | Your Ultra referral code, credited if the user creates an Ultra account during the connection. |
 
 ### The connect result
@@ -45,7 +44,6 @@ try {
 | `network`         | `{ name, chainId }`    | ✅        | —          | The network the wallet is on. |
 | `nonce`           | `string`               | ✅        | ✅         | Only when you passed `nonce`: the nonce, echoed back. |
 | `signedNonce`     | `string`               | ✅        | ✅         | Only when you passed `nonce`: the signature (`SIG_K1_…`). |
-| `attestation`     | `ConnectAttestation`   | ✅        | —          | Only when an attestation was issued. See [Identity Attestation](./identity-attestation.md). |
 
 ```ts
 // Example extension result
@@ -77,7 +75,6 @@ Read `blockchainid` and `publicKey` for code that must work with both wallets. U
 | Origin not trusted                                            | Connection prompt. With `onlyIfTrusted`, rejects with `4001` instead. |
 | Origin trusted                                                | **Resolves silently** with the current account, with or without `onlyIfTrusted`. |
 | Origin trusted, `nonce` passed                                | Always prompts, because the user must approve signing the nonce. |
-| Origin trusted, `requireAttestation` passed, attestation not yet consented | Prompts once for consent. |
 | Wallet locked                                                 | Prompt to unlock. With `onlyIfTrusted`, rejects with `4001`. |
 | Another `connect()` from the same origin still pending        | Rejects with `-32002` (resource unavailable). |
 
@@ -117,8 +114,7 @@ const { challenge } = await fetch('/auth/challenge').then((r) => r.json());
 
 // 2. Connect and sign it (from a click handler)
 const { data } = await wallet.connect({ nonce: challenge });
-// `nonce` / `signedNonce` are returned but not yet declared on ConnectResult
-const { nonce, signedNonce } = data as typeof data & { nonce: string; signedNonce: string };
+const { nonce, signedNonce } = data;
 
 // 3. Send the result to your server for verification
 await fetch('/auth/verify', {
@@ -148,14 +144,12 @@ export async function verifyLogin(account: string, nonce: string, signature: str
 ```
 
 ::: tip API node
-The lookup needs an API node that supports `get_accounts_by_authorizers`, such as `https://api.mainnet.ultra.io` on mainnet or `https://api.testnet.ultra.eossweden.org` on testnet. Not every public node supports it.
+The lookup needs an API node that supports `get_accounts_by_authorizers`, such as `https://api.mainnet.ultra.io` on mainnet or `https://api.testnet.ultra.eossweden.org` on testnet. Not every public node supports it (for example, `test.ultra.eosusa.io` does not).
 :::
 
 ::: tip
 Put your domain and an expiry time in the challenge text. The user sees the text in the wallet, and it stops a signature collected by one site from being replayed on another.
 :::
-
-If you need identity proof without a signing prompt on every login, see [Identity Attestation](./identity-attestation.md).
 
 ## disconnect()
 

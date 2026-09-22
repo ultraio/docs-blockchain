@@ -12,7 +12,6 @@ Everything below can be imported from `@ultraos/wallet-sdk`.
 ```ts
 import {
     UltraWalletSDK,
-    PurchaseItemType,
     ResponseStatus,
     SdkErrorCode,
     SDK_ERROR_MESSAGE,
@@ -53,14 +52,10 @@ class UltraWalletSDK {
     getNetwork(): Promise<UltraResponse<NetworkDetails>>; //    extension only
     getNetworks(): Promise<UltraResponse<NetworkDetails[]>>; // extension only
     switchNetwork(chainId: string): Promise<UltraResponse<void>>; // extension only
-    addNetwork(params: { name: string; chainId: string; nodeUrl: string }): Promise<UltraResponse<void>>; // not available
 
     // Events (extension only)
     on(event: WalletEventType, callback: (data: any) => void): void;
     off(event: WalletEventType, callback: (data: any) => void): void;
-
-    // Commerce (not available in current wallets)
-    purchaseItem(itemType: PurchaseItemType, itemId: string): Promise<UltraResponse<PurchaseItemResult>>;
 
     // Lifecycle
     dispose(): void;
@@ -71,9 +66,8 @@ class UltraWalletSDK {
 | ------ | ----- |
 | `connect`, `disconnect` | [Connecting](./connecting.md) |
 | `signMessage`, `signTransaction` | [Signing](./signing.md) |
-| `getAccounts`, `getSelectedAccount`, `getAvailableAuthorizations`, `getChainId`, `getNetwork`, `getNetworks`, `switchNetwork`, `addNetwork` | [Accounts & Networks](./accounts-and-networks.md) |
+| `getAccounts`, `getSelectedAccount`, `getAvailableAuthorizations`, `getChainId`, `getNetwork`, `getNetworks`, `switchNetwork` | [Accounts & Networks](./accounts-and-networks.md) |
 | `on`, `off` | [Events](./events.md) |
-| `purchaseItem` | [Purchasing Items](./purchasing-items.md) |
 | `dispose` | [Getting Started → Cleaning up](./getting-started.md#cleaning-up) |
 
 ## Options
@@ -112,12 +106,10 @@ interface ConnectParams {
     referralCode?: string;
     /** Must start with 'message:', '0x' or 'UOSx'. */
     nonce?: string;
-    /** SDK 0.5.0+ */
-    requireAttestation?: boolean;
 }
 
 type ConnectResult = {
-    /** The connected account NAME. (Marked deprecated in the SDK types; still returned by every wallet.) */
+    /** The connected account NAME (not a chain id); equals selectedAccount.accountName. Only field the Web Wallet returns besides publicKey. */
     blockchainid: string;
     /** @deprecated Prefer selectedAccount.permissions[n].publicKeys */
     publicKey: string;
@@ -126,36 +118,8 @@ type ConnectResult = {
     network?: NetworkInfo; //          extension only
     nonce?: string; //                 when a nonce was passed
     signedNonce?: string; //           when a nonce was passed
-    attestation?: ConnectAttestation; // SDK 0.4.0+, extension 2.2.13+
 };
-
-interface ConnectAttestation {
-    payload: AttestationPayload;
-    signature: string;
-}
-
-interface AttestationPayload {
-    v: 1;
-    pubkey: string;
-    account: string;
-    permission: string;
-    origin: string;
-    chainId: string;
-    iat: number;
-    exp: number;
-    nonce: string;
-    signableAccounts?: SignableAccount[];
-}
-
-interface SignableAccount {
-    account: string;
-    permissions: string[];
-}
 ```
-
-::: info
-`nonce` and `signedNonce` are returned by the wallets but are missing from the `ConnectResult` type. Read them with a cast, for example `(data as ConnectResult & { signedNonce?: string }).signedNonce`.
-:::
 
 ## Account & network types
 
@@ -199,7 +163,7 @@ interface BlockchainTransaction {
     action: string;
     data: any;
     authorization?: StructuredAuthorization[];
-    /** @deprecated Use `authorization`. Still the only field the Web Wallet reads. */
+    /** @deprecated Use `authorization`. Older Web Wallet releases read only this field. */
     authorizations?: string[];
 }
 
@@ -239,20 +203,6 @@ interface SignMessageResult {
 ```
 
 With `signOnly: true`, `data` is the signed transaction (`expiration`, `ref_block_num`, `ref_block_prefix`, `actions`, `signatures`, …), not the shape above. See [Sign without broadcasting](./signing.md#sign-without-broadcasting).
-
-## Purchase types
-
-```ts
-enum PurchaseItemType {
-    UNIQ_FACTORY = 'UniqFactory',
-    GAME_FACTORY = 'GameFactory',
-}
-
-interface PurchaseItemResult {
-    orderHash: string;
-    items: { artifactId: string; productId: string; blockchainTransactionId: string }[];
-}
-```
 
 ## Error codes
 

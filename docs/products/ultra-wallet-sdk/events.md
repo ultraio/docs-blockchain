@@ -49,13 +49,11 @@ Fires when the user selects a different account, when the wallet is unlocked, an
     { accountName: 'bb1bb2bb3bb4', permission: 'active', publicKey: 'EOS5Xa…' },
   ],
   selected: { accountName: 'bb1bb2bb3bb4', permission: 'active', publicKey: 'EOS5Xa…' }, // or null
-  attestation: { payload: { … }, signature: 'SIG_K1_…' }, // only for attestation-consented origins
 }
 ```
 
 -   `accounts` is **flat**: one entry per `account + permission + key`, the same shape as [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations) but with the account name in `accountName`.
 -   `selected` is the newly selected account, or `null` if it has no entry on this network.
--   `attestation` is a fresh [identity attestation](./identity-attestation.md) for the new account. It is sent only to origins that consented to attestation. Send it to your backend to update the user's session without asking them to connect again.
 -   The wallet does not send this event while it is locked, or while an account lookup fails temporarily. An empty `accounts` list therefore means what it says, not "logged out".
 
 ## networkChanged

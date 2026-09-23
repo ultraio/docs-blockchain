@@ -26745,7 +26745,7 @@ const { data } = await wallet.getNetwork();
 getNetworks(): Promise<UltraResponse<NetworkDetails[]>>
 ```
 
-Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in **Settings → Networks**. User-added networks are listed only for a connected (trusted) origin, and only from extension 2.2.14; earlier versions list only the built-ins. Use it to check whether a network exists before you call `switchNetwork()`.
+Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in the extension (**Menu → Networks → Add Custom Network**). User-added networks are listed only for a connected (trusted) origin, and only from extension 2.2.14; earlier versions list only the built-ins. Use it to check whether a network exists before you call `switchNetwork()`.
 
 ### switchNetwork()
 
@@ -26771,7 +26771,12 @@ Trust is per origin across networks, so your dApp stays connected after the swit
 
 ### Adding a network
 
-dApps cannot add networks. A network added by a website, without the user reviewing it, could route the user's signing requests through an attacker's node. The extension therefore removed that capability, and SDK 0.6.0 removed `addNetwork()`. Ask users to add a custom network themselves in the extension's **Settings → Networks**. With extension 2.2.14+, your dApp can then call `switchNetwork()` with its chain ID; with earlier versions, ask the user to switch to it in the wallet.
+There are two different things here:
+
+-   **Users can add networks.** In the extension, **Menu → Networks → Add Custom Network** lets the user add a network by name and node URL. The wallet validates it before saving (HTTPS, no private addresses, no names imitating the built-in networks). See [How to add custom networks](../ultra-wallet/custom-networks.md).
+-   **dApps cannot add networks.** There is no API for a website to add a network to the user's wallet. A network added by a website without the user reviewing it could route the user's signing requests through an attacker's node. The old `addNetwork()` method was never served by the current extension and was removed in SDK 0.6.0.
+
+If your dApp needs a custom network, ask the user to add it on the Networks screen. A connected dApp can then call `switchNetwork()` with its chain ID (extension 2.2.14+; with earlier versions, ask the user to switch in the wallet).
 
 ---
 title: 'API Reference'
@@ -27664,7 +27669,7 @@ This documentation covers `@ultraos/wallet-sdk` **0.6.1**. Install it with `npm 
 | SDK version | Highlights                                                                                                   |
 | ----------- | ------------------------------------------------------------------------------------------------------------ |
 | 0.6.1       | Web Wallet on testnet rejects with `4302`; Web Wallet JSON-RPC errors reject with their code instead of `undefined`; types resolve under `nodenext` |
-| 0.6.0       | Removed `purchaseItem()` and `addNetwork()` (no wallet serves them); `nonce` / `signedNonce` typed on the connect result |
+| 0.6.0       | Removed the `purchaseItem()` and `addNetwork()` methods, which no wallet serves (users still add networks in the extension); `nonce` / `signedNonce` typed on the connect result |
 | 0.3.x       | Multi-account results, structured `authorization`, `getAvailableAuthorizations()`, network API, events, `dispose()`; bundled ES module with an `exports` map (0.3.2) |
 | 0.2.0       | `provider` option to force the extension or the Web Wallet                                                   |
 | 0.1.x       | `nonce` on `connect()`                                                                                       |
@@ -27901,25 +27906,28 @@ outline: [0, 4]
 
 # How to add custom networks
 
-For Ultra Pro Wallets, it is possible to add custom networks for testing purposes.
+Besides the built-in **Mainnet** and **Testnet**, you can add your own networks to the Ultra Wallet extension, for example a local development node.
 
-This is the correct procedure:
+1. Open the Ultra Wallet extension and click the network name under your account (or open the **Menu**, top right, and select **Networks**).
 
-1. Open your Ultra Wallet extension, click on the environment dropdown at the top of the screen, and click the button “Add Network”
+    ![Networks screen](/images/uwax-networks-screen.png)
 
-    ![](/images/uwax-add-custom-net.png)
+2. Click **Add Custom Network**, enter a **Network Name** and the **Node URL** of your Ultra node (see [nodeos](../../blockchain/general/tools/nodeos.md)), then click **Add Network**.
 
-2. Fill all the fields with your custom network parameters and click “Add Network”
+    ![Add Custom Network form](/images/uwax-add-custom-network-form.png)
 
-    - Network name: This is the name used to be displayed in the environment dropdown list.
-    - Network HTTP URL: URL used to connect to your Ultra blockchain node, for more information follow this [documentation page](../../blockchain/general/tools/nodeos.md).
-    - Block explorer URL: URL for the blockchain explorer, for example, https://local.bloks.io
+3. Select a network in the list to switch to it. Custom networks can also be edited or deleted from this screen.
 
-    ![](/images/uwax-add-net.png)
+The wallet checks a network before saving it:
 
-3. Custom networks can be edited or deleted if it is needed
+-   The Node URL must use **HTTPS**. `http://localhost` and `http://127.0.0.1` are allowed for local development.
+-   Private and internal network addresses are refused.
+-   The name must not imitate a built-in network (for example "Ultra Mainnet").
+-   The wallet contacts the node and records its chain ID.
 
-    ![](/images/uwax-edit-net.png)
+::: info Websites cannot add networks
+Only you can add a network, on this screen. Websites cannot add networks to your wallet. A connected website can switch the wallet to a network you have already added (extension 2.2.14+). See [Ultra Wallet SDK → Accounts & Networks](../ultra-wallet-sdk/accounts-and-networks.md#adding-a-network).
+:::
 
 ---
 title: 'Demo application'

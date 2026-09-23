@@ -22,7 +22,7 @@ const { data } = await wallet.signMessage('message: I agree to the terms of exam
 data.signature; // "SIG_K1_K8r…"
 ```
 
-The message **must** start with one of these prefixes, or the wallet rejects it with `-32000` (invalid input):
+The message **must** start with one of these prefixes. The extension rejects a message without one immediately, with `-32000` (invalid input). The Web Wallet rejects it with `-32003` after the user confirms.
 
 | Prefix     | Use for                                                           |
 | ---------- | ----------------------------------------------------------------- |
@@ -30,7 +30,7 @@ The message **must** start with one of these prefixes, or the wallet rejects it 
 | `0x`       | Hex-encoded data.                                                 |
 | `UOSx`     | Ultra-specific payloads.                                          |
 
-The extension trims leading and trailing whitespace from the message before signing.
+The extension trims leading and trailing whitespace from the message before signing. Avoid surrounding whitespace in messages and challenges, so the signed text is exactly what your server expects.
 
 ### Verifying a message signature
 
@@ -104,8 +104,8 @@ await wallet.signTransaction({
 -   The extension merges `authorizations` and `authorization` and removes duplicates.
 -   Call [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations) first to see which `account@permission` pairs the extension can actually sign for.
 
-::: warning Older Web Wallet releases
-Older Web Wallet releases read only the legacy `authorizations` string array, and sign as the connected account with `active` when it is missing. If you need a non-default authorization with Web Wallet users, also pass `authorizations: ['account@permission']`.
+::: warning Web Wallet releases before September 2026
+Web Wallet releases before September 2026 read only the legacy `authorizations` string array, and sign as the connected account with `active` when it is missing. Current releases read both fields and show the exact signers on the approval screen. If you need a non-default authorization and want to support older releases, also pass `authorizations: ['account@permission']`.
 :::
 
 ### Multiple actions in one transaction
@@ -159,8 +159,8 @@ const { data } = await wallet.signTransaction(actions, { signOnly: true });
 // }
 ```
 
--   **Extension:** a sign-only request is a **partial-signing** request. The approval screen makes the user tick an explicit consent checkbox before approving. The wallet signs with every key it holds for the requested authorizations. Any authorization it could **not** sign is listed in `data.unsignedAuth` as `"account@permission"` strings. If that list is empty or missing, the wallet signed everything.
--   **Web Wallet:** signs with the keys it holds and returns the signed transaction.
+-   **Extension:** a sign-only request is a **partial-signing** request. The approval screen makes the user tick an explicit consent checkbox before approving. The wallet signs with every key it holds for the requested authorizations. `data.unsignedAuth` lists, as `"account@permission"` strings, the authorizations the wallet believes it holds no key for. It is best-effort and may be missing when the wallet could not resolve the authorizations, so check the `signatures` before relying on the result. The result also contains `transaction_id: ''`, `transactionHash: ''` and `processed: null`.
+-   **Web Wallet:** signs with the keys it holds, skips actors it has no key for, and returns the signed transaction. It does not return `unsignedAuth`.
 
 The signed transaction is only valid until its `expiration` time. Broadcast it before then.
 
@@ -168,4 +168,4 @@ The signed transaction is only valid until its `expiration` time. Broadcast it b
 
 -   The extension queues at most **10 pending requests per origin**. More requests reject with `-32005` (limit exceeded).
 -   The Web Wallet handles **one request at a time** per SDK instance. A second call while a request is pending rejects with `32002` (_Requested resource not available_).
--   If the chain rejects the transaction (an assertion fails, for example), the promise rejects with `-32003` (transaction rejected), and the chain's error text is included in the error.
+-   If the chain rejects the transaction (an assertion fails, for example), the promise rejects with `-32003` (transaction rejected). The chain's error is in the error's `data`: a string with the extension, the node's JSON error with the Web Wallet.

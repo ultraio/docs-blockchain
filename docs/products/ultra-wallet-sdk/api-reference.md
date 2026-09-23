@@ -44,7 +44,7 @@ class UltraWalletSDK {
 
     // Accounts (extension only)
     getAccounts(): Promise<UltraResponse<AccountInfo[]>>;
-    getSelectedAccount(): Promise<UltraResponse<AccountInfo>>;
+    getSelectedAccount(): Promise<UltraResponse<AccountInfo>>; // null at runtime when untrusted/locked
     getAvailableAuthorizations(): Promise<UltraResponse<AvailableAuth[]>>;
 
     // Networks
@@ -121,6 +121,8 @@ type ConnectResult = {
 };
 ```
 
+The SDK types also declare `ConnectParams.requireAttestation` and `ConnectResult.attestation`. They are marked `@experimental`, are not supported for integration yet, and are intentionally left out of this documentation.
+
 ## Account & network types
 
 ```ts
@@ -163,7 +165,7 @@ interface BlockchainTransaction {
     action: string;
     data: any;
     authorization?: StructuredAuthorization[];
-    /** @deprecated Use `authorization`. Older Web Wallet releases read only this field. */
+    /** @deprecated Use `authorization`. Web Wallet releases before September 2026 read only this field. */
     authorizations?: string[];
 }
 
@@ -211,6 +213,7 @@ enum SdkErrorCode {
     USER_REJECTED_REQUEST = 4001,
     WALLET_HANDSHAKE_TIMEOUT = 4300,
     WALLET_WINDOW_UNAVAILABLE = 4301,
+    WEB_WALLET_UNAVAILABLE = 4302, // 0.6.1+
     REQUESTED_RESOURCE_NOT_AVAILABLE = 32002,
     UNKNOWN_ERROR = -32604,
 }

@@ -23,7 +23,7 @@ Events need a long-lived connection to the wallet, which the Web Wallet's popup 
 ## Subscribing
 
 ```ts
-function handleAccountChanged({ selected }) {
+function handleAccountChanged({ selected }: { selected: { accountName: string } | null }) {
     if (selected) setCurrentAccount(selected.accountName);
 }
 
@@ -52,7 +52,7 @@ Fires when the user selects a different account, when the wallet is unlocked, an
 }
 ```
 
--   `accounts` is **flat**: one entry per `account + permission + key`, the same shape as [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations) but with the account name in `accountName`.
+-   `accounts` is **flat**: one entry per `account + permission + key`, the same shape as [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations).
 -   `selected` is the newly selected account, or `null` if it has no entry on this network.
 -   The wallet does not send this event while it is locked, or while an account lookup fails temporarily. An empty `accounts` list therefore means what it says, not "logged out".
 

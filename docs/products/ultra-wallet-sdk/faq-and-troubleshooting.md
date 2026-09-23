@@ -19,6 +19,8 @@ With the Web Wallet, this is almost always a **blocked popup**. The promise reje
 
 The extension is on a different network from the `environment` you configured. Ask the user to switch networks in the extension, or build your app for the network they use. See [Options](./getting-started.md#options).
 
+If the message says `received "null"`, the extension could not reach its network node. Ask the user to check their connection or the network's node in the extension settings.
+
 ## I have the extension installed, but the SDK opens the Web Wallet
 
 -   **Local development on `http://localhost`:** the Chrome Web Store build of the extension runs only on HTTPS pages. Serve your app over HTTPS. See [Choosing a provider](./getting-started.md#choosing-a-provider).
@@ -46,7 +48,7 @@ Extension 2.2.13 and earlier return bare account names. See [getAccounts()](./ac
 
 -   The transaction must be authorized by an account and permission the wallet holds a key for. Check with [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations).
 -   Omit the authorization to use the connected account with `active`.
--   With older Web Wallet releases, also pass custom authorizations in the legacy `authorizations` field. See [Authorizations](./signing.md#authorizations).
+-   With Web Wallet releases before September 2026, also pass custom authorizations in the legacy `authorizations` field. See [Authorizations](./signing.md#authorizations).
 
 ## `signMessage()` fails with "Missing or invalid parameters"
 
@@ -59,7 +61,7 @@ Mobile browsers do not support the Browser Extension, so the SDK uses the Web Wa
 ## Can I switch between mainnet and testnet at runtime?
 
 -   **Extension:** yes, with [`switchNetwork()`](./accounts-and-networks.md#switchnetwork) once connected.
--   **Web Wallet:** no. The network is fixed by `environment`. Create a new `UltraWalletSDK` instance (and `dispose()` the old one) to target another network.
+-   **Web Wallet:** no. The Web Wallet serves mainnet only; with `environment: 'testnet'`, SDK 0.6.1+ rejects Web Wallet calls with `4302`. Testnet users need the extension.
 
 ## Where are the keys stored? Can the dApp access them?
 

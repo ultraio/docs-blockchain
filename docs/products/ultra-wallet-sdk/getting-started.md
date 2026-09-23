@@ -10,7 +10,7 @@ outline: [0, 4]
 ## Installation
 
 ```bash
-npm install @ultraos/wallet-sdk@^0.6.0
+npm install @ultraos/wallet-sdk@^0.6.1
 ```
 
 The package ships as an **ES module** (`import`), with TypeScript type definitions included. Use it with any modern bundler, such as Vite, webpack, Next.js, Nuxt or Angular. The SDK only runs in the browser. Read [Server-side rendering](#server-side-rendering) if your framework also renders on the server.
@@ -36,7 +36,7 @@ export const wallet = new UltraWalletSDK({
 
 `environment` has two effects:
 
--   **Web Wallet:** it selects the wallet URL, which fixes the network for the whole session. The Web Wallet is deployed for **mainnet only** (`https://web-wallet.ultra.io`). With `environment: 'testnet'`, only extension users can connect. Hide the Web Wallet option on testnet.
+-   **Web Wallet:** it selects the wallet URL, which fixes the network for the whole session. The Web Wallet is deployed for **mainnet only** (`https://web-wallet.ultra.io`). With `environment: 'testnet'`, only extension users can connect; SDK 0.6.1+ rejects Web Wallet calls on testnet with `4302` instead of opening a popup. Hide the Web Wallet option on testnet.
 -   **Extension:** the extension user picks their network inside the wallet. Before each `connect()`, the SDK compares the wallet's chain ID with the `environment` you configured. If they differ, `connect()` throws `Wallet environment mismatch: expected "testnet" chain, but received "<chainId>"…`. Ask the user to switch networks, or call [`switchNetwork()`](./accounts-and-networks.md#switchnetwork) on an already-trusted connection. The check runs only when `environment` is `mainnet` or `testnet`. If you omit it or pass a custom URL, the extension accepts any network.
 
 | Network | Chain ID                                                           |

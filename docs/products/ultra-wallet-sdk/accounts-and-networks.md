@@ -10,7 +10,7 @@ outline: [0, 4]
 The Browser Extension can hold **many accounts** and switch between **several networks**. The methods on this page let your dApp read that state. Apart from `getChainId()`, they are **extension-only**. [Events](./events.md) tell you when the state changes.
 
 ::: warning Web Wallet
-With the Web Wallet provider, `getAccounts()`, `getSelectedAccount()` and `getAvailableAuthorizations()` open the popup and then reject, because the Web Wallet does not implement them. `getNetwork()`, `getNetworks()` and `switchNetwork()` throw `Not supported in web provider`. Check [which provider is active](./getting-started.md#choosing-a-provider) before calling them. A Web Wallet user always has exactly one account, which `connect()` returns.
+With the Web Wallet provider, `getAccounts()`, `getSelectedAccount()` and `getAvailableAuthorizations()` open the popup and then reject with `-32601` (method not found), because the Web Wallet does not implement them. `getNetwork()`, `getNetworks()` and `switchNetwork()` throw `Not supported in web provider` synchronously. Check [which provider is active](./getting-started.md#choosing-a-provider) before calling them. A Web Wallet user always has exactly one account, which `connect()` returns.
 :::
 
 ## Accounts
@@ -22,6 +22,8 @@ All account methods return data only for a **trusted** origin (one the user has 
 ```ts
 getSelectedAccount(): Promise<UltraResponse<AccountInfo | null>>
 ```
+
+The SDK types the result as `AccountInfo`, but it is `null` when the origin is not trusted, the wallet is locked, or no account resolves on this network.
 
 The account the user has selected in the wallet. This is the account the wallet signs with by default.
 
@@ -93,8 +95,8 @@ getChainId(): Promise<UltraResponse<string>>
 
 Returns the chain ID of the network the wallet is using. **Available with both providers.**
 
--   **Extension:** asks the wallet's current node (`/v1/chain/get_info`). Resolves with `data: null` if the node cannot be reached.
--   **Web Wallet:** answered locally from the `environment` option, with no popup. With a custom Web Wallet URL, it asks the Web Wallet.
+-   **Extension:** asks the wallet's current node (`/v1/chain/get_info`). Resolves with `data: null` if the node cannot be reached. In that case `connect()` also fails the environment check (`… but received "null"`).
+-   **Web Wallet:** answered locally from the `environment` option, with no popup. With a custom Web Wallet URL, it asks the Web Wallet, which opens the popup, so call it from a user gesture.
 
 ```ts
 const MAINNET = 'a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097';
@@ -112,8 +114,10 @@ The wallet's active network:
 
 ```ts
 const { data } = await wallet.getNetwork();
-// { name: 'Mainnet', chainId: 'a9c481df…', nodeUrl: 'https://api.mainnet.ultra.io', isCustom: false }
+// { name: 'Mainnet', chainId: 'a9c481df…', nodeUrl: 'https://api.mainnet.ultra.io' }
 ```
+
+`isCustom` is `true` only for networks the user added. Network names are not consistent across APIs (`'Mainnet'` here, `'mainnet'` in the connect result), so compare `chainId`.
 
 ### getNetworks()
 
@@ -121,7 +125,7 @@ const { data } = await wallet.getNetwork();
 getNetworks(): Promise<UltraResponse<NetworkDetails[]>>
 ```
 
-Every network configured in the wallet: the built-in Ultra networks plus any custom networks the user added. Use it to check whether a network exists before you call `switchNetwork()`.
+Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in **Settings → Networks** (extension 2.2.14+; earlier versions list only the built-ins). Use it to check whether a network exists before you call `switchNetwork()`.
 
 ### switchNetwork()
 
@@ -129,7 +133,7 @@ Every network configured in the wallet: the built-in Ultra networks plus any cus
 switchNetwork(chainId: string): Promise<UltraResponse<void>>
 ```
 
-Asks the extension to switch to another network that is **already configured** in the wallet:
+Asks the extension to switch to another network that is **already configured** in the wallet. Extension 2.2.13 and earlier can only switch to the built-in Mainnet and Testnet; 2.2.14+ can also switch to networks the user added.
 
 ```ts
 const TESTNET = '7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9';
@@ -147,4 +151,4 @@ Trust is per origin across networks, so your dApp stays connected after the swit
 
 ### Adding a network
 
-dApps cannot add networks. A network added by a website, without the user reviewing it, could route the user's signing requests through an attacker's node. The extension therefore removed that capability, and SDK 0.6.0 removed `addNetwork()`. Ask users to add a custom network themselves in the extension's **Settings → Networks**, then call `switchNetwork()` with its chain ID.
+dApps cannot add networks. A network added by a website, without the user reviewing it, could route the user's signing requests through an attacker's node. The extension therefore removed that capability, and SDK 0.6.0 removed `addNetwork()`. Ask users to add a custom network themselves in the extension's **Settings → Networks**. With extension 2.2.14+, your dApp can then call `switchNetwork()` with its chain ID; with earlier versions, ask the user to switch to it in the wallet.

@@ -31,7 +31,7 @@ try {
 | -------------------- | --------- | ----------- |
 | `onlyIfTrusted`      | `boolean` | Never show a prompt. Resolve only if the origin is already trusted, otherwise reject with `4001`. See [Eager reconnect](#eager-reconnect). |
 | `nonce`              | `string`  | A challenge for the wallet to sign during connection. See [Login with a signed nonce](#login-with-a-signed-nonce). Must start with `message:`, `0x` or `UOSx`. |
-| `referralCode`       | `string`  | Your Ultra referral code, credited if the user creates an Ultra account during the connection. |
+| `referralCode`       | `string`  | Web Wallet only: your Ultra referral code, credited if the user signs up during the connection. The extension ignores it. |
 
 ### The connect result
 
@@ -76,7 +76,8 @@ Read `blockchainid` and `publicKey` for code that must work with both wallets. U
 | Origin trusted                                                | **Resolves silently** with the current account, with or without `onlyIfTrusted`. |
 | Origin trusted, `nonce` passed                                | Always prompts, because the user must approve signing the nonce. |
 | Wallet locked                                                 | Prompt to unlock. With `onlyIfTrusted`, rejects with `4001`. |
-| Another `connect()` from the same origin still pending        | Rejects with `-32002` (resource unavailable). |
+| Origin trusted, but no account resolves on the current network | Connection prompt. With `onlyIfTrusted`, rejects with `4001`. |
+| Another `connect()` from the same origin still pending        | Rejects with `-32002` (resource unavailable). Closing the extension's approval window does not cancel a request, so a new `connect()` can hit this until the user approves or rejects the pending one. |
 
 Trust is granted per **origin**, across all networks. A dApp connected on testnet stays trusted after the user switches to mainnet.
 
@@ -128,7 +129,7 @@ The nonce is signed the same way as [`signMessage()`](./signing.md#verifying-a-m
 
 1. Check that the nonce is one **you** issued, has not expired, and has not been used before.
 2. Recover the public key from the signature.
-3. Check **on chain** that this key is authorized for the claimed account. Never trust a `publicKey` sent by the client.
+3. Check **on chain** that this key controls the claimed account's `active` (or `owner`) permission on its own (weight ≥ threshold). A key that only appears in a low-privilege custom permission, or as one of several multisig keys, does not prove control. Never trust a `publicKey` sent by the client.
 
 ```ts
 // Node.js, using @wharfkit/antelope
@@ -139,7 +140,12 @@ const client = new APIClient({ url: 'https://api.mainnet.ultra.io' });
 export async function verifyLogin(account: string, nonce: string, signature: string): Promise<boolean> {
     const key = Signature.from(signature).recoverMessage(Bytes.from(nonce, 'utf8'));
     const { accounts } = await client.v1.chain.get_accounts_by_authorizers({ keys: [key] });
-    return accounts.some((a) => a.account_name.equals(account));
+    return accounts.some(
+        (a) =>
+            a.account_name.equals(account) &&
+            ['active', 'owner'].includes(String(a.permission_name)) &&
+            a.weight.toNumber() >= a.threshold.toNumber(),
+    );
 }
 ```
 
@@ -164,6 +170,6 @@ await wallet.disconnect();
 ```
 
 -   **Extension:** no prompt. The call is idempotent: it succeeds even if the origin was already disconnected. It also fires a [`disconnect` event](./events.md).
--   **Web Wallet:** opens the popup to complete the disconnection.
+-   **Web Wallet:** opens the popup, where the user confirms. Cancel rejects with `4001`; an origin that is not connected rejects with `4100`.
 
 Users can also disconnect your site from inside the extension. Listen for the [`disconnect` event](./events.md) so your UI stays in sync.

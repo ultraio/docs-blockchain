@@ -26,8 +26,10 @@ If you have desire to add some functionality on your own or suggest some of the 
 -   Create, approve and execute proposals
 -   Query [Ultra API](../nft-api/introduction.md)
 -   Validate Uniq and Factory Metadata JSONs
+-   [AI Assistant](./ai-assistant.md) - describe a transaction in plain English and get a ready-to-sign action or multisig proposal
 
 ## Tutorials & Help
 
+-   [AI Assistant](./ai-assistant.md)
 -   [Tutorial - Log in to the Ultra Tool Kit](../../tutorials/fundamentals/tutorial-login-to-toolkit.md)
 -   [Tutorial - Token transfer and Uniq purchase transactions](../../tutorials/fundamentals/tutorial-token-transfer-and-nft-purchase.md)

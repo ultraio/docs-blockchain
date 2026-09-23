@@ -5,6 +5,7 @@ dist
 .DS_Store
 .meta
 .idea/
+.playwright-mcp/
 
 # =======================================
 # Global Ignores

@@ -478,6 +478,11 @@ const sidebar: { [key: string]: DefaultTheme.SidebarItem[] } = {
             ],
         },
         {
+            text: 'Ultra Tool Kit',
+            items: getMarkdownFiles('/products/ultra-tool-kit'),
+            collapsed: true,
+        },
+        {
             text: 'Chain API',
             items: getMarkdownFiles('/products/chain-api'),
             collapsed: true,

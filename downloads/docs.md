@@ -26619,363 +26619,819 @@ If you have desire to add some functionality on your own or suggest some of the 
 -   [Tutorial - Token transfer and Uniq purchase transactions](../../tutorials/fundamentals/tutorial-token-transfer-and-nft-purchase.md)
 
 ---
-title: 'Core API Methods'
+title: 'Accounts & Networks'
+
+order: 4
+outline: [0, 4]
+---
+
+# Accounts & Networks
+
+The Browser Extension can hold **many accounts** and switch between **several networks**. The methods on this page let your dApp read that state. Apart from `getChainId()`, they are **extension-only**. [Events](./events.md) tell you when the state changes.
+
+::: warning Web Wallet
+With the Web Wallet provider, `getAccounts()`, `getSelectedAccount()` and `getAvailableAuthorizations()` open the popup and then reject with `-32601` (method not found), because the Web Wallet does not implement them. `getNetwork()`, `getNetworks()` and `switchNetwork()` throw `Not supported in web provider` synchronously. Check [which provider is active](./getting-started.md#choosing-a-provider) before calling them. A Web Wallet user always has exactly one account, which `connect()` returns.
+:::
+
+## Accounts
+
+All account methods return data only for a **trusted** origin (one the user has connected) whose wallet is unlocked. Otherwise, they resolve with an empty value (`[]` or `null`) instead of rejecting. Accounts are resolved **against the network the wallet is on**, so a key's mainnet accounts do not appear while the wallet is on testnet.
+
+### getSelectedAccount()
+
+```ts
+getSelectedAccount(): Promise<UltraResponse<AccountInfo | null>>
+```
+
+The SDK types the result as `AccountInfo`, but it is `null` when the origin is not trusted, the wallet is locked, or no account resolves on this network.
+
+The account the user has selected in the wallet. This is the account the wallet signs with by default.
+
+```ts
+const { data } = await wallet.getSelectedAccount();
+// {
+//   accountName: 'aa1aa2aa3aa4',
+//   permissions: [
+//     { name: 'active', publicKeys: ['EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx'] },
+//     { name: 'owner',  publicKeys: ['EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx'] },
+//   ],
+// }
+```
+
+The wallet's selected account is authoritative. Your dApp cannot change it. It can only follow changes through the [`accountChanged`](./events.md#accountchanged) event.
+
+### getAccounts()
+
+```ts
+getAccounts(): Promise<UltraResponse<AccountInfo[]>>
+```
+
+Lists every account the wallet can sign for on the current network, with its permissions and keys. It returns the same shape as `connect()`'s `accounts` field:
+
+```ts
+const { data } = await wallet.getAccounts();
+// [
+//   { accountName: 'aa1aa2aa3aa4', permissions: [{ name: 'active', publicKeys: ['EOS7HUZ…'] }] },
+//   { accountName: 'bb1bb2bb3bb4', permissions: [{ name: 'active', publicKeys: ['EOS5Xa…'] }] },
+// ]
+```
+
+::: warning Older extensions
+Extension **2.2.13 and earlier** return bare account names (`['aa1aa2aa3aa4', 'bb1bb2bb3bb4']`) instead. Until your users have upgraded, read the names defensively:
+
+```ts
+const names = (data as unknown[]).map((a) => (typeof a === 'string' ? a : (a as { accountName: string }).accountName));
+```
+:::
+
+### getAvailableAuthorizations()
+
+```ts
+getAvailableAuthorizations(): Promise<UltraResponse<AvailableAuth[]>>
+```
+
+Returns every `account@permission` pair the wallet holds a key for, together with the key. Call this before you build a transaction that needs a specific permission, so you know the wallet can sign it:
+
+```ts
+const { data: auths } = await wallet.getAvailableAuthorizations();
+// [
+//   { accountName: 'aa1aa2aa3aa4', permission: 'active', publicKey: 'EOS7HUZ…' },
+//   { accountName: 'aa1aa2aa3aa4', permission: 'owner',  publicKey: 'EOS7HUZ…' },
+//   { accountName: 'teamtreasury', permission: 'active', publicKey: 'EOS7HUZ…' },
+// ]
+
+const canUseGameplayKey = auths.some((a) => a.accountName === player && a.permission === 'gameplay');
+```
+
+The list includes accounts that authorize one of the wallet's keys through the chain's permission system, such as a shared account whose `active` permission lists the user's key.
+
+## Networks
+
+### getChainId()
+
+```ts
+getChainId(): Promise<UltraResponse<string>>
+```
+
+Returns the chain ID of the network the wallet is using. **Available with both providers.**
+
+-   **Extension:** asks the wallet's current node (`/v1/chain/get_info`). Resolves with `data: null` if the node cannot be reached. In that case `connect()` also fails the environment check (`… but received "null"`).
+-   **Web Wallet:** answered locally from the `environment` option, with no popup. With a custom Web Wallet URL, it asks the Web Wallet, which opens the popup, so call it from a user gesture.
+
+```ts
+const MAINNET = 'a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097';
+const { data: chainId } = await wallet.getChainId();
+if (chainId !== MAINNET) showWrongNetworkBanner();
+```
+
+### getNetwork()
+
+```ts
+getNetwork(): Promise<UltraResponse<NetworkDetails>>
+```
+
+The wallet's active network:
+
+```ts
+const { data } = await wallet.getNetwork();
+// { name: 'Mainnet', chainId: 'a9c481df…', nodeUrl: 'https://api.mainnet.ultra.io' }
+```
+
+`isCustom` is `true` only for networks the user added. Network names are not consistent across APIs (`'Mainnet'` here, `'mainnet'` in the connect result), so compare `chainId`.
+
+### getNetworks()
+
+```ts
+getNetworks(): Promise<UltraResponse<NetworkDetails[]>>
+```
+
+Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in **Settings → Networks**. User-added networks are listed only for a connected (trusted) origin, and only from extension 2.2.14; earlier versions list only the built-ins. Use it to check whether a network exists before you call `switchNetwork()`.
+
+### switchNetwork()
+
+```ts
+switchNetwork(chainId: string): Promise<UltraResponse<void>>
+```
+
+Asks the extension to switch to another network that is **already configured** in the wallet. Extension 2.2.13 and earlier can only switch to the built-in Mainnet and Testnet; 2.2.14+ can also switch to networks the user added.
+
+```ts
+const TESTNET = '7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9';
+await wallet.switchNetwork(TESTNET);
+```
+
+-   Your origin must be **trusted** (connected). Otherwise the call rejects with `4100`.
+-   The switch happens **without a prompt**, and it resolves at once, without changing anything, if the wallet is already on that chain.
+-   It rejects with `-32602` if `chainId` is not a 64-character lowercase hex string.
+-   It rejects with `4902` (unrecognized chain ID) if no configured network has that chain ID.
+-   It rejects with `-32002` if the wallet is locked, or while any wallet request (such as a signing prompt) is pending.
+-   After the switch, the wallet sends [`networkChanged`](./events.md#networkchanged) and then [`accountChanged`](./events.md#accountchanged) to every connected dApp, because the account list depends on the network.
+
+Trust is per origin across networks, so your dApp stays connected after the switch.
+
+### Adding a network
+
+dApps cannot add networks. A network added by a website, without the user reviewing it, could route the user's signing requests through an attacker's node. The extension therefore removed that capability, and SDK 0.6.0 removed `addNetwork()`. Ask users to add a custom network themselves in the extension's **Settings → Networks**. With extension 2.2.14+, your dApp can then call `switchNetwork()` with its chain ID; with earlier versions, ask the user to switch to it in the wallet.
+
+---
+title: 'API Reference'
+
+order: 9
+outline: [0, 3]
+---
+
+# API Reference
+
+Everything below can be imported from `@ultraos/wallet-sdk`.
+
+```ts
+import {
+    UltraWalletSDK,
+    ResponseStatus,
+    SdkErrorCode,
+    SDK_ERROR_MESSAGE,
+    type UltraWalletSdkOptions,
+    type ConnectParams,
+    type ConnectResult,
+    type BlockchainTransaction,
+    type SignTransactionOptions,
+    type SignTransactionResult,
+    type UltraResponse,
+} from '@ultraos/wallet-sdk';
+```
+
+## UltraWalletSDK
+
+```ts
+class UltraWalletSDK {
+    constructor(options?: UltraWalletSdkOptions);
+
+    // Connection
+    connect(params?: ConnectParams): Promise<UltraResponse<ConnectResult>>;
+    disconnect(): Promise<UltraResponse<boolean>>;
+
+    // Signing
+    signMessage(message: string): Promise<UltraResponse<SignMessageResult>>;
+    signTransaction(
+        transaction: BlockchainTransaction | BlockchainTransaction[],
+        options?: SignTransactionOptions,
+    ): Promise<UltraResponse<SignTransactionResult>>;
+
+    // Accounts (extension only)
+    getAccounts(): Promise<UltraResponse<AccountInfo[]>>;
+    getSelectedAccount(): Promise<UltraResponse<AccountInfo>>; // null at runtime when untrusted/locked
+    getAvailableAuthorizations(): Promise<UltraResponse<AvailableAuth[]>>;
+
+    // Networks
+    getChainId(): Promise<UltraResponse<string>>;
+    getNetwork(): Promise<UltraResponse<NetworkDetails>>; //    extension only
+    getNetworks(): Promise<UltraResponse<NetworkDetails[]>>; // extension only
+    switchNetwork(chainId: string): Promise<UltraResponse<void>>; // extension only
+
+    // Events (extension only)
+    on(event: WalletEventType, callback: (data: any) => void): void;
+    off(event: WalletEventType, callback: (data: any) => void): void;
+
+    // Lifecycle
+    dispose(): void;
+}
+```
+
+| Method | Guide |
+| ------ | ----- |
+| `connect`, `disconnect` | [Connecting](./connecting.md) |
+| `signMessage`, `signTransaction` | [Signing](./signing.md) |
+| `getAccounts`, `getSelectedAccount`, `getAvailableAuthorizations`, `getChainId`, `getNetwork`, `getNetworks`, `switchNetwork` | [Accounts & Networks](./accounts-and-networks.md) |
+| `on`, `off` | [Events](./events.md) |
+| `dispose` | [Getting Started → Cleaning up](./getting-started.md#cleaning-up) |
+
+## Options
+
+```ts
+interface UltraWalletSdkOptions {
+    /** 'mainnet' (default), 'testnet', or a custom Web Wallet URL. */
+    environment?: 'mainnet' | 'testnet' | string;
+    /** Force a provider instead of auto-detecting window.ultra. */
+    provider?: 'web' | 'extension';
+}
+```
+
+## Responses
+
+```ts
+interface UltraResponse<T = any> {
+    status: ResponseStatus; // always 'success' on a resolved promise
+    data: T;
+    message?: string;
+    code?: number;
+}
+
+enum ResponseStatus {
+    SUCCESS = 'success',
+    FAIL = 'fail',
+    ERROR = 'error',
+}
+```
+
+## Connection types
+
+```ts
+interface ConnectParams {
+    onlyIfTrusted?: boolean;
+    referralCode?: string;
+    /** Must start with 'message:', '0x' or 'UOSx'. */
+    nonce?: string;
+}
+
+type ConnectResult = {
+    /** The connected account NAME (not a chain id); equals selectedAccount.accountName. Only field the Web Wallet returns besides publicKey. */
+    blockchainid: string;
+    /** @deprecated Prefer selectedAccount.permissions[n].publicKeys */
+    publicKey: string;
+    accounts?: AccountInfo[]; //       extension only
+    selectedAccount?: AccountInfo; //  extension only
+    network?: NetworkInfo; //          extension only
+    nonce?: string; //                 when a nonce was passed
+    signedNonce?: string; //           when a nonce was passed
+};
+```
+
+The SDK types also declare `ConnectParams.requireAttestation` and `ConnectResult.attestation`. They are marked `@experimental`, are not supported for integration yet, and are intentionally left out of this documentation.
+
+## Account & network types
+
+```ts
+interface AccountInfo {
+    accountName: string;
+    permissions: PermissionInfo[];
+}
+
+interface PermissionInfo {
+    name: string; //         e.g. 'active'
+    publicKeys: string[];
+}
+
+interface AvailableAuth {
+    accountName: string;
+    permission: string;
+    publicKey: string;
+}
+
+interface NetworkInfo {
+    name: string;
+    chainId: string;
+}
+
+interface NetworkDetails {
+    name: string;
+    chainId: string;
+    nodeUrl: string;
+    isCustom?: boolean;
+}
+
+type WalletEventType = 'accountChanged' | 'networkChanged' | 'disconnect';
+```
+
+## Transaction types
+
+```ts
+interface BlockchainTransaction {
+    contract: string;
+    action: string;
+    data: any;
+    authorization?: StructuredAuthorization[];
+    /** @deprecated Use `authorization`. Web Wallet releases before September 2026 read only this field. */
+    authorizations?: string[];
+}
+
+interface StructuredAuthorization {
+    actor: string;
+    permission: string;
+}
+
+interface SignTransactionOptions {
+    /** Return the signed transaction without broadcasting it. */
+    signOnly?: boolean;
+}
+
+interface SignTransactionResult {
+    transactionHash?: string;
+    /** signOnly: authorizations the wallet could not sign, as 'account@permission'. */
+    unsignedAuth?: string[];
+    processed?: {
+        id: string;
+        block_num: number;
+        block_time: string;
+        producer_block_id: string | null;
+        receipt: { status: string; cpu_usage_us: number; net_usage_words: number };
+        elapsed: number;
+        net_usage: number;
+        scheduled: boolean;
+        action_traces: ActionTrace[];
+        account_ram_delta: any | null;
+        except: any | null;
+        error_code: number | null;
+    };
+}
+
+interface SignMessageResult {
+    signature: string;
+}
+```
+
+With `signOnly: true`, `data` is the signed transaction (`expiration`, `ref_block_num`, `ref_block_prefix`, `actions`, `signatures`, …), not the shape above. See [Sign without broadcasting](./signing.md#sign-without-broadcasting).
+
+## Error codes
+
+```ts
+enum SdkErrorCode {
+    USER_REJECTED_REQUEST = 4001,
+    WALLET_HANDSHAKE_TIMEOUT = 4300,
+    WALLET_WINDOW_UNAVAILABLE = 4301,
+    WEB_WALLET_UNAVAILABLE = 4302, // 0.6.1+
+    REQUESTED_RESOURCE_NOT_AVAILABLE = 32002,
+    UNKNOWN_ERROR = -32604,
+}
+
+const SDK_ERROR_MESSAGE: Record<SdkErrorCode, string>;
+```
+
+The wallet error codes are listed in [Errors](./errors.md#wallet-error-codes).
+
+---
+title: 'Connecting'
 
 order: 2
 outline: [0, 4]
 ---
 
-# Core API Methods
+# Connecting
 
-The `@ultraos/wallet-sdk` provides a unified interface for interacting with both the Ultra Web Wallet and the Ultra Wallet Extension. This means you can implement wallet functionality once, and the SDK will handle which wallet environment (web or extension) is used behind the scenes.
+A dApp must be **connected** before the wallet will share account information or accept signing requests. When a user approves a connection, your site's origin becomes **trusted** by their wallet. Later `connect()` calls from that origin can then complete without another prompt.
 
-## Response Format
-
-The Ultra Web Wallet SDK returns responses in the same format as the Ultra Wallet Extension.
-
-Each successful method call returns a consistent object structure with the following top-level fields:
-
--   `status`: Always `"success"` for resolved calls
--   `data`: The actual payload of the response, specific to each method
-
-Example structure:
+## connect()
 
 ```ts
-{
-  status: "success",
-  data: {
-    // method-specific values here
-  }
-}
+connect(params?: ConnectParams): Promise<UltraResponse<ConnectResult>>
 ```
-
-For full details on the structure of each method’s response, refer to the shared documentation:
-
-[See Ultra Wallet Response Format →](../ultra-wallet/response-format.md)
-
-## Connect
-
-Initiates the connection process with the wallet. For Web Wallet users, this includes authenticating via Ultra SSO and registering the device.
 
 ```ts
 try {
-    const response = await wallet.connect();
-    response.data.blockchainid;
-    // ej1vx2ft3ht4
-    response.data.publicKey;
-    // EOS7uRb72dR8jrLjNuC9UoevBBH3YbVZfNKUtYCfLkV7aPGcmDjs7
-} catch (err) {
-    // { status: "error", message: "Connection rejected" }
-}
-```
-
-### Eagerly Connecting
-
-After a web application connects to the Ultra Wallet for the first time, it gains a trusted status.
-Once this trust is established, the application can seamlessly link with Ultra Wallet during future visits or when the page is refreshed,
-eliminating the need to ask the user for authorization. This concept is commonly known as "eagerly connecting".
-
-To implement this, web applications should pass an `onlyIfTrusted` option into the `connect()` call.
-
-```ts
-try {
-    await wallet.connect({ onlyIfTrusted: true });
+    const { data } = await wallet.connect();
+    data.blockchainid; // "aa1aa2aa3aa4"  (the connected account name)
+    data.publicKey; //    "EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx"
 } catch (err) {
     // { status: 'error', code: 4001, message: 'The user rejected the request.' }
 }
 ```
 
-### Sending a Referral Code
+### Parameters
 
-An application can send its referral code to the wallet. The referral code will be used if the user signs up during the connection process.
+| Parameter            | Type      | Description |
+| -------------------- | --------- | ----------- |
+| `onlyIfTrusted`      | `boolean` | Never show a prompt. Resolve only if the origin is already trusted, otherwise reject with `4001`. See [Eager reconnect](#eager-reconnect). |
+| `nonce`              | `string`  | A challenge for the wallet to sign during connection. See [Login with a signed nonce](#login-with-a-signed-nonce). Must start with `message:`, `0x` or `UOSx`. |
+| `referralCode`       | `string`  | Web Wallet only: your Ultra referral code, credited if the user signs up during the connection. The extension ignores it. |
 
-To implement this, applications should pass the `referralCode` option into the `connect()` call.
+### The connect result
 
-```ts
-wallet.connect({ referralCode: 'ecd1f052-9d0d-4b84-8dd3-10a753d044b5' });
-```
-
-To get your referral code, go to the Ultra Desktop client and then to the Wallet, and look for the "My referral link" section. Click the link to copy it.
-
-Once you copy your referral link, you can extract the referral code from the URL. For example, from the following link:
-
-```
-https://ultra.io/register/ecd1f052-9d0d-4b84-8dd3-10a753d044b5
-```
-
-The referral code is: `ecd1f052-9d0d-4b84-8dd3-10a753d044b5`.
-
-
-### Connect with Nonce
-
-To streamline authentication flows and avoid browser restrictions on multiple popup windows, the `connect()` method supports an optional `nonce` parameter. When provided, the Ultra Web Wallet will automatically sign the nonce after completing key synchronization.
-
-This is particularly useful for dApps that need to verify user identity using a signed challenge (i.e., the nonce) — commonly used in Web3 login/session flows.
-
-:::info Note
-If the `nonce` parameter is specified, the `connect()` method will always prompt the user to reconnect, even if a trusted session already exists.
-:::
-
-#### Usage
+| Field             | Type                   | Extension | Web Wallet | Description |
+| ----------------- | ---------------------- | :-------: | :--------: | ----------- |
+| `blockchainid`    | `string`               | ✅        | ✅         | The connected **account name** (for example `aa1aa2aa3aa4`). Despite the name, this is not a chain ID. |
+| `publicKey`       | `string`               | ✅        | ✅         | A public key of the connected account. |
+| `accounts`        | `AccountInfo[]`        | ✅        | —          | Every account the wallet can sign for **on the current network**, with its permissions and keys. |
+| `selectedAccount` | `AccountInfo`          | ✅        | —          | The account currently selected in the wallet. Matches `blockchainid`. |
+| `network`         | `{ name, chainId }`    | ✅        | —          | The network the wallet is on. |
+| `nonce`           | `string`               | ✅        | ✅         | Only when you passed `nonce`: the nonce, echoed back. |
+| `signedNonce`     | `string`               | ✅        | ✅         | Only when you passed `nonce`: the signature (`SIG_K1_…`). |
 
 ```ts
-try {
-  const response = await wallet.connect({ nonce: 'message: abc123randomnonce' });
-
-  console.log(response.data.blockchainid);     // e.g., "aa1aa2aa3aa4"
-  console.log(response.data.publicKey);        // e.g., "EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx"
-  console.log(response.data.nonce);            // "message: abc123randomnonce" (note: nonce must start with 'message:', '0x', or 'UOSx')
-  console.log(response.data.signedNonce);      // Signed message
-} catch (err) {
-  // { status: "error", message: "Connection rejected" }
+// Example extension result
+{
+  status: 'success',
+  data: {
+    blockchainid: 'aa1aa2aa3aa4',
+    publicKey: 'EOS7HUZZ6AQvrEi3wGRrKd2A3CuktaeM6xnguA2CrVxH9BUMB5aRx',
+    accounts: [
+      { accountName: 'aa1aa2aa3aa4', permissions: [{ name: 'active', publicKeys: ['EOS7HUZ…'] }, { name: 'owner', publicKeys: ['EOS7HUZ…'] }] },
+      { accountName: 'bb1bb2bb3bb4', permissions: [{ name: 'active', publicKeys: ['EOS5Xa…'] }] },
+    ],
+    selectedAccount: { accountName: 'aa1aa2aa3aa4', permissions: [ /* … */ ] },
+    network: { name: 'mainnet', chainId: 'a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097' },
+  },
 }
 ```
 
-> **Important:** The `nonce` string must begin with one of the supported prefixes: `'message:'`, `'0x'`, or `'UOSx'`. This ensures compatibility with Ultra Wallet’s signature rules.
-
-#### Response Format
-
-When a `nonce` is provided, the response `data` object will include:
-
-- `blockchainid`: User's Ultra Blockchain ID
-- `publicKey`: Associated public key
-- `nonce`: The original nonce sent by the dApp
-- `signedNonce`: The message signature generated by the Ultra Wallet
-
-This signed payload can then be verified off-chain or used to create stateless sessions server-side.
-
-> Note: The signed message uses the standard `signMessage()` behavior with the same signature rules.
-
-
-## Disconnect
-
-The `disconnect()` method revokes the connection permission that the user granted to the web application. If the application is already disconnected, the Promise will throw an error.
-
-```ts
-try {
-  await wallet.disconnect();
-} catch (err) {
-  // { status: "error", message: "Forbidden" }
-```
-
-## Sign Message
-
-In some cases, a web application can also request the user to sign a given message to verify the ownership of a blockchain account. Applications are free to write their messages which will be displayed to users from within the Ultra Wallet's signature prompt using the method `signMessage()`. These messages should have one of the following prefixes: `0x`, `UOSx`, or `message:`.
-
-```ts
-const signature = await wallet.signMessage('message: Hello, blockchain!');
-```
-
-:::info
-Message signatures do not involve network fees.
+::: tip Writing for both wallets
+Read `blockchainid` and `publicKey` for code that must work with both wallets. Use `accounts`, `selectedAccount` and `network` when they are present (extension users), and fall back to the legacy fields when they are not.
 :::
 
-## Sign Transaction
+### When does the user see a prompt?
 
-Once a web application is connected to the Ultra Wallet, it can prompt the user for permission to sign and push transactions on their behalf.
+**Browser Extension**
 
-### Create a transaction object
+| Situation                                                     | Behavior |
+| ------------------------------------------------------------- | -------- |
+| Origin not trusted                                            | Connection prompt. With `onlyIfTrusted`, rejects with `4001` instead. |
+| Origin trusted                                                | **Resolves silently** with the current account, with or without `onlyIfTrusted`. |
+| Origin trusted, `nonce` passed                                | Always prompts, because the user must approve signing the nonce. |
+| Wallet locked                                                 | Prompt to unlock. With `onlyIfTrusted`, rejects with `4001`. |
+| Origin trusted, but no account resolves on the current network | Connection prompt. With `onlyIfTrusted`, rejects with `4001`. |
+| Another `connect()` from the same origin still pending        | Rejects with `-32002` (resource unavailable). Closing the extension's approval window does not cancel a request, so a new `connect()` can hit this until the user approves or rejects the pending one. |
 
-Ultra Wallet uses a simplified format for transaction objects. The required fields are `action`, `contract`, and `data`.
+Trust is granted per **origin**, across all networks. A dApp connected on testnet stays trusted after the user switches to mainnet.
 
-Example: sending tokens between accounts.
+**Web Wallet**
 
-```json
-{
-    "action": "transfer",
-    "contract": "eosio.token",
-    "data": {
-        "memo": "This is a transaction test",
-        "quantity": "11.20000000 UOS",
-        "from": "ej1vx2ft3ht4",
-        "to": "nwyklp2aa1qd"
+Every `connect()` opens the Web Wallet popup. If the user is signed in and the origin is already trusted, the popup resolves at once and closes itself. Otherwise the user signs in with Ultra SSO and approves the connection. A connection with a `nonce` always shows the approval screen. The Web Wallet ignores `onlyIfTrusted` and still opens the popup.
+
+## Eager reconnect
+
+After a page reload, you usually want to restore a previous connection without bothering the user. With the extension, call `connect({ onlyIfTrusted: true })` on page load:
+
+```ts
+async function restoreSession() {
+    try {
+        const { data } = await wallet.connect({ onlyIfTrusted: true });
+        return data; // Still trusted: the UI shows "connected"
+    } catch {
+        return null; // Not trusted (or locked): show the "Connect" button
     }
 }
 ```
 
-### Sign the transaction object
+::: warning Web Wallet
+Do **not** call `connect()` on page load with the Web Wallet. Each call opens a popup, and without a user gesture the browser blocks it (`4301`). With the Web Wallet, store the account name from the last successful `connect()` yourself, and call `connect()` again only from a click.
+:::
 
-Once the transaction is created, you can request the wallet to sign and broadcast it using `signTransaction()`:
+## Login with a signed nonce
+
+To prove to **your backend** that the user controls an account, have the wallet sign a server-issued challenge while it connects. This takes a single popup:
 
 ```ts
-try {
-    const response = await wallet.signTransaction(txObject);
-    response.data.transactionHash;
-    // 51c6d324522a0ee05baeee2a8857b016e47481207850074ee83f914e6adc45ae
-} catch (err) {
-    // { status: "error", message: "Transaction declined" }
+// 1. Get a one-time challenge from your server
+const { challenge } = await fetch('/auth/challenge').then((r) => r.json());
+// e.g. "message: Sign in to example.com\nNonce: 7c1e9f…\nIssued at: 2026-09-23T10:00:00Z"
+
+// 2. Connect and sign it (from a click handler)
+const { data } = await wallet.connect({ nonce: challenge });
+const { nonce, signedNonce } = data;
+
+// 3. Send the result to your server for verification
+await fetch('/auth/verify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ account: data.blockchainid, nonce, signature: signedNonce }),
+});
+```
+
+The nonce is signed the same way as [`signMessage()`](./signing.md#verifying-a-message-signature): a K1 signature over the SHA-256 of the UTF-8 nonce string. On the server:
+
+1. Check that the nonce is one **you** issued, has not expired, and has not been used before.
+2. Recover the public key from the signature.
+3. Check **on chain** that this key controls the claimed account's `active` (or `owner`) permission on its own (weight ≥ threshold). A key that only appears in a low-privilege custom permission, or as one of several multisig keys, does not prove control. Never trust a `publicKey` sent by the client.
+
+```ts
+// Node.js, using @wharfkit/antelope
+import { APIClient, Bytes, Signature } from '@wharfkit/antelope';
+
+const client = new APIClient({ url: 'https://api.mainnet.ultra.io' });
+
+export async function verifyLogin(account: string, nonce: string, signature: string): Promise<boolean> {
+    const key = Signature.from(signature).recoverMessage(Bytes.from(nonce, 'utf8'));
+    const { accounts } = await client.v1.chain.get_accounts_by_authorizers({ keys: [key] });
+    return accounts.some(
+        (a) =>
+            a.account_name.equals(account) &&
+            ['active', 'owner'].includes(String(a.permission_name)) &&
+            a.weight.toNumber() >= a.threshold.toNumber(),
+    );
 }
 ```
 
-### Sign multiple transactions at the same time
+::: tip API node
+The lookup needs an API node that supports `get_accounts_by_authorizers`, such as `https://api.mainnet.ultra.io` on mainnet or `https://api.testnet.ultra.eossweden.org` on testnet. Not every public node supports it (for example, `test.ultra.eosusa.io` does not).
+:::
 
-You can also pass an array of transactions to sign them together in a single call:
+::: tip
+Put your domain and an expiry time in the challenge text. The user sees the text in the wallet, and it stops a signature collected by one site from being replayed on another.
+:::
+
+## disconnect()
 
 ```ts
-const txArray = [
-    {
-        action: 'transfer',
-        contract: 'eosio.token',
-        data: {
-            memo: '',
-            quantity: '11.20000000 UOS',
-            from: 'ej1vx2ft3ht4',
-            to: 'nwyklp2aa1qd',
-        },
-    },
-    {
-        action: 'buy',
-        contract: 'eosio.nft.ft',
-        data: {
-            buy: {
-                token_id: 9974,
-                buyer: 'mg1vg2lv3fs4',
-                receiver: 'mg1vg2lv3fs4',
-                max_price: '78.00000000 UOS',
-                memo: '',
-                promoter_id: null,
-            },
-        },
-    },
-];
+disconnect(): Promise<UltraResponse<boolean>>
+```
 
-try {
-    const response = await wallet.signTransaction(txArray);
-    response.data.transactionHash;
-} catch (err) {
-    // { status: "error", message: "Transaction declined" }
+Revokes your origin's trusted status. The next `connect()` prompts the user again.
+
+```ts
+await wallet.disconnect();
+```
+
+-   **Extension:** no prompt. The call is idempotent: it succeeds even if the origin was already disconnected. It also fires a [`disconnect` event](./events.md).
+-   **Web Wallet:** opens the popup, where the user confirms. Cancel rejects with `4001`; an origin that is not connected rejects with `4100`.
+
+Users can also disconnect your site from inside the extension. Listen for the [`disconnect` event](./events.md) so your UI stays in sync.
+
+---
+title: 'Errors'
+
+order: 8
+outline: [0, 4]
+---
+
+# Errors
+
+## Error shape
+
+When a wallet request fails, the promise **rejects** with a plain object (not an `Error` instance):
+
+```ts
+{
+    status: 'error' | 'fail',
+    code: number,
+    message: string,
+    data?: unknown, // extra detail, e.g. which parameter was invalid
 }
 ```
 
-### Sign a transaction without broadcasting to the blockchain
+-   `status: 'fail'`: usually the request itself was invalid (bad parameters), though the extension also uses it for a few busy or internal conditions. Branch on `code`, not `status`.
+-   `status: 'error'`: the request could not be completed. The user rejected it, the wallet was busy, the transaction failed, and so on.
 
-You can sign one or more transactions and receive the full signed payload without broadcasting it by passing `{ signOnly: true }`:
+For wallet errors, `message` is the generic text for the code. Extra detail, such as the chain's error for a failed transaction, is in `data`.
+
+A few SDK-side checks throw a regular `Error` instead. These are the environment mismatch on `connect()`, and `Not supported in web provider` for `getNetwork()`, `getNetworks()` and `switchNetwork()` with the Web Wallet. Those three throw **synchronously**, so catch them with `try { await … }` rather than `.catch()`. Handle both kinds:
 
 ```ts
+import { SdkErrorCode } from '@ultraos/wallet-sdk';
+
 try {
-    const response = await wallet.signTransaction(txObject, { signOnly: true });
-    response.data;
-    /**
-   {
-      "expiration": "...",
-      "ref_block_num": ...,
-      "actions": [...],
-      "signatures": [...],
-      ...
-   }
-  */
-} catch (err) {
-    // { status: "error", message: "Transaction declined" }
+    await wallet.signTransaction(tx);
+} catch (err: any) {
+    if (err instanceof Error) {
+        showError(err.message); // SDK configuration / unsupported method
+    } else if (err?.code === SdkErrorCode.USER_REJECTED_REQUEST) {
+        // 4001: the user said no. Usually no error message is needed.
+    } else {
+        showError(err?.message ?? 'Wallet request failed');
+    }
 }
 ```
 
-## Get Chain ID
+## Wallet error codes
 
-Retrieves the current chain ID based on the environment configuration.
+The codes follow [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193#provider-errors) and [EIP-1474](https://eips.ethereum.org/EIPS/eip-1474#error-codes).
+
+| Code     | Name                  | Typical cause |
+| -------- | --------------------- | ------------- |
+| `4001`   | User rejected request | The user clicked Cancel or Reject. Also `connect({ onlyIfTrusted: true })` on an untrusted origin. With the Web Wallet, closing the popup rejects with `4001` too. With the extension, closing the approval window leaves the request **pending**: the user can reopen the extension to approve or reject it. |
+| `4100`   | Unauthorized          | The origin is not connected, for example `signMessage()`, `signTransaction()` or `switchNetwork()` before `connect()`, or a Web Wallet `disconnect()` from an origin that is not connected. |
+| `4900`   | Disconnected          | Reserved. Not currently raised by either wallet. |
+| `4902`   | Unrecognized chain ID | `switchNetwork()` to a network the wallet does not have. |
+| `-32000` | Invalid input         | Missing or invalid parameters, such as an invalid transaction object, authorizations with no valid `account@permission` (Web Wallet), or (extension) a message without a `message:` / `0x` / `UOSx` prefix. |
+| `-32002` | Resource unavailable  | The wallet is busy: a duplicate `connect()`, a pending request blocking `switchNetwork()`, or the wallet is locked. |
+| `-32003` | Transaction rejected  | Signing or broadcasting failed. The chain's error is in `data`. The Web Wallet also uses this code for a message or nonce with an invalid prefix, after the user confirms. |
+| `-32005` | Limit exceeded        | More than 10 pending requests from your origin. |
+| `-32600` | Invalid request       | The request object is malformed. |
+| `-32601` | Method not found      | The wallet does not implement the method, for example `getAccounts()` with the Web Wallet, or a removed method called directly on `window.ultra`. |
+| `-32602` | Invalid params        | A parameter has the wrong format, such as a `switchNetwork()` chain ID that is not 64 hex characters. |
+| `-32603` | Internal error        | An unexpected wallet-side failure. |
+
+## SDK error codes
+
+The SDK raises these codes itself. Most come from the Web Wallet's popup transport. They are exported as `SdkErrorCode`:
+
+| Code     | `SdkErrorCode`                     | Message                                          | Cause |
+| -------- | ---------------------------------- | ------------------------------------------------ | ----- |
+| `4001`   | `USER_REJECTED_REQUEST`            | The user rejected the request.                   | The user closed the Web Wallet popup before finishing. |
+| `4300`   | `WALLET_HANDSHAKE_TIMEOUT`         | Timeout to connect with the web wallet.          | The popup did not respond within 10 seconds. The SDK closes it. |
+| `4301`   | `WALLET_WINDOW_UNAVAILABLE`        | Wallet window blocked by browser or failed to open. | The popup was blocked. Call from a [user gesture](./getting-started.md#call-wallet-methods-from-a-user-gesture). |
+| `4302`   | `WEB_WALLET_UNAVAILABLE`           | The Ultra Web Wallet is not available on this network. … | _SDK 0.6.1+._ The Web Wallet provider was used with `environment: 'testnet'`. Testnet is supported through the browser extension only. |
+| `32002`  | `REQUESTED_RESOURCE_NOT_AVAILABLE` | Requested resource not available.                | A Web Wallet request is already in progress. Note: this is **positive** `32002`, unlike the extension's `-32002`. |
+| `-32604` | `UNKNOWN_ERROR`                    | Unknown error occurred.                          | The popup's JSON-RPC call failed without an error code. The original error is in `data`. When the Web Wallet returns a coded JSON-RPC error (such as `-32601`), SDK 0.6.1+ rejects with that code and closes the popup. (SDK 0.6.0 rejected with `undefined`, so guard with `err?.code`.) |
+
+---
+title: 'Events'
+
+order: 5
+outline: [0, 4]
+---
+
+# Events
+
+The Browser Extension notifies connected dApps when the user changes accounts, switches networks or disconnects. Subscribe with `on()` and unsubscribe with `off()`.
 
 ```ts
-const chainId = await wallet.getChainId();
+on(event: WalletEventType, callback: (data: any) => void): void
+off(event: WalletEventType, callback: (data: any) => void): void
+
+type WalletEventType = 'accountChanged' | 'networkChanged' | 'disconnect';
 ```
 
-## Purchase Item
+::: info Extension only
+Events need a long-lived connection to the wallet, which the Web Wallet's popup transport does not have. With the Web Wallet provider, `on()` and `off()` do nothing.
+:::
 
-To facilitate the purchase of a Uniq Factory with FIAT or blockchain tokens, the Ultra platform provides the `wallet.purchaseItem(itemType, itemId)` method. This method initiates a complete purchase flow for a specific item, identified by its type and ID on the blockchain.
-
-### Parameters
-
--   `itemType`: For Uniq Factory purchases, use `"UniqFactory"`.
--   `itemId`: The numeric identifier of the Uniq Factory product on the blockchain.
-
-When this method is called, a popup will appear showing the Ultra purchase flow. Users can complete their purchase using credit/debit cards or UOS tokens.
-
-Upon success, the result includes:
-
--   `orderHash`: Reference ID for customer support
--   `items`: An array of purchased items containing:
-    -   `productId`: The requested item ID
-    -   `artifactId`: The minted Uniq on the blockchain
-    -   `blockchainTransactionId`: Transaction ID confirming the mint on-chain
-
-If the user cancels or an error occurs, the promise will reject with an error message.
+## Subscribing
 
 ```ts
-try {
-    const response = await wallet.purchaseItem('UniqFactory', '599');
-    // {
-    //   status: "success",
-    //   data: {
-    //     orderHash: "XXX",
-    //     items: [{
-    //       productId: 599,
-    //       artifactId: 7777,
-    //       blockchainTransactionId: "XXX",
-    //     }],
-    //   },
-    // }
-} catch (err) {
-    // { status: "error", message: "Purchase canceled" }
+function handleAccountChanged({ selected }: { selected: { accountName: string } | null }) {
+    if (selected) setCurrentAccount(selected.accountName);
+}
+
+wallet.on('accountChanged', handleAccountChanged);
+
+// Later: pass the same function reference
+wallet.off('accountChanged', handleAccountChanged);
+```
+
+-   Events are delivered only to **trusted** (connected) origins. You can subscribe before `connect()`. The SDK registers your listeners again automatically once the connection succeeds.
+-   The SDK re-registers listeners every 2 seconds, so they survive a restart of the extension's background service worker. Call [`dispose()`](./getting-started.md#cleaning-up) when you no longer need the instance, to stop this heartbeat.
+-   Pass the **same function reference** to `off()` that you passed to `on()`.
+
+## accountChanged
+
+Fires when the user selects a different account, when the wallet is unlocked, and after a network switch.
+
+```ts
+{
+  accounts: [
+    { accountName: 'aa1aa2aa3aa4', permission: 'active', publicKey: 'EOS7HUZ…' },
+    { accountName: 'aa1aa2aa3aa4', permission: 'owner',  publicKey: 'EOS7HUZ…' },
+    { accountName: 'bb1bb2bb3bb4', permission: 'active', publicKey: 'EOS5Xa…' },
+  ],
+  selected: { accountName: 'bb1bb2bb3bb4', permission: 'active', publicKey: 'EOS5Xa…' }, // or null
 }
 ```
 
-## Error Codes
+-   `accounts` is **flat**: one entry per `account + permission + key`, the same shape as [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations).
+-   `selected` is the newly selected account, or `null` if it has no entry on this network.
+-   The wallet does not send this event while it is locked, or while an account lookup fails temporarily. An empty `accounts` list therefore means what it says, not "logged out".
 
-The Ultra Web Wallet SDK follows the same error interface as the Ultra Wallet Extension.
+## networkChanged
 
-When a method fails (e.g., the user cancels a transaction or rejects a connection request), the rejected promise will contain a standardized error object with fields like `status`, `code`, and `message`.
+Fires when the wallet switches networks, whether the user switched or your dApp called [`switchNetwork()`](./accounts-and-networks.md#switchnetwork).
 
-You can refer to the shared error documentation for full details on all possible error responses:
+```ts
+{
+  chainId: '7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9',
+  name: 'Testnet',
+  nodeUrl: 'https://test.ultra.eosusa.io',
+  accounts: [{ accountName: 'aa1aa2aa3aa4' }], // the selected account, if known
+}
+```
 
-See [Ultra Wallet Error Codes](../ultra-wallet/errors.md).
+An `accountChanged` event with the account list for the new network follows. If your dApp supports only one network, compare `chainId` with the one you expect and show a "wrong network" state, or call `switchNetwork()` to switch back.
+
+## disconnect
+
+Fires when your origin loses its trusted status: your dApp called `disconnect()`, or the user removed your site in the extension.
+
+The payload is `{ origin: 'https://example.com' }` when your dApp disconnected, and empty when the user disconnected from the extension. Do not depend on it.
+
+Clear your session state and show the "Connect" button:
+
+```ts
+wallet.on('disconnect', () => {
+    clearSession();
+    renderConnectButton();
+});
+```
+
+## Example: keeping UI state in sync
+
+```ts
+const EXPECTED_CHAIN = 'a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097';
+
+wallet.on('accountChanged', ({ selected }) => {
+    state.account = selected?.accountName ?? null;
+});
+
+wallet.on('networkChanged', ({ chainId }) => {
+    state.wrongNetwork = chainId !== EXPECTED_CHAIN;
+});
+
+wallet.on('disconnect', () => {
+    state.account = null;
+});
+```
 
 ---
 title: 'FAQ / Troubleshooting'
 
-order: 3
+order: 10
 outline: [0, 4]
 ---
 
 # FAQ / Troubleshooting
 
-Below are common questions and issues developers may encounter when integrating or using the Ultra Web Wallet via the `@ultraos/wallet-sdk`.
+## Nothing happens when I call `connect()`
 
-## Why am I seeing "EBA account required"?
+With the Web Wallet, this is almost always a **blocked popup**. The promise rejects with `4301`.
 
-The Ultra Web Wallet currently supports only **Easy Blockchain Account (EBA)** users. If you're using a self-managed account, you won't be able to connect via the Web Wallet. Ensure the account you're testing with is EBA-enabled.
+-   Call the method directly from a click or tap handler. See [User gestures](./getting-started.md#call-wallet-methods-from-a-user-gesture).
+-   Check that the user has not blocked popups for your site.
+-   If the popup opens but stays blank, and the call rejects with `4300` after 10 seconds, the Web Wallet could not load. Check the `environment` value and the network connection.
 
-## The wallet doesn't connect. What should I check?
+## `connect()` throws "Wallet environment mismatch"
 
--   Confirm the `env` parameter matches the desired Ultra environment (e.g., `'testnet'`, `'mainnet'`).
--   Ensure you're using a compatible browser with secure (HTTPS) context.
--   Check your app’s domain is approved to interact with Ultra SSO if necessary.
--   Clear local storage or try an incognito window for a fresh auth attempt.
+The extension is on a different network from the `environment` you configured. Ask the user to switch networks in the extension, or build your app for the network they use. See [Options](./getting-started.md#options).
 
-## Why is the Ultra Wallet Extension being used instead of the Web Wallet?
+If the message says `received "null"`, the extension could not reach its network node. Ask the user to check their connection or the network's node in the extension settings.
 
-The SDK automatically checks if the Ultra Wallet Extension is installed. If detected, it takes priority over the Web Wallet to maintain compatibility with user preferences. To test Web Wallet specifically, disable or uninstall the extension.
+## I have the extension installed, but the SDK opens the Web Wallet
 
-## Can I use this SDK in mobile browsers?
+-   **Local development on `http://localhost`:** the Chrome Web Store build of the extension runs only on HTTPS pages. Serve your app over HTTPS. See [Choosing a provider](./getting-started.md#choosing-a-provider).
+-   **Your app runs inside an iframe.** The extension injects `window.ultra` into top-level pages only.
+-   Check that the extension is enabled for the site in the browser's extension settings.
 
-Yes. The Ultra Web Wallet SDK is compatible with mobile browsers, although support is still considered experimental. Functionality may vary depending on browser capabilities and operating system restrictions.
+## Can any Ultra account use the Web Wallet?
 
-## I'm not seeing anything or getting a browser error—what should I check?
+The Web Wallet supports **Easy Blockchain Accounts** (EBA) only, meaning accounts created through Ultra sign-up. Users with self-managed keys should use the Browser Extension.
 
-The Ultra Web Wallet requires permission to open a popup window to complete certain actions such as connecting the wallet or processing a transaction.
+## `getAccounts()` / `switchNetwork()` / events don't work
 
-If nothing happens when calling a method like `connect()` or `purchaseItem()`, ensure the following:
+These are extension-only features. With the Web Wallet provider, they reject, throw or do nothing. See the [provider support table](./index.md#provider-support).
 
--   Your application is not blocking popups via custom browser settings or extensions.
--   The user has not previously blocked popups for your domain.
--   The action was initiated as a result of a direct user gesture (e.g., button click), as modern browsers restrict popups outside user-initiated events.
+## `getAccounts()` returns strings, not objects
 
-If you're testing locally, try enabling popups for `localhost` or your local dev server's URL.
+Extension 2.2.13 and earlier return bare account names. See [getAccounts()](./accounts-and-networks.md#getaccounts).
 
-## What if I need to switch networks?
+## `connect()` says it succeeded, but `accounts` is empty or missing
 
-The `env` option passed to `UltraWallet` must match the target Ultra blockchain environment. You cannot dynamically switch environments after instantiating the SDK—you’ll need to re-initialize with a new configuration.
+-   With the **Web Wallet**, only `blockchainid` and `publicKey` are returned.
+-   With the **extension**, accounts are resolved on the wallet's current network. A user whose accounts exist only on mainnet has no accounts while the wallet is on testnet.
 
-## Where are keys stored and is it safe?
+## My transaction fails with an authorization error
 
-The private key is securely stored in the user’s browser, encrypted with a key partially derived from Ultra. Ultra cannot access the full key, and signing occurs client-side, ensuring high levels of security.
+-   The transaction must be authorized by an account and permission the wallet holds a key for. Check with [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations).
+-   Omit the authorization to use the connected account with `active`.
+-   With Web Wallet releases before September 2026, also pass custom authorizations in the legacy `authorizations` field. See [Authorizations](./signing.md#authorizations).
+
+## `signMessage()` fails with "Missing or invalid parameters"
+
+The message must start with `message:`, `0x` or `UOSx`.
+
+## Can I use the SDK in a mobile browser?
+
+Mobile browsers do not support the Browser Extension, so the SDK uses the Web Wallet. Popup handling differs between mobile browsers, so test your flow on your target devices, and call wallet methods directly from taps.
+
+## Can I switch between mainnet and testnet at runtime?
+
+-   **Extension:** yes, with [`switchNetwork()`](./accounts-and-networks.md#switchnetwork) once connected.
+-   **Web Wallet:** no. The Web Wallet serves mainnet only; with `environment: 'testnet'`, SDK 0.6.1+ rejects Web Wallet calls with `4302`. Testnet users need the extension.
+
+## Where are the keys stored? Can the dApp access them?
+
+No, a dApp can never read private keys. It receives only public keys, signatures and transaction results.
+
+-   **Browser Extension:** keys are kept in the extension's encrypted vault, unlocked with the user's password.
+-   **Web Wallet:** keys are generated in the browser and stored in an encrypted vault. The encryption key is assembled from a device-local part and a part from Ultra's device service, so Ultra never holds the complete key. See [Ultra Web Wallet → Security](../ultra-web-wallet/security.md).
+
+## Can I call `window.ultra` directly instead of using the SDK?
+
+Yes. The extension's `window.ultra` API is documented under [Ultra Wallet](../ultra-wallet/index.md). The SDK is recommended: it also supports Web Wallet users, checks the network, and handles event registration for you.
 
 ---
 title: 'Getting Started'
@@ -26986,98 +27442,163 @@ outline: [0, 4]
 
 # Getting Started
 
-To begin using the Ultra Web Wallet in your application, you’ll need to integrate the `@ultraos/wallet-sdk`. This SDK provides a unified interface for both the Ultra Wallet Extension and the Ultra Web Wallet.
-
 ## Installation
 
-First, install the SDK via npm:
-
 ```bash
-npm install @ultraos/wallet-sdk
+npm install @ultraos/wallet-sdk@^0.6.1
 ```
 
-## SDK Initialization
+The package ships as an **ES module** (`import`), with TypeScript type definitions included. Use it with any modern bundler, such as Vite, webpack, Next.js, Nuxt or Angular. The SDK only runs in the browser. Read [Server-side rendering](#server-side-rendering) if your framework also renders on the server.
 
-To begin interacting with Ultra Web Wallet or Ultra Wallet Extension, you need to create an instance of the `UltraWallet` class provided by the `@ultraos/wallet-sdk`.
+## Creating the client
 
-This instance will be used throughout your application to trigger wallet connections, sign transactions, and more.
+Create **one** `UltraWalletSDK` instance for your app and reuse it everywhere.
 
 ```ts
 import { UltraWalletSDK } from '@ultraos/wallet-sdk';
 
-const wallet = new UltraWalletSDK({
-  env: 'testnet', // Required. Defines the target Ultra network.
+export const wallet = new UltraWalletSDK({
+    environment: 'mainnet',
 });
 ```
 
-The `env` option determines which Ultra blockchain network the wallet connects to. Supported values:
+### Options
 
-- `'mainnet'` – Ultra's production blockchain.
-- `'testnet'` – Public network for development and testing.
+| Option        | Type                                  | Default           | Description |
+| ------------- | ------------------------------------- | ----------------- | ----------- |
+| `environment` | `'mainnet' \| 'testnet' \| string`    | `'mainnet'`       | The Ultra network your dApp targets. A value that is not `mainnet` or `testnet` is treated as a custom Web Wallet URL. |
+| `provider`    | `'extension' \| 'web'`                | auto-detect       | Force one wallet instead of auto-detecting. |
 
-Unlike the Ultra Wallet Extension—which allows users to select their active network manually—the Web Wallet relies on this `env` configuration to determine network context at runtime.
+`environment` has two effects:
+
+-   **Web Wallet:** it selects the wallet URL, which fixes the network for the whole session. The Web Wallet is deployed for **mainnet only** (`https://web-wallet.ultra.io`). With `environment: 'testnet'`, only extension users can connect; SDK 0.6.1+ rejects Web Wallet calls on testnet with `4302` instead of opening a popup. Hide the Web Wallet option on testnet.
+-   **Extension:** the extension user picks their network inside the wallet. Before each `connect()`, the SDK compares the wallet's chain ID with the `environment` you configured. If they differ, `connect()` throws `Wallet environment mismatch: expected "testnet" chain, but received "<chainId>"…`. Ask the user to switch networks, or call [`switchNetwork()`](./accounts-and-networks.md#switchnetwork) on an already-trusted connection. The check runs only when `environment` is `mainnet` or `testnet`. If you omit it or pass a custom URL, the extension accepts any network.
+
+| Network | Chain ID                                                           |
+| ------- | ------------------------------------------------------------------ |
+| Mainnet | `a9c481dfbc7d9506dc7e87e9a137c931b0a9303f64fd7a1d08b8230133920097` |
+| Testnet | `7fc56be645bb76ab9d747b53089f132dcb7681db06f0852cfa03eaf6f7ac80e9` |
 
 ::: warning
-⚠️ Always verify that your environment is set appropriately before deploying to production.
+Check that `environment` is set correctly before you deploy. A testnet build pointed at mainnet users (or the reverse) makes every extension `connect()` fail with the mismatch error.
 :::
 
-## Connecting the Wallet
+## Choosing a provider
 
-Use the `connect()` method to initiate the login process and register the device with the Ultra Web Wallet:
+With no `provider` option, the SDK checks for `window.ultra` **when the instance is created**:
 
-```ts
-const result = await wallet.connect();
-console.log('Connected:', result);
-```
+-   If `window.ultra` exists, the SDK uses the **Browser Extension**.
+-   Otherwise, it uses the **Web Wallet**.
 
-If the Ultra Wallet Extension is installed, it will be used by default. Otherwise, the SDK will automatically fall back to the Web Wallet.
-
-## Disconnecting
-
-To log out the user and clear local credentials:
+The extension injects `window.ultra` at `document_start`, so it is already there when your app code runs. The SDK does not expose which provider it picked. If your UI needs to know (for example, to hide network switching when the Web Wallet is in use), run the same check yourself:
 
 ```ts
-await wallet.disconnect();
-```
+const hasExtension = typeof window !== 'undefined' && 'ultra' in window;
 
-## ⚠️ Important: Popup Handling Requirements
-
-To ensure proper functioning of the Ultra Web Wallet, **all API calls that trigger UI actions (such as connect, purchase, or signature requests)** must be initiated **within a direct user action**, such as a `click` or `tap` event.
-
-Browsers enforce strict popup blockers for non-user-initiated windows. If your call to the wallet (e.g., `ultra.connect()` or `ultra.purchaseItem()`) is not triggered from a user interaction, the popup will likely be blocked, and no action will occur.
-
-### ✅ Correct Usage (inside a button event):
-
-```js
-button.addEventListener("click", async () => {
-  await wallet.connect();
+export const wallet = new UltraWalletSDK({
+    environment: 'mainnet',
+    provider: hasExtension ? 'extension' : 'web',
 });
 ```
 
-### ❌ Incorrect Usage (auto-triggered or delayed):
+::: tip Local development with the extension
+The Chrome Web Store build of the extension only injects `window.ultra` on **HTTPS** pages. On `http://localhost`, the SDK falls back to the Web Wallet. To test against the extension locally, serve your app over HTTPS (for example, `https://localhost:5173` with `@vitejs/plugin-basic-ssl`).
+:::
 
-```js
-// This will likely be blocked
-setTimeout(() => {
-  wallet.connect();
-}, 1000);
+## Your first integration
+
+```ts
+import { UltraWalletSDK } from '@ultraos/wallet-sdk';
+
+// Testnet: extension users only (the Web Wallet serves mainnet)
+const wallet = new UltraWalletSDK({ environment: 'testnet' });
+let account: string | undefined;
+
+document.querySelector('#connect')!.addEventListener('click', async () => {
+    try {
+        const { data } = await wallet.connect();
+        account = data.blockchainid; // the account name, e.g. "aa1aa2aa3aa4"
+    } catch (err) {
+        // Rejections are objects like { status: 'error', code: 4001, message: 'The user rejected the request.' }
+        console.error(err);
+    }
+});
+
+document.querySelector('#tip')!.addEventListener('click', async () => {
+    try {
+        const { data } = await wallet.signTransaction({
+            contract: 'eosio.token',
+            action: 'transfer',
+            data: { from: account, to: 'bb1bb2bb3bb4', quantity: '1.00000000 UOS', memo: 'hello' },
+        });
+        console.log('Transaction id:', data.transactionHash);
+    } catch (err) {
+        console.error(err);
+    }
+});
 ```
 
-:::info TIP
-🛡 Always ensure wallet methods are triggered synchronously inside user input events to avoid UX issues.
-::: 
+Use a separate click for each wallet request. The Web Wallet closes its popup after each request, and a second popup opened after an `await` in the same handler may be blocked.
 
+Every successful call resolves to an `UltraResponse`:
 
-## Next Steps
+```ts
+{
+    status: 'success',
+    data: /* method-specific payload */,
+}
+```
 
-After connecting, you can:
+Failures **reject** the promise. You never get `status: 'error'` in a resolved value. See [Errors](./errors.md).
 
-- Sign blockchain transactions with `signTransaction()`
-- Sign raw messages with `signMessage()`
-- Get the current chain ID with `getChainId()`
-- Perform on-chain purchases with `purchaseItem()`
+## Call wallet methods from a user gesture
 
-These methods are covered in detail in the [Core API Methods](./core-api-methods.md).
+Methods that open a window, such as `connect()`, `signMessage()` and `signTransaction()`, must be called **synchronously inside a user event handler** such as `click` or `keydown`. This matters most for the Web Wallet, which opens a popup. Browsers block popups opened outside a user gesture. The SDK then rejects with code `4301` (_Wallet window blocked by browser or failed to open_).
+
+```ts
+// ✅ Opens the popup
+button.addEventListener('click', () => wallet.connect());
+
+// ❌ Probably blocked: the popup is not opened by a user gesture
+setTimeout(() => wallet.connect(), 1000);
+
+// ⚠️ May be blocked: slow async work before the wallet call can outlast
+// the browser's user-activation window
+button.addEventListener('click', async () => {
+    await fetch('/api/prepare');
+    await wallet.signTransaction(tx);
+});
+```
+
+Prepare your data (fetch prices, build the transaction) **before** the user clicks, then call the wallet first thing in the handler.
+
+## Server-side rendering
+
+When the Web Wallet provider is created, it reads `window`, so creating the SDK on the server throws. Create it lazily in the browser:
+
+```ts
+let instance: UltraWalletSDK | undefined;
+
+export function getWallet(): UltraWalletSDK {
+    if (typeof window === 'undefined') throw new Error('Wallet is only available in the browser');
+    return (instance ??= new UltraWalletSDK({ environment: 'mainnet' }));
+}
+```
+
+In Next.js, call it only from client components or effects. In Nuxt, use `onMounted` or a `.client` plugin.
+
+## Cleaning up
+
+If your app creates the SDK inside a component that can unmount, call `dispose()` on teardown. With the extension, it removes the SDK's event listeners and stops the event heartbeat. With the Web Wallet, it does nothing. After `dispose()`, the instance can no longer be used. Create a new one if you need it again.
+
+```ts
+onUnmounted(() => wallet.dispose());
+```
+
+## Next steps
+
+-   [Connecting](./connecting.md): the connection options and the connect result.
+-   [Signing](./signing.md): messages and transactions.
 
 ---
 title: 'Introduction'
@@ -27088,53 +27609,288 @@ outline: [0, 4]
 
 # Ultra Wallet SDK
 
-Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the
-browser extension or via a Ultra Web Wallet.
+`@ultraos/wallet-sdk` is the official JavaScript/TypeScript client that dApps use to talk to an Ultra wallet. It gives you one API that works with both of Ultra's wallets:
 
-## ✨ Features
+-   **Ultra Wallet Browser Extension** — a self-custody wallet installed in Chrome. It supports multiple accounts, custom networks and live events.
+-   **Ultra Web Wallet** — a popup wallet for Easy Blockchain Account (EBA) users that needs no installation.
 
--   Automatically detects and uses the Ultra Wallet Extension if available.
--   Falls back to a Web Wallet if the extension is not installed.
--   Connect, sign messages, sign transactions, and initiate purchases with a simple API.
--   Environment support: `mainnet`, `testnet`, or custom wallet URLs.
+The SDK decides which wallet to use when it is created. You write your integration once: connect, sign, and listen for changes, and the SDK routes each call to the wallet the user has.
+
+```ts
+import { UltraWalletSDK } from '@ultraos/wallet-sdk';
+
+const wallet = new UltraWalletSDK({ environment: 'mainnet' });
+
+connectButton.addEventListener('click', async () => {
+    const { data } = await wallet.connect();
+    console.log('Connected account:', data.blockchainid);
+});
+```
+
+## What you can do
+
+| Capability                                                          | Method(s)                                                         |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Connect / disconnect a dApp                                         | `connect()`, `disconnect()`                                       |
+| Prove account ownership (login challenge)                           | `connect({ nonce })`, `signMessage()`                             |
+| Sign and broadcast transactions, or sign only                       | `signTransaction()`                                               |
+| Read the user's accounts and signing authorities                    | `getAccounts()`, `getSelectedAccount()`, `getAvailableAuthorizations()` |
+| Read and switch the active network                                  | `getChainId()`, `getNetwork()`, `getNetworks()`, `switchNetwork()` |
+| React to account, network and disconnect changes                    | `on()`, `off()`, `dispose()`                                      |
+
+## Provider support
+
+Not every method is available with both wallets. Web Wallet requests travel through a popup window, one request at a time, so that transport cannot support long-lived features such as events and network switching.
+
+| Method                                                   | Browser Extension | Web Wallet                                   |
+| -------------------------------------------------------- | :---------------: | :------------------------------------------: |
+| Networks                                                 | Mainnet, Testnet, custom | Mainnet only                           |
+| `connect()` / `disconnect()`                             | ✅                | ✅                                           |
+| `signMessage()`                                          | ✅                | ✅                                           |
+| `signTransaction()` (incl. `signOnly`)                   | ✅                | ✅                                           |
+| `getChainId()`                                           | ✅                | ✅ (resolved from `environment`, no popup)   |
+| `getAccounts()` / `getSelectedAccount()`                 | ✅                | ❌                                           |
+| `getAvailableAuthorizations()`                           | ✅                | ❌                                           |
+| `getNetwork()` / `getNetworks()` / `switchNetwork()`     | ✅                | ❌                                           |
+| `on()` / `off()` events                                  | ✅                | ❌ (no-op)                                   |
+| `connect()` result: `accounts`, `selectedAccount`, `network` | ✅            | ❌ (legacy fields only)                      |
+
+See [Getting Started → Choosing a provider](./getting-started.md#choosing-a-provider) to learn how to detect which wallet is active.
+
+## Versions
+
+This documentation covers `@ultraos/wallet-sdk` **0.6.1**. Install it with `npm install @ultraos/wallet-sdk@^0.6.1`.
+
+| SDK version | Highlights                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------------------ |
+| 0.6.1       | Web Wallet on testnet rejects with `4302`; Web Wallet JSON-RPC errors reject with their code instead of `undefined`; types resolve under `nodenext` |
+| 0.6.0       | Removed `purchaseItem()` and `addNetwork()` (no wallet serves them); `nonce` / `signedNonce` typed on the connect result |
+| 0.3.x       | Multi-account results, structured `authorization`, `getAvailableAuthorizations()`, network API, events, `dispose()`; bundled ES module with an `exports` map (0.3.2) |
+| 0.2.0       | `provider` option to force the extension or the Web Wallet                                                   |
+| 0.1.x       | `nonce` on `connect()`                                                                                       |
+
+## Where to go next
+
+-   [Getting Started](./getting-started.md): install, configure, and make your first call.
+-   [Connecting](./connecting.md): connection options, eager reconnects, and login with a signed nonce.
+-   [Signing](./signing.md): messages, transactions, multiple actions, and sign-only.
+-   [Accounts & Networks](./accounts-and-networks.md): read the user's accounts and switch networks.
+-   [Events](./events.md): react to account and network changes.
+-   [Selling Uniqs](./selling-uniqs.md): on-chain purchases from a Uniq Factory.
+-   [Errors](./errors.md) and the [API Reference](./api-reference.md).
 
 ---
-title: 'Introduction'
+title: 'Selling Uniqs'
 
-order: -1
+order: 7
 outline: [0, 4]
 ---
 
-# Ultra Wallet SDK
+# Selling Uniqs
 
-Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the
-browser extension or via a Ultra Web Wallet.
+Users buy directly from a Uniq Factory that has a purchase option set up. Use the NFT contract's [`purchase.a`](../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md) action through [`signTransaction()`](./signing.md#signtransaction). The price is paid in UOS from the buyer's account:
 
-## ✨ Features
+```ts
+const buyer = connected.blockchainid;
 
--   Automatically detects and uses the Ultra Wallet Extension if available.
--   Falls back to a Web Wallet if the extension is not installed.
--   Connect, sign messages, sign transactions, and initiate purchases with a simple API.
--   Environment support: `mainnet`, `testnet`, or custom wallet URLs.
+const { data } = await wallet.signTransaction({
+    contract: 'eosio.nft.ft',
+    action: 'purchase.a',
+    data: {
+        purchase: {
+            token_factory_id: 599,
+            index: 0, //                      the purchase option index
+            max_price: '10.00000000 UOS', //  the most the buyer will pay (guards against USD/UOS price moves)
+            buyer,
+            receiver: buyer,
+            promoter_id: null,
+            user_uniqs: null,
+            memo: '',
+        },
+    },
+});
+
+console.log('Purchased in', data.transactionHash);
+```
+
+The transaction does not return the minted Uniq's ID as a field. Look it up in the buyer's inventory with the [NFT API](../nft-api/introduction.md). For second-hand listings, see the [`buy`](../../blockchain/contracts/nft-contract/nft-actions/buy.md) action.
+
+::: info `purchaseItem()` was removed
+SDK versions before 0.6.0 had a `purchaseItem()` method that opened Ultra's hosted checkout. The current wallets deliberately do not depend on the Ultra platform backend, so no wallet serves that checkout any more, and SDK 0.6.0 removed the method. Use the on-chain purchase above.
+:::
 
 ---
-title: 'Introduction'
+title: 'Signing'
 
-order: -1
+order: 3
 outline: [0, 4]
 ---
 
-# Ultra Wallet SDK
+# Signing
 
-Ultra Wallet SDK provides an easy-to-use client for interacting with the Ultra blockchain wallet, either through the
-browser extension or via a Ultra Web Wallet.
+The wallet signs with the user's keys. Keys never leave the wallet. Your dApp receives only signatures or transaction results.
 
-## ✨ Features
+## signMessage()
 
--   Automatically detects and uses the Ultra Wallet Extension if available.
--   Falls back to a Web Wallet if the extension is not installed.
--   Connect, sign messages, sign transactions, and initiate purchases with a simple API.
--   Environment support: `mainnet`, `testnet`, or custom wallet URLs.
+```ts
+signMessage(message: string): Promise<UltraResponse<SignMessageResult>>
+```
+
+Asks the user to sign an arbitrary message. Signing a message sends nothing to the chain and costs no resources.
+
+```ts
+const { data } = await wallet.signMessage('message: I agree to the terms of example.com');
+data.signature; // "SIG_K1_K8r…"
+```
+
+The message **must** start with one of these prefixes. The extension rejects a message without one immediately, with `-32000` (invalid input). The Web Wallet rejects it with `-32003` after the user confirms.
+
+| Prefix     | Use for                                                           |
+| ---------- | ----------------------------------------------------------------- |
+| `message:` | Human-readable text. The user sees the text in the prompt.        |
+| `0x`       | Hex-encoded data.                                                 |
+| `UOSx`     | Ultra-specific payloads.                                          |
+
+The extension trims leading and trailing whitespace from the message before signing. Avoid surrounding whitespace in messages and challenges, so the signed text is exactly what your server expects.
+
+### Verifying a message signature
+
+The wallet computes a K1 signature over **SHA-256(UTF-8 bytes of the full message string, prefix included)**. The `0x` form is not hex-decoded first; the whole string is signed as text. To verify, recover the public key and check it on chain, as described in [Login with a signed nonce](./connecting.md#login-with-a-signed-nonce):
+
+```ts
+import { Bytes, Signature } from '@wharfkit/antelope';
+
+const key = Signature.from(signature).recoverMessage(Bytes.from(message, 'utf8'));
+// Then confirm with get_accounts_by_authorizers that `key` belongs to the expected account.
+```
+
+The extension signs with the **selected account's** key. The Web Wallet signs with the key of the user's EBA account.
+
+## signTransaction()
+
+```ts
+signTransaction(
+    transaction: BlockchainTransaction | BlockchainTransaction[],
+    options?: SignTransactionOptions,
+): Promise<UltraResponse<SignTransactionResult>>
+```
+
+Shows the user a transaction to approve. On approval, the wallet signs it and **broadcasts** it to the network the wallet is on.
+
+### Transaction format
+
+The SDK uses a simplified action format. The wallet adds the chain's TAPoS fields, the expiration and the signatures for you.
+
+| Field           | Type                          | Required | Description |
+| --------------- | ----------------------------- | :------: | ----------- |
+| `contract`      | `string`                      | ✅       | The account the contract is deployed to, for example `eosio.token`. |
+| `action`        | `string`                      | ✅       | The action name, for example `transfer`. |
+| `data`          | `object`                      | ✅       | The action arguments as JSON. The wallet serializes them using the contract's ABI. |
+| `authorization` | `{ actor, permission }[]`     |          | Who authorizes the action. Defaults to the connected account with `active`. |
+| `authorizations`| `string[]`                    |          | _Deprecated._ The same, as `"account@permission"` strings. |
+
+```ts
+const { data } = await wallet.signTransaction({
+    contract: 'eosio.token',
+    action: 'transfer',
+    data: {
+        from: 'aa1aa2aa3aa4',
+        to: 'bb1bb2bb3bb4',
+        quantity: '1.00000000 UOS',
+        memo: 'Thanks!',
+    },
+});
+
+data.transactionHash; // "51c6d324522a0ee05baeee2a8857b016e47481207850074ee83f914e6adc45ae"
+```
+
+Token quantities must use the token's exact precision. UOS has **8 decimals** (`'1.00000000 UOS'`).
+
+### Authorizations
+
+In the common case, where the connected user authorizes with `active`, **leave the authorization out**. Both wallets default to the connected account with `active`.
+
+To use a different permission, or several signers:
+
+```ts
+await wallet.signTransaction({
+    contract: 'mygame.dapp',
+    action: 'claim',
+    data: { player: 'aa1aa2aa3aa4' },
+    authorization: [{ actor: 'aa1aa2aa3aa4', permission: 'gameplay' }],
+});
+```
+
+-   A legacy string without a permission (`'aa1aa2aa3aa4'`) is treated as `aa1aa2aa3aa4@active`.
+-   Names must be valid Antelope names. If you pass authorizations and none of them are valid, current Web Wallet releases reject the request with `-32000` instead of signing as the connected account.
+-   The extension merges `authorizations` and `authorization` and removes duplicates.
+-   Call [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations) first to see which `account@permission` pairs the extension can actually sign for.
+
+::: warning Web Wallet releases before September 2026
+Web Wallet releases before September 2026 read only the legacy `authorizations` string array, and sign as the connected account with `active` when it is missing. Current releases read both fields and show the exact signers on the approval screen. If you need a non-default authorization and want to support older releases, also pass `authorizations: ['account@permission']`.
+:::
+
+### Multiple actions in one transaction
+
+Pass an array to put several actions into **one atomic transaction**. It needs one approval and has one transaction ID, and if any action fails, the whole transaction fails:
+
+```ts
+const { data } = await wallet.signTransaction([
+    {
+        contract: 'eosio.token',
+        action: 'transfer',
+        data: { from: 'aa1aa2aa3aa4', to: 'mygame.dapp', quantity: '5.00000000 UOS', memo: 'deposit' },
+    },
+    {
+        contract: 'mygame.dapp',
+        action: 'enter',
+        data: { player: 'aa1aa2aa3aa4', round: 42 },
+    },
+]);
+```
+
+### The broadcast result
+
+When the transaction is broadcast, `data` contains the chain's `push_transaction` response, plus `transactionHash`:
+
+| Field             | Description |
+| ----------------- | ----------- |
+| `transactionHash` | The transaction ID. Look it up on an explorer or with the history API. |
+| `processed`       | The execution trace: `block_num`, `block_time`, `receipt` (CPU/NET usage), `action_traces` (including inline actions and console output), `except`. |
+
+The chain has **executed** the transaction when `signTransaction()` resolves. It is not yet irreversible. If your app needs finality, wait for the block to become irreversible before you treat the result as final.
+
+### Sign without broadcasting
+
+Pass `{ signOnly: true }` to get the signed transaction back **without** sending it. Use this when your backend or another party broadcasts it, or when the transaction needs several signatures (multisig):
+
+```ts
+const { data } = await wallet.signTransaction(actions, { signOnly: true });
+// {
+//   expiration: '2026-09-23T10:01:00',
+//   ref_block_num: 12345,
+//   ref_block_prefix: 987654321,
+//   max_net_usage_words: 0,
+//   max_cpu_usage_ms: 0,
+//   delay_sec: 0,
+//   context_free_actions: [],
+//   actions: [ /* serialized actions */ ],
+//   transaction_extensions: [],
+//   signatures: ['SIG_K1_…'],
+//   …
+// }
+```
+
+-   **Extension:** a sign-only request is a **partial-signing** request. The approval screen makes the user tick an explicit consent checkbox before approving. The wallet signs with every key it holds for the requested authorizations. `data.unsignedAuth` lists, as `"account@permission"` strings, the authorizations the wallet believes it holds no key for. It is best-effort and may be missing when the wallet could not resolve the authorizations, so check the `signatures` before relying on the result. The result also contains `transaction_id: ''`, `transactionHash: ''` and `processed: null`.
+-   **Web Wallet:** signs with the keys it holds, skips actors it has no key for, and returns the signed transaction. It does not return `unsignedAuth`.
+
+The signed transaction is only valid until its `expiration` time. Broadcast it before then.
+
+### Limits
+
+-   The extension queues at most **10 pending requests per origin**. More requests reject with `-32005` (limit exceeded).
+-   The Web Wallet handles **one request at a time** per SDK instance. A second call while a request is pending rejects with `32002` (_Requested resource not available_).
+-   If the chain rejects the transaction (an assertion fails, for example), the promise rejects with `-32003` (transaction rejected). The chain's error is in the error's `data`: a string with the extension, the node's JSON error with the Web Wallet.
 
 ---
 title: 'How to add custom networks'
@@ -27610,48 +28366,19 @@ Visit the Chrome Web Store and install the Ultra Wallet extension:
 https://chrome.google.com/webstore/detail/ultra-wallet/kjjebdkfeagdoogagbhepmbimaphnfln
 
 ---
-title: 'Uniq Factory purchase using FIAT or UOS'
+title: 'Uniq Factory purchase'
 
 order: 9
 outline: [0, 4]
 ---
 
-# Uniq Factory purchase using FIAT or UOS
+# Uniq Factory purchase
 
-To facilitate the purchase of an Uniq Factory with FIAT or Blockchain tokens, the Ultra platform provides the `ultra.purchaseItem(itemType, itemId)` API method. This method is designed to initiate the purchase process for a specific item, identified by its type and unique ID on the blockchain.
+::: warning `ultra.purchaseItem()` has been removed
+Earlier versions of the Ultra Wallet exposed `ultra.purchaseItem(itemType, itemId)`, which opened Ultra's hosted checkout. The current wallet no longer depends on the Ultra platform backend, so that checkout was removed, and `@ultraos/wallet-sdk` 0.6.0 removed the method. Calling `window.ultra.purchaseItem()` now rejects with `-32601` (method does not exist).
+:::
 
-API Method: `ultra.purchaseItem(itemType, itemId)`
-- `itemType`: For Uniq Factory purchases, this value should be "UniqFactory".
-- `itemId`: The identifier of the Uniq Factory on the blockchain.
-
-When this API method is called, it triggers a popup window displaying the Ultra purchase flow. This flow allows users to complete their purchase using Credit or Debit cards, as well as UOS tokens. Upon successful payment, Ultra mints the Uniq to the user and returns the following information as the result of the API call:
-- `orderHash`: An ID used for support requests if required.
-- `items`: An array of purchased elements
-  - `productId`: The item ID that was sent in the API call.
-  - `artifactId`: The minted Uniq ID on the blockchain.
-  - `blockchainTransactionId`: The transaction ID on the blockchain, useful for tracking the status and details.
-
-If the user cancels the purchase flow by either closing the window or explicitly canceling the purchase in the user UI, or if an error related to the payment occurs, the API will throw an error. The error message will provide details about the cancellation.
-
-```JavaScript
-try {
-  const response = await ultra.purchaseItem("UniqFactory", "599");
-  response
-  // {
-  //   status: "success",
-  //   data: {
-  //     orderHash: "XXX",
-  //     items: [{
-  //       productId: 599,
-  //       artifactId: 7777,
-  //       blockchainTransactionId: "XXX",
-  //     }],
-  //   },
-  // }
-} catch (err) {
-  // { status: "error", message: "Purchase canceled" }
-}
-```
+To sell Uniqs from a Uniq Factory, have the buyer sign the NFT contract's on-chain [`purchase.a`](../../blockchain/contracts/nft-contract/nft-actions/purchase.a.md) action. See [Ultra Wallet SDK → Selling Uniqs](../ultra-wallet-sdk/selling-uniqs.md) for a complete example.
 
 ---
 title: 'Response interface'

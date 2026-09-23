@@ -125,7 +125,7 @@ const { data } = await wallet.getNetwork();
 getNetworks(): Promise<UltraResponse<NetworkDetails[]>>
 ```
 
-Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in **Settings → Networks** (extension 2.2.14+; earlier versions list only the built-ins). Use it to check whether a network exists before you call `switchNetwork()`.
+Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in **Settings → Networks**. User-added networks are listed only for a connected (trusted) origin, and only from extension 2.2.14; earlier versions list only the built-ins. Use it to check whether a network exists before you call `switchNetwork()`.
 
 ### switchNetwork()
 
@@ -141,7 +141,7 @@ await wallet.switchNetwork(TESTNET);
 ```
 
 -   Your origin must be **trusted** (connected). Otherwise the call rejects with `4100`.
--   The switch happens **without a prompt**, and it resolves at once if the wallet is already on that network.
+-   The switch happens **without a prompt**, and it resolves at once, without changing anything, if the wallet is already on that chain.
 -   It rejects with `-32602` if `chainId` is not a 64-character lowercase hex string.
 -   It rejects with `4902` (unrecognized chain ID) if no configured network has that chain ID.
 -   It rejects with `-32002` if the wallet is locked, or while any wallet request (such as a signing prompt) is pending.

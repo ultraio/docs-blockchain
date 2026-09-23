@@ -53,7 +53,7 @@ The codes follow [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193#provider-err
 | `4100`   | Unauthorized          | The origin is not connected, for example `signMessage()`, `signTransaction()` or `switchNetwork()` before `connect()`, or a Web Wallet `disconnect()` from an origin that is not connected. |
 | `4900`   | Disconnected          | Reserved. Not currently raised by either wallet. |
 | `4902`   | Unrecognized chain ID | `switchNetwork()` to a network the wallet does not have. |
-| `-32000` | Invalid input         | Missing or invalid parameters, such as an invalid transaction object, or (extension) a message without a `message:` / `0x` / `UOSx` prefix. |
+| `-32000` | Invalid input         | Missing or invalid parameters, such as an invalid transaction object, authorizations with no valid `account@permission` (Web Wallet), or (extension) a message without a `message:` / `0x` / `UOSx` prefix. |
 | `-32002` | Resource unavailable  | The wallet is busy: a duplicate `connect()`, a pending request blocking `switchNetwork()`, or the wallet is locked. |
 | `-32003` | Transaction rejected  | Signing or broadcasting failed. The chain's error is in `data`. The Web Wallet also uses this code for a message or nonce with an invalid prefix, after the user confirms. |
 | `-32005` | Limit exceeded        | More than 10 pending requests from your origin. |

@@ -101,6 +101,7 @@ await wallet.signTransaction({
 ```
 
 -   A legacy string without a permission (`'aa1aa2aa3aa4'`) is treated as `aa1aa2aa3aa4@active`.
+-   Names must be valid Antelope names. If you pass authorizations and none of them are valid, current Web Wallet releases reject the request with `-32000` instead of signing as the connected account.
 -   The extension merges `authorizations` and `authorization` and removes duplicates.
 -   Call [`getAvailableAuthorizations()`](./accounts-and-networks.md#getavailableauthorizations) first to see which `account@permission` pairs the extension can actually sign for.
 

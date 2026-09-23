@@ -125,7 +125,7 @@ const { data } = await wallet.getNetwork();
 getNetworks(): Promise<UltraResponse<NetworkDetails[]>>
 ```
 
-Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in **Settings → Networks**. User-added networks are listed only for a connected (trusted) origin, and only from extension 2.2.14; earlier versions list only the built-ins. Use it to check whether a network exists before you call `switchNetwork()`.
+Every network configured in the wallet: the built-in Mainnet and Testnet, plus the networks the user added in the extension (**Menu → Networks → Add Custom Network**). User-added networks are listed only for a connected (trusted) origin, and only from extension 2.2.14; earlier versions list only the built-ins. Use it to check whether a network exists before you call `switchNetwork()`.
 
 ### switchNetwork()
 
@@ -151,4 +151,9 @@ Trust is per origin across networks, so your dApp stays connected after the swit
 
 ### Adding a network
 
-dApps cannot add networks. A network added by a website, without the user reviewing it, could route the user's signing requests through an attacker's node. The extension therefore removed that capability, and SDK 0.6.0 removed `addNetwork()`. Ask users to add a custom network themselves in the extension's **Settings → Networks**. With extension 2.2.14+, your dApp can then call `switchNetwork()` with its chain ID; with earlier versions, ask the user to switch to it in the wallet.
+There are two different things here:
+
+-   **Users can add networks.** In the extension, **Menu → Networks → Add Custom Network** lets the user add a network by name and node URL. The wallet validates it before saving (HTTPS, no private addresses, no names imitating the built-in networks). See [How to add custom networks](../ultra-wallet/custom-networks.md).
+-   **dApps cannot add networks.** There is no API for a website to add a network to the user's wallet. A network added by a website without the user reviewing it could route the user's signing requests through an attacker's node. The old `addNetwork()` method was never served by the current extension and was removed in SDK 0.6.0.
+
+If your dApp needs a custom network, ask the user to add it on the Networks screen. A connected dApp can then call `switchNetwork()` with its chain ID (extension 2.2.14+; with earlier versions, ask the user to switch in the wallet).

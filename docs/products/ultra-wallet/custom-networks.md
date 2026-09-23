@@ -7,22 +7,25 @@ outline: [0, 4]
 
 # How to add custom networks
 
-For Ultra Pro Wallets, it is possible to add custom networks for testing purposes.
+Besides the built-in **Mainnet** and **Testnet**, you can add your own networks to the Ultra Wallet extension, for example a local development node.
 
-This is the correct procedure:
+1. Open the Ultra Wallet extension and click the network name under your account (or open the **Menu**, top right, and select **Networks**).
 
-1. Open your Ultra Wallet extension, click on the environment dropdown at the top of the screen, and click the button “Add Network”
+    ![Networks screen](/images/uwax-networks-screen.png)
 
-    ![](/images/uwax-add-custom-net.png)
+2. Click **Add Custom Network**, enter a **Network Name** and the **Node URL** of your Ultra node (see [nodeos](../../blockchain/general/tools/nodeos.md)), then click **Add Network**.
 
-2. Fill all the fields with your custom network parameters and click “Add Network”
+    ![Add Custom Network form](/images/uwax-add-custom-network-form.png)
 
-    - Network name: This is the name used to be displayed in the environment dropdown list.
-    - Network HTTP URL: URL used to connect to your Ultra blockchain node, for more information follow this [documentation page](../../blockchain/general/tools/nodeos.md).
-    - Block explorer URL: URL for the blockchain explorer, for example, https://local.bloks.io
+3. Select a network in the list to switch to it. Custom networks can also be edited or deleted from this screen.
 
-    ![](/images/uwax-add-net.png)
+The wallet checks a network before saving it:
 
-3. Custom networks can be edited or deleted if it is needed
+-   The Node URL must use **HTTPS**. `http://localhost` and `http://127.0.0.1` are allowed for local development.
+-   Private and internal network addresses are refused.
+-   The name must not imitate a built-in network (for example "Ultra Mainnet").
+-   The wallet contacts the node and records its chain ID.
 
-    ![](/images/uwax-edit-net.png)
+::: info Websites cannot add networks
+Only you can add a network, on this screen. Websites cannot add networks to your wallet. A connected website can switch the wallet to a network you have already added (extension 2.2.14+). See [Ultra Wallet SDK → Accounts & Networks](../ultra-wallet-sdk/accounts-and-networks.md#adding-a-network).
+:::

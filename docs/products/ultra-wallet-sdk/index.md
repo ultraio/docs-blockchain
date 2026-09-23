@@ -62,7 +62,7 @@ This documentation covers `@ultraos/wallet-sdk` **0.6.1**. Install it with `npm 
 | SDK version | Highlights                                                                                                   |
 | ----------- | ------------------------------------------------------------------------------------------------------------ |
 | 0.6.1       | Web Wallet on testnet rejects with `4302`; Web Wallet JSON-RPC errors reject with their code instead of `undefined`; types resolve under `nodenext` |
-| 0.6.0       | Removed `purchaseItem()` and `addNetwork()` (no wallet serves them); `nonce` / `signedNonce` typed on the connect result |
+| 0.6.0       | Removed the `purchaseItem()` and `addNetwork()` methods, which no wallet serves (users still add networks in the extension); `nonce` / `signedNonce` typed on the connect result |
 | 0.3.x       | Multi-account results, structured `authorization`, `getAvailableAuthorizations()`, network API, events, `dispose()`; bundled ES module with an `exports` map (0.3.2) |
 | 0.2.0       | `provider` option to force the extension or the Web Wallet                                                   |
 | 0.1.x       | `nonce` on `connect()`                                                                                       |
